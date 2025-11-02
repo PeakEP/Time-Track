@@ -1,0 +1,26 @@
+# Netlify configuration for JMRC CRM & Time Tracker
+
+[build]
+  # This is a static site - no build needed
+  publish = "."
+  command = "echo 'No build required - static HTML app'"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# Production context
+[context.production]
+  command = "echo 'Deploying production'"
+
+# Deploy Preview context
+[context.deploy-preview]
+  command = "echo 'Deploying preview'"
+
+# Branch deploy context
+[context.branch-deploy]
+  command = "echo 'Deploying branch'"
