@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="JMRC Time">
-    <title>JMRC Time Tracker</title>
+    <meta name="apple-mobile-web-app-title" content="JMRC CRM">
+    <title>JMRC CRM & Time Tracker</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * {
@@ -16,15 +16,31 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        :root {
+            --primary-color: #001f3f;
+            --primary-light: #003d7a;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --light-bg: #f5f5f7;
+            --card-bg: white;
+            --border-color: #ddd;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: #f5f5f7;
+            background: var(--light-bg);
             min-height: 100vh;
             padding-bottom: 80px;
         }
 
         .header {
-            background: linear-gradient(135deg, #001f3f 0%, #003d7a 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
             color: white;
             padding: 20px 15px 15px 15px;
             position: sticky;
@@ -41,7 +57,7 @@
         }
 
         .header h1 {
-            font-size: 1.3em;
+            font-size: 1.4em;
             text-align: center;
             margin-bottom: 5px;
         }
@@ -54,24 +70,30 @@
 
         .content {
             padding: 15px;
-            max-width: 600px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
         .card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow);
         }
 
         .card h2 {
-            color: #001f3f;
+            color: var(--primary-color);
             font-size: 1.2em;
             margin-bottom: 15px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #001f3f;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            font-size: 1.1em;
+            margin: 20px 0 10px 0;
         }
 
         .input-group {
@@ -82,14 +104,14 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #333;
+            color: var(--text-primary);
             font-size: 0.95em;
         }
 
         .input-group input, .input-group select, .input-group textarea {
             width: 100%;
             padding: 14px;
-            border: 2px solid #ddd;
+            border: 2px solid var(--border-color);
             border-radius: 10px;
             font-size: 16px;
             background: #f9f9f9;
@@ -98,12 +120,12 @@
 
         .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
             outline: none;
-            border-color: #001f3f;
+            border-color: var(--primary-color);
             background: white;
         }
 
         button {
-            background: #001f3f;
+            background: var(--primary-color);
             color: white;
             border: none;
             padding: 16px 24px;
@@ -119,26 +141,273 @@
 
         button:active {
             transform: scale(0.98);
-            background: #003d7a;
+            background: var(--primary-light);
         }
 
         button.secondary {
-            background: #6c757d;
+            background: var(--secondary-color);
         }
 
         button.danger {
-            background: #dc3545;
+            background: var(--danger-color);
         }
 
         button.success {
-            background: #28a745;
+            background: var(--success-color);
         }
 
+        button.warning {
+            background: var(--warning-color);
+            color: var(--text-primary);
+        }
+
+        button.info {
+            background: var(--info-color);
+        }
+
+        /* Dashboard Styles */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-card.success {
+            background: linear-gradient(135deg, var(--success-color), #20c997);
+        }
+
+        .stat-card.warning {
+            background: linear-gradient(135deg, var(--warning-color), #ffb700);
+        }
+
+        .stat-card.info {
+            background: linear-gradient(135deg, var(--info-color), #0dcaf0);
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        /* Deal Pipeline Styles */
+        .pipeline {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .pipeline-column {
+            min-width: 280px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .pipeline-header {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .deal-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            cursor: move;
+        }
+
+        .deal-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+
+        .deal-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--success-color);
+            margin: 5px 0;
+        }
+
+        .deal-meta {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+        }
+
+        /* Contact/Company Card Styles */
+        .entity-card {
+            background: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .entity-card.company {
+            border-left-color: var(--info-color);
+        }
+
+        .entity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .entity-name {
+            font-weight: 600;
+            font-size: 1.1em;
+            color: var(--primary-color);
+        }
+
+        .entity-info {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin: 5px 0;
+        }
+
+        .entity-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .entity-actions button {
+            padding: 10px;
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+
+        /* Activity Timeline */
+        .activity-timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .activity-item {
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .activity-item::before {
+            content: '';
+            position: absolute;
+            left: -23px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-color);
+        }
+
+        .activity-icon {
+            position: absolute;
+            left: -30px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+
+        .activity-icon.call { background: var(--info-color); }
+        .activity-icon.email { background: var(--warning-color); }
+        .activity-icon.meeting { background: var(--success-color); }
+        .activity-icon.note { background: var(--secondary-color); }
+
+        .activity-content {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .activity-header {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .activity-meta {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        /* Calendar Styles */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            padding: 5px;
+            background: white;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.9em;
+            position: relative;
+        }
+
+        .calendar-day.header {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        .calendar-day.today {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .calendar-day.has-events::after {
+            content: '';
+            position: absolute;
+            bottom: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: var(--success-color);
+            border-radius: 50%;
+        }
+
+        /* Stopwatch */
         .stopwatch-display {
             font-size: 3.5em;
             text-align: center;
             font-weight: bold;
-            color: #001f3f;
+            color: var(--primary-color);
             margin: 20px 0;
             font-family: 'Courier New', monospace;
             background: #f0f0f0;
@@ -153,171 +422,14 @@
             margin-bottom: 20px;
         }
 
-        .project-item, .task-item {
-            background: #f9f9f9;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            border-left: 4px solid #001f3f;
-        }
-
-        .project-item h3, .task-item h4 {
-            color: #001f3f;
-            margin-bottom: 8px;
-            font-size: 1.1em;
-        }
-
-        .project-item p, .task-item p {
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        .subtask {
-            margin-left: 15px;
-            padding: 10px;
-            background: white;
-            border-radius: 8px;
-            margin-top: 8px;
-            border-left: 3px solid #6c757d;
-        }
-
-        .time-display {
-            display: inline-block;
-            background: #001f3f;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.9em;
-        }
-
-        .entry-item {
-            background: white;
-            padding: 15px;
-            margin-bottom: 12px;
-            border-radius: 10px;
-            border-left: 4px solid #001f3f;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .entry-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 10px;
-        }
-
-        .entry-title {
-            flex: 1;
-            font-weight: 600;
-            color: #001f3f;
-            font-size: 1em;
-        }
-
-        .entry-time {
-            text-align: right;
-        }
-
-        .entry-meta {
-            font-size: 0.85em;
-            color: #666;
-            margin-bottom: 8px;
-        }
-
-        .entry-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .entry-actions button {
-            padding: 10px;
-            font-size: 14px;
-            margin-bottom: 0;
-        }
-
-        .edited-marker {
-            color: #dc3545;
-            font-weight: bold;
-            margin-left: 5px;
-        }
-
-        .original-time {
-            text-decoration: line-through;
-            color: #999;
-            font-size: 0.85em;
-            display: block;
-            margin-bottom: 3px;
-        }
-
-        .edit-reason {
-            background: #fff3cd;
-            border-left: 3px solid #ffc107;
-            padding: 10px;
-            margin-top: 10px;
-            font-size: 0.85em;
-            border-radius: 5px;
-        }
-
-        .week-selector {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .week-button {
-            padding: 15px;
-            background: white;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-bottom: 10px;
-            transition: all 0.3s;
-            text-align: left;
-        }
-
-        .week-button:active {
-            transform: scale(0.98);
-        }
-
-        .week-button.active {
-            background: #001f3f;
-            color: white;
-            border-color: #001f3f;
-        }
-
-        .summary {
-            background: linear-gradient(135deg, #001f3f 0%, #003d7a 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
-
-        .summary h3 {
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .summary-item:last-child {
-            border-bottom: none;
-        }
-
+        /* Bottom Navigation */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             background: white;
-            border-top: 1px solid #ddd;
+            border-top: 1px solid var(--border-color);
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
@@ -331,7 +443,7 @@
             transition: all 0.3s;
             border: none;
             background: white;
-            color: #666;
+            color: var(--text-secondary);
             font-size: 0.7em;
             border-radius: 0;
             margin: 0;
@@ -343,7 +455,7 @@
         }
 
         .nav-item.active {
-            color: #001f3f;
+            color: var(--primary-color);
             font-weight: 600;
         }
 
@@ -361,6 +473,7 @@
             display: block;
         }
 
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -389,12 +502,12 @@
         .modal-header {
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #ddd;
+            border-bottom: 2px solid var(--border-color);
             position: relative;
         }
 
         .modal-header h2 {
-            color: #001f3f;
+            color: var(--primary-color);
             font-size: 1.3em;
         }
 
@@ -404,7 +517,7 @@
             top: 0;
             font-size: 30px;
             cursor: pointer;
-            color: #666;
+            color: var(--text-secondary);
             width: 40px;
             height: 40px;
             display: flex;
@@ -422,9 +535,9 @@
         .quick-action-btn {
             padding: 20px;
             background: white;
-            border: 2px solid #001f3f;
+            border: 2px solid var(--primary-color);
             border-radius: 15px;
-            color: #001f3f;
+            color: var(--primary-color);
             font-weight: 600;
             text-align: center;
             cursor: pointer;
@@ -432,7 +545,7 @@
         }
 
         .quick-action-btn:active {
-            background: #001f3f;
+            background: var(--primary-color);
             color: white;
         }
 
@@ -453,78 +566,212 @@
             opacity: 0.3;
         }
 
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-right: 5px;
+        }
+
+        .badge.primary { background: var(--primary-color); color: white; }
+        .badge.success { background: var(--success-color); color: white; }
+        .badge.warning { background: var(--warning-color); color: var(--text-primary); }
+        .badge.danger { background: var(--danger-color); color: white; }
+        .badge.info { background: var(--info-color); color: white; }
+
+        /* Search Bar */
+        .search-bar {
+            margin-bottom: 15px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            font-size: 16px;
+            background: white;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
         /* iOS safe area */
         @supports(padding: max(0px)) {
             body {
                 padding-bottom: max(80px, env(safe-area-inset-bottom));
             }
-            
+
             .bottom-nav {
                 padding-bottom: env(safe-area-inset-bottom);
             }
         }
 
-        .section-label {
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 10px;
-            padding-left: 5px;
+        @media (min-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .quick-action-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
         <img src="https://iili.io/Ksm72AQ.png" alt="JMRC LIMITED LOGO" class="header-logo">
-        <h1>⏱️ JMRC Time Tracker</h1>
-        <p>Time and Task Management</p>
+        <h1>JMRC CRM & Time Tracker</h1>
+        <p>All-in-One Business Management</p>
     </div>
 
     <div class="content">
-        <!-- Home Tab -->
-        <div id="home" class="tab-content active">
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
             <div class="card">
-                <h2>Employee Info</h2>
-                <div class="input-group">
-                    <label>Your Name</label>
-                    <input type="text" id="employeeName" placeholder="Enter your name">
+                <h2>Dashboard Overview</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="dashDealsCount">0</div>
+                        <div class="stat-label">Active Deals</div>
+                    </div>
+                    <div class="stat-card success">
+                        <div class="stat-value" id="dashContactsCount">0</div>
+                        <div class="stat-label">Contacts</div>
+                    </div>
+                    <div class="stat-card warning">
+                        <div class="stat-value" id="dashTasksCount">0</div>
+                        <div class="stat-label">Open Tasks</div>
+                    </div>
+                    <div class="stat-card info">
+                        <div class="stat-value" id="dashTimeWeek">0h</div>
+                        <div class="stat-label">Week Time</div>
+                    </div>
                 </div>
-                <button onclick="saveEmployeeName()" class="success">Save Name</button>
             </div>
 
             <div class="card">
-                <h2>Current Week</h2>
-                <div class="input-group">
-                    <label>Select Work Week</label>
-                    <select id="weekDropdown" onchange="selectWeekFromDropdown()">
-                    </select>
+                <h2>Recent Activity</h2>
+                <div id="dashRecentActivity">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <p>No recent activity</p>
+                    </div>
                 </div>
-                <div id="currentWeekDisplay" style="text-align: center; padding: 15px; background: #f0f0f0; border-radius: 10px; font-weight: bold; color: #001f3f; margin-top: 10px;"></div>
             </div>
 
             <div class="card">
                 <h2>Quick Actions</h2>
                 <div class="quick-action-grid">
-                    <button onclick="openModal('projectModal')" style="margin: 0;">+ Project</button>
-                    <button onclick="openModal('taskModal')" class="secondary" style="margin: 0;">+ Task</button>
+                    <button onclick="openModal('contactModal')" style="margin: 0;">+ Contact</button>
+                    <button onclick="openModal('companyModal')" class="info" style="margin: 0;">+ Company</button>
+                    <button onclick="openModal('dealModal')" class="success" style="margin: 0;">+ Deal</button>
+                    <button onclick="openModal('activityModal')" class="warning" style="margin: 0;">+ Activity</button>
                 </div>
-                <button onclick="exportData()" class="success">📄 Export PDF Report</button>
             </div>
         </div>
 
-        <!-- Track Tab -->
+        <!-- Contacts Tab -->
+        <div id="contacts" class="tab-content">
+            <div class="card">
+                <h2>👤 Contacts</h2>
+                <div class="search-bar">
+                    <input type="text" id="contactSearch" placeholder="Search contacts..." oninput="filterContacts()">
+                </div>
+                <button onclick="openModal('contactModal')" style="margin-bottom: 15px;">+ Add New Contact</button>
+                <div class="list-container" id="contactList">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">👤</div>
+                        <p>No contacts yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Companies Tab -->
+        <div id="companies" class="tab-content">
+            <div class="card">
+                <h2>🏢 Companies</h2>
+                <div class="search-bar">
+                    <input type="text" id="companySearch" placeholder="Search companies..." oninput="filterCompanies()">
+                </div>
+                <button onclick="openModal('companyModal')" class="info" style="margin-bottom: 15px;">+ Add New Company</button>
+                <div class="list-container" id="companyList">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🏢</div>
+                        <p>No companies yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deals Tab -->
+        <div id="deals" class="tab-content">
+            <div class="card">
+                <h2>💼 Deal Pipeline</h2>
+                <button onclick="openModal('dealModal')" class="success" style="margin-bottom: 15px;">+ Add New Deal</button>
+                <div class="pipeline" id="dealPipeline">
+                    <div class="pipeline-column">
+                        <div class="pipeline-header">
+                            <span>🎯 Lead</span>
+                            <span class="badge primary" id="leadCount">0</span>
+                        </div>
+                        <div id="leadDeals"></div>
+                    </div>
+                    <div class="pipeline-column">
+                        <div class="pipeline-header">
+                            <span>✅ Qualified</span>
+                            <span class="badge info" id="qualifiedCount">0</span>
+                        </div>
+                        <div id="qualifiedDeals"></div>
+                    </div>
+                    <div class="pipeline-column">
+                        <div class="pipeline-header">
+                            <span>📄 Proposal</span>
+                            <span class="badge warning" id="proposalCount">0</span>
+                        </div>
+                        <div id="proposalDeals"></div>
+                    </div>
+                    <div class="pipeline-column">
+                        <div class="pipeline-header">
+                            <span>🤝 Negotiation</span>
+                            <span class="badge info" id="negotiationCount">0</span>
+                        </div>
+                        <div id="negotiationDeals"></div>
+                    </div>
+                    <div class="pipeline-column">
+                        <div class="pipeline-header">
+                            <span>🎉 Closed Won</span>
+                            <span class="badge success" id="wonCount">0</span>
+                        </div>
+                        <div id="wonDeals"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Time Tracking Tab -->
         <div id="track" class="tab-content">
             <div class="card">
-                <h2>⏱️ Stopwatch Timer</h2>
+                <h2>⏱️ Time Tracker</h2>
                 <div class="input-group">
-                    <label>Project</label>
-                    <select id="stopwatchProject">
-                        <option value="">Select project...</option>
+                    <label>Track Time For</label>
+                    <select id="trackType" onchange="updateTrackOptions()">
+                        <option value="project">Project</option>
+                        <option value="task">Task</option>
+                        <option value="contact">Contact</option>
+                        <option value="company">Company</option>
+                        <option value="deal">Deal</option>
                     </select>
                 </div>
-                <div class="input-group">
-                    <label>Task</label>
-                    <select id="stopwatchTask">
-                        <option value="">Select task...</option>
+                <div class="input-group" id="trackEntityGroup">
+                    <label id="trackEntityLabel">Select Project</label>
+                    <select id="trackEntity">
+                        <option value="">Select...</option>
                     </select>
                 </div>
                 <div class="stopwatch-display" id="stopwatchDisplay">00:00:00</div>
@@ -537,17 +784,21 @@
             </div>
 
             <div class="card">
-                <h2>✏️ Manual Entry</h2>
+                <h2>✏️ Manual Time Entry</h2>
                 <div class="input-group">
-                    <label>Project</label>
-                    <select id="manualProject">
-                        <option value="">Select project...</option>
+                    <label>Entry Type</label>
+                    <select id="manualType" onchange="updateManualOptions()">
+                        <option value="project">Project</option>
+                        <option value="task">Task</option>
+                        <option value="contact">Contact</option>
+                        <option value="company">Company</option>
+                        <option value="deal">Deal</option>
                     </select>
                 </div>
                 <div class="input-group">
-                    <label>Task</label>
-                    <select id="manualTask">
-                        <option value="">Select task...</option>
+                    <label id="manualEntityLabel">Select Project</label>
+                    <select id="manualEntity">
+                        <option value="">Select...</option>
                     </select>
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
@@ -566,30 +817,27 @@
                 </div>
                 <div class="input-group">
                     <label>Notes</label>
-                    <textarea id="manualNotes" rows="3" placeholder="Optional notes..."></textarea>
+                    <textarea id="manualNotes" rows="3" placeholder="What did you work on?"></textarea>
                 </div>
                 <button onclick="saveManualEntry()" class="success">💾 Save Entry</button>
             </div>
-        </div>
 
-        <!-- Projects Tab -->
-        <div id="projects" class="tab-content">
             <div class="card">
-                <h2>📁 My Projects</h2>
-                <button onclick="openModal('projectModal')" style="margin-bottom: 15px;">+ Add New Project</button>
-                <div class="list-container" id="projectList">
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📁</div>
-                        <p>No projects yet</p>
-                    </div>
+                <h2>📊 Time Reports</h2>
+                <div class="input-group">
+                    <label>Select Week</label>
+                    <select id="weekDropdown" onchange="selectWeekFromDropdown()">
+                    </select>
                 </div>
+                <div id="timeReportSummary"></div>
+                <button onclick="exportTimeReport()" class="info">📄 Export PDF</button>
             </div>
         </div>
 
         <!-- Tasks Tab -->
         <div id="tasks" class="tab-content">
             <div class="card">
-                <h2>✓ My Tasks</h2>
+                <h2>✓ Tasks</h2>
                 <button onclick="openModal('taskModal')" style="margin-bottom: 15px;">+ Add New Task</button>
                 <div class="list-container" id="taskList">
                     <div class="empty-state">
@@ -600,17 +848,68 @@
             </div>
         </div>
 
-        <!-- Reports Tab -->
-        <div id="reports" class="tab-content">
+        <!-- More Tab -->
+        <div id="more" class="tab-content">
             <div class="card">
-                <h2>📊 Time Summary</h2>
-                <div class="section-label">
-                    <span class="edited-marker">*</span> = Edited entry
+                <h2>📱 More Options</h2>
+
+                <h3>Projects & Activities</h3>
+                <button onclick="openModal('projectModal')">📁 Manage Projects</button>
+                <button onclick="openModal('activityModal')" class="warning">📋 Log Activity</button>
+                <button onclick="switchTab('calendar')" class="info">📅 View Calendar</button>
+
+                <h3>Reports & Data</h3>
+                <button onclick="generateFullReport()" class="success">📊 Full CRM Report</button>
+                <button onclick="exportAllData()" class="secondary">💾 Export All Data</button>
+
+                <h3>Settings</h3>
+                <div class="input-group">
+                    <label>Your Name</label>
+                    <input type="text" id="employeeName" placeholder="Enter your name">
                 </div>
-                <div id="reportContent">
+                <button onclick="saveEmployeeName()" class="info">Save Name</button>
+            </div>
+
+            <div class="card">
+                <h2>📁 Projects</h2>
+                <button onclick="openModal('projectModal')" style="margin-bottom: 15px;">+ Add Project</button>
+                <div class="list-container" id="projectList">
                     <div class="empty-state">
-                        <div class="empty-state-icon">📊</div>
-                        <p>No time entries yet</p>
+                        <div class="empty-state-icon">📁</div>
+                        <p>No projects yet</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>📋 Recent Activities</h2>
+                <div class="activity-timeline" id="activityTimeline">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <p>No activities logged</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar Tab (hidden by default, accessed from More) -->
+        <div id="calendar" class="tab-content">
+            <div class="card">
+                <h2>📅 Calendar</h2>
+                <div class="calendar-header">
+                    <button onclick="prevMonth()" style="width: auto; padding: 10px 20px;">← Prev</button>
+                    <h3 id="calendarMonthYear"></h3>
+                    <button onclick="nextMonth()" style="width: auto; padding: 10px 20px;">Next →</button>
+                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
+            </div>
+
+            <div class="card">
+                <h2>📅 Upcoming Activities</h2>
+                <div id="upcomingActivities">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📅</div>
+                        <p>No upcoming activities</p>
                     </div>
                 </div>
             </div>
@@ -619,45 +918,201 @@
 
     <!-- Bottom Navigation -->
     <div class="bottom-nav">
-        <button class="nav-item active" onclick="switchTab('home')">
+        <button class="nav-item active" onclick="switchTab('dashboard')">
             <span class="nav-icon">🏠</span>
-            Home
+            Dashboard
+        </button>
+        <button class="nav-item" onclick="switchTab('contacts')">
+            <span class="nav-icon">👤</span>
+            Contacts
+        </button>
+        <button class="nav-item" onclick="switchTab('deals')">
+            <span class="nav-icon">💼</span>
+            Deals
         </button>
         <button class="nav-item" onclick="switchTab('track')">
             <span class="nav-icon">⏱️</span>
-            Track
+            Time
         </button>
-        <button class="nav-item" onclick="switchTab('projects')">
-            <span class="nav-icon">📁</span>
-            Projects
-        </button>
-        <button class="nav-item" onclick="switchTab('tasks')">
-            <span class="nav-icon">✓</span>
-            Tasks
-        </button>
-        <button class="nav-item" onclick="switchTab('reports')">
-            <span class="nav-icon">📊</span>
-            Reports
+        <button class="nav-item" onclick="switchTab('more')">
+            <span class="nav-icon">☰</span>
+            More
         </button>
     </div>
 
-    <!-- Project Modal -->
-    <div id="projectModal" class="modal">
+    <!-- Contact Modal -->
+    <div id="contactModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Add New Project</h2>
-                <span class="close-modal" onclick="closeModal('projectModal')">&times;</span>
+                <h2>Add Contact</h2>
+                <span class="close-modal" onclick="closeModal('contactModal')">&times;</span>
             </div>
             <div class="input-group">
-                <label>Project Name</label>
-                <input type="text" id="newProjectName" placeholder="Enter project name">
+                <label>First Name *</label>
+                <input type="text" id="contactFirstName" placeholder="John">
+            </div>
+            <div class="input-group">
+                <label>Last Name *</label>
+                <input type="text" id="contactLastName" placeholder="Doe">
+            </div>
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="contactEmail" placeholder="john@example.com">
+            </div>
+            <div class="input-group">
+                <label>Phone</label>
+                <input type="tel" id="contactPhone" placeholder="+1 (555) 123-4567">
+            </div>
+            <div class="input-group">
+                <label>Company</label>
+                <select id="contactCompany">
+                    <option value="">Select company...</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Position</label>
+                <input type="text" id="contactPosition" placeholder="Sales Manager">
+            </div>
+            <div class="input-group">
+                <label>Notes</label>
+                <textarea id="contactNotes" rows="3" placeholder="Additional information..."></textarea>
+            </div>
+            <button onclick="addContact()" class="success">Add Contact</button>
+            <button onclick="closeModal('contactModal')" class="secondary">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Company Modal -->
+    <div id="companyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Company</h2>
+                <span class="close-modal" onclick="closeModal('companyModal')">&times;</span>
+            </div>
+            <div class="input-group">
+                <label>Company Name *</label>
+                <input type="text" id="companyName" placeholder="Acme Corporation">
+            </div>
+            <div class="input-group">
+                <label>Industry</label>
+                <input type="text" id="companyIndustry" placeholder="Technology">
+            </div>
+            <div class="input-group">
+                <label>Website</label>
+                <input type="url" id="companyWebsite" placeholder="https://example.com">
+            </div>
+            <div class="input-group">
+                <label>Phone</label>
+                <input type="tel" id="companyPhone" placeholder="+1 (555) 123-4567">
+            </div>
+            <div class="input-group">
+                <label>Address</label>
+                <textarea id="companyAddress" rows="2" placeholder="123 Main St, City, State ZIP"></textarea>
+            </div>
+            <div class="input-group">
+                <label>Notes</label>
+                <textarea id="companyNotes" rows="3" placeholder="Additional information..."></textarea>
+            </div>
+            <button onclick="addCompany()" class="info">Add Company</button>
+            <button onclick="closeModal('companyModal')" class="secondary">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Deal Modal -->
+    <div id="dealModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Deal</h2>
+                <span class="close-modal" onclick="closeModal('dealModal')">&times;</span>
+            </div>
+            <div class="input-group">
+                <label>Deal Name *</label>
+                <input type="text" id="dealName" placeholder="Website Redesign Project">
+            </div>
+            <div class="input-group">
+                <label>Deal Value ($)</label>
+                <input type="number" id="dealValue" placeholder="10000" min="0">
+            </div>
+            <div class="input-group">
+                <label>Contact</label>
+                <select id="dealContact">
+                    <option value="">Select contact...</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Company</label>
+                <select id="dealCompany">
+                    <option value="">Select company...</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Stage</label>
+                <select id="dealStage">
+                    <option value="lead">Lead</option>
+                    <option value="qualified">Qualified</option>
+                    <option value="proposal">Proposal</option>
+                    <option value="negotiation">Negotiation</option>
+                    <option value="won">Closed Won</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Expected Close Date</label>
+                <input type="date" id="dealCloseDate">
+            </div>
+            <div class="input-group">
+                <label>Notes</label>
+                <textarea id="dealNotes" rows="3" placeholder="Deal details..."></textarea>
+            </div>
+            <button onclick="addDeal()" class="success">Add Deal</button>
+            <button onclick="closeModal('dealModal')" class="secondary">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Activity Modal -->
+    <div id="activityModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Log Activity</h2>
+                <span class="close-modal" onclick="closeModal('activityModal')">&times;</span>
+            </div>
+            <div class="input-group">
+                <label>Activity Type</label>
+                <select id="activityType">
+                    <option value="call">📞 Call</option>
+                    <option value="email">📧 Email</option>
+                    <option value="meeting">🤝 Meeting</option>
+                    <option value="note">📝 Note</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Related To</label>
+                <select id="activityRelatedType" onchange="updateActivityRelatedOptions()">
+                    <option value="">None</option>
+                    <option value="contact">Contact</option>
+                    <option value="company">Company</option>
+                    <option value="deal">Deal</option>
+                </select>
+            </div>
+            <div class="input-group" id="activityRelatedGroup" style="display: none;">
+                <label id="activityRelatedLabel">Select</label>
+                <select id="activityRelated">
+                    <option value="">Select...</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Title</label>
+                <input type="text" id="activityTitle" placeholder="Called about proposal">
+            </div>
+            <div class="input-group">
+                <label>Date & Time</label>
+                <input type="datetime-local" id="activityDateTime">
             </div>
             <div class="input-group">
                 <label>Description</label>
-                <textarea id="newProjectDesc" rows="3" placeholder="Enter description"></textarea>
+                <textarea id="activityDescription" rows="4" placeholder="Activity details..."></textarea>
             </div>
-            <button onclick="addProject()" class="success">Add Project</button>
-            <button onclick="closeModal('projectModal')" class="secondary">Cancel</button>
+            <button onclick="addActivity()" class="warning">Log Activity</button>
+            <button onclick="closeModal('activityModal')" class="secondary">Cancel</button>
         </div>
     </div>
 
@@ -665,73 +1120,99 @@
     <div id="taskModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Add New Task</h2>
+                <h2>Add Task</h2>
                 <span class="close-modal" onclick="closeModal('taskModal')">&times;</span>
             </div>
             <div class="input-group">
-                <label>Task Type</label>
-                <select id="taskType" onchange="toggleProjectSelect()">
-                    <option value="independent">Independent Task</option>
-                    <option value="project">Project Sub-task</option>
+                <label>Task Name *</label>
+                <input type="text" id="taskName" placeholder="Follow up with client">
+            </div>
+            <div class="input-group">
+                <label>Related To</label>
+                <select id="taskRelatedType" onchange="updateTaskRelatedOptions()">
+                    <option value="">None (Independent)</option>
+                    <option value="project">Project</option>
+                    <option value="contact">Contact</option>
+                    <option value="company">Company</option>
+                    <option value="deal">Deal</option>
                 </select>
             </div>
-            <div class="input-group" id="projectSelectGroup" style="display: none;">
-                <label>Select Project</label>
-                <select id="taskProject">
-                    <option value="">Select a project...</option>
+            <div class="input-group" id="taskRelatedGroup" style="display: none;">
+                <label id="taskRelatedLabel">Select</label>
+                <select id="taskRelated">
+                    <option value="">Select...</option>
                 </select>
             </div>
             <div class="input-group">
-                <label>Task Name</label>
-                <input type="text" id="newTaskName" placeholder="Enter task name">
+                <label>Due Date</label>
+                <input type="date" id="taskDueDate">
+            </div>
+            <div class="input-group">
+                <label>Priority</label>
+                <select id="taskPriority">
+                    <option value="low">Low</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Status</label>
+                <select id="taskStatus">
+                    <option value="todo">To Do</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                </select>
             </div>
             <div class="input-group">
                 <label>Description</label>
-                <textarea id="newTaskDesc" rows="3" placeholder="Enter description"></textarea>
+                <textarea id="taskDescription" rows="3" placeholder="Task details..."></textarea>
             </div>
             <button onclick="addTask()" class="success">Add Task</button>
             <button onclick="closeModal('taskModal')" class="secondary">Cancel</button>
         </div>
     </div>
 
-    <!-- Edit Entry Modal -->
-    <div id="editEntryModal" class="modal">
+    <!-- Project Modal -->
+    <div id="projectModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Edit Time Entry</h2>
-                <span class="close-modal" onclick="closeModal('editEntryModal')">&times;</span>
-            </div>
-            <div style="background: #f0f0f0; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
-                <strong>Original Time:</strong> <span id="origTime"></span>
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <div class="input-group">
-                    <label>New Hours</label>
-                    <input type="number" id="editHours" min="0" max="24" value="0">
-                </div>
-                <div class="input-group">
-                    <label>New Minutes</label>
-                    <input type="number" id="editMinutes" min="0" max="59" value="0">
-                </div>
+                <h2>Add Project</h2>
+                <span class="close-modal" onclick="closeModal('projectModal')">&times;</span>
             </div>
             <div class="input-group">
-                <label>Reason for Edit (Required)</label>
-                <textarea id="editReason" rows="3" placeholder="Why are you editing this entry?" required></textarea>
+                <label>Project Name *</label>
+                <input type="text" id="projectName" placeholder="Website Development">
             </div>
-            <button onclick="saveEditedEntry()" class="success">Save Changes</button>
-            <button onclick="closeModal('editEntryModal')" class="secondary">Cancel</button>
+            <div class="input-group">
+                <label>Description</label>
+                <textarea id="projectDescription" rows="3" placeholder="Project details..."></textarea>
+            </div>
+            <div class="input-group">
+                <label>Related Company</label>
+                <select id="projectCompany">
+                    <option value="">Select company...</option>
+                </select>
+            </div>
+            <button onclick="addProject()" class="success">Add Project</button>
+            <button onclick="closeModal('projectModal')" class="secondary">Cancel</button>
         </div>
     </div>
 
     <script>
-        // Data Storage
+        // ====== DATA STORAGE ======
         let appData = {
             employee: '',
+            contacts: [],
+            companies: [],
+            deals: [],
             projects: [],
             tasks: [],
             timeEntries: [],
+            activities: [],
             currentWeek: getCurrentWeek(),
-            weeks: generateWeeks()
+            weeks: generateWeeks(),
+            currentMonth: new Date().getMonth(),
+            currentYear: new Date().getFullYear()
         };
 
         // Stopwatch variables
@@ -739,45 +1220,42 @@
         let stopwatchSeconds = 0;
         let stopwatchRunning = false;
 
-        // Edit tracking
-        let currentEditingEntryId = null;
-
-        // Initialize app
+        // ====== INITIALIZATION ======
         function init() {
             loadData();
-            updateUI();
+            updateAllUI();
             populateWeekDropdown();
-            updateCurrentWeekDisplay();
             setTodayDate();
+            setNowDateTime();
+            renderCalendar();
         }
 
-        // Generate weeks for the entire year
         function generateWeeks() {
             const weeks = [];
             const year = new Date().getFullYear();
             const firstDay = new Date(year, 0, 1);
             const lastDay = new Date(year, 11, 31);
-            
+
             let currentDate = new Date(firstDay);
             currentDate.setDate(currentDate.getDate() - currentDate.getDay() + 1);
-            
+
             let weekNumber = 1;
             while (currentDate <= lastDay) {
                 const weekStart = new Date(currentDate);
                 const weekEnd = new Date(currentDate);
                 weekEnd.setDate(weekEnd.getDate() + 6);
-                
+
                 weeks.push({
                     number: weekNumber,
                     start: weekStart.toISOString().split('T')[0],
                     end: weekEnd.toISOString().split('T')[0],
                     label: `Week ${weekNumber} (${formatDate(weekStart)} - ${formatDate(weekEnd)})`
                 });
-                
+
                 currentDate.setDate(currentDate.getDate() + 7);
                 weekNumber++;
             }
-            
+
             return weeks;
         }
 
@@ -794,42 +1272,6 @@
             return 1;
         }
 
-        function populateWeekDropdown() {
-            const dropdown = document.getElementById('weekDropdown');
-            dropdown.innerHTML = '';
-            
-            appData.weeks.forEach(week => {
-                const option = document.createElement('option');
-                option.value = week.number;
-                option.textContent = `Week ${week.number} - ${formatDate(new Date(week.start))} to ${formatDate(new Date(week.end))}`;
-                if (week.number === appData.currentWeek) {
-                    option.selected = true;
-                }
-                dropdown.appendChild(option);
-            });
-        }
-
-        function selectWeekFromDropdown() {
-            const dropdown = document.getElementById('weekDropdown');
-            const weekNumber = parseInt(dropdown.value);
-            selectWeek(weekNumber);
-        }
-
-        function selectWeek(weekNumber) {
-            appData.currentWeek = weekNumber;
-            saveData();
-            populateWeekDropdown();
-            updateCurrentWeekDisplay();
-            updateUI();
-        }
-
-        function updateCurrentWeekDisplay() {
-            const week = appData.weeks.find(w => w.number === appData.currentWeek);
-            if (week) {
-                document.getElementById('currentWeekDisplay').textContent = week.label;
-            }
-        }
-
         function formatDate(date) {
             const d = new Date(date);
             const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -840,133 +1282,882 @@
         function setTodayDate() {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('manualDate').value = today;
+            if (document.getElementById('taskDueDate')) {
+                document.getElementById('taskDueDate').value = today;
+            }
+            if (document.getElementById('dealCloseDate')) {
+                document.getElementById('dealCloseDate').value = today;
+            }
         }
 
-        // Save/Load Data
+        function setNowDateTime() {
+            const now = new Date();
+            const dateTimeStr = now.toISOString().slice(0, 16);
+            if (document.getElementById('activityDateTime')) {
+                document.getElementById('activityDateTime').value = dateTimeStr;
+            }
+        }
+
+        // ====== DATA PERSISTENCE ======
         function saveData() {
-            localStorage.setItem('timeTrackingDataMobile', JSON.stringify(appData));
+            localStorage.setItem('jmrcCRMData', JSON.stringify(appData));
         }
 
         function loadData() {
-            const saved = localStorage.getItem('timeTrackingDataMobile');
+            const saved = localStorage.getItem('jmrcCRMData');
             if (saved) {
                 const loaded = JSON.parse(saved);
                 appData = { ...appData, ...loaded };
                 appData.weeks = generateWeeks();
-                
-                // Migrate old entries
-                appData.timeEntries = appData.timeEntries.map(entry => ({
-                    ...entry,
-                    edited: entry.edited || false,
-                    originalHours: entry.originalHours !== undefined ? entry.originalHours : null,
-                    originalMinutes: entry.originalMinutes !== undefined ? entry.originalMinutes : null,
-                    editReason: entry.editReason || null
-                }));
-                
-                document.getElementById('employeeName').value = appData.employee || '';
+
+                if (document.getElementById('employeeName')) {
+                    document.getElementById('employeeName').value = appData.employee || '';
+                }
             }
         }
 
-        // Employee
         function saveEmployeeName() {
             appData.employee = document.getElementById('employeeName').value;
             saveData();
-            alert('✓ Employee name saved!');
+            alert('✓ Name saved!');
         }
 
-        // Projects
-        function addProject() {
-            const name = document.getElementById('newProjectName').value.trim();
-            const desc = document.getElementById('newProjectDesc').value.trim();
-            
-            if (!name) {
-                alert('⚠️ Please enter a project name');
+        // ====== CONTACTS ======
+        function addContact() {
+            const firstName = document.getElementById('contactFirstName').value.trim();
+            const lastName = document.getElementById('contactLastName').value.trim();
+
+            if (!firstName || !lastName) {
+                alert('⚠️ Please enter first and last name');
                 return;
             }
-            
+
+            const contact = {
+                id: Date.now(),
+                firstName: firstName,
+                lastName: lastName,
+                email: document.getElementById('contactEmail').value.trim(),
+                phone: document.getElementById('contactPhone').value.trim(),
+                companyId: parseInt(document.getElementById('contactCompany').value) || null,
+                position: document.getElementById('contactPosition').value.trim(),
+                notes: document.getElementById('contactNotes').value.trim(),
+                created: new Date().toISOString()
+            };
+
+            appData.contacts.push(contact);
+            saveData();
+            updateAllUI();
+            closeModal('contactModal');
+            clearContactForm();
+
+            alert('✓ Contact added!');
+        }
+
+        function clearContactForm() {
+            document.getElementById('contactFirstName').value = '';
+            document.getElementById('contactLastName').value = '';
+            document.getElementById('contactEmail').value = '';
+            document.getElementById('contactPhone').value = '';
+            document.getElementById('contactCompany').value = '';
+            document.getElementById('contactPosition').value = '';
+            document.getElementById('contactNotes').value = '';
+        }
+
+        function deleteContact(id) {
+            if (confirm('Delete this contact?')) {
+                appData.contacts = appData.contacts.filter(c => c.id !== id);
+                appData.deals = appData.deals.map(d => {
+                    if (d.contactId === id) d.contactId = null;
+                    return d;
+                });
+                appData.tasks = appData.tasks.filter(t => !(t.relatedType === 'contact' && t.relatedId === id));
+                appData.activities = appData.activities.filter(a => !(a.relatedType === 'contact' && a.relatedId === id));
+                appData.timeEntries = appData.timeEntries.filter(e => !(e.entityType === 'contact' && e.entityId === id));
+                saveData();
+                updateAllUI();
+            }
+        }
+
+        function filterContacts() {
+            const search = document.getElementById('contactSearch').value.toLowerCase();
+            const filtered = appData.contacts.filter(c =>
+                c.firstName.toLowerCase().includes(search) ||
+                c.lastName.toLowerCase().includes(search) ||
+                c.email.toLowerCase().includes(search)
+            );
+            updateContactList(filtered);
+        }
+
+        function updateContactList(contacts = appData.contacts) {
+            const container = document.getElementById('contactList');
+            if (contacts.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">👤</div>
+                        <p>No contacts found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = contacts.map(contact => {
+                const company = contact.companyId ? appData.companies.find(c => c.id === contact.companyId) : null;
+                return `
+                    <div class="entity-card">
+                        <div class="entity-header">
+                            <div>
+                                <div class="entity-name">${contact.firstName} ${contact.lastName}</div>
+                                ${contact.position ? `<div class="entity-info">${contact.position}</div>` : ''}
+                                ${company ? `<div class="entity-info">🏢 ${company.name}</div>` : ''}
+                            </div>
+                        </div>
+                        ${contact.email ? `<div class="entity-info">📧 ${contact.email}</div>` : ''}
+                        ${contact.phone ? `<div class="entity-info">📞 ${contact.phone}</div>` : ''}
+                        ${contact.notes ? `<div class="entity-info" style="margin-top: 10px;">${contact.notes}</div>` : ''}
+                        <div class="entity-actions">
+                            <button onclick="viewContactDetails(${contact.id})" class="info">View Details</button>
+                            <button onclick="deleteContact(${contact.id})" class="danger">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function viewContactDetails(id) {
+            const contact = appData.contacts.find(c => c.id === id);
+            if (!contact) return;
+
+            const deals = appData.deals.filter(d => d.contactId === id);
+            const tasks = appData.tasks.filter(t => t.relatedType === 'contact' && t.relatedId === id);
+            const activities = appData.activities.filter(a => a.relatedType === 'contact' && a.relatedId === id);
+            const timeEntries = appData.timeEntries.filter(e => e.entityType === 'contact' && e.entityId === id);
+            const totalMinutes = timeEntries.reduce((sum, e) => sum + (e.hours * 60 + e.minutes), 0);
+
+            alert(`Contact: ${contact.firstName} ${contact.lastName}\n\nDeals: ${deals.length}\nTasks: ${tasks.length}\nActivities: ${activities.length}\nTotal Time: ${formatMinutes(totalMinutes)}`);
+        }
+
+        // ====== COMPANIES ======
+        function addCompany() {
+            const name = document.getElementById('companyName').value.trim();
+
+            if (!name) {
+                alert('⚠️ Please enter company name');
+                return;
+            }
+
+            const company = {
+                id: Date.now(),
+                name: name,
+                industry: document.getElementById('companyIndustry').value.trim(),
+                website: document.getElementById('companyWebsite').value.trim(),
+                phone: document.getElementById('companyPhone').value.trim(),
+                address: document.getElementById('companyAddress').value.trim(),
+                notes: document.getElementById('companyNotes').value.trim(),
+                created: new Date().toISOString()
+            };
+
+            appData.companies.push(company);
+            saveData();
+            updateAllUI();
+            closeModal('companyModal');
+            clearCompanyForm();
+
+            alert('✓ Company added!');
+        }
+
+        function clearCompanyForm() {
+            document.getElementById('companyName').value = '';
+            document.getElementById('companyIndustry').value = '';
+            document.getElementById('companyWebsite').value = '';
+            document.getElementById('companyPhone').value = '';
+            document.getElementById('companyAddress').value = '';
+            document.getElementById('companyNotes').value = '';
+        }
+
+        function deleteCompany(id) {
+            if (confirm('Delete this company?')) {
+                appData.companies = appData.companies.filter(c => c.id !== id);
+                appData.contacts = appData.contacts.map(c => {
+                    if (c.companyId === id) c.companyId = null;
+                    return c;
+                });
+                appData.deals = appData.deals.map(d => {
+                    if (d.companyId === id) d.companyId = null;
+                    return d;
+                });
+                appData.projects = appData.projects.map(p => {
+                    if (p.companyId === id) p.companyId = null;
+                    return p;
+                });
+                appData.tasks = appData.tasks.filter(t => !(t.relatedType === 'company' && t.relatedId === id));
+                appData.activities = appData.activities.filter(a => !(a.relatedType === 'company' && a.relatedId === id));
+                appData.timeEntries = appData.timeEntries.filter(e => !(e.entityType === 'company' && e.entityId === id));
+                saveData();
+                updateAllUI();
+            }
+        }
+
+        function filterCompanies() {
+            const search = document.getElementById('companySearch').value.toLowerCase();
+            const filtered = appData.companies.filter(c =>
+                c.name.toLowerCase().includes(search) ||
+                c.industry.toLowerCase().includes(search)
+            );
+            updateCompanyList(filtered);
+        }
+
+        function updateCompanyList(companies = appData.companies) {
+            const container = document.getElementById('companyList');
+            if (companies.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🏢</div>
+                        <p>No companies found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = companies.map(company => {
+                const contacts = appData.contacts.filter(c => c.companyId === company.id);
+                const deals = appData.deals.filter(d => d.companyId === company.id);
+                return `
+                    <div class="entity-card company">
+                        <div class="entity-header">
+                            <div>
+                                <div class="entity-name">${company.name}</div>
+                                ${company.industry ? `<div class="entity-info">${company.industry}</div>` : ''}
+                            </div>
+                        </div>
+                        ${company.website ? `<div class="entity-info">🌐 ${company.website}</div>` : ''}
+                        ${company.phone ? `<div class="entity-info">📞 ${company.phone}</div>` : ''}
+                        ${company.address ? `<div class="entity-info">📍 ${company.address}</div>` : ''}
+                        <div class="entity-info"><strong>${contacts.length}</strong> contacts • <strong>${deals.length}</strong> deals</div>
+                        ${company.notes ? `<div class="entity-info" style="margin-top: 10px;">${company.notes}</div>` : ''}
+                        <div class="entity-actions">
+                            <button onclick="viewCompanyDetails(${company.id})" class="info">View Details</button>
+                            <button onclick="deleteCompany(${company.id})" class="danger">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function viewCompanyDetails(id) {
+            const company = appData.companies.find(c => c.id === id);
+            if (!company) return;
+
+            const contacts = appData.contacts.filter(c => c.companyId === id);
+            const deals = appData.deals.filter(d => d.companyId === id);
+            const tasks = appData.tasks.filter(t => t.relatedType === 'company' && t.relatedId === id);
+            const activities = appData.activities.filter(a => a.relatedType === 'company' && a.relatedId === id);
+            const timeEntries = appData.timeEntries.filter(e => e.entityType === 'company' && e.entityId === id);
+            const totalMinutes = timeEntries.reduce((sum, e) => sum + (e.hours * 60 + e.minutes), 0);
+
+            alert(`Company: ${company.name}\n\nContacts: ${contacts.length}\nDeals: ${deals.length}\nTasks: ${tasks.length}\nActivities: ${activities.length}\nTotal Time: ${formatMinutes(totalMinutes)}`);
+        }
+
+        // ====== DEALS ======
+        function addDeal() {
+            const name = document.getElementById('dealName').value.trim();
+
+            if (!name) {
+                alert('⚠️ Please enter deal name');
+                return;
+            }
+
+            const deal = {
+                id: Date.now(),
+                name: name,
+                value: parseFloat(document.getElementById('dealValue').value) || 0,
+                contactId: parseInt(document.getElementById('dealContact').value) || null,
+                companyId: parseInt(document.getElementById('dealCompany').value) || null,
+                stage: document.getElementById('dealStage').value,
+                closeDate: document.getElementById('dealCloseDate').value,
+                notes: document.getElementById('dealNotes').value.trim(),
+                created: new Date().toISOString()
+            };
+
+            appData.deals.push(deal);
+            saveData();
+            updateAllUI();
+            closeModal('dealModal');
+            clearDealForm();
+
+            alert('✓ Deal added!');
+        }
+
+        function clearDealForm() {
+            document.getElementById('dealName').value = '';
+            document.getElementById('dealValue').value = '';
+            document.getElementById('dealContact').value = '';
+            document.getElementById('dealCompany').value = '';
+            document.getElementById('dealStage').value = 'lead';
+            document.getElementById('dealCloseDate').value = '';
+            document.getElementById('dealNotes').value = '';
+        }
+
+        function updateDealStage(dealId, newStage) {
+            const deal = appData.deals.find(d => d.id === dealId);
+            if (deal) {
+                deal.stage = newStage;
+                saveData();
+                updateDealPipeline();
+            }
+        }
+
+        function deleteDeal(id) {
+            if (confirm('Delete this deal?')) {
+                appData.deals = appData.deals.filter(d => d.id !== id);
+                appData.tasks = appData.tasks.filter(t => !(t.relatedType === 'deal' && t.relatedId === id));
+                appData.activities = appData.activities.filter(a => !(a.relatedType === 'deal' && a.relatedId === id));
+                appData.timeEntries = appData.timeEntries.filter(e => !(e.entityType === 'deal' && e.entityId === id));
+                saveData();
+                updateAllUI();
+            }
+        }
+
+        function updateDealPipeline() {
+            const stages = {
+                lead: { container: 'leadDeals', count: 'leadCount' },
+                qualified: { container: 'qualifiedDeals', count: 'qualifiedCount' },
+                proposal: { container: 'proposalDeals', count: 'proposalCount' },
+                negotiation: { container: 'negotiationDeals', count: 'negotiationCount' },
+                won: { container: 'wonDeals', count: 'wonCount' }
+            };
+
+            Object.keys(stages).forEach(stage => {
+                const deals = appData.deals.filter(d => d.stage === stage);
+                document.getElementById(stages[stage].count).textContent = deals.length;
+
+                const container = document.getElementById(stages[stage].container);
+                if (deals.length === 0) {
+                    container.innerHTML = '<div style="text-align: center; color: #999; padding: 10px;">No deals</div>';
+                } else {
+                    container.innerHTML = deals.map(deal => {
+                        const contact = deal.contactId ? appData.contacts.find(c => c.id === deal.contactId) : null;
+                        const company = deal.companyId ? appData.companies.find(c => c.id === deal.companyId) : null;
+                        return `
+                            <div class="deal-card" draggable="true" ondragstart="handleDragStart(event, ${deal.id})" ondragend="handleDragEnd(event)">
+                                <div class="deal-title">${deal.name}</div>
+                                <div class="deal-value">$${deal.value.toLocaleString()}</div>
+                                ${contact ? `<div class="deal-meta">👤 ${contact.firstName} ${contact.lastName}</div>` : ''}
+                                ${company ? `<div class="deal-meta">🏢 ${company.name}</div>` : ''}
+                                ${deal.closeDate ? `<div class="deal-meta">📅 ${deal.closeDate}</div>` : ''}
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 10px;">
+                                    <button onclick="viewDealDetails(${deal.id})" style="padding: 8px; font-size: 12px; margin: 0;" class="info">Details</button>
+                                    <button onclick="deleteDeal(${deal.id})" style="padding: 8px; font-size: 12px; margin: 0;" class="danger">Delete</button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            });
+
+            // Setup drag and drop
+            document.querySelectorAll('.pipeline-column').forEach(column => {
+                column.addEventListener('dragover', handleDragOver);
+                column.addEventListener('drop', handleDrop);
+            });
+        }
+
+        let draggedDealId = null;
+
+        function handleDragStart(event, dealId) {
+            draggedDealId = dealId;
+            event.target.style.opacity = '0.5';
+        }
+
+        function handleDragEnd(event) {
+            event.target.style.opacity = '1';
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'move';
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            if (!draggedDealId) return;
+
+            const column = event.currentTarget;
+            const stageMap = {
+                'leadDeals': 'lead',
+                'qualifiedDeals': 'qualified',
+                'proposalDeals': 'proposal',
+                'negotiationDeals': 'negotiation',
+                'wonDeals': 'won'
+            };
+
+            const containerId = column.querySelector('[id$="Deals"]')?.id;
+            if (containerId && stageMap[containerId]) {
+                updateDealStage(draggedDealId, stageMap[containerId]);
+            }
+
+            draggedDealId = null;
+        }
+
+        function viewDealDetails(id) {
+            const deal = appData.deals.find(d => d.id === id);
+            if (!deal) return;
+
+            const contact = deal.contactId ? appData.contacts.find(c => c.id === deal.contactId) : null;
+            const company = deal.companyId ? appData.companies.find(c => c.id === deal.companyId) : null;
+            const tasks = appData.tasks.filter(t => t.relatedType === 'deal' && t.relatedId === id);
+            const activities = appData.activities.filter(a => a.relatedType === 'deal' && a.relatedId === id);
+            const timeEntries = appData.timeEntries.filter(e => e.entityType === 'deal' && e.entityId === id);
+            const totalMinutes = timeEntries.reduce((sum, e) => sum + (e.hours * 60 + e.minutes), 0);
+
+            let details = `Deal: ${deal.name}\nValue: $${deal.value.toLocaleString()}\nStage: ${deal.stage}\n`;
+            if (contact) details += `Contact: ${contact.firstName} ${contact.lastName}\n`;
+            if (company) details += `Company: ${company.name}\n`;
+            details += `\nTasks: ${tasks.length}\nActivities: ${activities.length}\nTotal Time: ${formatMinutes(totalMinutes)}`;
+            if (deal.notes) details += `\n\nNotes: ${deal.notes}`;
+
+            alert(details);
+        }
+
+        // ====== PROJECTS ======
+        function addProject() {
+            const name = document.getElementById('projectName').value.trim();
+
+            if (!name) {
+                alert('⚠️ Please enter project name');
+                return;
+            }
+
             const project = {
                 id: Date.now(),
                 name: name,
-                description: desc,
+                description: document.getElementById('projectDescription').value.trim(),
+                companyId: parseInt(document.getElementById('projectCompany').value) || null,
                 created: new Date().toISOString()
             };
-            
+
             appData.projects.push(project);
             saveData();
-            updateUI();
+            updateAllUI();
             closeModal('projectModal');
-            
-            document.getElementById('newProjectName').value = '';
-            document.getElementById('newProjectDesc').value = '';
-            
+            clearProjectForm();
+
             alert('✓ Project added!');
+        }
+
+        function clearProjectForm() {
+            document.getElementById('projectName').value = '';
+            document.getElementById('projectDescription').value = '';
+            document.getElementById('projectCompany').value = '';
         }
 
         function deleteProject(id) {
             if (confirm('Delete this project and all associated data?')) {
                 appData.projects = appData.projects.filter(p => p.id !== id);
-                appData.tasks = appData.tasks.filter(t => t.projectId !== id);
-                appData.timeEntries = appData.timeEntries.filter(e => e.projectId !== id);
+                appData.tasks = appData.tasks.filter(t => !(t.relatedType === 'project' && t.relatedId === id));
+                appData.timeEntries = appData.timeEntries.filter(e => !(e.entityType === 'project' && e.entityId === id));
                 saveData();
-                updateUI();
+                updateAllUI();
             }
         }
 
-        // Tasks
-        function toggleProjectSelect() {
-            const type = document.getElementById('taskType').value;
-            const group = document.getElementById('projectSelectGroup');
-            group.style.display = type === 'project' ? 'block' : 'none';
+        function updateProjectList() {
+            const container = document.getElementById('projectList');
+            if (appData.projects.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📁</div>
+                        <p>No projects yet</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = appData.projects.map(project => {
+                const company = project.companyId ? appData.companies.find(c => c.id === project.companyId) : null;
+                const tasks = appData.tasks.filter(t => t.relatedType === 'project' && t.relatedId === project.id);
+                const timeEntries = appData.timeEntries.filter(e => e.entityType === 'project' && e.entityId === project.id);
+                const totalMinutes = timeEntries.reduce((sum, e) => sum + (e.hours * 60 + e.minutes), 0);
+
+                return `
+                    <div class="entity-card">
+                        <div class="entity-header">
+                            <div>
+                                <div class="entity-name">${project.name}</div>
+                                ${company ? `<div class="entity-info">🏢 ${company.name}</div>` : ''}
+                            </div>
+                        </div>
+                        ${project.description ? `<div class="entity-info">${project.description}</div>` : ''}
+                        <div class="entity-info"><strong>${tasks.length}</strong> tasks • <strong>${formatMinutes(totalMinutes)}</strong> tracked</div>
+                        <div class="entity-actions">
+                            <button onclick="deleteProject(${project.id})" class="danger">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ====== TASKS ======
+        function updateTaskRelatedOptions() {
+            const type = document.getElementById('taskRelatedType').value;
+            const group = document.getElementById('taskRelatedGroup');
+            const label = document.getElementById('taskRelatedLabel');
+            const select = document.getElementById('taskRelated');
+
+            if (!type) {
+                group.style.display = 'none';
+                return;
+            }
+
+            group.style.display = 'block';
+            let options = '<option value="">Select...</option>';
+
+            switch(type) {
+                case 'project':
+                    label.textContent = 'Select Project';
+                    options += appData.projects.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+                    break;
+                case 'contact':
+                    label.textContent = 'Select Contact';
+                    options += appData.contacts.map(c => `<option value="${c.id}">${c.firstName} ${c.lastName}</option>`).join('');
+                    break;
+                case 'company':
+                    label.textContent = 'Select Company';
+                    options += appData.companies.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+                    break;
+                case 'deal':
+                    label.textContent = 'Select Deal';
+                    options += appData.deals.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
+                    break;
+            }
+
+            select.innerHTML = options;
         }
 
         function addTask() {
-            const type = document.getElementById('taskType').value;
-            const name = document.getElementById('newTaskName').value.trim();
-            const desc = document.getElementById('newTaskDesc').value.trim();
-            const projectId = type === 'project' ? parseInt(document.getElementById('taskProject').value) : null;
-            
+            const name = document.getElementById('taskName').value.trim();
+
             if (!name) {
-                alert('⚠️ Please enter a task name');
+                alert('⚠️ Please enter task name');
                 return;
             }
-            
-            if (type === 'project' && !projectId) {
-                alert('⚠️ Please select a project');
-                return;
-            }
-            
+
+            const relatedType = document.getElementById('taskRelatedType').value;
             const task = {
                 id: Date.now(),
                 name: name,
-                description: desc,
-                type: type,
-                projectId: projectId,
+                description: document.getElementById('taskDescription').value.trim(),
+                relatedType: relatedType || null,
+                relatedId: relatedType ? (parseInt(document.getElementById('taskRelated').value) || null) : null,
+                dueDate: document.getElementById('taskDueDate').value,
+                priority: document.getElementById('taskPriority').value,
+                status: document.getElementById('taskStatus').value,
                 created: new Date().toISOString()
             };
-            
+
             appData.tasks.push(task);
             saveData();
-            updateUI();
+            updateAllUI();
             closeModal('taskModal');
-            
-            document.getElementById('newTaskName').value = '';
-            document.getElementById('newTaskDesc').value = '';
-            document.getElementById('taskType').value = 'independent';
-            toggleProjectSelect();
-            
+            clearTaskForm();
+
             alert('✓ Task added!');
+        }
+
+        function clearTaskForm() {
+            document.getElementById('taskName').value = '';
+            document.getElementById('taskDescription').value = '';
+            document.getElementById('taskRelatedType').value = '';
+            document.getElementById('taskRelated').value = '';
+            document.getElementById('taskRelatedGroup').style.display = 'none';
+            document.getElementById('taskDueDate').value = '';
+            document.getElementById('taskPriority').value = 'medium';
+            document.getElementById('taskStatus').value = 'todo';
         }
 
         function deleteTask(id) {
             if (confirm('Delete this task?')) {
                 appData.tasks = appData.tasks.filter(t => t.id !== id);
-                appData.timeEntries = appData.timeEntries.filter(e => e.taskId !== id);
                 saveData();
-                updateUI();
+                updateAllUI();
             }
         }
 
-        // Stopwatch
+        function toggleTaskStatus(id) {
+            const task = appData.tasks.find(t => t.id === id);
+            if (task) {
+                task.status = task.status === 'completed' ? 'todo' : 'completed';
+                saveData();
+                updateTaskList();
+            }
+        }
+
+        function updateTaskList() {
+            const container = document.getElementById('taskList');
+            if (appData.tasks.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">✓</div>
+                        <p>No tasks yet</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const sortedTasks = [...appData.tasks].sort((a, b) => {
+                const priorityOrder = { high: 0, medium: 1, low: 2 };
+                if (a.status === 'completed' && b.status !== 'completed') return 1;
+                if (a.status !== 'completed' && b.status === 'completed') return -1;
+                return priorityOrder[a.priority] - priorityOrder[b.priority];
+            });
+
+            container.innerHTML = sortedTasks.map(task => {
+                let relatedInfo = '';
+                if (task.relatedType && task.relatedId) {
+                    switch(task.relatedType) {
+                        case 'project':
+                            const project = appData.projects.find(p => p.id === task.relatedId);
+                            if (project) relatedInfo = `<div class="entity-info">📁 ${project.name}</div>`;
+                            break;
+                        case 'contact':
+                            const contact = appData.contacts.find(c => c.id === task.relatedId);
+                            if (contact) relatedInfo = `<div class="entity-info">👤 ${contact.firstName} ${contact.lastName}</div>`;
+                            break;
+                        case 'company':
+                            const company = appData.companies.find(c => c.id === task.relatedId);
+                            if (company) relatedInfo = `<div class="entity-info">🏢 ${company.name}</div>`;
+                            break;
+                        case 'deal':
+                            const deal = appData.deals.find(d => d.id === task.relatedId);
+                            if (deal) relatedInfo = `<div class="entity-info">💼 ${deal.name}</div>`;
+                            break;
+                    }
+                }
+
+                const priorityBadge = task.priority === 'high' ? 'danger' : task.priority === 'medium' ? 'warning' : 'info';
+                const statusBadge = task.status === 'completed' ? 'success' : task.status === 'in_progress' ? 'warning' : 'primary';
+
+                return `
+                    <div class="entity-card" style="${task.status === 'completed' ? 'opacity: 0.6;' : ''}">
+                        <div class="entity-header">
+                            <div>
+                                <div class="entity-name" style="${task.status === 'completed' ? 'text-decoration: line-through;' : ''}">${task.name}</div>
+                                ${relatedInfo}
+                            </div>
+                        </div>
+                        <div style="margin: 10px 0;">
+                            <span class="badge ${priorityBadge}">${task.priority.toUpperCase()}</span>
+                            <span class="badge ${statusBadge}">${task.status.replace('_', ' ').toUpperCase()}</span>
+                        </div>
+                        ${task.dueDate ? `<div class="entity-info">📅 Due: ${task.dueDate}</div>` : ''}
+                        ${task.description ? `<div class="entity-info" style="margin-top: 10px;">${task.description}</div>` : ''}
+                        <div class="entity-actions">
+                            <button onclick="toggleTaskStatus(${task.id})" class="success">${task.status === 'completed' ? 'Reopen' : 'Complete'}</button>
+                            <button onclick="deleteTask(${task.id})" class="danger">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ====== ACTIVITIES ======
+        function updateActivityRelatedOptions() {
+            const type = document.getElementById('activityRelatedType').value;
+            const group = document.getElementById('activityRelatedGroup');
+            const label = document.getElementById('activityRelatedLabel');
+            const select = document.getElementById('activityRelated');
+
+            if (!type) {
+                group.style.display = 'none';
+                return;
+            }
+
+            group.style.display = 'block';
+            let options = '<option value="">Select...</option>';
+
+            switch(type) {
+                case 'contact':
+                    label.textContent = 'Select Contact';
+                    options += appData.contacts.map(c => `<option value="${c.id}">${c.firstName} ${c.lastName}</option>`).join('');
+                    break;
+                case 'company':
+                    label.textContent = 'Select Company';
+                    options += appData.companies.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+                    break;
+                case 'deal':
+                    label.textContent = 'Select Deal';
+                    options += appData.deals.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
+                    break;
+            }
+
+            select.innerHTML = options;
+        }
+
+        function addActivity() {
+            const title = document.getElementById('activityTitle').value.trim();
+
+            if (!title) {
+                alert('⚠️ Please enter activity title');
+                return;
+            }
+
+            const relatedType = document.getElementById('activityRelatedType').value;
+            const activity = {
+                id: Date.now(),
+                type: document.getElementById('activityType').value,
+                title: title,
+                description: document.getElementById('activityDescription').value.trim(),
+                dateTime: document.getElementById('activityDateTime').value,
+                relatedType: relatedType || null,
+                relatedId: relatedType ? (parseInt(document.getElementById('activityRelated').value) || null) : null,
+                created: new Date().toISOString()
+            };
+
+            appData.activities.push(activity);
+            saveData();
+            updateAllUI();
+            closeModal('activityModal');
+            clearActivityForm();
+
+            alert('✓ Activity logged!');
+        }
+
+        function clearActivityForm() {
+            document.getElementById('activityType').value = 'call';
+            document.getElementById('activityTitle').value = '';
+            document.getElementById('activityDescription').value = '';
+            document.getElementById('activityRelatedType').value = '';
+            document.getElementById('activityRelated').value = '';
+            document.getElementById('activityRelatedGroup').style.display = 'none';
+            setNowDateTime();
+        }
+
+        function deleteActivity(id) {
+            if (confirm('Delete this activity?')) {
+                appData.activities = appData.activities.filter(a => a.id !== id);
+                saveData();
+                updateAllUI();
+            }
+        }
+
+        function updateActivityTimeline() {
+            const container = document.getElementById('activityTimeline');
+            if (appData.activities.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <p>No activities logged</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const sorted = [...appData.activities].sort((a, b) =>
+                new Date(b.dateTime) - new Date(a.dateTime)
+            );
+
+            container.innerHTML = sorted.slice(0, 10).map(activity => {
+                let relatedInfo = '';
+                if (activity.relatedType && activity.relatedId) {
+                    switch(activity.relatedType) {
+                        case 'contact':
+                            const contact = appData.contacts.find(c => c.id === activity.relatedId);
+                            if (contact) relatedInfo = `👤 ${contact.firstName} ${contact.lastName}`;
+                            break;
+                        case 'company':
+                            const company = appData.companies.find(c => c.id === activity.relatedId);
+                            if (company) relatedInfo = `🏢 ${company.name}`;
+                            break;
+                        case 'deal':
+                            const deal = appData.deals.find(d => d.id === activity.relatedId);
+                            if (deal) relatedInfo = `💼 ${deal.name}`;
+                            break;
+                    }
+                }
+
+                const typeIcons = { call: '📞', email: '📧', meeting: '🤝', note: '📝' };
+
+                return `
+                    <div class="activity-item">
+                        <div class="activity-icon ${activity.type}"></div>
+                        <div class="activity-content">
+                            <div class="activity-header">${typeIcons[activity.type]} ${activity.title}</div>
+                            ${activity.description ? `<div>${activity.description}</div>` : ''}
+                            ${relatedInfo ? `<div style="margin-top: 5px; color: var(--primary-color);">${relatedInfo}</div>` : ''}
+                            <div class="activity-meta">${new Date(activity.dateTime).toLocaleString()}</div>
+                            <button onclick="deleteActivity(${activity.id})" class="danger" style="margin-top: 8px; padding: 8px; font-size: 12px;">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ====== TIME TRACKING ======
+        function updateTrackOptions() {
+            const type = document.getElementById('trackType').value;
+            const label = document.getElementById('trackEntityLabel');
+            const select = document.getElementById('trackEntity');
+
+            let options = '<option value="">Select...</option>';
+
+            switch(type) {
+                case 'project':
+                    label.textContent = 'Select Project';
+                    options += appData.projects.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+                    break;
+                case 'task':
+                    label.textContent = 'Select Task';
+                    options += appData.tasks.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+                    break;
+                case 'contact':
+                    label.textContent = 'Select Contact';
+                    options += appData.contacts.map(c => `<option value="${c.id}">${c.firstName} ${c.lastName}</option>`).join('');
+                    break;
+                case 'company':
+                    label.textContent = 'Select Company';
+                    options += appData.companies.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+                    break;
+                case 'deal':
+                    label.textContent = 'Select Deal';
+                    options += appData.deals.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
+                    break;
+            }
+
+            select.innerHTML = options;
+        }
+
+        function updateManualOptions() {
+            const type = document.getElementById('manualType').value;
+            const label = document.getElementById('manualEntityLabel');
+            const select = document.getElementById('manualEntity');
+
+            let options = '<option value="">Select...</option>';
+
+            switch(type) {
+                case 'project':
+                    label.textContent = 'Select Project';
+                    options += appData.projects.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+                    break;
+                case 'task':
+                    label.textContent = 'Select Task';
+                    options += appData.tasks.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+                    break;
+                case 'contact':
+                    label.textContent = 'Select Contact';
+                    options += appData.contacts.map(c => `<option value="${c.id}">${c.firstName} ${c.lastName}</option>`).join('');
+                    break;
+                case 'company':
+                    label.textContent = 'Select Company';
+                    options += appData.companies.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+                    break;
+                case 'deal':
+                    label.textContent = 'Select Deal';
+                    options += appData.deals.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
+                    break;
+            }
+
+            select.innerHTML = options;
+        }
+
         function startStopwatch() {
             if (!stopwatchRunning) {
                 stopwatchRunning = true;
@@ -996,39 +2187,35 @@
                 alert('⚠️ No time to save!');
                 return;
             }
-            
-            const projectId = parseInt(document.getElementById('stopwatchProject').value);
-            const taskId = parseInt(document.getElementById('stopwatchTask').value);
-            
-            if (!projectId && !taskId) {
-                alert('⚠️ Please select a project or task');
+
+            const entityType = document.getElementById('trackType').value;
+            const entityId = parseInt(document.getElementById('trackEntity').value);
+
+            if (!entityId) {
+                alert('⚠️ Please select what you were working on');
                 return;
             }
-            
+
             const hours = Math.floor(stopwatchSeconds / 3600);
             const minutes = Math.floor((stopwatchSeconds % 3600) / 60);
-            
+
             const entry = {
                 id: Date.now(),
-                projectId: projectId || null,
-                taskId: taskId || null,
+                entityType: entityType,
+                entityId: entityId,
                 hours: hours,
                 minutes: minutes,
                 date: new Date().toISOString().split('T')[0],
                 week: appData.currentWeek,
                 method: 'stopwatch',
                 notes: 'Tracked with stopwatch',
-                created: new Date().toISOString(),
-                edited: false,
-                originalHours: null,
-                originalMinutes: null,
-                editReason: null
+                created: new Date().toISOString()
             };
-            
+
             appData.timeEntries.push(entry);
             saveData();
-            updateUI();
-            
+            updateAllUI();
+
             resetStopwatch();
             alert('✓ Time entry saved!');
         }
@@ -1037,351 +2224,157 @@
             const hours = Math.floor(stopwatchSeconds / 3600);
             const minutes = Math.floor((stopwatchSeconds % 3600) / 60);
             const seconds = stopwatchSeconds % 60;
-            
-            document.getElementById('stopwatchDisplay').textContent = 
+
+            document.getElementById('stopwatchDisplay').textContent =
                 `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
         }
 
-        // Manual Entry
         function saveManualEntry() {
-            const projectId = parseInt(document.getElementById('manualProject').value);
-            const taskId = parseInt(document.getElementById('manualTask').value);
+            const entityType = document.getElementById('manualType').value;
+            const entityId = parseInt(document.getElementById('manualEntity').value);
             const hours = parseInt(document.getElementById('manualHours').value) || 0;
             const minutes = parseInt(document.getElementById('manualMinutes').value) || 0;
             const date = document.getElementById('manualDate').value;
             const notes = document.getElementById('manualNotes').value.trim();
-            
-            if (!projectId && !taskId) {
-                alert('⚠️ Please select a project or task');
+
+            if (!entityId) {
+                alert('⚠️ Please select what you worked on');
                 return;
             }
-            
+
             if (hours === 0 && minutes === 0) {
                 alert('⚠️ Please enter time spent');
                 return;
             }
-            
+
             if (!date) {
                 alert('⚠️ Please select a date');
                 return;
             }
-            
+
             const entry = {
                 id: Date.now(),
-                projectId: projectId || null,
-                taskId: taskId || null,
+                entityType: entityType,
+                entityId: entityId,
                 hours: hours,
                 minutes: minutes,
                 date: date,
                 week: appData.currentWeek,
                 method: 'manual',
                 notes: notes,
-                created: new Date().toISOString(),
-                edited: false,
-                originalHours: null,
-                originalMinutes: null,
-                editReason: null
+                created: new Date().toISOString()
             };
-            
+
             appData.timeEntries.push(entry);
             saveData();
-            updateUI();
-            
+            updateAllUI();
+
             document.getElementById('manualHours').value = '0';
             document.getElementById('manualMinutes').value = '0';
             document.getElementById('manualNotes').value = '';
-            
+
             alert('✓ Time entry saved!');
         }
 
-        // Edit Entry Functions
-        function openEditEntry(entryId) {
-            const entry = appData.timeEntries.find(e => e.id === entryId);
-            if (!entry) return;
-            
-            currentEditingEntryId = entryId;
-            
-            const originalHours = entry.originalHours !== null ? entry.originalHours : entry.hours;
-            const originalMinutes = entry.originalMinutes !== null ? entry.originalMinutes : entry.minutes;
-            document.getElementById('origTime').textContent = `${originalHours}h ${originalMinutes}m`;
-            
-            document.getElementById('editHours').value = entry.hours;
-            document.getElementById('editMinutes').value = entry.minutes;
-            document.getElementById('editReason').value = '';
-            
-            openModal('editEntryModal');
-        }
-
-        function saveEditedEntry() {
-            const entry = appData.timeEntries.find(e => e.id === currentEditingEntryId);
-            if (!entry) return;
-            
-            const newHours = parseInt(document.getElementById('editHours').value) || 0;
-            const newMinutes = parseInt(document.getElementById('editMinutes').value) || 0;
-            const reason = document.getElementById('editReason').value.trim();
-            
-            if (newHours === 0 && newMinutes === 0) {
-                alert('⚠️ Please enter valid time');
-                return;
-            }
-            
-            if (!reason) {
-                alert('⚠️ Please provide a reason for editing');
-                return;
-            }
-            
-            if (entry.hours === newHours && entry.minutes === newMinutes) {
-                alert('⚠️ No changes detected');
-                return;
-            }
-            
-            if (!entry.edited) {
-                entry.originalHours = entry.hours;
-                entry.originalMinutes = entry.minutes;
-            }
-            
-            entry.hours = newHours;
-            entry.minutes = newMinutes;
-            entry.edited = true;
-            entry.editReason = reason;
-            entry.editedAt = new Date().toISOString();
-            
-            saveData();
-            updateUI();
-            closeModal('editEntryModal');
-            
-            alert('✓ Time entry updated!');
-        }
-
-        function deleteEntry(entryId) {
+        function deleteTimeEntry(id) {
             if (confirm('Delete this time entry?')) {
-                appData.timeEntries = appData.timeEntries.filter(e => e.id !== entryId);
+                appData.timeEntries = appData.timeEntries.filter(e => e.id !== id);
                 saveData();
-                updateUI();
+                updateAllUI();
             }
         }
 
-        // UI Updates
-        function updateUI() {
-            updateProjectList();
-            updateTaskList();
-            updateProjectSelects();
-            updateTaskSelects();
-            updateReports();
-        }
+        function populateWeekDropdown() {
+            const dropdown = document.getElementById('weekDropdown');
+            dropdown.innerHTML = '';
 
-        function updateProjectList() {
-            const container = document.getElementById('projectList');
-            if (appData.projects.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📁</div>
-                        <p>No projects yet</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = appData.projects.map(project => {
-                const projectTasks = appData.tasks.filter(t => t.projectId === project.id);
-                const totalTime = calculateProjectTime(project.id);
-                
-                return `
-                    <div class="project-item">
-                        <h3>${project.name}</h3>
-                        <p>${project.description || 'No description'}</p>
-                        <p><strong>Total Time:</strong> <span class="time-display">${totalTime}</span></p>
-                        <p><strong>Sub-tasks:</strong> ${projectTasks.length}</p>
-                        ${projectTasks.length > 0 ? `
-                            <div style="margin-top: 10px;">
-                                ${projectTasks.map(task => `
-                                    <div class="subtask">
-                                        <strong>${task.name}</strong>
-                                        <p style="margin: 5px 0; font-size: 0.85em;">${task.description || ''}</p>
-                                        <span class="time-display" style="font-size: 0.8em;">${calculateTaskTime(task.id)}</span>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        ` : ''}
-                        <button onclick="deleteProject(${project.id})" class="danger" style="margin-top: 10px;">Delete Project</button>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function updateTaskList() {
-            const container = document.getElementById('taskList');
-            const independentTasks = appData.tasks.filter(t => t.type === 'independent');
-            
-            if (appData.tasks.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">✓</div>
-                        <p>No tasks yet</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = `
-                <h3 style="color: #001f3f; margin-bottom: 15px; font-size: 1.1em;">Independent Tasks</h3>
-                ${independentTasks.length === 0 ? '<p style="color: #999; text-align: center; padding: 20px;">No independent tasks</p>' : 
-                    independentTasks.map(task => `
-                        <div class="task-item">
-                            <h4>${task.name}</h4>
-                            <p>${task.description || 'No description'}</p>
-                            <p><strong>Total Time:</strong> <span class="time-display">${calculateTaskTime(task.id)}</span></p>
-                            <button onclick="deleteTask(${task.id})" class="danger" style="margin-top: 10px;">Delete Task</button>
-                        </div>
-                    `).join('')
+            appData.weeks.forEach(week => {
+                const option = document.createElement('option');
+                option.value = week.number;
+                option.textContent = `Week ${week.number} - ${formatDate(new Date(week.start))} to ${formatDate(new Date(week.end))}`;
+                if (week.number === appData.currentWeek) {
+                    option.selected = true;
                 }
-            `;
-        }
-
-        function updateProjectSelects() {
-            const selects = [
-                document.getElementById('stopwatchProject'),
-                document.getElementById('manualProject'),
-                document.getElementById('taskProject')
-            ];
-            
-            selects.forEach(select => {
-                const currentValue = select.value;
-                select.innerHTML = '<option value="">Select a project...</option>' +
-                    appData.projects.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
-                select.value = currentValue;
+                dropdown.appendChild(option);
             });
         }
 
-        function updateTaskSelects() {
-            const stopwatchSelect = document.getElementById('stopwatchTask');
-            const manualSelect = document.getElementById('manualTask');
-            
-            const taskOptions = appData.tasks.map(t => {
-                const project = appData.projects.find(p => p.id === t.projectId);
-                const label = project ? `${t.name} (${project.name})` : t.name;
-                return `<option value="${t.id}">${label}</option>`;
-            }).join('');
-            
-            [stopwatchSelect, manualSelect].forEach(select => {
-                const currentValue = select.value;
-                select.innerHTML = '<option value="">Select a task...</option>' + taskOptions;
-                select.value = currentValue;
-            });
+        function selectWeekFromDropdown() {
+            const dropdown = document.getElementById('weekDropdown');
+            appData.currentWeek = parseInt(dropdown.value);
+            saveData();
+            updateTimeReportSummary();
+            updateDashboard();
         }
 
-        function updateReports() {
-            const container = document.getElementById('reportContent');
-            
-            if (appData.timeEntries.length === 0) {
+        function updateTimeReportSummary() {
+            const container = document.getElementById('timeReportSummary');
+            const weekEntries = appData.timeEntries.filter(e => e.week === appData.currentWeek);
+
+            if (weekEntries.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-state-icon">📊</div>
-                        <p>No time entries yet</p>
+                        <p>No time entries for this week</p>
                     </div>
                 `;
                 return;
             }
-            
-            const weekEntries = appData.timeEntries.filter(e => e.week === appData.currentWeek);
+
             const totalMinutes = weekEntries.reduce((sum, e) => sum + (e.hours * 60 + e.minutes), 0);
-            
-            const projectSummary = {};
-            const taskSummary = {};
-            
-            weekEntries.forEach(entry => {
-                if (entry.projectId) {
-                    projectSummary[entry.projectId] = (projectSummary[entry.projectId] || 0) + (entry.hours * 60 + entry.minutes);
-                }
-                if (entry.taskId) {
-                    taskSummary[entry.taskId] = (taskSummary[entry.taskId] || 0) + (entry.hours * 60 + entry.minutes);
-                }
-            });
-            
+
             container.innerHTML = `
-                <div class="summary">
-                    <h3>Week ${appData.currentWeek} Summary</h3>
+                <div class="summary" style="margin: 15px 0;">
+                    <h3>Week ${appData.currentWeek}</h3>
                     <div class="summary-item">
-                        <span><strong>Total Time:</strong></span>
+                        <span>Total Time</span>
                         <span>${formatMinutes(totalMinutes)}</span>
                     </div>
                     <div class="summary-item">
-                        <span><strong>Total Entries:</strong></span>
+                        <span>Entries</span>
                         <span>${weekEntries.length}</span>
                     </div>
                 </div>
-                
-                ${Object.keys(projectSummary).length > 0 ? `
-                    <h3 style="margin: 20px 0 15px 0; color: #001f3f; font-size: 1.1em;">Time by Project</h3>
-                    ${Object.entries(projectSummary).map(([id, minutes]) => {
-                        const project = appData.projects.find(p => p.id === parseInt(id));
+                <div style="max-height: 400px; overflow-y: auto;">
+                    ${weekEntries.map(entry => {
+                        let entityName = 'Unknown';
+                        switch(entry.entityType) {
+                            case 'project':
+                                const project = appData.projects.find(p => p.id === entry.entityId);
+                                if (project) entityName = `📁 ${project.name}`;
+                                break;
+                            case 'task':
+                                const task = appData.tasks.find(t => t.id === entry.entityId);
+                                if (task) entityName = `✓ ${task.name}`;
+                                break;
+                            case 'contact':
+                                const contact = appData.contacts.find(c => c.id === entry.entityId);
+                                if (contact) entityName = `👤 ${contact.firstName} ${contact.lastName}`;
+                                break;
+                            case 'company':
+                                const company = appData.companies.find(c => c.id === entry.entityId);
+                                if (company) entityName = `🏢 ${company.name}`;
+                                break;
+                            case 'deal':
+                                const deal = appData.deals.find(d => d.id === entry.entityId);
+                                if (deal) entityName = `💼 ${deal.name}`;
+                                break;
+                        }
+
                         return `
-                            <div style="background: #f9f9f9; padding: 12px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
-                                <strong>${project ? project.name : 'Unknown'}</strong>
-                                <span class="time-display">${formatMinutes(minutes)}</span>
+                            <div class="entity-card">
+                                <div class="entity-header">
+                                    <div class="entity-name">${entityName}</div>
+                                    <div><span class="badge success">${entry.hours}h ${entry.minutes}m</span></div>
+                                </div>
+                                <div class="entity-info">📅 ${entry.date} • ${entry.method}</div>
+                                ${entry.notes ? `<div class="entity-info">${entry.notes}</div>` : ''}
+                                <button onclick="deleteTimeEntry(${entry.id})" class="danger" style="margin-top: 10px; padding: 10px; font-size: 14px;">Delete</button>
                             </div>
                         `;
                     }).join('')}
-                ` : ''}
-                
-                ${Object.keys(taskSummary).length > 0 ? `
-                    <h3 style="margin: 20px 0 15px 0; color: #001f3f; font-size: 1.1em;">Time by Task</h3>
-                    ${Object.entries(taskSummary).map(([id, minutes]) => {
-                        const task = appData.tasks.find(t => t.id === parseInt(id));
-                        return `
-                            <div style="background: #f9f9f9; padding: 12px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
-                                <strong>${task ? task.name : 'Unknown'}</strong>
-                                <span class="time-display">${formatMinutes(minutes)}</span>
-                            </div>
-                        `;
-                    }).join('')}
-                ` : ''}
-                
-                <h3 style="margin: 20px 0 15px 0; color: #001f3f; font-size: 1.1em;">All Entries</h3>
-                ${weekEntries.map(entry => {
-                    const project = entry.projectId ? appData.projects.find(p => p.id === entry.projectId) : null;
-                    const task = entry.taskId ? appData.tasks.find(t => t.id === entry.taskId) : null;
-                    
-                    return `
-                        <div class="entry-item">
-                            <div class="entry-header">
-                                <div class="entry-title">
-                                    ${project ? project.name : ''} ${task ? '- ' + task.name : ''}
-                                    ${entry.edited ? '<span class="edited-marker">*</span>' : ''}
-                                </div>
-                                <div class="entry-time">
-                                    ${entry.edited ? `<span class="original-time">${entry.originalHours}h ${entry.originalMinutes}m</span>` : ''}
-                                    <span class="time-display">${entry.hours}h ${entry.minutes}m</span>
-                                </div>
-                            </div>
-                            <div class="entry-meta">${entry.date} • ${entry.method}</div>
-                            ${entry.notes ? `<div class="entry-meta">${entry.notes}</div>` : ''}
-                            ${entry.edited ? `
-                                <div class="edit-reason">
-                                    <strong>Edit Reason:</strong> ${entry.editReason}<br>
-                                    <small>Original: ${entry.originalHours}h ${entry.originalMinutes}m → Current: ${entry.hours}h ${entry.minutes}m</small>
-                                </div>
-                            ` : ''}
-                            <div class="entry-actions">
-                                <button onclick="openEditEntry(${entry.id})">✏️ Edit</button>
-                                <button onclick="deleteEntry(${entry.id})" class="danger">🗑️ Delete</button>
-                            </div>
-                        </div>
-                    `;
-                }).join('')}
+                </div>
             `;
-        }
-
-        function calculateProjectTime(projectId) {
-            const entries = appData.timeEntries.filter(e => e.projectId === projectId);
-            const totalMinutes = entries.reduce((sum, e) => sum + (e.hours * 60 + e.minutes), 0);
-            return formatMinutes(totalMinutes);
-        }
-
-        function calculateTaskTime(taskId) {
-            const entries = appData.timeEntries.filter(e => e.taskId === taskId);
-            const totalMinutes = entries.reduce((sum, e) => sum + (e.hours * 60 + e.minutes), 0);
-            return formatMinutes(totalMinutes);
         }
 
         function formatMinutes(minutes) {
@@ -1390,19 +2383,331 @@
             return `${hours}h ${mins}m`;
         }
 
-        // Tabs
+        function exportTimeReport() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const employee = appData.employee || 'Unknown';
+            const week = appData.weeks.find(w => w.number === appData.currentWeek);
+            const weekEntries = appData.timeEntries.filter(e => e.week === appData.currentWeek);
+            const totalMinutes = weekEntries.reduce((sum, e) => sum + (e.hours * 60 + e.minutes), 0);
+
+            let yPos = 20;
+
+            doc.setFontSize(18);
+            doc.setFont(undefined, 'bold');
+            doc.text('JMRC CRM & TIME TRACKER', 105, yPos, { align: 'center' });
+
+            yPos += 10;
+            doc.setFontSize(16);
+            doc.text('Time Report', 105, yPos, { align: 'center' });
+
+            yPos += 15;
+            doc.setFontSize(10);
+            doc.setFont(undefined, 'normal');
+            doc.text(`Employee: ${employee}`, 20, yPos);
+
+            yPos += 6;
+            doc.text(`Week: ${week ? week.label : appData.currentWeek}`, 20, yPos);
+
+            yPos += 6;
+            doc.text(`Generated: ${new Date().toLocaleString()}`, 20, yPos);
+
+            yPos += 10;
+            doc.setDrawColor(0, 31, 63);
+            doc.line(20, yPos, 190, yPos);
+
+            yPos += 10;
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text('Summary', 20, yPos);
+
+            yPos += 8;
+            doc.setFontSize(10);
+            doc.setFont(undefined, 'normal');
+            doc.text(`Total Time: ${formatMinutes(totalMinutes)}`, 20, yPos);
+
+            yPos += 6;
+            doc.text(`Total Entries: ${weekEntries.length}`, 20, yPos);
+
+            yPos += 10;
+            doc.line(20, yPos, 190, yPos);
+
+            yPos += 10;
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text('Time Entries', 20, yPos);
+
+            yPos += 8;
+            doc.setFontSize(9);
+
+            weekEntries.forEach((entry, index) => {
+                if (yPos > 270) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+
+                let entityName = 'Unknown';
+                switch(entry.entityType) {
+                    case 'project':
+                        const project = appData.projects.find(p => p.id === entry.entityId);
+                        if (project) entityName = project.name;
+                        break;
+                    case 'task':
+                        const task = appData.tasks.find(t => t.id === entry.entityId);
+                        if (task) entityName = task.name;
+                        break;
+                    case 'contact':
+                        const contact = appData.contacts.find(c => c.id === entry.entityId);
+                        if (contact) entityName = `${contact.firstName} ${contact.lastName}`;
+                        break;
+                    case 'company':
+                        const company = appData.companies.find(c => c.id === entry.entityId);
+                        if (company) entityName = company.name;
+                        break;
+                    case 'deal':
+                        const deal = appData.deals.find(d => d.id === entry.entityId);
+                        if (deal) entityName = deal.name;
+                        break;
+                }
+
+                doc.setFont(undefined, 'bold');
+                doc.text(`Entry ${index + 1}:`, 20, yPos);
+
+                yPos += 5;
+                doc.setFont(undefined, 'normal');
+                doc.text(`Date: ${entry.date}`, 25, yPos);
+
+                yPos += 5;
+                doc.text(`Type: ${entry.entityType}`, 25, yPos);
+
+                yPos += 5;
+                doc.text(`Name: ${entityName}`, 25, yPos);
+
+                yPos += 5;
+                doc.text(`Time: ${entry.hours}h ${entry.minutes}m`, 25, yPos);
+
+                yPos += 5;
+                doc.text(`Method: ${entry.method}`, 25, yPos);
+
+                if (entry.notes) {
+                    yPos += 5;
+                    const notesLines = doc.splitTextToSize(`Notes: ${entry.notes}`, 160);
+                    doc.text(notesLines, 25, yPos);
+                    yPos += (notesLines.length * 5);
+                }
+
+                yPos += 8;
+                doc.setDrawColor(200, 200, 200);
+                doc.line(20, yPos, 190, yPos);
+                yPos += 8;
+            });
+
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8);
+                doc.setTextColor(128, 128, 128);
+                doc.text(`Page ${i} of ${pageCount}`, 105, 290, { align: 'center' });
+            }
+
+            doc.save(`JMRC_TimeReport_Week${appData.currentWeek}_${new Date().toISOString().split('T')[0]}.pdf`);
+        }
+
+        // ====== CALENDAR ======
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            const monthYear = document.getElementById('calendarMonthYear');
+
+            const date = new Date(appData.currentYear, appData.currentMonth, 1);
+            monthYear.textContent = date.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+            const daysInMonth = new Date(appData.currentYear, appData.currentMonth + 1, 0).getDate();
+            const firstDay = date.getDay();
+
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            let html = days.map(d => `<div class="calendar-day header">${d}</div>`).join('');
+
+            for (let i = 0; i < firstDay; i++) {
+                html += '<div class="calendar-day"></div>';
+            }
+
+            const today = new Date();
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${appData.currentYear}-${String(appData.currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const hasEvents = appData.activities.some(a => a.dateTime?.startsWith(dateStr)) ||
+                                  appData.tasks.some(t => t.dueDate === dateStr);
+                const isToday = today.getDate() === day &&
+                               today.getMonth() === appData.currentMonth &&
+                               today.getFullYear() === appData.currentYear;
+
+                html += `<div class="calendar-day${isToday ? ' today' : ''}${hasEvents ? ' has-events' : ''}">${day}</div>`;
+            }
+
+            grid.innerHTML = html;
+            updateUpcomingActivities();
+        }
+
+        function prevMonth() {
+            appData.currentMonth--;
+            if (appData.currentMonth < 0) {
+                appData.currentMonth = 11;
+                appData.currentYear--;
+            }
+            renderCalendar();
+        }
+
+        function nextMonth() {
+            appData.currentMonth++;
+            if (appData.currentMonth > 11) {
+                appData.currentMonth = 0;
+                appData.currentYear++;
+            }
+            renderCalendar();
+        }
+
+        function updateUpcomingActivities() {
+            const container = document.getElementById('upcomingActivities');
+            const now = new Date();
+            const upcoming = appData.activities
+                .filter(a => new Date(a.dateTime) >= now)
+                .sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime))
+                .slice(0, 5);
+
+            if (upcoming.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📅</div>
+                        <p>No upcoming activities</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = upcoming.map(activity => {
+                const typeIcons = { call: '📞', email: '📧', meeting: '🤝', note: '📝' };
+                return `
+                    <div class="entity-card">
+                        <div class="entity-name">${typeIcons[activity.type]} ${activity.title}</div>
+                        <div class="entity-info">📅 ${new Date(activity.dateTime).toLocaleString()}</div>
+                        ${activity.description ? `<div class="entity-info">${activity.description}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ====== DASHBOARD ======
+        function updateDashboard() {
+            document.getElementById('dashDealsCount').textContent = appData.deals.filter(d => d.stage !== 'won').length;
+            document.getElementById('dashContactsCount').textContent = appData.contacts.length;
+            document.getElementById('dashTasksCount').textContent = appData.tasks.filter(t => t.status !== 'completed').length;
+
+            const weekEntries = appData.timeEntries.filter(e => e.week === appData.currentWeek);
+            const totalMinutes = weekEntries.reduce((sum, e) => sum + (e.hours * 60 + e.minutes), 0);
+            document.getElementById('dashTimeWeek').textContent = `${Math.floor(totalMinutes / 60)}h`;
+
+            updateDashRecentActivity();
+        }
+
+        function updateDashRecentActivity() {
+            const container = document.getElementById('dashRecentActivity');
+            const recent = [...appData.activities]
+                .sort((a, b) => new Date(b.created) - new Date(a.created))
+                .slice(0, 5);
+
+            if (recent.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <p>No recent activity</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = recent.map(activity => {
+                const typeIcons = { call: '📞', email: '📧', meeting: '🤝', note: '📝' };
+                return `
+                    <div class="entity-card" style="padding: 12px; margin-bottom: 8px;">
+                        <div class="entity-name" style="font-size: 1em;">${typeIcons[activity.type]} ${activity.title}</div>
+                        <div class="entity-info">${new Date(activity.dateTime).toLocaleString()}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ====== REPORTS ======
+        function generateFullReport() {
+            alert(`CRM Report\n\nContacts: ${appData.contacts.length}\nCompanies: ${appData.companies.length}\nDeals: ${appData.deals.length}\nProjects: ${appData.projects.length}\nTasks: ${appData.tasks.length}\nActivities: ${appData.activities.length}\nTime Entries: ${appData.timeEntries.length}`);
+        }
+
+        function exportAllData() {
+            const dataStr = JSON.stringify(appData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `jmrc-crm-backup-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // ====== UI UPDATES ======
+        function updateAllUI() {
+            updateContactList();
+            updateCompanyList();
+            updateDealPipeline();
+            updateProjectList();
+            updateTaskList();
+            updateActivityTimeline();
+            updateDashboard();
+            updateTimeReportSummary();
+            updateTrackOptions();
+            updateManualOptions();
+            populateAllSelects();
+        }
+
+        function populateAllSelects() {
+            // Populate company selects
+            const companySelects = ['contactCompany', 'dealCompany', 'projectCompany'];
+            companySelects.forEach(id => {
+                const select = document.getElementById(id);
+                if (select) {
+                    const current = select.value;
+                    select.innerHTML = '<option value="">Select company...</option>' +
+                        appData.companies.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+                    select.value = current;
+                }
+            });
+
+            // Populate contact select
+            const contactSelect = document.getElementById('dealContact');
+            if (contactSelect) {
+                const current = contactSelect.value;
+                contactSelect.innerHTML = '<option value="">Select contact...</option>' +
+                    appData.contacts.map(c => `<option value="${c.id}">${c.firstName} ${c.lastName}</option>`).join('');
+                contactSelect.value = current;
+            }
+        }
+
+        // ====== NAVIGATION ======
         function switchTab(tabName) {
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            event.target.classList.add('active');
+
+            // Find and activate the clicked nav item
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                if (item.textContent.toLowerCase().includes(tabName)) {
+                    item.classList.add('active');
+                }
+            });
+
             document.getElementById(tabName).classList.add('active');
-            
-            // Scroll to top when switching tabs
             window.scrollTo(0, 0);
         }
 
-        // Modals
+        // ====== MODALS ======
         function openModal(modalId) {
             document.getElementById(modalId).classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -1413,146 +2718,15 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Export PDF
-        function exportData() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            const employee = appData.employee || 'Unknown';
-            const week = appData.weeks.find(w => w.number === appData.currentWeek);
-            const weekEntries = appData.timeEntries.filter(e => e.week === appData.currentWeek);
-            const totalMinutes = weekEntries.reduce((sum, e) => sum + (e.hours * 60 + e.minutes), 0);
-            
-            let yPos = 20;
-            
-            // Header
-            doc.setFontSize(18);
-            doc.setFont(undefined, 'bold');
-            doc.text('JMRC TIME TRACKER', 105, yPos, { align: 'center' });
-            
-            yPos += 10;
-            doc.setFontSize(16);
-            doc.text('Time Tracking Report', 105, yPos, { align: 'center' });
-            
-            yPos += 15;
-            doc.setFontSize(10);
-            doc.setFont(undefined, 'normal');
-            doc.text(`Employee: ${employee}`, 20, yPos);
-            
-            yPos += 6;
-            doc.text(`Week: ${week ? week.label : appData.currentWeek}`, 20, yPos);
-            
-            yPos += 6;
-            doc.text(`Generated: ${new Date().toLocaleString()}`, 20, yPos);
-            
-            yPos += 10;
-            doc.setDrawColor(0, 31, 63);
-            doc.line(20, yPos, 190, yPos);
-            
-            // Summary
-            yPos += 10;
-            doc.setFontSize(14);
-            doc.setFont(undefined, 'bold');
-            doc.text('Summary', 20, yPos);
-            
-            yPos += 8;
-            doc.setFontSize(10);
-            doc.setFont(undefined, 'normal');
-            doc.text(`Total Time: ${formatMinutes(totalMinutes)}`, 20, yPos);
-            
-            yPos += 6;
-            doc.text(`Total Entries: ${weekEntries.length}`, 20, yPos);
-            
-            yPos += 10;
-            doc.line(20, yPos, 190, yPos);
-            
-            // Entries
-            yPos += 10;
-            doc.setFontSize(14);
-            doc.setFont(undefined, 'bold');
-            doc.text('Time Entries', 20, yPos);
-            
-            yPos += 8;
-            doc.setFontSize(9);
-            
-            weekEntries.forEach((entry, index) => {
-                const project = entry.projectId ? appData.projects.find(p => p.id === entry.projectId) : null;
-                const task = entry.taskId ? appData.tasks.find(t => t.id === entry.taskId) : null;
-                
-                if (yPos > 270) {
-                    doc.addPage();
-                    yPos = 20;
-                }
-                
-                doc.setFont(undefined, 'bold');
-                doc.text(`Entry ${index + 1}:`, 20, yPos);
-                
-                yPos += 5;
-                doc.setFont(undefined, 'normal');
-                doc.text(`Date: ${entry.date}`, 25, yPos);
-                
-                yPos += 5;
-                doc.text(`Project: ${project ? project.name : 'N/A'}`, 25, yPos);
-                
-                yPos += 5;
-                doc.text(`Task: ${task ? task.name : 'N/A'}`, 25, yPos);
-                
-                yPos += 5;
-                if (entry.edited) {
-                    doc.setTextColor(220, 53, 69);
-                    doc.text(`Time: ${entry.hours}h ${entry.minutes}m *EDITED*`, 25, yPos);
-                    doc.setTextColor(0, 0, 0);
-                    
-                    yPos += 5;
-                    doc.setFontSize(8);
-                    doc.text(`Original: ${entry.originalHours}h ${entry.originalMinutes}m`, 25, yPos);
-                    
-                    yPos += 4;
-                    doc.text(`Edit Reason: ${entry.editReason}`, 25, yPos);
-                    
-                    yPos += 5;
-                    doc.setFontSize(9);
-                } else {
-                    doc.text(`Time: ${entry.hours}h ${entry.minutes}m`, 25, yPos);
-                    yPos += 5;
-                }
-                
-                doc.text(`Method: ${entry.method}`, 25, yPos);
-                
-                if (entry.notes) {
-                    yPos += 5;
-                    const notesLines = doc.splitTextToSize(`Notes: ${entry.notes}`, 160);
-                    doc.text(notesLines, 25, yPos);
-                    yPos += (notesLines.length * 5);
-                }
-                
-                yPos += 8;
-                doc.setDrawColor(200, 200, 200);
-                doc.line(20, yPos, 190, yPos);
-                yPos += 8;
-            });
-            
-            // Footer
-            const pageCount = doc.internal.getNumberOfPages();
-            for (let i = 1; i <= pageCount; i++) {
-                doc.setPage(i);
-                doc.setFontSize(8);
-                doc.setTextColor(128, 128, 128);
-                doc.text(`Page ${i} of ${pageCount}`, 105, 290, { align: 'center' });
-            }
-            
-            doc.save(`JMRC_Timesheet_Week${appData.currentWeek}_${new Date().toISOString().split('T')[0]}.pdf`);
-        }
-
-        // Initialize on load
+        // ====== INIT ======
         window.onload = init;
 
         // Prevent pull-to-refresh on mobile
         document.body.addEventListener('touchmove', function(e) {
             if (e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'INPUT') {
-                e.preventDefault();
+                // Allow scrolling
             }
-        }, { passive: false });
+        }, { passive: true });
     </script>
 </body>
 </html>
