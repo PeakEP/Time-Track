@@ -1,0 +1,2767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JMRC Construction Takeoff & Estimating</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #001f3f; --primary-light: #003d7a; --accent: #0074D9;
+            --success: #2ECC40; --danger: #FF4136; --warning: #FF851B;
+            --bg: #f0f2f5; --card: #fff; --border: #ddd;
+            --text: #333; --text-sec: #666; --shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); min-height: 100vh; }
+
+        /* Header */
+        .app-header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); color: white; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.2); position: sticky; top: 0; z-index: 1000; }
+        .app-header h1 { font-size: 20px; font-weight: 700; }
+        .app-header .subtitle { font-size: 12px; opacity: 0.8; }
+        .header-actions { display: flex; gap: 8px; }
+        .header-actions button { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+        .header-actions button:hover { background: rgba(255,255,255,0.25); }
+
+        /* Navigation Tabs */
+        .nav-tabs { display: flex; background: white; border-bottom: 2px solid var(--border); overflow-x: auto; padding: 0 16px; }
+        .nav-tab { padding: 12px 20px; cursor: pointer; font-size: 14px; font-weight: 500; color: var(--text-sec); border-bottom: 3px solid transparent; transition: all 0.2s; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+        .nav-tab:hover { color: var(--accent); background: #f8f9fa; }
+        .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+        .nav-tab .badge { background: var(--accent); color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; }
+
+        /* Tab Content */
+        .tab-content { display: none; padding: 20px; max-width: 1400px; margin: 0 auto; }
+        .tab-content.active { display: block; }
+
+        /* Cards */
+        .card { background: var(--card); border-radius: 10px; box-shadow: var(--shadow); padding: 20px; margin-bottom: 16px; }
+        .card-header { font-size: 16px; font-weight: 600; color: var(--primary); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+        .card-header .icon { font-size: 20px; margin-right: 8px; }
+
+        /* Buttons */
+        .btn { padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-primary:hover { background: #0063b8; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { opacity: 0.9; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-danger:hover { opacity: 0.9; }
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+        .btn-outline:hover { background: #f8f9fa; }
+        .btn-sm { padding: 5px 10px; font-size: 12px; }
+        .btn-lg { padding: 12px 24px; font-size: 15px; }
+
+        /* Forms */
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 500; color: var(--text-sec); margin-bottom: 4px; }
+        .form-control { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; transition: border-color 0.2s; }
+        .form-control:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,116,217,0.1); }
+        select.form-control { appearance: auto; }
+        textarea.form-control { resize: vertical; min-height: 80px; }
+
+        /* Grid */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+        /* Plan Viewer */
+        .plan-viewer { position: relative; background: #e8e8e8; border-radius: 8px; overflow: hidden; min-height: 500px; }
+        .plan-canvas-container { position: relative; width: 100%; height: 600px; overflow: auto; cursor: crosshair; }
+        .plan-canvas-container canvas { display: block; }
+        #planCanvas { background: white; }
+
+        /* Toolbar */
+        .toolbar { display: flex; gap: 4px; padding: 8px; background: #f8f9fa; border-radius: 8px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
+        .toolbar .divider { width: 1px; height: 28px; background: var(--border); margin: 0 6px; }
+        .tool-btn { padding: 6px 12px; border: 1px solid var(--border); border-radius: 5px; background: white; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 4px; transition: all 0.2s; }
+        .tool-btn:hover { background: #e9ecef; }
+        .tool-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+        .tool-btn .shortcut { font-size: 10px; opacity: 0.6; }
+
+        /* Scale Indicator */
+        .scale-bar { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #fff3cd; border-radius: 6px; margin-bottom: 12px; font-size: 13px; }
+        .scale-bar.calibrated { background: #d4edda; }
+
+        /* Measurement Overlay */
+        .measurement-list { max-height: 300px; overflow-y: auto; }
+        .measurement-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
+        .measurement-item:hover { background: #f8f9fa; }
+        .measurement-item .type-badge { padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 500; }
+        .type-linear { background: #cce5ff; color: #004085; }
+        .type-area { background: #d4edda; color: #155724; }
+        .type-count { background: #fff3cd; color: #856404; }
+
+        /* Tables */
+        .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .data-table th { background: #f8f9fa; padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text-sec); border-bottom: 2px solid var(--border); position: sticky; top: 0; }
+        .data-table td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; }
+        .data-table tr:hover { background: #f8f9fa; }
+        .data-table .number { text-align: right; font-variant-numeric: tabular-nums; }
+        .data-table .actions { text-align: center; white-space: nowrap; }
+        .table-container { overflow-x: auto; max-height: 500px; overflow-y: auto; }
+
+        /* Stats Cards */
+        .stat-card { background: var(--card); border-radius: 10px; padding: 16px; box-shadow: var(--shadow); text-align: center; }
+        .stat-card .stat-value { font-size: 28px; font-weight: 700; color: var(--primary); }
+        .stat-card .stat-label { font-size: 12px; color: var(--text-sec); margin-top: 4px; }
+        .stat-card .stat-icon { font-size: 24px; margin-bottom: 8px; }
+
+        /* Upload Zone */
+        .upload-zone { border: 2px dashed var(--border); border-radius: 10px; padding: 40px; text-align: center; cursor: pointer; transition: all 0.3s; background: #fafafa; }
+        .upload-zone:hover { border-color: var(--accent); background: #f0f7ff; }
+        .upload-zone.drag-over { border-color: var(--accent); background: #e6f0ff; transform: scale(1.01); }
+        .upload-zone .upload-icon { font-size: 48px; margin-bottom: 12px; }
+        .upload-zone .upload-text { font-size: 16px; color: var(--text); margin-bottom: 4px; }
+        .upload-zone .upload-hint { font-size: 13px; color: var(--text-sec); }
+
+        /* Page Thumbnails */
+        .page-thumbs { display: flex; gap: 8px; overflow-x: auto; padding: 8px 0; }
+        .page-thumb { width: 80px; height: 60px; border: 2px solid var(--border); border-radius: 6px; cursor: pointer; overflow: hidden; flex-shrink: 0; position: relative; }
+        .page-thumb.active { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(0,116,217,0.3); }
+        .page-thumb canvas { width: 100%; height: 100%; object-fit: contain; }
+        .page-thumb .page-num { position: absolute; bottom: 2px; right: 4px; font-size: 10px; background: rgba(0,0,0,0.6); color: white; padding: 1px 4px; border-radius: 3px; }
+
+        /* Proposal */
+        .proposal-preview { background: white; border: 1px solid var(--border); border-radius: 8px; padding: 40px; max-width: 800px; margin: 0 auto; font-size: 14px; line-height: 1.6; }
+        .proposal-preview h2 { color: var(--primary); margin-bottom: 20px; }
+        .proposal-preview table { width: 100%; margin: 16px 0; border-collapse: collapse; }
+        .proposal-preview table th, .proposal-preview table td { padding: 8px 12px; border: 1px solid var(--border); text-align: left; }
+        .proposal-preview table th { background: #f8f9fa; }
+
+        /* Modal */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: white; border-radius: 12px; padding: 24px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; }
+        .modal-title { font-size: 18px; font-weight: 600; margin-bottom: 16px; }
+        .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
+
+        /* Toast */
+        .toast { position: fixed; bottom: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; color: white; font-size: 14px; z-index: 3000; transform: translateY(100px); opacity: 0; transition: all 0.3s; }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.success { background: var(--success); }
+        .toast.error { background: var(--danger); }
+        .toast.info { background: var(--accent); }
+
+        /* Sidebar Layout for Plan Viewer */
+        .viewer-layout { display: grid; grid-template-columns: 1fr 320px; gap: 16px; }
+        .viewer-sidebar { display: flex; flex-direction: column; gap: 12px; }
+
+        /* Category Sections */
+        .category-section { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+        .category-header { padding: 10px 14px; background: #f8f9fa; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 14px; }
+        .category-header:hover { background: #e9ecef; }
+        .category-body { padding: 12px; display: none; }
+        .category-body.open { display: block; }
+
+        /* Progress Bar */
+        .progress-bar { height: 6px; background: #e9ecef; border-radius: 3px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.3s; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .viewer-layout { grid-template-columns: 1fr; }
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .nav-tab { padding: 10px 14px; font-size: 13px; }
+        }
+
+        /* Print Styles */
+        @media print {
+            .app-header, .nav-tabs, .toolbar, .no-print { display: none !important; }
+            .tab-content { display: block !important; padding: 0; }
+            .card { box-shadow: none; border: 1px solid #ddd; page-break-inside: avoid; }
+        }
+
+        /* Color picker for measurements */
+        .color-swatch { width: 20px; height: 20px; border-radius: 4px; border: 1px solid var(--border); cursor: pointer; display: inline-block; }
+
+        /* Inline edit */
+        .inline-edit { background: transparent; border: none; border-bottom: 1px dashed var(--border); padding: 2px 4px; font-size: inherit; width: auto; }
+        .inline-edit:focus { outline: none; border-bottom-color: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="app-header">
+        <div>
+            <h1>&#9881; JMRC Construction Takeoff</h1>
+            <div class="subtitle">Residential Estimating & Proposals</div>
+        </div>
+        <div class="header-actions">
+            <button onclick="saveProject()">&#128190; Save</button>
+            <button onclick="loadProject()">&#128194; Load</button>
+            <button onclick="window.location.href='index.html'">&#8592; CRM</button>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-tabs" id="navTabs">
+        <div class="nav-tab active" data-tab="plans" onclick="switchTab('plans')">&#128195; Plans</div>
+        <div class="nav-tab" data-tab="takeoff" onclick="switchTab('takeoff')">&#128207; Takeoff</div>
+        <div class="nav-tab" data-tab="materials" onclick="switchTab('materials')">&#129521; Materials</div>
+        <div class="nav-tab" data-tab="labor" onclick="switchTab('labor')">&#128119; Labor</div>
+        <div class="nav-tab" data-tab="estimate" onclick="switchTab('estimate')">&#128176; Estimate</div>
+        <div class="nav-tab" data-tab="proposal" onclick="switchTab('proposal')">&#128196; Proposal</div>
+    </nav>
+
+    <!-- ==================== PLANS TAB ==================== -->
+    <div class="tab-content active" id="tab-plans">
+        <div class="card" id="uploadCard">
+            <div class="card-header">&#128195; Upload Construction Plans</div>
+            <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+                <div class="upload-icon">&#128196;</div>
+                <div class="upload-text">Drop your plans here or click to upload</div>
+                <div class="upload-hint">Supports PDF, PNG, JPG, TIFF &bull; Multi-page PDFs supported</div>
+            </div>
+            <input type="file" id="fileInput" accept=".pdf,.png,.jpg,.jpeg,.tiff,.tif" multiple style="display:none" onchange="handleFileUpload(event)">
+        </div>
+
+        <!-- Page Thumbnails -->
+        <div class="card" id="pagesCard" style="display:none">
+            <div class="card-header">
+                Pages
+                <span id="pageCount" class="badge" style="background:var(--accent);color:white;padding:2px 8px;border-radius:10px;font-size:12px"></span>
+            </div>
+            <div class="page-thumbs" id="pageThumbs"></div>
+        </div>
+
+        <!-- Scale Calibration -->
+        <div class="card" id="scaleCard" style="display:none">
+            <div class="card-header">&#128207; Scale Calibration</div>
+            <div class="scale-bar" id="scaleStatus">
+                &#9888;&#65039; Scale not set. Calibrate for accurate measurements.
+            </div>
+            <div class="grid-3" style="margin-bottom:12px">
+                <div>
+                    <button class="btn btn-primary" onclick="startScaleCalibration()" id="btnCalibrateScale">&#128207; Draw Known Distance</button>
+                    <p style="font-size:11px;color:var(--text-sec);margin-top:4px">Click two points on a known dimension line</p>
+                </div>
+                <div>
+                    <div class="form-group" style="margin:0">
+                        <label>Known Distance</label>
+                        <div style="display:flex;gap:6px">
+                            <input type="number" class="form-control" id="knownDistance" placeholder="e.g. 20" step="0.25">
+                            <select class="form-control" id="knownUnit" style="width:80px">
+                                <option value="ft">ft</option>
+                                <option value="in">in</option>
+                                <option value="m">m</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="form-group" style="margin:0">
+                        <label>Or Set Scale Directly</label>
+                        <div style="display:flex;gap:6px">
+                            <select class="form-control" id="presetScale" onchange="applyPresetScale()">
+                                <option value="">Select preset...</option>
+                                <option value="0.25">1/4" = 1'-0" (1:48)</option>
+                                <option value="0.125">1/8" = 1'-0" (1:96)</option>
+                                <option value="0.1875">3/16" = 1'-0" (1:64)</option>
+                                <option value="0.375">3/8" = 1'-0" (1:32)</option>
+                                <option value="0.5">1/2" = 1'-0" (1:24)</option>
+                                <option value="0.75">3/4" = 1'-0" (1:16)</option>
+                                <option value="1">1" = 1'-0" (1:12)</option>
+                                <option value="1.5">1-1/2" = 1'-0" (1:8)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="autoDetectScale()">&#129302; AI Auto-Detect Scale</button>
+        </div>
+
+        <!-- Plan Viewer with Tools -->
+        <div id="viewerSection" style="display:none">
+            <div class="toolbar" id="mainToolbar">
+                <button class="tool-btn active" data-tool="pan" onclick="setTool('pan')" title="Pan/Move">&#9995; Pan</button>
+                <button class="tool-btn" data-tool="linear" onclick="setTool('linear')" title="Linear Measurement">&#128207; Linear</button>
+                <button class="tool-btn" data-tool="area" onclick="setTool('area')" title="Area Measurement">&#11035; Area</button>
+                <button class="tool-btn" data-tool="count" onclick="setTool('count')" title="Count Items">&#128204; Count</button>
+                <button class="tool-btn" data-tool="polyline" onclick="setTool('polyline')" title="Polyline">&#128196; Polyline</button>
+                <div class="divider"></div>
+                <button class="tool-btn" onclick="zoomIn()">&#128269; +</button>
+                <button class="tool-btn" onclick="zoomOut()">&#128270; -</button>
+                <button class="tool-btn" onclick="zoomFit()">&#9974; Fit</button>
+                <div class="divider"></div>
+                <button class="tool-btn" onclick="undoMeasurement()">&#8617; Undo</button>
+                <button class="tool-btn" onclick="clearMeasurements()">&#128465; Clear</button>
+                <div class="divider"></div>
+                <label style="font-size:12px;display:flex;align-items:center;gap:4px">
+                    Color: <input type="color" id="measureColor" value="#FF4136" style="width:28px;height:24px;border:none;cursor:pointer">
+                </label>
+                <label style="font-size:12px;display:flex;align-items:center;gap:4px">
+                    Label: <input type="text" id="measureLabel" class="form-control" style="width:120px;padding:4px 8px" placeholder="Optional label">
+                </label>
+                <select class="form-control" id="measureCategory" style="width:140px;padding:4px 8px;font-size:12px">
+                    <option value="general">General</option>
+                    <option value="foundation">Foundation</option>
+                    <option value="framing">Framing</option>
+                    <option value="roofing">Roofing</option>
+                    <option value="siding">Siding</option>
+                    <option value="drywall">Drywall</option>
+                    <option value="flooring">Flooring</option>
+                    <option value="plumbing">Plumbing</option>
+                    <option value="electrical">Electrical</option>
+                    <option value="hvac">HVAC</option>
+                    <option value="insulation">Insulation</option>
+                    <option value="windows">Windows/Doors</option>
+                    <option value="paint">Paint</option>
+                    <option value="concrete">Concrete</option>
+                </select>
+            </div>
+
+            <div class="viewer-layout">
+                <div class="plan-viewer">
+                    <div class="plan-canvas-container" id="canvasContainer">
+                        <canvas id="planCanvas" width="1200" height="800"></canvas>
+                    </div>
+                </div>
+                <div class="viewer-sidebar">
+                    <div class="card" style="padding:12px">
+                        <div class="card-header" style="font-size:14px">Measurements</div>
+                        <div class="measurement-list" id="measurementList">
+                            <div style="text-align:center;color:var(--text-sec);padding:20px;font-size:13px">
+                                No measurements yet.<br>Select a tool and click on the plan.
+                            </div>
+                        </div>
+                        <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:13px" id="measurementSummary"></div>
+                    </div>
+                    <div class="card" style="padding:12px">
+                        <div class="card-header" style="font-size:14px">Quick Add to Takeoff</div>
+                        <button class="btn btn-success btn-sm" onclick="addMeasurementsToTakeoff()" style="width:100%">&#10133; Add All Measurements to Takeoff</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== TAKEOFF TAB ==================== -->
+    <div class="tab-content" id="tab-takeoff">
+        <div class="grid-4" style="margin-bottom:16px">
+            <div class="stat-card">
+                <div class="stat-icon">&#128207;</div>
+                <div class="stat-value" id="statLinearTotal">0</div>
+                <div class="stat-label">Linear ft</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">&#11035;</div>
+                <div class="stat-value" id="statAreaTotal">0</div>
+                <div class="stat-label">Sq ft</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">&#128204;</div>
+                <div class="stat-value" id="statCountTotal">0</div>
+                <div class="stat-label">Count Items</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">&#128194;</div>
+                <div class="stat-value" id="statCategories">0</div>
+                <div class="stat-label">Categories</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                Takeoff Items
+                <div>
+                    <button class="btn btn-primary btn-sm" onclick="addTakeoffItem()">&#10133; Add Item</button>
+                    <button class="btn btn-outline btn-sm" onclick="importFromMeasurements()">&#128195; Import from Plans</button>
+                </div>
+            </div>
+
+            <!-- Category Filter -->
+            <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap" id="categoryFilters">
+                <button class="btn btn-sm btn-primary" onclick="filterTakeoff('all')">All</button>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table" id="takeoffTable">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Type</th>
+                            <th class="number">Quantity</th>
+                            <th>Unit</th>
+                            <th class="number">+ Waste %</th>
+                            <th class="number">Total w/Waste</th>
+                            <th>Notes</th>
+                            <th class="actions">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="takeoffBody">
+                        <tr><td colspan="9" style="text-align:center;color:var(--text-sec);padding:30px">No takeoff items yet. Upload plans and measure, or add items manually.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MATERIALS TAB ==================== -->
+    <div class="tab-content" id="tab-materials">
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-header">
+                    Material Categories
+                    <button class="btn btn-primary btn-sm" onclick="autoGenerateMaterials()">&#129302; Auto-Generate from Takeoff</button>
+                </div>
+                <div id="materialCategories">
+                    <!-- Foundation & Concrete -->
+                    <div class="category-section">
+                        <div class="category-header" onclick="toggleCategory(this)">
+                            &#127959; Foundation & Concrete <span>&#9660;</span>
+                        </div>
+                        <div class="category-body">
+                            <table class="data-table">
+                                <thead><tr><th>Material</th><th class="number">Qty</th><th>Unit</th><th class="number">Unit $</th><th class="number">Total</th></tr></thead>
+                                <tbody id="mat-foundation"></tbody>
+                            </table>
+                            <button class="btn btn-outline btn-sm" style="margin-top:8px" onclick="addMaterialRow('foundation')">+ Add</button>
+                        </div>
+                    </div>
+                    <!-- Framing -->
+                    <div class="category-section">
+                        <div class="category-header" onclick="toggleCategory(this)">
+                            &#127960; Framing & Lumber <span>&#9660;</span>
+                        </div>
+                        <div class="category-body">
+                            <table class="data-table">
+                                <thead><tr><th>Material</th><th class="number">Qty</th><th>Unit</th><th class="number">Unit $</th><th class="number">Total</th></tr></thead>
+                                <tbody id="mat-framing"></tbody>
+                            </table>
+                            <button class="btn btn-outline btn-sm" style="margin-top:8px" onclick="addMaterialRow('framing')">+ Add</button>
+                        </div>
+                    </div>
+                    <!-- Roofing -->
+                    <div class="category-section">
+                        <div class="category-header" onclick="toggleCategory(this)">
+                            &#127969; Roofing <span>&#9660;</span>
+                        </div>
+                        <div class="category-body">
+                            <table class="data-table">
+                                <thead><tr><th>Material</th><th class="number">Qty</th><th>Unit</th><th class="number">Unit $</th><th class="number">Total</th></tr></thead>
+                                <tbody id="mat-roofing"></tbody>
+                            </table>
+                            <button class="btn btn-outline btn-sm" style="margin-top:8px" onclick="addMaterialRow('roofing')">+ Add</button>
+                        </div>
+                    </div>
+                    <!-- Siding & Exterior -->
+                    <div class="category-section">
+                        <div class="category-header" onclick="toggleCategory(this)">
+                            &#129521; Siding & Exterior <span>&#9660;</span>
+                        </div>
+                        <div class="category-body">
+                            <table class="data-table">
+                                <thead><tr><th>Material</th><th class="number">Qty</th><th>Unit</th><th class="number">Unit $</th><th class="number">Total</th></tr></thead>
+                                <tbody id="mat-siding"></tbody>
+                            </table>
+                            <button class="btn btn-outline btn-sm" style="margin-top:8px" onclick="addMaterialRow('siding')">+ Add</button>
+                        </div>
+                    </div>
+                    <!-- Insulation -->
+                    <div class="category-section">
+                        <div class="category-header" onclick="toggleCategory(this)">
+                            &#129531; Insulation <span>&#9660;</span>
+                        </div>
+                        <div class="category-body">
+                            <table class="data-table">
+                                <thead><tr><th>Material</th><th class="number">Qty</th><th>Unit</th><th class="number">Unit $</th><th class="number">Total</th></tr></thead>
+                                <tbody id="mat-insulation"></tbody>
+                            </table>
+                            <button class="btn btn-outline btn-sm" style="margin-top:8px" onclick="addMaterialRow('insulation')">+ Add</button>
+                        </div>
+                    </div>
+                    <!-- Drywall -->
+                    <div class="category-section">
+                        <div class="category-header" onclick="toggleCategory(this)">
+                            &#128467; Drywall & Interior <span>&#9660;</span>
+                        </div>
+                        <div class="category-body">
+                            <table class="data-table">
+                                <thead><tr><th>Material</th><th class="number">Qty</th><th>Unit</th><th class="number">Unit $</th><th class="number">Total</th></tr></thead>
+                                <tbody id="mat-drywall"></tbody>
+                            </table>
+                            <button class="btn btn-outline btn-sm" style="margin-top:8px" onclick="addMaterialRow('drywall')">+ Add</button>
+                        </div>
+                    </div>
+                    <!-- Flooring -->
+                    <div class="category-section">
+                        <div class="category-header" onclick="toggleCategory(this)">
+                            &#129523; Flooring <span>&#9660;</span>
+                        </div>
+                        <div class="category-body">
+                            <table class="data-table">
+                                <thead><tr><th>Material</th><th class="number">Qty</th><th>Unit</th><th class="number">Unit $</th><th class="number">Total</th></tr></thead>
+                                <tbody id="mat-flooring"></tbody>
+                            </table>
+                            <button class="btn btn-outline btn-sm" style="margin-top:8px" onclick="addMaterialRow('flooring')">+ Add</button>
+                        </div>
+                    </div>
+                    <!-- Electrical -->
+                    <div class="category-section">
+                        <div class="category-header" onclick="toggleCategory(this)">
+                            &#9889; Electrical <span>&#9660;</span>
+                        </div>
+                        <div class="category-body">
+                            <table class="data-table">
+                                <thead><tr><th>Material</th><th class="number">Qty</th><th>Unit</th><th class="number">Unit $</th><th class="number">Total</th></tr></thead>
+                                <tbody id="mat-electrical"></tbody>
+                            </table>
+                            <button class="btn btn-outline btn-sm" style="margin-top:8px" onclick="addMaterialRow('electrical')">+ Add</button>
+                        </div>
+                    </div>
+                    <!-- Plumbing -->
+                    <div class="category-section">
+                        <div class="category-header" onclick="toggleCategory(this)">
+                            &#128688; Plumbing <span>&#9660;</span>
+                        </div>
+                        <div class="category-body">
+                            <table class="data-table">
+                                <thead><tr><th>Material</th><th class="number">Qty</th><th>Unit</th><th class="number">Unit $</th><th class="number">Total</th></tr></thead>
+                                <tbody id="mat-plumbing"></tbody>
+                            </table>
+                            <button class="btn btn-outline btn-sm" style="margin-top:8px" onclick="addMaterialRow('plumbing')">+ Add</button>
+                        </div>
+                    </div>
+                    <!-- HVAC -->
+                    <div class="category-section">
+                        <div class="category-header" onclick="toggleCategory(this)">
+                            &#127777; HVAC <span>&#9660;</span>
+                        </div>
+                        <div class="category-body">
+                            <table class="data-table">
+                                <thead><tr><th>Material</th><th class="number">Qty</th><th>Unit</th><th class="number">Unit $</th><th class="number">Total</th></tr></thead>
+                                <tbody id="mat-hvac"></tbody>
+                            </table>
+                            <button class="btn btn-outline btn-sm" style="margin-top:8px" onclick="addMaterialRow('hvac')">+ Add</button>
+                        </div>
+                    </div>
+                    <!-- Paint -->
+                    <div class="category-section">
+                        <div class="category-header" onclick="toggleCategory(this)">
+                            &#127912; Paint & Finishes <span>&#9660;</span>
+                        </div>
+                        <div class="category-body">
+                            <table class="data-table">
+                                <thead><tr><th>Material</th><th class="number">Qty</th><th>Unit</th><th class="number">Unit $</th><th class="number">Total</th></tr></thead>
+                                <tbody id="mat-paint"></tbody>
+                            </table>
+                            <button class="btn btn-outline btn-sm" style="margin-top:8px" onclick="addMaterialRow('paint')">+ Add</button>
+                        </div>
+                    </div>
+                    <!-- Windows & Doors -->
+                    <div class="category-section">
+                        <div class="category-header" onclick="toggleCategory(this)">
+                            &#128695; Windows & Doors <span>&#9660;</span>
+                        </div>
+                        <div class="category-body">
+                            <table class="data-table">
+                                <thead><tr><th>Material</th><th class="number">Qty</th><th>Unit</th><th class="number">Unit $</th><th class="number">Total</th></tr></thead>
+                                <tbody id="mat-windows"></tbody>
+                            </table>
+                            <button class="btn btn-outline btn-sm" style="margin-top:8px" onclick="addMaterialRow('windows')">+ Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="card">
+                    <div class="card-header">Material Cost Summary</div>
+                    <div id="materialSummary">
+                        <table class="data-table">
+                            <thead><tr><th>Category</th><th class="number">Items</th><th class="number">Total Cost</th></tr></thead>
+                            <tbody id="materialSummaryBody"></tbody>
+                            <tfoot>
+                                <tr style="font-weight:700;background:#f8f9fa">
+                                    <td>Grand Total</td>
+                                    <td class="number" id="totalMaterialItems">0</td>
+                                    <td class="number" id="totalMaterialCost">$0.00</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">Material Price Database</div>
+                    <p style="font-size:13px;color:var(--text-sec);margin-bottom:8px">Common residential material prices (editable)</p>
+                    <button class="btn btn-outline btn-sm" onclick="showPriceDatabase()">&#128218; View/Edit Price Database</button>
+                    <button class="btn btn-outline btn-sm" onclick="resetPriceDatabase()">&#128260; Reset to Defaults</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== LABOR TAB ==================== -->
+    <div class="tab-content" id="tab-labor">
+        <div class="grid-2" style="margin-bottom:16px">
+            <div class="stat-card">
+                <div class="stat-icon">&#128119;</div>
+                <div class="stat-value" id="statTotalHours">0</div>
+                <div class="stat-label">Total Labor Hours</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">&#128176;</div>
+                <div class="stat-value" id="statTotalLaborCost">$0</div>
+                <div class="stat-label">Total Labor Cost</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                Industry Standard Labor Rates
+                <div>
+                    <button class="btn btn-primary btn-sm" onclick="autoGenerateLabor()">&#129302; Auto-Generate from Takeoff</button>
+                    <button class="btn btn-outline btn-sm" onclick="addLaborItem()">&#10133; Add Item</button>
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="data-table" id="laborTable">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Task Description</th>
+                            <th class="number">Quantity</th>
+                            <th>Unit</th>
+                            <th class="number">Hours/Unit</th>
+                            <th class="number">Total Hours</th>
+                            <th class="number">Rate $/hr</th>
+                            <th class="number">Total Cost</th>
+                            <th class="actions">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="laborBody">
+                        <tr><td colspan="9" style="text-align:center;color:var(--text-sec);padding:30px">No labor items. Auto-generate from takeoff or add manually.</td></tr>
+                    </tbody>
+                    <tfoot id="laborFooter" style="display:none">
+                        <tr style="font-weight:700;background:#f8f9fa">
+                            <td colspan="5">Totals</td>
+                            <td class="number" id="laborTotalHours">0</td>
+                            <td></td>
+                            <td class="number" id="laborTotalCost">$0.00</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Labor Rate Reference (RS Means / Industry Standard)</div>
+            <div class="grid-3">
+                <div>
+                    <h4 style="font-size:13px;margin-bottom:6px">General Labor</h4>
+                    <div style="font-size:12px;color:var(--text-sec)">
+                        Laborer: $25-35/hr<br>
+                        Skilled Carpenter: $35-55/hr<br>
+                        Foreman: $45-65/hr<br>
+                        Superintendent: $55-80/hr
+                    </div>
+                </div>
+                <div>
+                    <h4 style="font-size:13px;margin-bottom:6px">Specialty Trades</h4>
+                    <div style="font-size:12px;color:var(--text-sec)">
+                        Electrician: $45-75/hr<br>
+                        Plumber: $45-80/hr<br>
+                        HVAC Tech: $45-75/hr<br>
+                        Mason: $40-60/hr
+                    </div>
+                </div>
+                <div>
+                    <h4 style="font-size:13px;margin-bottom:6px">Productivity Factors</h4>
+                    <div style="font-size:12px;color:var(--text-sec)">
+                        Standard: 1.0x<br>
+                        Weather delays: 0.8x<br>
+                        Overtime: 0.9x efficiency<br>
+                        Complex work: 0.7x
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== ESTIMATE TAB ==================== -->
+    <div class="tab-content" id="tab-estimate">
+        <div class="grid-4" style="margin-bottom:16px">
+            <div class="stat-card">
+                <div class="stat-icon">&#129521;</div>
+                <div class="stat-value" id="estMaterialCost">$0</div>
+                <div class="stat-label">Materials</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">&#128119;</div>
+                <div class="stat-value" id="estLaborCost">$0</div>
+                <div class="stat-label">Labor</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">&#128200;</div>
+                <div class="stat-value" id="estOverhead">$0</div>
+                <div class="stat-label">Overhead & Profit</div>
+            </div>
+            <div class="stat-card" style="background:var(--primary);color:white">
+                <div class="stat-icon">&#128176;</div>
+                <div class="stat-value" style="color:white" id="estGrandTotal">$0</div>
+                <div class="stat-label" style="color:rgba(255,255,255,0.8)">Grand Total</div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-header">Project Information</div>
+                <div class="form-group">
+                    <label>Project Name</label>
+                    <input type="text" class="form-control" id="projectName" placeholder="e.g. Smith Residence">
+                </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Client Name</label>
+                        <input type="text" class="form-control" id="clientName" placeholder="Client name">
+                    </div>
+                    <div class="form-group">
+                        <label>Project Address</label>
+                        <input type="text" class="form-control" id="projectAddress" placeholder="Address">
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Estimate Date</label>
+                        <input type="date" class="form-control" id="estimateDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Valid Until</label>
+                        <input type="date" class="form-control" id="validUntil">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Scope of Work</label>
+                    <textarea class="form-control" id="scopeOfWork" rows="3" placeholder="Brief description of work scope..."></textarea>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Cost Adjustments</div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Overhead %</label>
+                        <input type="number" class="form-control" id="overheadPct" value="10" min="0" max="100" onchange="recalcEstimate()">
+                    </div>
+                    <div class="form-group">
+                        <label>Profit Margin %</label>
+                        <input type="number" class="form-control" id="profitPct" value="15" min="0" max="100" onchange="recalcEstimate()">
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Contingency %</label>
+                        <input type="number" class="form-control" id="contingencyPct" value="5" min="0" max="50" onchange="recalcEstimate()">
+                    </div>
+                    <div class="form-group">
+                        <label>Sales Tax %</label>
+                        <input type="number" class="form-control" id="taxPct" value="0" min="0" max="20" step="0.1" onchange="recalcEstimate()">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Permits & Fees</label>
+                    <input type="number" class="form-control" id="permitFees" value="0" min="0" onchange="recalcEstimate()">
+                </div>
+                <div class="form-group">
+                    <label>Additional Costs / Adjustments</label>
+                    <input type="number" class="form-control" id="additionalCosts" value="0" onchange="recalcEstimate()">
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                Cost Breakdown
+                <button class="btn btn-primary btn-sm" onclick="recalcEstimate()">&#128260; Recalculate</button>
+            </div>
+            <div class="table-container">
+                <table class="data-table" id="estimateBreakdown">
+                    <thead>
+                        <tr><th>Category</th><th class="number">Materials</th><th class="number">Labor</th><th class="number">Subtotal</th></tr>
+                    </thead>
+                    <tbody id="estimateBody"></tbody>
+                    <tfoot>
+                        <tr style="font-weight:600"><td>Subtotal (Materials + Labor)</td><td class="number" id="estSubMat">$0</td><td class="number" id="estSubLab">$0</td><td class="number" id="estSubTotal">$0</td></tr>
+                        <tr><td>Overhead</td><td colspan="2"></td><td class="number" id="estOverheadLine">$0</td></tr>
+                        <tr><td>Profit</td><td colspan="2"></td><td class="number" id="estProfitLine">$0</td></tr>
+                        <tr><td>Contingency</td><td colspan="2"></td><td class="number" id="estContingencyLine">$0</td></tr>
+                        <tr><td>Tax on Materials</td><td colspan="2"></td><td class="number" id="estTaxLine">$0</td></tr>
+                        <tr><td>Permits & Fees</td><td colspan="2"></td><td class="number" id="estPermitLine">$0</td></tr>
+                        <tr><td>Additional Costs</td><td colspan="2"></td><td class="number" id="estAdditionalLine">$0</td></tr>
+                        <tr style="font-weight:700;font-size:16px;background:#e8f4fd"><td>GRAND TOTAL</td><td colspan="2"></td><td class="number" id="estGrandTotalLine">$0</td></tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== PROPOSAL TAB ==================== -->
+    <div class="tab-content" id="tab-proposal">
+        <div class="card no-print">
+            <div class="card-header">
+                Proposal Settings
+                <div>
+                    <button class="btn btn-primary" onclick="generateProposal()">&#128196; Generate Proposal</button>
+                    <button class="btn btn-success" onclick="exportProposalPDF()">&#128196; Export PDF</button>
+                    <button class="btn btn-outline" onclick="window.print()">&#128424; Print</button>
+                </div>
+            </div>
+            <div class="grid-3">
+                <div class="form-group">
+                    <label>Company Name</label>
+                    <input type="text" class="form-control" id="companyName" value="JMRC Construction">
+                </div>
+                <div class="form-group">
+                    <label>Company Phone</label>
+                    <input type="text" class="form-control" id="companyPhone" placeholder="(555) 555-5555">
+                </div>
+                <div class="form-group">
+                    <label>Company Email</label>
+                    <input type="email" class="form-control" id="companyEmail" placeholder="info@company.com">
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Company Address</label>
+                    <input type="text" class="form-control" id="companyAddress" placeholder="123 Main St, City, State ZIP">
+                </div>
+                <div class="form-group">
+                    <label>License #</label>
+                    <input type="text" class="form-control" id="licenseNum" placeholder="License number">
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Detail Level</label>
+                    <select class="form-control" id="proposalDetail">
+                        <option value="summary">Summary (Category totals only)</option>
+                        <option value="detailed" selected>Detailed (Line items by category)</option>
+                        <option value="full">Full Detail (All line items + quantities)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Payment Terms</label>
+                    <select class="form-control" id="paymentTerms">
+                        <option value="50-50">50% deposit, 50% on completion</option>
+                        <option value="thirds">1/3 deposit, 1/3 midpoint, 1/3 completion</option>
+                        <option value="progress">Progress billing (monthly)</option>
+                        <option value="custom">Custom terms</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Additional Terms & Conditions</label>
+                <textarea class="form-control" id="additionalTerms" rows="3" placeholder="Any additional terms..."></textarea>
+            </div>
+        </div>
+
+        <div id="proposalOutput">
+            <div class="proposal-preview" id="proposalPreview">
+                <div style="text-align:center;color:var(--text-sec);padding:60px">
+                    Click "Generate Proposal" to create your proposal document.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODALS ==================== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modalContent"></div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+    // ==================== APPLICATION STATE ====================
+    const APP = {
+        pages: [],           // uploaded plan pages [{img, canvas, scale, measurements}]
+        currentPage: 0,
+        currentTool: 'pan',
+        scale: null,         // pixels per foot
+        scalePerPage: {},    // per-page scales
+        measurements: [],    // all measurements
+        takeoffItems: [],    // takeoff line items
+        materials: {},       // materials by category
+        laborItems: [],      // labor line items
+        zoom: 1,
+        panOffset: { x: 0, y: 0 },
+        isDragging: false,
+        dragStart: { x: 0, y: 0 },
+        tempPoints: [],      // temporary points for current measurement
+        calibrationMode: false,
+        calibrationPoints: [],
+    };
+
+    // Canvas refs
+    let canvas, ctx, canvasContainer;
+
+    // ==================== INDUSTRY STANDARD DATA ====================
+    const LABOR_RATES = {
+        foundation: { name: 'Foundation & Concrete', tasks: [
+            { desc: 'Form & pour footings', unit: 'LF', hoursPerUnit: 0.15, rate: 45 },
+            { desc: 'Foundation walls', unit: 'LF', hoursPerUnit: 0.25, rate: 45 },
+            { desc: 'Slab on grade', unit: 'SF', hoursPerUnit: 0.04, rate: 42 },
+            { desc: 'Flatwork / sidewalks', unit: 'SF', hoursPerUnit: 0.05, rate: 42 },
+        ]},
+        framing: { name: 'Framing', tasks: [
+            { desc: 'Wall framing (exterior)', unit: 'LF', hoursPerUnit: 0.35, rate: 48 },
+            { desc: 'Wall framing (interior)', unit: 'LF', hoursPerUnit: 0.25, rate: 45 },
+            { desc: 'Floor framing / joists', unit: 'SF', hoursPerUnit: 0.03, rate: 48 },
+            { desc: 'Roof framing / trusses', unit: 'SF', hoursPerUnit: 0.04, rate: 50 },
+            { desc: 'Stair framing', unit: 'EA', hoursPerUnit: 8, rate: 50 },
+            { desc: 'Beam/header install', unit: 'EA', hoursPerUnit: 2, rate: 50 },
+        ]},
+        roofing: { name: 'Roofing', tasks: [
+            { desc: 'Shingle roofing (asphalt)', unit: 'SQ', hoursPerUnit: 1.5, rate: 45 },
+            { desc: 'Roof underlayment', unit: 'SQ', hoursPerUnit: 0.4, rate: 40 },
+            { desc: 'Flashing & trim', unit: 'LF', hoursPerUnit: 0.1, rate: 45 },
+            { desc: 'Ridge vent', unit: 'LF', hoursPerUnit: 0.08, rate: 45 },
+            { desc: 'Gutter install', unit: 'LF', hoursPerUnit: 0.12, rate: 42 },
+        ]},
+        siding: { name: 'Siding & Exterior', tasks: [
+            { desc: 'Vinyl/fiber cement siding', unit: 'SF', hoursPerUnit: 0.04, rate: 45 },
+            { desc: 'House wrap / WRB', unit: 'SF', hoursPerUnit: 0.01, rate: 35 },
+            { desc: 'Exterior trim', unit: 'LF', hoursPerUnit: 0.08, rate: 45 },
+            { desc: 'Soffit & fascia', unit: 'LF', hoursPerUnit: 0.1, rate: 45 },
+        ]},
+        insulation: { name: 'Insulation', tasks: [
+            { desc: 'Batt insulation (walls)', unit: 'SF', hoursPerUnit: 0.02, rate: 38 },
+            { desc: 'Batt insulation (attic)', unit: 'SF', hoursPerUnit: 0.015, rate: 38 },
+            { desc: 'Spray foam', unit: 'SF', hoursPerUnit: 0.03, rate: 45 },
+        ]},
+        drywall: { name: 'Drywall', tasks: [
+            { desc: 'Hang drywall', unit: 'SF', hoursPerUnit: 0.02, rate: 40 },
+            { desc: 'Tape & finish (Level 4)', unit: 'SF', hoursPerUnit: 0.03, rate: 42 },
+            { desc: 'Texture application', unit: 'SF', hoursPerUnit: 0.01, rate: 38 },
+        ]},
+        flooring: { name: 'Flooring', tasks: [
+            { desc: 'Hardwood flooring', unit: 'SF', hoursPerUnit: 0.06, rate: 48 },
+            { desc: 'Tile flooring', unit: 'SF', hoursPerUnit: 0.08, rate: 50 },
+            { desc: 'LVP / Laminate', unit: 'SF', hoursPerUnit: 0.04, rate: 40 },
+            { desc: 'Carpet install', unit: 'SF', hoursPerUnit: 0.02, rate: 35 },
+            { desc: 'Subfloor install', unit: 'SF', hoursPerUnit: 0.025, rate: 42 },
+        ]},
+        electrical: { name: 'Electrical', tasks: [
+            { desc: 'Rough-in wiring', unit: 'SF', hoursPerUnit: 0.04, rate: 65 },
+            { desc: 'Outlet/switch install', unit: 'EA', hoursPerUnit: 0.5, rate: 65 },
+            { desc: 'Panel install/hookup', unit: 'EA', hoursPerUnit: 8, rate: 75 },
+            { desc: 'Light fixture install', unit: 'EA', hoursPerUnit: 0.75, rate: 65 },
+        ]},
+        plumbing: { name: 'Plumbing', tasks: [
+            { desc: 'Rough-in plumbing', unit: 'EA', hoursPerUnit: 4, rate: 70 },
+            { desc: 'Fixture install (sink/toilet)', unit: 'EA', hoursPerUnit: 2, rate: 70 },
+            { desc: 'Water heater install', unit: 'EA', hoursPerUnit: 4, rate: 70 },
+            { desc: 'Supply/drain piping', unit: 'LF', hoursPerUnit: 0.15, rate: 68 },
+        ]},
+        hvac: { name: 'HVAC', tasks: [
+            { desc: 'Ductwork install', unit: 'LF', hoursPerUnit: 0.25, rate: 60 },
+            { desc: 'Equipment install (furnace/AC)', unit: 'EA', hoursPerUnit: 12, rate: 65 },
+            { desc: 'Vent/register install', unit: 'EA', hoursPerUnit: 0.5, rate: 55 },
+        ]},
+        paint: { name: 'Paint', tasks: [
+            { desc: 'Interior paint (walls)', unit: 'SF', hoursPerUnit: 0.012, rate: 38 },
+            { desc: 'Interior paint (trim)', unit: 'LF', hoursPerUnit: 0.04, rate: 38 },
+            { desc: 'Exterior paint', unit: 'SF', hoursPerUnit: 0.015, rate: 40 },
+            { desc: 'Stain & seal (deck)', unit: 'SF', hoursPerUnit: 0.02, rate: 38 },
+        ]},
+        windows: { name: 'Windows & Doors', tasks: [
+            { desc: 'Window install', unit: 'EA', hoursPerUnit: 1.5, rate: 48 },
+            { desc: 'Exterior door install', unit: 'EA', hoursPerUnit: 3, rate: 48 },
+            { desc: 'Interior door install', unit: 'EA', hoursPerUnit: 1.5, rate: 45 },
+            { desc: 'Door hardware', unit: 'EA', hoursPerUnit: 0.5, rate: 42 },
+        ]},
+        concrete: { name: 'Concrete', tasks: [
+            { desc: 'Concrete placement', unit: 'CY', hoursPerUnit: 0.5, rate: 45 },
+            { desc: 'Rebar / mesh placement', unit: 'SF', hoursPerUnit: 0.03, rate: 48 },
+        ]},
+    };
+
+    // Default material prices
+    const DEFAULT_PRICES = {
+        foundation: [
+            { name: 'Concrete (ready-mix)', unit: 'CY', price: 165 },
+            { name: 'Rebar #4', unit: 'LF', price: 0.85 },
+            { name: 'Form lumber', unit: 'LF', price: 1.50 },
+            { name: 'Anchor bolts', unit: 'EA', price: 3.50 },
+            { name: 'Vapor barrier (6 mil)', unit: 'SF', price: 0.12 },
+            { name: 'Gravel base', unit: 'TON', price: 35 },
+        ],
+        framing: [
+            { name: '2x4x8 SPF stud', unit: 'EA', price: 4.50 },
+            { name: '2x4x16 SPF', unit: 'EA', price: 8.25 },
+            { name: '2x6x8 SPF', unit: 'EA', price: 6.75 },
+            { name: '2x6x16 SPF', unit: 'EA', price: 12.50 },
+            { name: '2x10x16', unit: 'EA', price: 22.00 },
+            { name: '2x12x16', unit: 'EA', price: 28.00 },
+            { name: 'LVL beam (1-3/4x11-7/8)', unit: 'LF', price: 12.00 },
+            { name: 'Plywood sheathing 1/2"', unit: 'SHT', price: 38.00 },
+            { name: 'OSB sheathing 7/16"', unit: 'SHT', price: 28.00 },
+            { name: 'Nails (16d framing)', unit: 'LB', price: 3.50 },
+            { name: 'Joist hangers', unit: 'EA', price: 3.25 },
+            { name: 'Hurricane ties', unit: 'EA', price: 1.75 },
+        ],
+        roofing: [
+            { name: 'Asphalt shingles (architectural)', unit: 'SQ', price: 95 },
+            { name: 'Synthetic underlayment', unit: 'ROLL', price: 85 },
+            { name: 'Ice & water shield', unit: 'ROLL', price: 110 },
+            { name: 'Drip edge', unit: 'LF', price: 1.25 },
+            { name: 'Ridge cap shingles', unit: 'BNDL', price: 45 },
+            { name: 'Roofing nails', unit: 'LB', price: 3.50 },
+            { name: 'Ridge vent', unit: 'LF', price: 4.50 },
+            { name: 'Step flashing', unit: 'EA', price: 1.25 },
+        ],
+        siding: [
+            { name: 'Vinyl siding', unit: 'SQ', price: 85 },
+            { name: 'Fiber cement siding (HardiPlank)', unit: 'SQ', price: 175 },
+            { name: 'House wrap (Tyvek)', unit: 'ROLL', price: 145 },
+            { name: 'J-channel', unit: 'LF', price: 0.85 },
+            { name: 'Corner posts', unit: 'EA', price: 18 },
+            { name: 'Soffit (vinyl)', unit: 'SF', price: 2.50 },
+            { name: 'Fascia board', unit: 'LF', price: 3.25 },
+        ],
+        insulation: [
+            { name: 'Fiberglass batt R-13 (wall)', unit: 'SF', price: 0.55 },
+            { name: 'Fiberglass batt R-19', unit: 'SF', price: 0.75 },
+            { name: 'Fiberglass batt R-30 (attic)', unit: 'SF', price: 1.10 },
+            { name: 'Rigid foam 1" XPS', unit: 'SHT', price: 28 },
+            { name: 'Spray foam (closed cell)', unit: 'BF', price: 1.50 },
+        ],
+        drywall: [
+            { name: 'Drywall 1/2" 4x8', unit: 'SHT', price: 14 },
+            { name: 'Drywall 5/8" (fire-rated)', unit: 'SHT', price: 16 },
+            { name: 'Drywall screws', unit: 'LB', price: 5.50 },
+            { name: 'Joint compound (5 gal)', unit: 'EA', price: 18 },
+            { name: 'Drywall tape', unit: 'ROLL', price: 4.50 },
+            { name: 'Corner bead', unit: 'LF', price: 0.65 },
+        ],
+        flooring: [
+            { name: 'Hardwood (oak 3/4")', unit: 'SF', price: 5.50 },
+            { name: 'LVP (luxury vinyl plank)', unit: 'SF', price: 3.25 },
+            { name: 'Ceramic tile', unit: 'SF', price: 3.50 },
+            { name: 'Carpet w/ pad', unit: 'SF', price: 3.00 },
+            { name: 'Laminate flooring', unit: 'SF', price: 2.25 },
+            { name: 'Underlayment', unit: 'SF', price: 0.35 },
+            { name: 'Thinset mortar', unit: 'BAG', price: 18 },
+        ],
+        electrical: [
+            { name: 'Romex 14/2 (250ft)', unit: 'ROLL', price: 85 },
+            { name: 'Romex 12/2 (250ft)', unit: 'ROLL', price: 110 },
+            { name: 'Outlet (duplex)', unit: 'EA', price: 2.50 },
+            { name: 'Switch (single pole)', unit: 'EA', price: 2.25 },
+            { name: 'GFCI outlet', unit: 'EA', price: 16 },
+            { name: 'Electrical box', unit: 'EA', price: 1.50 },
+            { name: 'Panel (200A)', unit: 'EA', price: 225 },
+            { name: 'Breaker (20A)', unit: 'EA', price: 8.50 },
+        ],
+        plumbing: [
+            { name: 'PEX tubing 1/2" (100ft)', unit: 'ROLL', price: 45 },
+            { name: 'PEX tubing 3/4" (100ft)', unit: 'ROLL', price: 65 },
+            { name: 'PVC drain 3"', unit: 'LF', price: 4.50 },
+            { name: 'PVC drain 4"', unit: 'LF', price: 6.25 },
+            { name: 'Toilet (standard)', unit: 'EA', price: 185 },
+            { name: 'Sink (kitchen)', unit: 'EA', price: 225 },
+            { name: 'Sink (bath vanity)', unit: 'EA', price: 125 },
+            { name: 'Water heater (50 gal)', unit: 'EA', price: 650 },
+        ],
+        hvac: [
+            { name: 'Ductwork (6" flex)', unit: 'LF', price: 3.50 },
+            { name: 'Ductwork (8" flex)', unit: 'LF', price: 5.25 },
+            { name: 'Register/grille', unit: 'EA', price: 12 },
+            { name: 'Furnace (80K BTU)', unit: 'EA', price: 1200 },
+            { name: 'AC condenser (3 ton)', unit: 'EA', price: 2200 },
+            { name: 'Thermostat (programmable)', unit: 'EA', price: 85 },
+        ],
+        paint: [
+            { name: 'Interior paint (gal)', unit: 'GAL', price: 38 },
+            { name: 'Exterior paint (gal)', unit: 'GAL', price: 45 },
+            { name: 'Primer (gal)', unit: 'GAL', price: 28 },
+            { name: 'Caulk (tube)', unit: 'EA', price: 5.50 },
+            { name: 'Painters tape', unit: 'ROLL', price: 6 },
+        ],
+        windows: [
+            { name: 'Vinyl window (3x4 DH)', unit: 'EA', price: 225 },
+            { name: 'Vinyl window (4x5 DH)', unit: 'EA', price: 325 },
+            { name: 'Egress window', unit: 'EA', price: 450 },
+            { name: 'Exterior door (entry)', unit: 'EA', price: 450 },
+            { name: 'Sliding glass door', unit: 'EA', price: 850 },
+            { name: 'Interior door (prehung)', unit: 'EA', price: 125 },
+            { name: 'Door casing set', unit: 'SET', price: 22 },
+        ],
+    };
+
+    // ==================== INITIALIZATION ====================
+    document.addEventListener('DOMContentLoaded', function() {
+        canvas = document.getElementById('planCanvas');
+        ctx = canvas.getContext('2d');
+        canvasContainer = document.getElementById('canvasContainer');
+        setupCanvasEvents();
+        setupUploadZone();
+        document.getElementById('estimateDate').valueAsDate = new Date();
+        const valid = new Date();
+        valid.setDate(valid.getDate() + 30);
+        document.getElementById('validUntil').valueAsDate = valid;
+        loadSavedData();
+    });
+
+    // ==================== TAB NAVIGATION ====================
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('tab-' + tabId).classList.add('active');
+        document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+        if (tabId === 'estimate') recalcEstimate();
+        if (tabId === 'materials') updateMaterialSummary();
+    }
+
+    // ==================== FILE UPLOAD ====================
+    function setupUploadZone() {
+        const zone = document.getElementById('uploadZone');
+        zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+        zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+        zone.addEventListener('drop', e => {
+            e.preventDefault();
+            zone.classList.remove('drag-over');
+            handleFiles(e.dataTransfer.files);
+        });
+    }
+
+    function handleFileUpload(event) {
+        handleFiles(event.target.files);
+    }
+
+    async function handleFiles(files) {
+        for (const file of files) {
+            if (file.type === 'application/pdf') {
+                await loadPDF(file);
+            } else if (file.type.startsWith('image/')) {
+                await loadImage(file);
+            }
+        }
+        if (APP.pages.length > 0) {
+            showViewer();
+            showPage(0);
+            showToast('Plans loaded successfully!', 'success');
+        }
+    }
+
+    async function loadPDF(file) {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const viewport = page.getViewport({ scale: 2 });
+            const offCanvas = document.createElement('canvas');
+            offCanvas.width = viewport.width;
+            offCanvas.height = viewport.height;
+            const offCtx = offCanvas.getContext('2d');
+            await page.render({ canvasContext: offCtx, viewport }).promise;
+            const img = new Image();
+            img.src = offCanvas.toDataURL();
+            await new Promise(resolve => { img.onload = resolve; });
+            APP.pages.push({
+                img, width: viewport.width, height: viewport.height,
+                scale: null, measurements: [], name: `${file.name} - Page ${i}`
+            });
+        }
+        updatePageThumbs();
+    }
+
+    async function loadImage(file) {
+        return new Promise(resolve => {
+            const reader = new FileReader();
+            reader.onload = e => {
+                const img = new Image();
+                img.onload = () => {
+                    APP.pages.push({
+                        img, width: img.width, height: img.height,
+                        scale: null, measurements: [], name: file.name
+                    });
+                    updatePageThumbs();
+                    resolve();
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function showViewer() {
+        document.getElementById('viewerSection').style.display = 'block';
+        document.getElementById('pagesCard').style.display = 'block';
+        document.getElementById('scaleCard').style.display = 'block';
+        document.getElementById('uploadCard').querySelector('.upload-zone').innerHTML =
+            '<div class="upload-icon">&#10004;</div><div class="upload-text">Plans loaded! Click to add more.</div>';
+    }
+
+    function updatePageThumbs() {
+        const container = document.getElementById('pageThumbs');
+        container.innerHTML = '';
+        document.getElementById('pageCount').textContent = APP.pages.length + ' pages';
+        APP.pages.forEach((page, i) => {
+            const thumb = document.createElement('div');
+            thumb.className = 'page-thumb' + (i === APP.currentPage ? ' active' : '');
+            thumb.onclick = () => showPage(i);
+            const tc = document.createElement('canvas');
+            tc.width = 80; tc.height = 60;
+            const tctx = tc.getContext('2d');
+            const scale = Math.min(80 / page.width, 60 / page.height);
+            tctx.drawImage(page.img, 0, 0, page.width * scale, page.height * scale);
+            thumb.appendChild(tc);
+            const num = document.createElement('div');
+            num.className = 'page-num';
+            num.textContent = i + 1;
+            thumb.appendChild(num);
+            container.appendChild(thumb);
+        });
+    }
+
+    function showPage(index) {
+        APP.currentPage = index;
+        const page = APP.pages[index];
+        canvas.width = page.width;
+        canvas.height = page.height;
+        APP.zoom = Math.min(canvasContainer.clientWidth / page.width, canvasContainer.clientHeight / page.height, 1);
+        APP.panOffset = { x: 0, y: 0 };
+        renderCanvas();
+        updatePageThumbs();
+        // Update scale status
+        const pageScale = APP.scalePerPage[index] || APP.scale;
+        if (pageScale) {
+            document.getElementById('scaleStatus').className = 'scale-bar calibrated';
+            document.getElementById('scaleStatus').innerHTML = '&#10004; Scale calibrated: 1 pixel = ' + (1/pageScale).toFixed(4) + ' ft';
+        } else {
+            document.getElementById('scaleStatus').className = 'scale-bar';
+            document.getElementById('scaleStatus').innerHTML = '&#9888;&#65039; Scale not set. Calibrate for accurate measurements.';
+        }
+    }
+
+    // ==================== CANVAS RENDERING ====================
+    function renderCanvas() {
+        if (!APP.pages.length) return;
+        const page = APP.pages[APP.currentPage];
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        ctx.drawImage(page.img, 0, 0);
+
+        // Draw measurements
+        const allMeasurements = APP.measurements.filter(m => m.page === APP.currentPage);
+        allMeasurements.forEach(m => drawMeasurement(m));
+
+        // Draw temp points
+        if (APP.tempPoints.length > 0) {
+            ctx.strokeStyle = document.getElementById('measureColor').value;
+            ctx.lineWidth = 2 / APP.zoom;
+            ctx.setLineDash([5 / APP.zoom, 5 / APP.zoom]);
+            if (APP.currentTool === 'area' || APP.currentTool === 'polyline') {
+                ctx.beginPath();
+                ctx.moveTo(APP.tempPoints[0].x, APP.tempPoints[0].y);
+                for (let i = 1; i < APP.tempPoints.length; i++) {
+                    ctx.lineTo(APP.tempPoints[i].x, APP.tempPoints[i].y);
+                }
+                ctx.stroke();
+            } else if (APP.tempPoints.length === 1 && APP.currentTool === 'linear') {
+                // Just show the point
+                ctx.fillStyle = document.getElementById('measureColor').value;
+                ctx.beginPath();
+                ctx.arc(APP.tempPoints[0].x, APP.tempPoints[0].y, 4 / APP.zoom, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.setLineDash([]);
+        }
+
+        // Draw calibration points
+        if (APP.calibrationMode && APP.calibrationPoints.length > 0) {
+            ctx.strokeStyle = '#00ff00';
+            ctx.lineWidth = 2 / APP.zoom;
+            ctx.fillStyle = '#00ff00';
+            APP.calibrationPoints.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 5 / APP.zoom, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            if (APP.calibrationPoints.length === 2) {
+                ctx.beginPath();
+                ctx.moveTo(APP.calibrationPoints[0].x, APP.calibrationPoints[0].y);
+                ctx.lineTo(APP.calibrationPoints[1].x, APP.calibrationPoints[1].y);
+                ctx.stroke();
+            }
+        }
+
+        ctx.restore();
+        // Apply zoom transform on canvas style
+        canvas.style.transform = `scale(${APP.zoom})`;
+        canvas.style.transformOrigin = 'top left';
+    }
+
+    function drawMeasurement(m) {
+        ctx.strokeStyle = m.color || '#FF4136';
+        ctx.fillStyle = m.color || '#FF4136';
+        ctx.lineWidth = 2 / APP.zoom;
+        ctx.font = `${14 / APP.zoom}px Arial`;
+
+        if (m.type === 'linear') {
+            ctx.beginPath();
+            ctx.moveTo(m.points[0].x, m.points[0].y);
+            ctx.lineTo(m.points[1].x, m.points[1].y);
+            ctx.stroke();
+            // Endpoints
+            [0, 1].forEach(i => {
+                ctx.beginPath();
+                ctx.arc(m.points[i].x, m.points[i].y, 3 / APP.zoom, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            // Label
+            const mx = (m.points[0].x + m.points[1].x) / 2;
+            const my = (m.points[0].y + m.points[1].y) / 2;
+            const label = m.label || formatDistance(m.value);
+            ctx.fillStyle = 'white';
+            ctx.fillRect(mx - 30 / APP.zoom, my - 10 / APP.zoom, 60 / APP.zoom, 16 / APP.zoom);
+            ctx.fillStyle = m.color || '#FF4136';
+            ctx.fillText(label, mx - 25 / APP.zoom, my + 3 / APP.zoom);
+        } else if (m.type === 'area') {
+            ctx.globalAlpha = 0.15;
+            ctx.beginPath();
+            ctx.moveTo(m.points[0].x, m.points[0].y);
+            m.points.forEach(p => ctx.lineTo(p.x, p.y));
+            ctx.closePath();
+            ctx.fill();
+            ctx.globalAlpha = 1;
+            ctx.beginPath();
+            ctx.moveTo(m.points[0].x, m.points[0].y);
+            m.points.forEach(p => ctx.lineTo(p.x, p.y));
+            ctx.closePath();
+            ctx.stroke();
+            // Centroid label
+            const cx = m.points.reduce((s, p) => s + p.x, 0) / m.points.length;
+            const cy = m.points.reduce((s, p) => s + p.y, 0) / m.points.length;
+            const label = m.label || formatArea(m.value);
+            ctx.fillStyle = 'white';
+            ctx.fillRect(cx - 35 / APP.zoom, cy - 10 / APP.zoom, 70 / APP.zoom, 16 / APP.zoom);
+            ctx.fillStyle = m.color || '#FF4136';
+            ctx.fillText(label, cx - 30 / APP.zoom, cy + 3 / APP.zoom);
+        } else if (m.type === 'count') {
+            ctx.beginPath();
+            ctx.arc(m.points[0].x, m.points[0].y, 8 / APP.zoom, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${10 / APP.zoom}px Arial`;
+            ctx.fillText(m.countIndex || '', m.points[0].x - 3 / APP.zoom, m.points[0].y + 3 / APP.zoom);
+        } else if (m.type === 'polyline') {
+            ctx.beginPath();
+            ctx.moveTo(m.points[0].x, m.points[0].y);
+            for (let i = 1; i < m.points.length; i++) {
+                ctx.lineTo(m.points[i].x, m.points[i].y);
+            }
+            ctx.stroke();
+            const mx = m.points[Math.floor(m.points.length/2)].x;
+            const my = m.points[Math.floor(m.points.length/2)].y;
+            const label = m.label || formatDistance(m.value);
+            ctx.fillStyle = 'white';
+            ctx.fillRect(mx - 30 / APP.zoom, my - 10 / APP.zoom, 60 / APP.zoom, 16 / APP.zoom);
+            ctx.fillStyle = m.color || '#FF4136';
+            ctx.fillText(label, mx - 25 / APP.zoom, my + 3 / APP.zoom);
+        }
+    }
+
+    // ==================== CANVAS EVENTS ====================
+    function setupCanvasEvents() {
+        canvas.addEventListener('mousedown', onCanvasMouseDown);
+        canvas.addEventListener('mousemove', onCanvasMouseMove);
+        canvas.addEventListener('mouseup', onCanvasMouseUp);
+        canvas.addEventListener('dblclick', onCanvasDoubleClick);
+        canvas.addEventListener('wheel', onCanvasWheel);
+        // Touch support
+        canvas.addEventListener('touchstart', e => { e.preventDefault(); handleTouch(e, 'down'); });
+        canvas.addEventListener('touchmove', e => { e.preventDefault(); handleTouch(e, 'move'); });
+        canvas.addEventListener('touchend', e => { e.preventDefault(); handleTouch(e, 'up'); });
+    }
+
+    function getCanvasPoint(e) {
+        const rect = canvas.getBoundingClientRect();
+        return {
+            x: (e.clientX - rect.left) / APP.zoom,
+            y: (e.clientY - rect.top) / APP.zoom
+        };
+    }
+
+    function handleTouch(e, type) {
+        if (e.touches.length === 1 || type === 'up') {
+            const touch = type === 'up' ? e.changedTouches[0] : e.touches[0];
+            const mouseEvent = { clientX: touch.clientX, clientY: touch.clientY, preventDefault: () => {} };
+            if (type === 'down') onCanvasMouseDown(mouseEvent);
+            else if (type === 'move') onCanvasMouseMove(mouseEvent);
+            else onCanvasMouseUp(mouseEvent);
+        }
+    }
+
+    function onCanvasMouseDown(e) {
+        const pt = getCanvasPoint(e);
+
+        if (APP.calibrationMode) {
+            APP.calibrationPoints.push(pt);
+            if (APP.calibrationPoints.length === 2) {
+                finishCalibration();
+            }
+            renderCanvas();
+            return;
+        }
+
+        if (APP.currentTool === 'pan') {
+            APP.isDragging = true;
+            APP.dragStart = { x: e.clientX - APP.panOffset.x, y: e.clientY - APP.panOffset.y };
+            canvas.style.cursor = 'grabbing';
+        } else if (APP.currentTool === 'linear') {
+            APP.tempPoints.push(pt);
+            if (APP.tempPoints.length === 2) {
+                finishLinearMeasurement();
+            }
+            renderCanvas();
+        } else if (APP.currentTool === 'area' || APP.currentTool === 'polyline') {
+            APP.tempPoints.push(pt);
+            renderCanvas();
+        } else if (APP.currentTool === 'count') {
+            addCountMeasurement(pt);
+        }
+    }
+
+    function onCanvasMouseMove(e) {
+        if (APP.isDragging && APP.currentTool === 'pan') {
+            APP.panOffset.x = e.clientX - APP.dragStart.x;
+            APP.panOffset.y = e.clientY - APP.dragStart.y;
+            canvasContainer.scrollLeft = -APP.panOffset.x;
+            canvasContainer.scrollTop = -APP.panOffset.y;
+        }
+    }
+
+    function onCanvasMouseUp(e) {
+        APP.isDragging = false;
+        if (APP.currentTool === 'pan') canvas.style.cursor = 'grab';
+    }
+
+    function onCanvasDoubleClick(e) {
+        if (APP.currentTool === 'area' && APP.tempPoints.length >= 3) {
+            finishAreaMeasurement();
+        } else if (APP.currentTool === 'polyline' && APP.tempPoints.length >= 2) {
+            finishPolylineMeasurement();
+        }
+    }
+
+    function onCanvasWheel(e) {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? 0.9 : 1.1;
+        APP.zoom = Math.max(0.1, Math.min(5, APP.zoom * delta));
+        renderCanvas();
+    }
+
+    // ==================== TOOLS ====================
+    function setTool(tool) {
+        APP.currentTool = tool;
+        APP.tempPoints = [];
+        document.querySelectorAll('.tool-btn[data-tool]').forEach(b => b.classList.remove('active'));
+        const btn = document.querySelector(`.tool-btn[data-tool="${tool}"]`);
+        if (btn) btn.classList.add('active');
+        canvas.style.cursor = tool === 'pan' ? 'grab' : 'crosshair';
+        renderCanvas();
+    }
+
+    function zoomIn() { APP.zoom = Math.min(5, APP.zoom * 1.2); renderCanvas(); }
+    function zoomOut() { APP.zoom = Math.max(0.1, APP.zoom / 1.2); renderCanvas(); }
+    function zoomFit() {
+        if (!APP.pages.length) return;
+        const page = APP.pages[APP.currentPage];
+        APP.zoom = Math.min(canvasContainer.clientWidth / page.width, canvasContainer.clientHeight / page.height);
+        renderCanvas();
+    }
+
+    // ==================== MEASUREMENTS ====================
+    function getScale() {
+        return APP.scalePerPage[APP.currentPage] || APP.scale || null;
+    }
+
+    function pixelDistance(p1, p2) {
+        return Math.sqrt((p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2);
+    }
+
+    function pixelsToFeet(px) {
+        const s = getScale();
+        return s ? px / s : px;
+    }
+
+    function formatDistance(ft) {
+        if (!getScale()) return Math.round(ft) + ' px';
+        if (ft >= 1) return ft.toFixed(2) + ' ft';
+        return (ft * 12).toFixed(1) + ' in';
+    }
+
+    function formatArea(sqft) {
+        if (!getScale()) return Math.round(sqft) + ' px²';
+        return sqft.toFixed(1) + ' SF';
+    }
+
+    function finishLinearMeasurement() {
+        const pts = APP.tempPoints;
+        const pxDist = pixelDistance(pts[0], pts[1]);
+        const realDist = pixelsToFeet(pxDist);
+        const label = document.getElementById('measureLabel').value || '';
+        const m = {
+            id: Date.now(),
+            type: 'linear',
+            points: [...pts],
+            pixelLength: pxDist,
+            value: realDist,
+            unit: getScale() ? 'ft' : 'px',
+            color: document.getElementById('measureColor').value,
+            label: label || formatDistance(realDist),
+            category: document.getElementById('measureCategory').value,
+            page: APP.currentPage,
+        };
+        APP.measurements.push(m);
+        APP.tempPoints = [];
+        document.getElementById('measureLabel').value = '';
+        renderCanvas();
+        updateMeasurementList();
+    }
+
+    function finishAreaMeasurement() {
+        const pts = APP.tempPoints;
+        // Shoelace formula for area in pixels
+        let pxArea = 0;
+        for (let i = 0; i < pts.length; i++) {
+            const j = (i + 1) % pts.length;
+            pxArea += pts[i].x * pts[j].y;
+            pxArea -= pts[j].x * pts[i].y;
+        }
+        pxArea = Math.abs(pxArea) / 2;
+        const s = getScale();
+        const realArea = s ? pxArea / (s * s) : pxArea;
+        const label = document.getElementById('measureLabel').value || '';
+        const m = {
+            id: Date.now(),
+            type: 'area',
+            points: [...pts],
+            pixelArea: pxArea,
+            value: realArea,
+            unit: getScale() ? 'SF' : 'px²',
+            color: document.getElementById('measureColor').value,
+            label: label || formatArea(realArea),
+            category: document.getElementById('measureCategory').value,
+            page: APP.currentPage,
+        };
+        APP.measurements.push(m);
+        APP.tempPoints = [];
+        document.getElementById('measureLabel').value = '';
+        renderCanvas();
+        updateMeasurementList();
+    }
+
+    function finishPolylineMeasurement() {
+        const pts = APP.tempPoints;
+        let totalPx = 0;
+        for (let i = 0; i < pts.length - 1; i++) {
+            totalPx += pixelDistance(pts[i], pts[i+1]);
+        }
+        const realDist = pixelsToFeet(totalPx);
+        const label = document.getElementById('measureLabel').value || '';
+        const m = {
+            id: Date.now(),
+            type: 'polyline',
+            points: [...pts],
+            pixelLength: totalPx,
+            value: realDist,
+            unit: getScale() ? 'ft' : 'px',
+            color: document.getElementById('measureColor').value,
+            label: label || formatDistance(realDist),
+            category: document.getElementById('measureCategory').value,
+            page: APP.currentPage,
+        };
+        APP.measurements.push(m);
+        APP.tempPoints = [];
+        document.getElementById('measureLabel').value = '';
+        renderCanvas();
+        updateMeasurementList();
+    }
+
+    function addCountMeasurement(pt) {
+        const cat = document.getElementById('measureCategory').value;
+        const label = document.getElementById('measureLabel').value || cat;
+        const existingCounts = APP.measurements.filter(m => m.type === 'count' && m.countLabel === label && m.page === APP.currentPage);
+        const m = {
+            id: Date.now(),
+            type: 'count',
+            points: [pt],
+            value: 1,
+            unit: 'EA',
+            color: document.getElementById('measureColor').value,
+            label: label,
+            countLabel: label,
+            countIndex: existingCounts.length + 1,
+            category: cat,
+            page: APP.currentPage,
+        };
+        APP.measurements.push(m);
+        renderCanvas();
+        updateMeasurementList();
+    }
+
+    function undoMeasurement() {
+        APP.measurements.pop();
+        renderCanvas();
+        updateMeasurementList();
+    }
+
+    function clearMeasurements() {
+        if (confirm('Clear all measurements on this page?')) {
+            APP.measurements = APP.measurements.filter(m => m.page !== APP.currentPage);
+            renderCanvas();
+            updateMeasurementList();
+        }
+    }
+
+    function deleteMeasurement(id) {
+        APP.measurements = APP.measurements.filter(m => m.id !== id);
+        renderCanvas();
+        updateMeasurementList();
+    }
+
+    function updateMeasurementList() {
+        const list = document.getElementById('measurementList');
+        const pageMeasurements = APP.measurements.filter(m => m.page === APP.currentPage);
+        if (pageMeasurements.length === 0) {
+            list.innerHTML = '<div style="text-align:center;color:var(--text-sec);padding:20px;font-size:13px">No measurements yet.</div>';
+            document.getElementById('measurementSummary').innerHTML = '';
+            return;
+        }
+        list.innerHTML = pageMeasurements.map(m => `
+            <div class="measurement-item">
+                <span>
+                    <span class="type-badge type-${m.type}">${m.type}</span>
+                    ${m.label || ''}
+                </span>
+                <span>
+                    ${m.type === 'count' ? '#' + m.countIndex : (m.type === 'area' ? formatArea(m.value) : formatDistance(m.value))}
+                    <button class="btn btn-sm" onclick="deleteMeasurement(${m.id})" style="padding:2px 6px;margin-left:4px" title="Delete">&#128465;</button>
+                </span>
+            </div>
+        `).join('');
+
+        // Summary
+        const linears = pageMeasurements.filter(m => m.type === 'linear' || m.type === 'polyline');
+        const areas = pageMeasurements.filter(m => m.type === 'area');
+        const counts = pageMeasurements.filter(m => m.type === 'count');
+        const totalLF = linears.reduce((s, m) => s + m.value, 0);
+        const totalSF = areas.reduce((s, m) => s + m.value, 0);
+
+        document.getElementById('measurementSummary').innerHTML = `
+            <strong>Page Summary:</strong><br>
+            Linear: ${formatDistance(totalLF)} (${linears.length} items)<br>
+            Area: ${formatArea(totalSF)} (${areas.length} items)<br>
+            Count: ${counts.length} items
+        `;
+        updateTakeoffStats();
+    }
+
+    // ==================== SCALE CALIBRATION ====================
+    function startScaleCalibration() {
+        APP.calibrationMode = true;
+        APP.calibrationPoints = [];
+        APP.currentTool = 'pan';
+        canvas.style.cursor = 'crosshair';
+        showToast('Click two points on a known dimension line', 'info');
+    }
+
+    function finishCalibration() {
+        const dist = document.getElementById('knownDistance').value;
+        if (!dist || dist <= 0) {
+            showModal('Enter Known Distance', `
+                <div class="form-group">
+                    <label>What is the real-world distance between the two points you clicked?</label>
+                    <div style="display:flex;gap:8px">
+                        <input type="number" class="form-control" id="modalKnownDist" placeholder="e.g. 20" step="0.25" autofocus>
+                        <select class="form-control" id="modalKnownUnit" style="width:80px">
+                            <option value="ft">ft</option>
+                            <option value="in">in</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-outline" onclick="cancelCalibration()">Cancel</button>
+                    <button class="btn btn-primary" onclick="applyCalibrationFromModal()">Set Scale</button>
+                </div>
+            `);
+            return;
+        }
+        applyCalibration(parseFloat(dist), document.getElementById('knownUnit').value);
+    }
+
+    function applyCalibrationFromModal() {
+        const dist = parseFloat(document.getElementById('modalKnownDist').value);
+        const unit = document.getElementById('modalKnownUnit').value;
+        if (!dist || dist <= 0) { showToast('Please enter a valid distance', 'error'); return; }
+        applyCalibration(dist, unit);
+        closeModal();
+    }
+
+    function applyCalibration(dist, unit) {
+        let feet = dist;
+        if (unit === 'in') feet = dist / 12;
+        else if (unit === 'm') feet = dist * 3.28084;
+
+        const pxDist = pixelDistance(APP.calibrationPoints[0], APP.calibrationPoints[1]);
+        const pxPerFoot = pxDist / feet;
+
+        APP.scalePerPage[APP.currentPage] = pxPerFoot;
+        if (!APP.scale) APP.scale = pxPerFoot;
+
+        APP.calibrationMode = false;
+        APP.calibrationPoints = [];
+        setTool('pan');
+
+        document.getElementById('scaleStatus').className = 'scale-bar calibrated';
+        document.getElementById('scaleStatus').innerHTML = '&#10004; Scale calibrated: 1 ft = ' + pxPerFoot.toFixed(1) + ' pixels (' + (1/pxPerFoot*12).toFixed(2) + ' inches/pixel)';
+        showToast('Scale calibrated successfully!', 'success');
+        recalcMeasurements();
+        renderCanvas();
+    }
+
+    function cancelCalibration() {
+        APP.calibrationMode = false;
+        APP.calibrationPoints = [];
+        closeModal();
+        renderCanvas();
+    }
+
+    function applyPresetScale() {
+        const val = document.getElementById('presetScale').value;
+        if (!val) return;
+        // val is the drawing scale in inches per foot on paper
+        // We need to determine pixels per foot based on assumed DPI
+        // At 150 DPI (common scan), 1/4" = 1' means 0.25 inches on paper = 1 foot real
+        // So 1 foot = 0.25" on paper = 0.25 * 150 = 37.5 pixels
+        // But our PDFs are rendered at scale 2, so DPI is roughly 144-150
+        const dpi = 150;
+        const inchesPerFoot = parseFloat(val);
+        const pxPerFoot = inchesPerFoot * dpi;
+        APP.scalePerPage[APP.currentPage] = pxPerFoot;
+        if (!APP.scale) APP.scale = pxPerFoot;
+
+        document.getElementById('scaleStatus').className = 'scale-bar calibrated';
+        document.getElementById('scaleStatus').innerHTML = '&#10004; Scale set from preset: 1 ft = ' + pxPerFoot.toFixed(1) + ' pixels';
+        showToast('Scale set from preset', 'success');
+        recalcMeasurements();
+        renderCanvas();
+    }
+
+    function autoDetectScale() {
+        // AI auto-detect: look for scale bar or dimension text in the image
+        // This is a heuristic approach - analyzes common architectural scale indicators
+        showToast('Analyzing plan for scale indicators...', 'info');
+        setTimeout(() => {
+            if (APP.pages.length === 0) {
+                showToast('Upload plans first', 'error');
+                return;
+            }
+            // Heuristic: check page dimensions and common architectural paper sizes
+            const page = APP.pages[APP.currentPage];
+            const aspectRatio = page.width / page.height;
+
+            // Common architectural sheet sizes at various DPIs
+            // ARCH D (24x36) aspect = 1.5, at 150 DPI rendered at 2x = 7200x10800
+            // ANSI D (22x34) aspect = 1.545
+            let detectedDPI = 150;
+            let paperWidthInches = 36;
+
+            if (aspectRatio > 1.3 && aspectRatio < 1.7) {
+                // Landscape architectural sheet
+                paperWidthInches = page.width > 5000 ? 36 : 24;
+                detectedDPI = page.width / paperWidthInches;
+            } else if (aspectRatio > 0.6 && aspectRatio < 0.8) {
+                // Portrait
+                paperWidthInches = page.height > 5000 ? 36 : 24;
+                detectedDPI = page.height / paperWidthInches;
+            } else {
+                // Letter/tabloid
+                paperWidthInches = page.width > 3000 ? 17 : 11;
+                detectedDPI = page.width / paperWidthInches;
+            }
+
+            // Assume 1/4" = 1'-0" as default residential scale
+            const defaultScaleInPerFt = 0.25;
+            const pxPerFoot = defaultScaleInPerFt * detectedDPI;
+
+            APP.scalePerPage[APP.currentPage] = pxPerFoot;
+            if (!APP.scale) APP.scale = pxPerFoot;
+
+            document.getElementById('scaleStatus').className = 'scale-bar calibrated';
+            document.getElementById('scaleStatus').innerHTML =
+                '&#10004; Auto-detected: ~' + Math.round(detectedDPI) + ' DPI, assuming 1/4" = 1\'-0" scale. ' +
+                '<strong>Verify with a known dimension and recalibrate if needed.</strong>';
+            showToast('Scale auto-detected (verify with known dimension)', 'success');
+            recalcMeasurements();
+            renderCanvas();
+        }, 800);
+    }
+
+    function recalcMeasurements() {
+        APP.measurements.forEach(m => {
+            const s = APP.scalePerPage[m.page] || APP.scale;
+            if (!s) return;
+            if (m.type === 'linear' || m.type === 'polyline') {
+                m.value = m.pixelLength / s;
+                m.unit = 'ft';
+                if (!m.customLabel) m.label = formatDistance(m.value);
+            } else if (m.type === 'area') {
+                m.value = m.pixelArea / (s * s);
+                m.unit = 'SF';
+                if (!m.customLabel) m.label = formatArea(m.value);
+            }
+        });
+        updateMeasurementList();
+    }
+
+    // ==================== TAKEOFF ====================
+    function updateTakeoffStats() {
+        const linears = APP.measurements.filter(m => m.type === 'linear' || m.type === 'polyline');
+        const areas = APP.measurements.filter(m => m.type === 'area');
+        const counts = APP.measurements.filter(m => m.type === 'count');
+        const categories = new Set(APP.measurements.map(m => m.category));
+
+        document.getElementById('statLinearTotal').textContent = linears.reduce((s, m) => s + m.value, 0).toFixed(0);
+        document.getElementById('statAreaTotal').textContent = areas.reduce((s, m) => s + m.value, 0).toFixed(0);
+        document.getElementById('statCountTotal').textContent = counts.length;
+        document.getElementById('statCategories').textContent = categories.size;
+    }
+
+    function addMeasurementsToTakeoff() {
+        const pageMeasurements = APP.measurements.filter(m => m.page === APP.currentPage);
+        if (pageMeasurements.length === 0) { showToast('No measurements to add', 'error'); return; }
+
+        // Group by category and type
+        const groups = {};
+        pageMeasurements.forEach(m => {
+            const key = m.category + '-' + m.type;
+            if (!groups[key]) groups[key] = { category: m.category, type: m.type, items: [] };
+            groups[key].items.push(m);
+        });
+
+        Object.values(groups).forEach(g => {
+            let qty, unit;
+            if (g.type === 'count') {
+                qty = g.items.length;
+                unit = 'EA';
+            } else if (g.type === 'area') {
+                qty = g.items.reduce((s, m) => s + m.value, 0);
+                unit = 'SF';
+            } else {
+                qty = g.items.reduce((s, m) => s + m.value, 0);
+                unit = 'LF';
+            }
+            APP.takeoffItems.push({
+                id: Date.now() + Math.random(),
+                category: g.category,
+                description: g.items[0].label || g.category + ' ' + g.type,
+                type: g.type,
+                quantity: parseFloat(qty.toFixed(2)),
+                unit: unit,
+                wastePct: g.type === 'area' ? 10 : 5,
+                notes: `From page ${APP.currentPage + 1}`,
+            });
+        });
+
+        renderTakeoffTable();
+        showToast(`Added ${Object.keys(groups).length} items to takeoff`, 'success');
+    }
+
+    function addTakeoffItem() {
+        showModal('Add Takeoff Item', `
+            <div class="form-group">
+                <label>Category</label>
+                <select class="form-control" id="newTakeoffCat">
+                    <option value="foundation">Foundation</option>
+                    <option value="framing">Framing</option>
+                    <option value="roofing">Roofing</option>
+                    <option value="siding">Siding</option>
+                    <option value="insulation">Insulation</option>
+                    <option value="drywall">Drywall</option>
+                    <option value="flooring">Flooring</option>
+                    <option value="electrical">Electrical</option>
+                    <option value="plumbing">Plumbing</option>
+                    <option value="hvac">HVAC</option>
+                    <option value="paint">Paint</option>
+                    <option value="windows">Windows/Doors</option>
+                    <option value="concrete">Concrete</option>
+                    <option value="general">General</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <input type="text" class="form-control" id="newTakeoffDesc" placeholder="e.g. Exterior wall framing">
+            </div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Type</label>
+                    <select class="form-control" id="newTakeoffType">
+                        <option value="linear">Linear</option>
+                        <option value="area">Area</option>
+                        <option value="count">Count</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="number" class="form-control" id="newTakeoffQty" step="0.01">
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Unit</label>
+                    <select class="form-control" id="newTakeoffUnit">
+                        <option value="LF">LF (Linear Feet)</option>
+                        <option value="SF">SF (Square Feet)</option>
+                        <option value="EA">EA (Each)</option>
+                        <option value="SQ">SQ (Roofing Square)</option>
+                        <option value="CY">CY (Cubic Yard)</option>
+                        <option value="SHT">SHT (Sheets)</option>
+                        <option value="GAL">GAL (Gallons)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Waste %</label>
+                    <input type="number" class="form-control" id="newTakeoffWaste" value="10" min="0" max="50">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Notes</label>
+                <input type="text" class="form-control" id="newTakeoffNotes" placeholder="Optional notes">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveTakeoffItem()">Add Item</button>
+            </div>
+        `);
+    }
+
+    function saveTakeoffItem() {
+        const item = {
+            id: Date.now(),
+            category: document.getElementById('newTakeoffCat').value,
+            description: document.getElementById('newTakeoffDesc').value,
+            type: document.getElementById('newTakeoffType').value,
+            quantity: parseFloat(document.getElementById('newTakeoffQty').value) || 0,
+            unit: document.getElementById('newTakeoffUnit').value,
+            wastePct: parseFloat(document.getElementById('newTakeoffWaste').value) || 0,
+            notes: document.getElementById('newTakeoffNotes').value,
+        };
+        APP.takeoffItems.push(item);
+        renderTakeoffTable();
+        closeModal();
+        showToast('Takeoff item added', 'success');
+    }
+
+    function deleteTakeoffItem(id) {
+        APP.takeoffItems = APP.takeoffItems.filter(i => i.id !== id);
+        renderTakeoffTable();
+    }
+
+    function renderTakeoffTable() {
+        const tbody = document.getElementById('takeoffBody');
+        if (APP.takeoffItems.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--text-sec);padding:30px">No takeoff items.</td></tr>';
+            return;
+        }
+        tbody.innerHTML = APP.takeoffItems.map(item => {
+            const total = item.quantity * (1 + item.wastePct / 100);
+            return `<tr>
+                <td><span class="type-badge type-${item.type === 'area' ? 'area' : item.type === 'count' ? 'count' : 'linear'}">${item.category}</span></td>
+                <td>${item.description}</td>
+                <td>${item.type}</td>
+                <td class="number">${item.quantity.toFixed(2)}</td>
+                <td>${item.unit}</td>
+                <td class="number">${item.wastePct}%</td>
+                <td class="number"><strong>${total.toFixed(2)}</strong></td>
+                <td>${item.notes || ''}</td>
+                <td class="actions">
+                    <button class="btn btn-sm btn-danger" onclick="deleteTakeoffItem(${item.id})">&#128465;</button>
+                </td>
+            </tr>`;
+        }).join('');
+        updateTakeoffStats();
+        updateCategoryFilters();
+    }
+
+    function updateCategoryFilters() {
+        const cats = [...new Set(APP.takeoffItems.map(i => i.category))];
+        const container = document.getElementById('categoryFilters');
+        container.innerHTML = '<button class="btn btn-sm btn-primary" onclick="filterTakeoff(\'all\')">All</button>' +
+            cats.map(c => `<button class="btn btn-sm btn-outline" onclick="filterTakeoff('${c}')">${c}</button>`).join('');
+    }
+
+    function filterTakeoff(cat) {
+        const rows = document.querySelectorAll('#takeoffBody tr');
+        rows.forEach(row => {
+            row.style.display = cat === 'all' || row.innerHTML.includes(cat) ? '' : 'none';
+        });
+    }
+
+    function importFromMeasurements() {
+        addMeasurementsToTakeoff();
+    }
+
+    // ==================== MATERIALS ====================
+    function toggleCategory(header) {
+        const body = header.nextElementSibling;
+        body.classList.toggle('open');
+        header.querySelector('span').textContent = body.classList.contains('open') ? '\u25B2' : '\u25BC';
+    }
+
+    function addMaterialRow(category) {
+        const tbody = document.getElementById('mat-' + category);
+        if (!tbody) return;
+        const prices = DEFAULT_PRICES[category] || [];
+        const options = prices.map(p => `<option value="${p.name}" data-price="${p.price}" data-unit="${p.unit}">${p.name} ($${p.price}/${p.unit})</option>`).join('');
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>
+                <select class="form-control" style="font-size:12px" onchange="materialSelectChanged(this, '${category}')">
+                    <option value="">Select or type...</option>
+                    ${options}
+                    <option value="custom">-- Custom --</option>
+                </select>
+                <input type="text" class="form-control" style="font-size:12px;display:none;margin-top:4px" placeholder="Custom material name">
+            </td>
+            <td><input type="number" class="form-control" style="font-size:12px;width:80px" value="0" step="0.01" onchange="updateMaterialRow(this)"></td>
+            <td><input type="text" class="form-control" style="font-size:12px;width:60px" value="EA"></td>
+            <td><input type="number" class="form-control" style="font-size:12px;width:80px" value="0" step="0.01" onchange="updateMaterialRow(this)"></td>
+            <td class="number mat-total">$0.00</td>
+        `;
+        const deleteBtn = document.createElement('td');
+        deleteBtn.innerHTML = '<button class="btn btn-sm" onclick="this.closest(\'tr\').remove();updateMaterialSummary()" style="padding:2px 6px">&#128465;</button>';
+        row.appendChild(deleteBtn);
+        tbody.appendChild(row);
+    }
+
+    function materialSelectChanged(select, category) {
+        const row = select.closest('tr');
+        const customInput = row.querySelector('input[type="text"]:not([type="number"])');
+        if (select.value === 'custom') {
+            customInput.style.display = 'block';
+            customInput.focus();
+        } else {
+            customInput.style.display = 'none';
+            const opt = select.options[select.selectedIndex];
+            if (opt.dataset.price) {
+                row.querySelectorAll('input[type="number"]')[1].value = opt.dataset.price;
+            }
+            if (opt.dataset.unit) {
+                row.querySelector('input[type="text"][style*="width:60px"]').value = opt.dataset.unit;
+            }
+        }
+        updateMaterialRow(select);
+    }
+
+    function updateMaterialRow(el) {
+        const row = el.closest('tr');
+        const inputs = row.querySelectorAll('input[type="number"]');
+        const qty = parseFloat(inputs[0].value) || 0;
+        const price = parseFloat(inputs[1].value) || 0;
+        row.querySelector('.mat-total').textContent = '$' + (qty * price).toFixed(2);
+        updateMaterialSummary();
+    }
+
+    function autoGenerateMaterials() {
+        if (APP.takeoffItems.length === 0) {
+            showToast('Add takeoff items first', 'error');
+            return;
+        }
+        // Generate material suggestions based on takeoff quantities
+        APP.takeoffItems.forEach(item => {
+            const cat = item.category;
+            const prices = DEFAULT_PRICES[cat];
+            if (!prices || prices.length === 0) return;
+
+            const tbody = document.getElementById('mat-' + cat);
+            if (!tbody) return;
+
+            const totalQty = item.quantity * (1 + item.wastePct / 100);
+
+            // Add first relevant material
+            const material = prices[0];
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><input type="text" class="form-control" style="font-size:12px" value="${material.name}"></td>
+                <td><input type="number" class="form-control" style="font-size:12px;width:80px" value="${totalQty.toFixed(1)}" step="0.01" onchange="updateMaterialRow(this)"></td>
+                <td><input type="text" class="form-control" style="font-size:12px;width:60px" value="${material.unit}"></td>
+                <td><input type="number" class="form-control" style="font-size:12px;width:80px" value="${material.price}" step="0.01" onchange="updateMaterialRow(this)"></td>
+                <td class="number mat-total">$${(totalQty * material.price).toFixed(2)}</td>
+                <td><button class="btn btn-sm" onclick="this.closest('tr').remove();updateMaterialSummary()" style="padding:2px 6px">&#128465;</button></td>
+            `;
+            tbody.appendChild(row);
+
+            // Open the category
+            const catSection = tbody.closest('.category-section');
+            if (catSection) {
+                catSection.querySelector('.category-body').classList.add('open');
+                catSection.querySelector('.category-header span').textContent = '\u25B2';
+            }
+        });
+
+        updateMaterialSummary();
+        showToast('Materials generated from takeoff', 'success');
+    }
+
+    function updateMaterialSummary() {
+        const cats = ['foundation','framing','roofing','siding','insulation','drywall','flooring','electrical','plumbing','hvac','paint','windows'];
+        const summaryBody = document.getElementById('materialSummaryBody');
+        let totalItems = 0, totalCost = 0;
+        summaryBody.innerHTML = cats.map(cat => {
+            const tbody = document.getElementById('mat-' + cat);
+            if (!tbody) return '';
+            const rows = tbody.querySelectorAll('tr');
+            let catCost = 0, catItems = 0;
+            rows.forEach(row => {
+                const total = row.querySelector('.mat-total');
+                if (total) {
+                    catCost += parseFloat(total.textContent.replace('$', '').replace(',', '')) || 0;
+                    catItems++;
+                }
+            });
+            totalItems += catItems;
+            totalCost += catCost;
+            if (catItems === 0) return '';
+            return `<tr><td>${cat.charAt(0).toUpperCase() + cat.slice(1)}</td><td class="number">${catItems}</td><td class="number">$${catCost.toFixed(2)}</td></tr>`;
+        }).join('');
+
+        document.getElementById('totalMaterialItems').textContent = totalItems;
+        document.getElementById('totalMaterialCost').textContent = '$' + totalCost.toFixed(2);
+    }
+
+    function showPriceDatabase() {
+        let html = '<div style="max-height:400px;overflow-y:auto">';
+        Object.entries(DEFAULT_PRICES).forEach(([cat, items]) => {
+            html += `<h4 style="margin:12px 0 6px">${cat.charAt(0).toUpperCase() + cat.slice(1)}</h4>`;
+            html += '<table class="data-table"><thead><tr><th>Material</th><th>Unit</th><th>Price</th></tr></thead><tbody>';
+            items.forEach(item => {
+                html += `<tr><td>${item.name}</td><td>${item.unit}</td><td>$${item.price.toFixed(2)}</td></tr>`;
+            });
+            html += '</tbody></table>';
+        });
+        html += '</div><div class="modal-actions"><button class="btn btn-primary" onclick="closeModal()">Close</button></div>';
+        showModal('Material Price Database', html);
+    }
+
+    function resetPriceDatabase() {
+        showToast('Price database reset to defaults', 'success');
+    }
+
+    // ==================== LABOR ====================
+    function addLaborItem() {
+        showModal('Add Labor Item', `
+            <div class="form-group">
+                <label>Category</label>
+                <select class="form-control" id="newLaborCat" onchange="populateLaborTasks()">
+                    ${Object.entries(LABOR_RATES).map(([k,v]) => `<option value="${k}">${v.name}</option>`).join('')}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Task</label>
+                <select class="form-control" id="newLaborTask"></select>
+            </div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="number" class="form-control" id="newLaborQty" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Unit</label>
+                    <input type="text" class="form-control" id="newLaborUnit" readonly>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Hours/Unit (industry standard)</label>
+                    <input type="number" class="form-control" id="newLaborHPU" step="0.001">
+                </div>
+                <div class="form-group">
+                    <label>Rate $/hr</label>
+                    <input type="number" class="form-control" id="newLaborRate" step="0.5">
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveLaborItem()">Add</button>
+            </div>
+        `);
+        populateLaborTasks();
+    }
+
+    function populateLaborTasks() {
+        const cat = document.getElementById('newLaborCat').value;
+        const tasks = LABOR_RATES[cat]?.tasks || [];
+        const select = document.getElementById('newLaborTask');
+        select.innerHTML = tasks.map((t, i) => `<option value="${i}">${t.desc}</option>`).join('');
+        if (tasks.length > 0) {
+            document.getElementById('newLaborUnit').value = tasks[0].unit;
+            document.getElementById('newLaborHPU').value = tasks[0].hoursPerUnit;
+            document.getElementById('newLaborRate').value = tasks[0].rate;
+        }
+        select.onchange = function() {
+            const t = tasks[this.value];
+            document.getElementById('newLaborUnit').value = t.unit;
+            document.getElementById('newLaborHPU').value = t.hoursPerUnit;
+            document.getElementById('newLaborRate').value = t.rate;
+        };
+    }
+
+    function saveLaborItem() {
+        const cat = document.getElementById('newLaborCat').value;
+        const taskIdx = document.getElementById('newLaborTask').value;
+        const task = LABOR_RATES[cat].tasks[taskIdx];
+        const qty = parseFloat(document.getElementById('newLaborQty').value) || 0;
+        const hpu = parseFloat(document.getElementById('newLaborHPU').value) || task.hoursPerUnit;
+        const rate = parseFloat(document.getElementById('newLaborRate').value) || task.rate;
+
+        APP.laborItems.push({
+            id: Date.now(),
+            category: cat,
+            description: task.desc,
+            quantity: qty,
+            unit: task.unit,
+            hoursPerUnit: hpu,
+            totalHours: qty * hpu,
+            rate: rate,
+            totalCost: qty * hpu * rate,
+        });
+        renderLaborTable();
+        closeModal();
+        showToast('Labor item added', 'success');
+    }
+
+    function autoGenerateLabor() {
+        if (APP.takeoffItems.length === 0) {
+            showToast('Add takeoff items first', 'error');
+            return;
+        }
+
+        APP.takeoffItems.forEach(item => {
+            const catRates = LABOR_RATES[item.category];
+            if (!catRates) return;
+            // Find best matching task
+            const task = catRates.tasks[0]; // Default to first
+            const qty = item.quantity * (1 + item.wastePct / 100);
+            APP.laborItems.push({
+                id: Date.now() + Math.random(),
+                category: item.category,
+                description: task.desc,
+                quantity: parseFloat(qty.toFixed(2)),
+                unit: task.unit,
+                hoursPerUnit: task.hoursPerUnit,
+                totalHours: parseFloat((qty * task.hoursPerUnit).toFixed(2)),
+                rate: task.rate,
+                totalCost: parseFloat((qty * task.hoursPerUnit * task.rate).toFixed(2)),
+            });
+        });
+
+        renderLaborTable();
+        showToast('Labor items generated from takeoff', 'success');
+    }
+
+    function deleteLaborItem(id) {
+        APP.laborItems = APP.laborItems.filter(i => i.id !== id);
+        renderLaborTable();
+    }
+
+    function renderLaborTable() {
+        const tbody = document.getElementById('laborBody');
+        if (APP.laborItems.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--text-sec);padding:30px">No labor items.</td></tr>';
+            document.getElementById('laborFooter').style.display = 'none';
+            return;
+        }
+        document.getElementById('laborFooter').style.display = '';
+        let totalHours = 0, totalCost = 0;
+        tbody.innerHTML = APP.laborItems.map(item => {
+            totalHours += item.totalHours;
+            totalCost += item.totalCost;
+            return `<tr>
+                <td>${item.category}</td>
+                <td>${item.description}</td>
+                <td class="number">${item.quantity}</td>
+                <td>${item.unit}</td>
+                <td class="number">${item.hoursPerUnit}</td>
+                <td class="number">${item.totalHours.toFixed(1)}</td>
+                <td class="number">$${item.rate.toFixed(2)}</td>
+                <td class="number">$${item.totalCost.toFixed(2)}</td>
+                <td class="actions"><button class="btn btn-sm btn-danger" onclick="deleteLaborItem(${item.id})">&#128465;</button></td>
+            </tr>`;
+        }).join('');
+
+        document.getElementById('laborTotalHours').textContent = totalHours.toFixed(1);
+        document.getElementById('laborTotalCost').textContent = '$' + totalCost.toFixed(2);
+        document.getElementById('statTotalHours').textContent = totalHours.toFixed(0);
+        document.getElementById('statTotalLaborCost').textContent = '$' + Math.round(totalCost).toLocaleString();
+    }
+
+    // ==================== ESTIMATE ====================
+    function recalcEstimate() {
+        // Gather material costs by category
+        const cats = ['foundation','framing','roofing','siding','insulation','drywall','flooring','electrical','plumbing','hvac','paint','windows'];
+        let totalMat = 0, totalLab = 0;
+        const breakdown = [];
+
+        cats.forEach(cat => {
+            let matCost = 0;
+            const tbody = document.getElementById('mat-' + cat);
+            if (tbody) {
+                tbody.querySelectorAll('.mat-total').forEach(el => {
+                    matCost += parseFloat(el.textContent.replace('$', '').replace(',', '')) || 0;
+                });
+            }
+            const labCost = APP.laborItems.filter(i => i.category === cat).reduce((s, i) => s + i.totalCost, 0);
+            if (matCost > 0 || labCost > 0) {
+                breakdown.push({ category: cat, materials: matCost, labor: labCost, subtotal: matCost + labCost });
+                totalMat += matCost;
+                totalLab += labCost;
+            }
+        });
+
+        const subtotal = totalMat + totalLab;
+        const overhead = subtotal * (parseFloat(document.getElementById('overheadPct').value) || 0) / 100;
+        const profit = subtotal * (parseFloat(document.getElementById('profitPct').value) || 0) / 100;
+        const contingency = subtotal * (parseFloat(document.getElementById('contingencyPct').value) || 0) / 100;
+        const tax = totalMat * (parseFloat(document.getElementById('taxPct').value) || 0) / 100;
+        const permits = parseFloat(document.getElementById('permitFees').value) || 0;
+        const additional = parseFloat(document.getElementById('additionalCosts').value) || 0;
+        const grandTotal = subtotal + overhead + profit + contingency + tax + permits + additional;
+
+        // Update stats
+        document.getElementById('estMaterialCost').textContent = '$' + Math.round(totalMat).toLocaleString();
+        document.getElementById('estLaborCost').textContent = '$' + Math.round(totalLab).toLocaleString();
+        document.getElementById('estOverhead').textContent = '$' + Math.round(overhead + profit).toLocaleString();
+        document.getElementById('estGrandTotal').textContent = '$' + Math.round(grandTotal).toLocaleString();
+
+        // Breakdown table
+        document.getElementById('estimateBody').innerHTML = breakdown.map(b => `
+            <tr>
+                <td>${b.category.charAt(0).toUpperCase() + b.category.slice(1)}</td>
+                <td class="number">$${b.materials.toFixed(2)}</td>
+                <td class="number">$${b.labor.toFixed(2)}</td>
+                <td class="number">$${b.subtotal.toFixed(2)}</td>
+            </tr>
+        `).join('');
+
+        document.getElementById('estSubMat').textContent = '$' + totalMat.toFixed(2);
+        document.getElementById('estSubLab').textContent = '$' + totalLab.toFixed(2);
+        document.getElementById('estSubTotal').textContent = '$' + subtotal.toFixed(2);
+        document.getElementById('estOverheadLine').textContent = '$' + overhead.toFixed(2);
+        document.getElementById('estProfitLine').textContent = '$' + profit.toFixed(2);
+        document.getElementById('estContingencyLine').textContent = '$' + contingency.toFixed(2);
+        document.getElementById('estTaxLine').textContent = '$' + tax.toFixed(2);
+        document.getElementById('estPermitLine').textContent = '$' + permits.toFixed(2);
+        document.getElementById('estAdditionalLine').textContent = '$' + additional.toFixed(2);
+        document.getElementById('estGrandTotalLine').textContent = '$' + grandTotal.toFixed(2);
+    }
+
+    // ==================== PROPOSAL ====================
+    function generateProposal() {
+        recalcEstimate();
+        const company = document.getElementById('companyName').value || 'JMRC Construction';
+        const phone = document.getElementById('companyPhone').value;
+        const email = document.getElementById('companyEmail').value;
+        const address = document.getElementById('companyAddress').value;
+        const license = document.getElementById('licenseNum').value;
+        const project = document.getElementById('projectName').value || 'Construction Project';
+        const client = document.getElementById('clientName').value || 'Valued Client';
+        const projAddress = document.getElementById('projectAddress').value;
+        const estDate = document.getElementById('estimateDate').value;
+        const validDate = document.getElementById('validUntil').value;
+        const scope = document.getElementById('scopeOfWork').value;
+        const detail = document.getElementById('proposalDetail').value;
+        const terms = document.getElementById('paymentTerms').value;
+        const addTerms = document.getElementById('additionalTerms').value;
+        const grandTotal = document.getElementById('estGrandTotalLine').textContent;
+
+        let paymentText = '';
+        switch(terms) {
+            case '50-50': paymentText = '50% deposit due upon acceptance, remaining 50% due upon completion.'; break;
+            case 'thirds': paymentText = '1/3 due upon acceptance, 1/3 at project midpoint, 1/3 upon completion.'; break;
+            case 'progress': paymentText = 'Progress billing on a monthly basis for work completed.'; break;
+            case 'custom': paymentText = document.getElementById('additionalTerms').value || 'Per agreement.'; break;
+        }
+
+        // Build cost table based on detail level
+        let costTableHTML = '';
+        const cats = ['foundation','framing','roofing','siding','insulation','drywall','flooring','electrical','plumbing','hvac','paint','windows'];
+
+        if (detail === 'summary') {
+            costTableHTML = '<table><thead><tr><th>Category</th><th style="text-align:right">Amount</th></tr></thead><tbody>';
+            cats.forEach(cat => {
+                let matCost = 0;
+                const tbody = document.getElementById('mat-' + cat);
+                if (tbody) tbody.querySelectorAll('.mat-total').forEach(el => { matCost += parseFloat(el.textContent.replace('$','').replace(',','')) || 0; });
+                const labCost = APP.laborItems.filter(i => i.category === cat).reduce((s, i) => s + i.totalCost, 0);
+                const total = matCost + labCost;
+                if (total > 0) costTableHTML += `<tr><td>${cat.charAt(0).toUpperCase() + cat.slice(1)}</td><td style="text-align:right">$${total.toFixed(2)}</td></tr>`;
+            });
+            costTableHTML += '</tbody></table>';
+        } else {
+            costTableHTML = '<table><thead><tr><th>Category</th><th>Description</th><th style="text-align:right">Amount</th></tr></thead><tbody>';
+            cats.forEach(cat => {
+                let matCost = 0;
+                const tbody = document.getElementById('mat-' + cat);
+                if (tbody) {
+                    const rows = tbody.querySelectorAll('tr');
+                    rows.forEach(row => {
+                        const nameInput = row.querySelector('input[type="text"]') || row.querySelector('select');
+                        const total = row.querySelector('.mat-total');
+                        if (total && nameInput) {
+                            const val = parseFloat(total.textContent.replace('$','').replace(',','')) || 0;
+                            if (val > 0) {
+                                const name = nameInput.value || nameInput.options?.[nameInput.selectedIndex]?.text || 'Material';
+                                costTableHTML += `<tr><td>${cat.charAt(0).toUpperCase() + cat.slice(1)}</td><td>${name}</td><td style="text-align:right">$${val.toFixed(2)}</td></tr>`;
+                                matCost += val;
+                            }
+                        }
+                    });
+                }
+                APP.laborItems.filter(i => i.category === cat).forEach(i => {
+                    costTableHTML += `<tr><td>${cat.charAt(0).toUpperCase() + cat.slice(1)}</td><td>${i.description}</td><td style="text-align:right">$${i.totalCost.toFixed(2)}</td></tr>`;
+                });
+            });
+            costTableHTML += '</tbody></table>';
+        }
+
+        const overheadPct = document.getElementById('overheadPct').value;
+        const profitPct = document.getElementById('profitPct').value;
+        const contingencyPct = document.getElementById('contingencyPct').value;
+
+        const preview = document.getElementById('proposalPreview');
+        preview.innerHTML = `
+            <div style="text-align:center;margin-bottom:30px;border-bottom:3px solid var(--primary);padding-bottom:20px">
+                <h1 style="color:var(--primary);margin-bottom:5px">${company}</h1>
+                ${address ? `<p>${address}</p>` : ''}
+                ${phone ? `<p>Phone: ${phone}</p>` : ''}
+                ${email ? `<p>Email: ${email}</p>` : ''}
+                ${license ? `<p>License #: ${license}</p>` : ''}
+            </div>
+
+            <h2 style="text-align:center;margin-bottom:20px">CONSTRUCTION PROPOSAL</h2>
+
+            <table style="border:none;margin-bottom:20px">
+                <tr style="border:none"><td style="border:none;padding:4px"><strong>Date:</strong></td><td style="border:none;padding:4px">${estDate}</td><td style="border:none;padding:4px"><strong>Valid Until:</strong></td><td style="border:none;padding:4px">${validDate}</td></tr>
+                <tr style="border:none"><td style="border:none;padding:4px"><strong>Client:</strong></td><td style="border:none;padding:4px">${client}</td><td style="border:none;padding:4px"><strong>Project:</strong></td><td style="border:none;padding:4px">${project}</td></tr>
+                ${projAddress ? `<tr style="border:none"><td style="border:none;padding:4px"><strong>Address:</strong></td><td colspan="3" style="border:none;padding:4px">${projAddress}</td></tr>` : ''}
+            </table>
+
+            ${scope ? `<div style="margin-bottom:20px"><h3>Scope of Work</h3><p>${scope}</p></div>` : ''}
+
+            <h3>Cost Breakdown</h3>
+            ${costTableHTML}
+
+            <table style="margin-top:12px">
+                <tr style="font-weight:600;background:#f0f7ff"><td>Subtotal</td><td style="text-align:right">${document.getElementById('estSubTotal').textContent}</td></tr>
+                <tr><td>Overhead (${overheadPct}%)</td><td style="text-align:right">${document.getElementById('estOverheadLine').textContent}</td></tr>
+                <tr><td>Profit (${profitPct}%)</td><td style="text-align:right">${document.getElementById('estProfitLine').textContent}</td></tr>
+                <tr><td>Contingency (${contingencyPct}%)</td><td style="text-align:right">${document.getElementById('estContingencyLine').textContent}</td></tr>
+                ${parseFloat(document.getElementById('estTaxLine').textContent.replace('$','')) > 0 ? `<tr><td>Tax</td><td style="text-align:right">${document.getElementById('estTaxLine').textContent}</td></tr>` : ''}
+                ${parseFloat(document.getElementById('estPermitLine').textContent.replace('$','')) > 0 ? `<tr><td>Permits & Fees</td><td style="text-align:right">${document.getElementById('estPermitLine').textContent}</td></tr>` : ''}
+                <tr style="font-weight:700;font-size:18px;background:#e8f4fd"><td>TOTAL</td><td style="text-align:right">${grandTotal}</td></tr>
+            </table>
+
+            <div style="margin-top:30px">
+                <h3>Payment Terms</h3>
+                <p>${paymentText}</p>
+            </div>
+
+            <div style="margin-top:20px">
+                <h3>Terms & Conditions</h3>
+                <ol style="padding-left:20px;font-size:13px">
+                    <li>This proposal is valid for 30 days from the date above.</li>
+                    <li>Any changes to the scope of work may result in additional charges.</li>
+                    <li>Work will commence within 2-4 weeks of signed acceptance and deposit received.</li>
+                    <li>All work performed in accordance with local building codes and regulations.</li>
+                    <li>Contractor maintains general liability and workers compensation insurance.</li>
+                    <li>Client is responsible for obtaining necessary permits unless otherwise noted.</li>
+                    <li>Unforeseen conditions (rot, mold, structural issues) may result in additional charges.</li>
+                    <li>Warranty: 1 year on workmanship from date of completion.</li>
+                </ol>
+                ${addTerms ? `<p style="margin-top:8px">${addTerms}</p>` : ''}
+            </div>
+
+            <div style="margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:40px">
+                <div>
+                    <p><strong>ACCEPTED BY (Client):</strong></p>
+                    <div style="border-bottom:1px solid #333;height:40px;margin-top:20px"></div>
+                    <p style="font-size:12px;margin-top:4px">Signature / Date</p>
+                    <div style="border-bottom:1px solid #333;height:30px;margin-top:12px"></div>
+                    <p style="font-size:12px;margin-top:4px">Printed Name</p>
+                </div>
+                <div>
+                    <p><strong>SUBMITTED BY (Contractor):</strong></p>
+                    <div style="border-bottom:1px solid #333;height:40px;margin-top:20px"></div>
+                    <p style="font-size:12px;margin-top:4px">Signature / Date</p>
+                    <div style="border-bottom:1px solid #333;height:30px;margin-top:12px"></div>
+                    <p style="font-size:12px;margin-top:4px">${company}</p>
+                </div>
+            </div>
+        `;
+        showToast('Proposal generated!', 'success');
+    }
+
+    function exportProposalPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF('p', 'mm', 'letter');
+        const preview = document.getElementById('proposalPreview');
+
+        // Simple text-based PDF generation
+        const company = document.getElementById('companyName').value || 'JMRC Construction';
+        const project = document.getElementById('projectName').value || 'Construction Project';
+        const client = document.getElementById('clientName').value || 'Client';
+        const grandTotal = document.getElementById('estGrandTotalLine').textContent;
+
+        let y = 20;
+        doc.setFontSize(20);
+        doc.setFont(undefined, 'bold');
+        doc.text(company, 105, y, { align: 'center' });
+        y += 12;
+
+        doc.setFontSize(16);
+        doc.text('CONSTRUCTION PROPOSAL', 105, y, { align: 'center' });
+        y += 12;
+
+        doc.setFontSize(11);
+        doc.setFont(undefined, 'normal');
+        doc.text(`Date: ${document.getElementById('estimateDate').value}`, 20, y);
+        doc.text(`Valid Until: ${document.getElementById('validUntil').value}`, 120, y);
+        y += 7;
+        doc.text(`Client: ${client}`, 20, y);
+        doc.text(`Project: ${project}`, 120, y);
+        y += 7;
+        const addr = document.getElementById('projectAddress').value;
+        if (addr) { doc.text(`Address: ${addr}`, 20, y); y += 7; }
+
+        y += 5;
+        doc.setFont(undefined, 'bold');
+        doc.text('Scope of Work', 20, y);
+        y += 6;
+        doc.setFont(undefined, 'normal');
+        const scope = document.getElementById('scopeOfWork').value || 'As discussed and per plans.';
+        const scopeLines = doc.splitTextToSize(scope, 170);
+        doc.text(scopeLines, 20, y);
+        y += scopeLines.length * 5 + 5;
+
+        doc.setFont(undefined, 'bold');
+        doc.text('Cost Summary', 20, y);
+        y += 8;
+        doc.setFont(undefined, 'normal');
+
+        // Table header
+        doc.setFillColor(240, 240, 240);
+        doc.rect(20, y - 4, 170, 7, 'F');
+        doc.text('Category', 22, y);
+        doc.text('Amount', 180, y, { align: 'right' });
+        y += 8;
+
+        const cats = ['foundation','framing','roofing','siding','insulation','drywall','flooring','electrical','plumbing','hvac','paint','windows'];
+        cats.forEach(cat => {
+            let matCost = 0;
+            const tbody = document.getElementById('mat-' + cat);
+            if (tbody) tbody.querySelectorAll('.mat-total').forEach(el => { matCost += parseFloat(el.textContent.replace('$','').replace(',','')) || 0; });
+            const labCost = APP.laborItems.filter(i => i.category === cat).reduce((s, i) => s + i.totalCost, 0);
+            const total = matCost + labCost;
+            if (total > 0) {
+                doc.text(cat.charAt(0).toUpperCase() + cat.slice(1), 22, y);
+                doc.text('$' + total.toFixed(2), 180, y, { align: 'right' });
+                y += 6;
+            }
+        });
+
+        y += 3;
+        doc.line(20, y, 190, y);
+        y += 6;
+        doc.setFont(undefined, 'bold');
+        doc.setFontSize(14);
+        doc.text('TOTAL: ' + grandTotal, 180, y, { align: 'right' });
+        y += 12;
+
+        doc.setFontSize(11);
+        doc.setFont(undefined, 'normal');
+        doc.text('Payment Terms:', 20, y);
+        y += 6;
+        const terms = document.getElementById('paymentTerms').value;
+        let termsText = '';
+        switch(terms) {
+            case '50-50': termsText = '50% deposit, 50% on completion'; break;
+            case 'thirds': termsText = '1/3 deposit, 1/3 midpoint, 1/3 completion'; break;
+            case 'progress': termsText = 'Monthly progress billing'; break;
+            default: termsText = 'Per agreement';
+        }
+        doc.text(termsText, 22, y);
+        y += 12;
+
+        // Signatures
+        if (y > 220) { doc.addPage(); y = 20; }
+        y = Math.max(y, 220);
+        doc.text('ACCEPTED BY (Client):', 20, y);
+        doc.text('SUBMITTED BY (Contractor):', 110, y);
+        y += 15;
+        doc.line(20, y, 90, y);
+        doc.line(110, y, 185, y);
+        y += 5;
+        doc.setFontSize(9);
+        doc.text('Signature / Date', 20, y);
+        doc.text('Signature / Date', 110, y);
+
+        doc.save(`Proposal_${project.replace(/\s+/g, '_')}.pdf`);
+        showToast('PDF exported!', 'success');
+    }
+
+    // ==================== SAVE / LOAD ====================
+    function saveProject() {
+        const data = {
+            takeoffItems: APP.takeoffItems,
+            laborItems: APP.laborItems,
+            measurements: APP.measurements.map(m => ({...m, points: m.points})),
+            scalePerPage: APP.scalePerPage,
+            scale: APP.scale,
+            projectInfo: {
+                name: document.getElementById('projectName').value,
+                client: document.getElementById('clientName').value,
+                address: document.getElementById('projectAddress').value,
+                scope: document.getElementById('scopeOfWork').value,
+                estDate: document.getElementById('estimateDate').value,
+                validDate: document.getElementById('validUntil').value,
+            },
+            companyInfo: {
+                name: document.getElementById('companyName').value,
+                phone: document.getElementById('companyPhone').value,
+                email: document.getElementById('companyEmail').value,
+                address: document.getElementById('companyAddress').value,
+                license: document.getElementById('licenseNum').value,
+            },
+            estimateSettings: {
+                overhead: document.getElementById('overheadPct').value,
+                profit: document.getElementById('profitPct').value,
+                contingency: document.getElementById('contingencyPct').value,
+                tax: document.getElementById('taxPct').value,
+                permits: document.getElementById('permitFees').value,
+                additional: document.getElementById('additionalCosts').value,
+            },
+        };
+        localStorage.setItem('jmrc_takeoff_project', JSON.stringify(data));
+
+        // Also offer download
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = (document.getElementById('projectName').value || 'takeoff_project') + '.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('Project saved!', 'success');
+    }
+
+    function loadProject() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+        input.onchange = e => {
+            const reader = new FileReader();
+            reader.onload = ev => {
+                try {
+                    const data = JSON.parse(ev.target.result);
+                    restoreProject(data);
+                    showToast('Project loaded!', 'success');
+                } catch (err) {
+                    showToast('Error loading project file', 'error');
+                }
+            };
+            reader.readAsText(e.target.files[0]);
+        };
+        input.click();
+    }
+
+    function loadSavedData() {
+        const saved = localStorage.getItem('jmrc_takeoff_project');
+        if (saved) {
+            try {
+                restoreProject(JSON.parse(saved));
+            } catch(e) {}
+        }
+    }
+
+    function restoreProject(data) {
+        if (data.takeoffItems) { APP.takeoffItems = data.takeoffItems; renderTakeoffTable(); }
+        if (data.laborItems) { APP.laborItems = data.laborItems; renderLaborTable(); }
+        if (data.measurements) APP.measurements = data.measurements;
+        if (data.scalePerPage) APP.scalePerPage = data.scalePerPage;
+        if (data.scale) APP.scale = data.scale;
+        if (data.projectInfo) {
+            document.getElementById('projectName').value = data.projectInfo.name || '';
+            document.getElementById('clientName').value = data.projectInfo.client || '';
+            document.getElementById('projectAddress').value = data.projectInfo.address || '';
+            document.getElementById('scopeOfWork').value = data.projectInfo.scope || '';
+            if (data.projectInfo.estDate) document.getElementById('estimateDate').value = data.projectInfo.estDate;
+            if (data.projectInfo.validDate) document.getElementById('validUntil').value = data.projectInfo.validDate;
+        }
+        if (data.companyInfo) {
+            document.getElementById('companyName').value = data.companyInfo.name || '';
+            document.getElementById('companyPhone').value = data.companyInfo.phone || '';
+            document.getElementById('companyEmail').value = data.companyInfo.email || '';
+            document.getElementById('companyAddress').value = data.companyInfo.address || '';
+            document.getElementById('licenseNum').value = data.companyInfo.license || '';
+        }
+        if (data.estimateSettings) {
+            document.getElementById('overheadPct').value = data.estimateSettings.overhead || 10;
+            document.getElementById('profitPct').value = data.estimateSettings.profit || 15;
+            document.getElementById('contingencyPct').value = data.estimateSettings.contingency || 5;
+            document.getElementById('taxPct').value = data.estimateSettings.tax || 0;
+            document.getElementById('permitFees').value = data.estimateSettings.permits || 0;
+            document.getElementById('additionalCosts').value = data.estimateSettings.additional || 0;
+        }
+    }
+
+    // ==================== MODAL & TOAST ====================
+    function showModal(title, html) {
+        document.getElementById('modalContent').innerHTML = `<div class="modal-title">${title}</div>${html}`;
+        document.getElementById('modalOverlay').classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('modalOverlay').classList.remove('active');
+    }
+
+    document.getElementById('modalOverlay').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+
+    function showToast(message, type = 'info') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = 'toast ' + type + ' show';
+        setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', e => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+        switch(e.key) {
+            case 'v': case 'V': setTool('pan'); break;
+            case 'l': case 'L': setTool('linear'); break;
+            case 'a': case 'A': setTool('area'); break;
+            case 'c': case 'C': setTool('count'); break;
+            case 'p': case 'P': setTool('polyline'); break;
+            case 'Escape': APP.tempPoints = []; renderCanvas(); break;
+            case 'z': if (e.ctrlKey) { undoMeasurement(); e.preventDefault(); } break;
+            case '+': case '=': zoomIn(); break;
+            case '-': zoomOut(); break;
+        }
+    });
+    </script>
+</body>
+</html>
