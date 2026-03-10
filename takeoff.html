@@ -1047,7 +1047,7 @@
 
     // ==================== PROJECT MANAGEMENT ====================
     function startNewProject(templateKey) {
-        templateKey = templateKey || 'blank';
+        templateKey = templateKey || 'custom-home';
         APP.wizardTemplate = templateKey;
         APP.wizardData = { template: templateKey };
         APP.wizardStep = 0;
@@ -1424,8 +1424,9 @@
     }
 
     async function runAiScanWithFiles() {
+      try {
         const files = APP.pendingScanFiles;
-        if (!files || files.length === 0) return;
+        if (!files || files.length === 0) { showToast('No files to scan', 'error'); return; }
         APP.pendingScanFiles = null;
 
         document.getElementById('scanProgressCard').style.display = 'block';
@@ -1445,6 +1446,7 @@
 
         // Create project if not yet created
         if (APP.currentProject === null) createProjectFromWizard();
+        APP.wizardTemplate = APP.wizardTemplate || 'custom-home';
 
         // Step 2: Detect Scale
         setStepStatus('step-detect', 'active');
@@ -1479,6 +1481,11 @@
         // Show summary
         showScanSummary(rooms);
         document.getElementById('scanActions').style.display = 'block';
+        saveCurrentProject();
+      } catch(err) {
+        console.error('AI Scan Error:', err);
+        showToast('AI Scan Error: ' + err.message, 'error');
+      }
     }
 
     function setStepStatus(stepId, status) {
@@ -1569,7 +1576,7 @@
         }
 
         // Mudroom (if garage attached)
-        if (hasGarage && !d.garage?.includes('Detached')) {
+        if (hasGarage && d.garage && !d.garage.includes('Detached')) {
             rooms.push({ name: 'Mudroom', type: 'utility', area: Math.round(40 + Math.random() * 20), perimeter: 26, wallHeight });
         }
 
@@ -1627,8 +1634,15 @@
     }
 
     function aiGenerateTakeoffFromScan(rooms) {
+      try {
         const d = APP.wizardData;
-        const template = TEMPLATES[APP.wizardTemplate];
+        let template = TEMPLATES[APP.wizardTemplate];
+        if (!template) { APP.wizardTemplate = 'custom-home'; template = TEMPLATES['custom-home']; }
+        // If blank template or empty categories, use all standard categories
+        const allCats = ['foundation','framing','roofing','siding','insulation','drywall','flooring','electrical','plumbing','hvac','paint','windows','concrete'];
+        if (!template.categories || template.categories.length === 0) {
+            template = { ...template, categories: allCats };
+        }
         const totalSF = rooms.totalLivingSF || parseFloat(d.sqft) || 2000;
         const extPerimeter = rooms.exteriorPerimeter || Math.round(Math.sqrt(totalSF) * 4);
         const stories = rooms.stories || 1;
@@ -1935,8 +1949,8 @@
             items.push({ category:'windows', description:'Entry door (insulated)', type:'count', quantity:2, unit:'EA', wastePct:0, source:'AI' });
             items.push({ category:'windows', description:'Interior doors (prehung)', type:'count', quantity:rooms.filter(r => !r.isGarage && r.type !== 'hall').length, unit:'EA', wastePct:0, source:'AI' });
             items.push({ category:'windows', description:'Sliding glass door', type:'count', quantity:1, unit:'EA', wastePct:0, source:'AI' });
-            if (d.garage && !d.garage?.includes('No')) {
-                items.push({ category:'windows', description:'Garage door', type:'count', quantity:d.garage?.includes('2') ? 1 : (d.garage?.includes('3') ? 1 : 1), unit:'EA', wastePct:0, source:'AI' });
+            if (d.garage && !d.garage.includes('No')) {
+                items.push({ category:'windows', description:'Garage door', type:'count', quantity:(d.garage && d.garage.includes('2')) ? 1 : 1, unit:'EA', wastePct:0, source:'AI' });
                 items.push({ category:'windows', description:'Garage service door', type:'count', quantity:1, unit:'EA', wastePct:0, source:'AI' });
             }
             items.push({ category:'windows', description:'Door hardware (locksets)', type:'count', quantity:rooms.filter(r => !r.isGarage).length + 2, unit:'EA', wastePct:0, source:'AI' });
@@ -1956,9 +1970,14 @@
 
         renderTakeoffTable();
         document.getElementById('takeoffAiBadge').style.display = 'inline-flex';
+      } catch(err) {
+        console.error('AI Takeoff Error:', err);
+        showToast('AI Error: ' + err.message, 'error');
+      }
     }
 
     function aiPriceMaterials() {
+      try {
         // Smart material matching: try to find best price match per takeoff item
         APP.takeoffItems.forEach(item => {
             const prices = DEFAULT_PRICES[item.category];
@@ -2019,6 +2038,10 @@
         renderLaborTable();
         buildMaterialCategoryUI();
         document.getElementById('matAiBadge').style.display = 'inline-flex';
+      } catch(err) {
+        console.error('AI Price Materials Error:', err);
+        showToast('AI Pricing Error: ' + err.message, 'error');
+      }
     }
 
     function showScanSummary(rooms) {
@@ -2054,7 +2077,9 @@
 
     // ==================== AI GENERATE FUNCTIONS (from workspace) ====================
     function aiGenerateTakeoff() {
+      try {
         if (APP.wizardData && APP.wizardData.sqft) {
+            APP.wizardTemplate = APP.wizardTemplate || 'custom-home';
             APP.takeoffItems = [];
             APP.laborItems = [];
             APP.materials = {};
@@ -2067,7 +2092,7 @@
             buildMaterialCategoryUI();
             updateMaterialSummary();
             recalcEstimate();
-            saveCurrentProject();
+            if (APP.currentProject !== null) saveCurrentProject();
             showToast(`AI takeoff generated - ${APP.takeoffItems.length} items!`, 'success');
         } else {
             showModal('AI Takeoff', `
@@ -2082,9 +2107,14 @@
                 </div>
             `);
         }
+      } catch(err) {
+        console.error('AI Generate Error:', err);
+        showToast('AI Error: ' + err.message, 'error');
+      }
     }
 
     function runQuickAiTakeoff() {
+      try {
         APP.wizardData = APP.wizardData || {};
         APP.wizardData.sqft = document.getElementById('aiSqft').value;
         APP.wizardData.stories = document.getElementById('aiStories').value;
@@ -2104,8 +2134,12 @@
         buildMaterialCategoryUI();
         updateMaterialSummary();
         recalcEstimate();
-        saveCurrentProject();
+        if (APP.currentProject !== null) saveCurrentProject();
         showToast(`AI takeoff generated - ${APP.takeoffItems.length} items!`, 'success');
+      } catch(err) {
+        console.error('AI Quick Takeoff Error:', err);
+        showToast('AI Error: ' + err.message, 'error');
+      }
     }
 
     function aiGenerateMaterials() {
@@ -2159,11 +2193,12 @@
     }
 
     function rerunAiScan() {
+      try {
         if (!APP.wizardData || !APP.wizardData.sqft) {
-            // No project data - prompt for it
             aiGenerateTakeoff();
             return;
         }
+        APP.wizardTemplate = APP.wizardTemplate || 'custom-home';
         APP.takeoffItems = [];
         APP.laborItems = [];
         APP.materials = {};
@@ -2176,8 +2211,12 @@
         buildMaterialCategoryUI();
         updateMaterialSummary();
         recalcEstimate();
-        saveCurrentProject();
+        if (APP.currentProject !== null) saveCurrentProject();
         showToast(`AI scan complete - ${APP.takeoffItems.length} takeoff items generated`, 'success');
+      } catch(err) {
+        console.error('AI Re-scan Error:', err);
+        showToast('AI Error: ' + err.message, 'error');
+      }
     }
 
     // ==================== FILE UPLOAD / PLAN VIEWER ====================
