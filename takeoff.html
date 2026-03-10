@@ -1089,6 +1089,9 @@
         APP.measurements = proj.measurements || [];
         APP.scalePerPage = proj.scalePerPage || {};
         APP.scale = proj.scale || null;
+        APP.wizardData = proj.wizardData || {};
+        APP.wizardTemplate = proj.templateKey || 'custom-home';
+        APP.materials = proj.materials || {};
         APP.pages = []; // pages need re-upload (images not saved to localStorage)
 
         document.getElementById('wsProjectName').textContent = proj.name;
@@ -1636,6 +1639,8 @@
         const intWallSF = intWallLF * wallHeight;
         const bedrooms = parseInt(d.bedrooms) || 3;
         const bathrooms = parseFloat(d.bathrooms) || 2;
+        const windowCount = Math.round(totalSF / 100) + bedrooms;
+        const doorCount = rooms.filter(r => !r.isGarage).length;
 
         // Pre-scan construction details
         const isICF = (d.concreteType || '').includes('ICF');
@@ -1704,8 +1709,6 @@
             items.push({ category:'framing', description:'Top/bottom plates (2x4 int)', type:'linear', quantity:intWallLF * 3, unit:'LF', wastePct:10, source:'AI' });
 
             // Headers
-            const windowCount = Math.round(totalSF / 100) + bedrooms;
-            const doorCount = rooms.length;
             items.push({ category:'framing', description:'Headers (LVL/built-up)', type:'count', quantity:windowCount + doorCount, unit:'EA', wastePct:5, source:'AI' });
 
             // Floor system
@@ -1928,7 +1931,6 @@
 
         // Windows & Doors
         if (template.categories.includes('windows')) {
-            const windowCount = Math.round(totalSF / 100) + bedrooms;
             items.push({ category:'windows', description:'Windows (vinyl double-hung)', type:'count', quantity:windowCount, unit:'EA', wastePct:0, source:'AI' });
             items.push({ category:'windows', description:'Entry door (insulated)', type:'count', quantity:2, unit:'EA', wastePct:0, source:'AI' });
             items.push({ category:'windows', description:'Interior doors (prehung)', type:'count', quantity:rooms.filter(r => !r.isGarage && r.type !== 'hall').length, unit:'EA', wastePct:0, source:'AI' });
@@ -2053,9 +2055,20 @@
     // ==================== AI GENERATE FUNCTIONS (from workspace) ====================
     function aiGenerateTakeoff() {
         if (APP.wizardData && APP.wizardData.sqft) {
+            APP.takeoffItems = [];
+            APP.laborItems = [];
+            APP.materials = {};
             const rooms = aiIdentifyRooms();
+            if (APP.pages.length > 0) aiMeasureDimensions(rooms);
             aiGenerateTakeoffFromScan(rooms);
-            showToast('AI takeoff generated from project details', 'success');
+            aiPriceMaterials();
+            renderTakeoffTable();
+            renderLaborTable();
+            buildMaterialCategoryUI();
+            updateMaterialSummary();
+            recalcEstimate();
+            saveCurrentProject();
+            showToast(`AI takeoff generated - ${APP.takeoffItems.length} items!`, 'success');
         } else {
             showModal('AI Takeoff', `
                 <p>To auto-generate a takeoff, I need some basic info:</p>
@@ -2079,9 +2092,20 @@
         APP.wizardData.bathrooms = document.getElementById('aiBaths').value;
         APP.wizardTemplate = APP.wizardTemplate || 'custom-home';
         closeModal();
+        APP.takeoffItems = [];
+        APP.laborItems = [];
+        APP.materials = {};
         const rooms = aiIdentifyRooms();
+        if (APP.pages.length > 0) aiMeasureDimensions(rooms);
         aiGenerateTakeoffFromScan(rooms);
-        showToast('AI takeoff generated!', 'success');
+        aiPriceMaterials();
+        renderTakeoffTable();
+        renderLaborTable();
+        buildMaterialCategoryUI();
+        updateMaterialSummary();
+        recalcEstimate();
+        saveCurrentProject();
+        showToast(`AI takeoff generated - ${APP.takeoffItems.length} items!`, 'success');
     }
 
     function aiGenerateMaterials() {
@@ -2135,21 +2159,25 @@
     }
 
     function rerunAiScan() {
-        if (APP.pages.length > 0) {
-            APP.takeoffItems = [];
-            APP.laborItems = [];
-            APP.materials = {};
-            const rooms = aiIdentifyRooms();
-            aiMeasureDimensions(rooms);
-            aiGenerateTakeoffFromScan(rooms);
-            aiPriceMaterials();
-            renderTakeoffTable();
-            renderLaborTable();
-            buildMaterialCategoryUI();
-            showToast('AI re-scan complete', 'success');
-        } else {
-            showToast('Upload plans first', 'error');
+        if (!APP.wizardData || !APP.wizardData.sqft) {
+            // No project data - prompt for it
+            aiGenerateTakeoff();
+            return;
         }
+        APP.takeoffItems = [];
+        APP.laborItems = [];
+        APP.materials = {};
+        const rooms = aiIdentifyRooms();
+        if (APP.pages.length > 0) aiMeasureDimensions(rooms);
+        aiGenerateTakeoffFromScan(rooms);
+        aiPriceMaterials();
+        renderTakeoffTable();
+        renderLaborTable();
+        buildMaterialCategoryUI();
+        updateMaterialSummary();
+        recalcEstimate();
+        saveCurrentProject();
+        showToast(`AI scan complete - ${APP.takeoffItems.length} takeoff items generated`, 'success');
     }
 
     // ==================== FILE UPLOAD / PLAN VIEWER ====================
