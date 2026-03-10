@@ -198,6 +198,33 @@
         .page-thumb.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(0,116,217,0.3);}
         .page-thumb canvas{width:100%;height:100%;object-fit:contain;}
         .page-thumb .page-num{position:absolute;bottom:2px;right:4px;font-size:10px;background:rgba(0,0,0,0.6);color:white;padding:1px 4px;border-radius:3px;}
+        .page-thumb .page-remove{position:absolute;top:2px;right:2px;width:18px;height:18px;border-radius:50%;background:var(--danger);color:white;font-size:11px;border:none;cursor:pointer;display:none;align-items:center;justify-content:center;line-height:1;padding:0;}
+        .page-thumb:hover .page-remove{display:flex;}
+
+        /* Pre-scan questionnaire */
+        .prescan-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;}
+        .prescan-card{border:2px solid var(--border);border-radius:8px;padding:14px;cursor:pointer;transition:all 0.2s;}
+        .prescan-card:hover{border-color:var(--accent);background:#f0f7ff;}
+        .prescan-card.selected{border-color:var(--accent);background:#e6f0ff;}
+        .prescan-card h4{font-size:13px;margin-bottom:2px;}
+        .prescan-card p{font-size:11px;color:var(--text-sec);}
+        .prescan-section{margin-bottom:16px;}
+        .prescan-section h3{font-size:15px;color:var(--primary);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+        .prescan-chips{display:flex;flex-wrap:wrap;gap:6px;}
+        .prescan-chip{padding:6px 14px;border:2px solid var(--border);border-radius:20px;background:white;cursor:pointer;font-size:12px;transition:all 0.2s;}
+        .prescan-chip:hover{border-color:var(--accent);color:var(--accent);}
+        .prescan-chip.selected{border-color:var(--accent);background:var(--accent);color:white;}
+
+        /* Spec upload */
+        .spec-upload-zone{border:2px dashed var(--border);border-radius:8px;padding:20px;text-align:center;cursor:pointer;transition:all 0.3s;background:#fafafa;margin-top:12px;}
+        .spec-upload-zone:hover{border-color:var(--accent);background:#f0f7ff;}
+        .spec-file-list{margin-top:8px;font-size:13px;}
+        .spec-file-item{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:#f8f9fa;border-radius:6px;margin-bottom:4px;}
+
+        /* Measurement delete buttons */
+        .measurement-item .meas-actions{display:flex;gap:4px;align-items:center;}
+        .measurement-item .meas-actions button{background:none;border:1px solid #ddd;border-radius:4px;cursor:pointer;font-size:11px;padding:2px 6px;transition:all 0.2s;}
+        .measurement-item .meas-actions button:hover{background:var(--danger);color:white;border-color:var(--danger);}
 
         /* Modal */
         .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:2000;align-items:center;justify-content:center;}
@@ -356,6 +383,130 @@
                 <input type="file" id="scanFileInput" accept=".pdf,.png,.jpg,.jpeg,.tiff,.tif" multiple style="display:none" onchange="handleScanUpload(event)">
             </div>
 
+            <!-- Pre-Scan Questionnaire (shown after upload, before scan) -->
+            <div class="card" id="preScanCard" style="display:none">
+                <div class="card-header">&#128221; Construction Details (Helps AI Make Better Decisions)</div>
+                <p style="font-size:13px;color:var(--text-sec);margin-bottom:16px">The more detail you provide, the more accurate AI takeoffs will be. You can also upload specs and cost catalogs.</p>
+
+                <div class="prescan-section">
+                    <h3>&#127959; Foundation Type</h3>
+                    <div class="prescan-chips" id="psFoundationType">
+                        <div class="prescan-chip" onclick="togglePrescanChip(this,'foundationType','Slab on Grade')">Slab on Grade</div>
+                        <div class="prescan-chip" onclick="togglePrescanChip(this,'foundationType','Crawl Space')">Crawl Space</div>
+                        <div class="prescan-chip" onclick="togglePrescanChip(this,'foundationType','Full Basement')">Full Basement</div>
+                        <div class="prescan-chip" onclick="togglePrescanChip(this,'foundationType','Daylight Basement')">Daylight Basement</div>
+                        <div class="prescan-chip" onclick="togglePrescanChip(this,'foundationType','Pier/Post')">Pier/Post</div>
+                        <div class="prescan-chip" onclick="togglePrescanChip(this,'foundationType','Helical Piles')">Helical Piles</div>
+                    </div>
+                </div>
+
+                <div class="prescan-section">
+                    <h3>&#129521; Concrete Type</h3>
+                    <div class="prescan-chips" id="psConcreteType">
+                        <div class="prescan-chip" onclick="togglePrescanChip(this,'concreteType','Standard Poured')">Standard Poured</div>
+                        <div class="prescan-chip" onclick="togglePrescanChip(this,'concreteType','ICF (Insulated Concrete Forms)')">ICF</div>
+                        <div class="prescan-chip" onclick="togglePrescanChip(this,'concreteType','Block/CMU')">Block/CMU</div>
+                        <div class="prescan-chip" onclick="togglePrescanChip(this,'concreteType','Precast')">Precast</div>
+                        <div class="prescan-chip" onclick="togglePrescanChip(this,'concreteType','Post-Tensioned')">Post-Tensioned</div>
+                    </div>
+                </div>
+
+                <div class="prescan-section">
+                    <h3>&#127960; Framing</h3>
+                    <div class="prescan-grid">
+                        <div>
+                            <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Stud Spacing</label>
+                            <div class="prescan-chips" id="psStudSpacing">
+                                <div class="prescan-chip" onclick="togglePrescanChip(this,'studSpacing','16 OC')">16" OC</div>
+                                <div class="prescan-chip" onclick="togglePrescanChip(this,'studSpacing','24 OC')">24" OC</div>
+                                <div class="prescan-chip" onclick="togglePrescanChip(this,'studSpacing','12 OC')">12" OC</div>
+                            </div>
+                        </div>
+                        <div>
+                            <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Exterior Wall</label>
+                            <div class="prescan-chips" id="psWallType">
+                                <div class="prescan-chip" onclick="togglePrescanChip(this,'wallType','2x4')">2x4</div>
+                                <div class="prescan-chip" onclick="togglePrescanChip(this,'wallType','2x6')">2x6</div>
+                                <div class="prescan-chip" onclick="togglePrescanChip(this,'wallType','2x8')">2x8</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prescan-section">
+                    <h3>&#127969; Roof Structure</h3>
+                    <div class="prescan-chips" id="psRoofStructure">
+                        <div class="prescan-chip" onclick="togglePrescanChip(this,'roofStructure','Manufactured Trusses')">Manufactured Trusses</div>
+                        <div class="prescan-chip" onclick="togglePrescanChip(this,'roofStructure','Stick Frame Rafters')">Stick Frame Rafters</div>
+                        <div class="prescan-chip" onclick="togglePrescanChip(this,'roofStructure','Engineered I-Joists')">Engineered I-Joists</div>
+                        <div class="prescan-chip" onclick="togglePrescanChip(this,'roofStructure','SIP Panels')">SIP Panels</div>
+                    </div>
+                </div>
+
+                <div class="prescan-section">
+                    <h3>&#128200; Floor System</h3>
+                    <div class="prescan-chips" id="psFloorSystem">
+                        <div class="prescan-chip" onclick="togglePrescanChip(this,'floorSystem','TJI / I-Joists')">TJI / I-Joists</div>
+                        <div class="prescan-chip" onclick="togglePrescanChip(this,'floorSystem','Dimensional Lumber')">Dimensional Lumber</div>
+                        <div class="prescan-chip" onclick="togglePrescanChip(this,'floorSystem','Floor Trusses')">Floor Trusses</div>
+                        <div class="prescan-chip" onclick="togglePrescanChip(this,'floorSystem','Concrete Slab')">Concrete Slab</div>
+                    </div>
+                </div>
+
+                <div class="prescan-section">
+                    <h3>&#128293; Insulation Type</h3>
+                    <div class="prescan-chips" id="psInsulationType">
+                        <div class="prescan-chip" onclick="togglePrescanChipMulti(this,'insulationType','Fiberglass Batt')">Fiberglass Batt</div>
+                        <div class="prescan-chip" onclick="togglePrescanChipMulti(this,'insulationType','Spray Foam (Open Cell)')">Spray Foam (Open)</div>
+                        <div class="prescan-chip" onclick="togglePrescanChipMulti(this,'insulationType','Spray Foam (Closed Cell)')">Spray Foam (Closed)</div>
+                        <div class="prescan-chip" onclick="togglePrescanChipMulti(this,'insulationType','Rigid Foam Board')">Rigid Foam Board</div>
+                        <div class="prescan-chip" onclick="togglePrescanChipMulti(this,'insulationType','Blown-In Cellulose')">Blown-In Cellulose</div>
+                    </div>
+                </div>
+
+                <div class="prescan-section">
+                    <h3>&#9889; Additional Specs</h3>
+                    <div class="prescan-grid">
+                        <div class="form-group">
+                            <label>Ceiling Height (ft)</label>
+                            <select class="form-control" id="psCeilingHeight">
+                                <option value="8">8 ft (Standard)</option>
+                                <option value="9" selected>9 ft</option>
+                                <option value="10">10 ft</option>
+                                <option value="12">12 ft</option>
+                                <option value="custom">Custom...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Wind/Seismic Zone</label>
+                            <select class="form-control" id="psWindZone">
+                                <option value="standard">Standard</option>
+                                <option value="high-wind">High Wind (110+ mph)</option>
+                                <option value="hurricane">Hurricane Zone</option>
+                                <option value="seismic">Seismic Zone</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prescan-section">
+                    <h3>&#128196; Upload Specifications & Cost Catalogs (Optional)</h3>
+                    <p style="font-size:12px;color:var(--text-sec);margin-bottom:8px">Upload spec documents, bid packages, or vendor cost catalogs to help AI use your actual pricing.</p>
+                    <div class="spec-upload-zone" onclick="document.getElementById('specFileInput').click()">
+                        <div style="font-size:28px">&#128203;</div>
+                        <div style="font-size:13px">Drop spec docs or cost catalogs here</div>
+                        <div style="font-size:11px;color:var(--text-sec)">PDF, TXT, CSV supported</div>
+                    </div>
+                    <input type="file" id="specFileInput" accept=".pdf,.txt,.csv,.xlsx,.xls,.doc,.docx" multiple style="display:none" onchange="handleSpecUpload(event)">
+                    <div class="spec-file-list" id="specFileList"></div>
+                </div>
+
+                <div style="display:flex;gap:8px;justify-content:center;margin-top:20px">
+                    <button class="btn btn-outline btn-lg" onclick="skipPreScan()">Skip - Use Defaults</button>
+                    <button class="btn btn-ai btn-lg" onclick="applyPreScanAndRun()">&#129302; Apply & Start AI Scan</button>
+                </div>
+            </div>
+
             <!-- Scan Progress -->
             <div class="card" id="scanProgressCard" style="display:none">
                 <div class="card-header">&#129302; AI Analysis Progress</div>
@@ -482,8 +633,8 @@
                     <button class="tool-btn" onclick="zoomOut()">&#128270;-</button>
                     <button class="tool-btn" onclick="zoomFit()">&#9974;Fit</button>
                     <div class="divider"></div>
-                    <button class="tool-btn" onclick="undoMeasurement()">&#8617;</button>
-                    <button class="tool-btn" onclick="clearMeasurements()">&#128465;</button>
+                    <button class="tool-btn" onclick="undoMeasurement()" title="Undo last (Ctrl+Z)">&#8617; Undo</button>
+                    <button class="tool-btn" onclick="clearMeasurements()" title="Clear all on page">&#128465; Clear Page</button>
                     <div class="divider"></div>
                     <input type="color" id="measureColor" value="#FF4136" style="width:28px;height:24px;border:none;cursor:pointer">
                     <input type="text" id="measureLabel" class="form-control" style="width:120px;padding:4px 8px;font-size:12px" placeholder="Label">
@@ -729,6 +880,20 @@
         wizardStep: 0,
         wizardData: {},
         wizardTemplate: null,
+        // Pre-scan construction details
+        preScanData: {
+            foundationType: null,
+            concreteType: null,
+            studSpacing: '16 OC',
+            wallType: '2x6',
+            roofStructure: null,
+            floorSystem: null,
+            insulationType: [],
+            ceilingHeight: 9,
+            windZone: 'standard',
+        },
+        specFiles: [],
+        pendingScanFiles: null,
     };
 
     let canvas, ctx, canvasContainer;
@@ -847,6 +1012,16 @@
         setupCanvasEvents();
         setupDragDrop('scanUploadZone');
         setupDragDrop('wsUploadZone');
+        // Spec file drop zone
+        const specZone = document.querySelector('.spec-upload-zone');
+        if (specZone) {
+            specZone.addEventListener('dragover', e => { e.preventDefault(); specZone.style.borderColor = 'var(--accent)'; specZone.style.background = '#f0f7ff'; });
+            specZone.addEventListener('dragleave', () => { specZone.style.borderColor = ''; specZone.style.background = ''; });
+            specZone.addEventListener('drop', e => { e.preventDefault(); specZone.style.borderColor = ''; specZone.style.background = '';
+                for (const file of e.dataTransfer.files) APP.specFiles.push({ name: file.name, size: file.size, file });
+                renderSpecFileList();
+            });
+        }
         document.getElementById('estimateDate').valueAsDate = new Date();
         const v = new Date(); v.setDate(v.getDate()+30);
         document.getElementById('validUntil').valueAsDate = v;
@@ -1175,6 +1350,63 @@
         return scope + '.';
     }
 
+    // ==================== PRE-SCAN QUESTIONNAIRE ====================
+    function togglePrescanChip(el, key, value) {
+        // Single select - deselect siblings
+        el.parentElement.querySelectorAll('.prescan-chip').forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected');
+        APP.preScanData[key] = value;
+    }
+
+    function togglePrescanChipMulti(el, key, value) {
+        el.classList.toggle('selected');
+        if (!APP.preScanData[key]) APP.preScanData[key] = [];
+        if (el.classList.contains('selected')) {
+            if (!APP.preScanData[key].includes(value)) APP.preScanData[key].push(value);
+        } else {
+            APP.preScanData[key] = APP.preScanData[key].filter(v => v !== value);
+        }
+    }
+
+    function handleSpecUpload(event) {
+        const files = event.target.files;
+        for (const file of files) {
+            APP.specFiles.push({ name: file.name, size: file.size, file: file });
+        }
+        renderSpecFileList();
+    }
+
+    function renderSpecFileList() {
+        const list = document.getElementById('specFileList');
+        if (!APP.specFiles.length) { list.innerHTML = ''; return; }
+        list.innerHTML = APP.specFiles.map((f, i) => `
+            <div class="spec-file-item">
+                <span>&#128196; ${f.name} (${(f.size/1024).toFixed(1)} KB)</span>
+                <button class="btn btn-sm" onclick="removeSpecFile(${i})" style="padding:2px 6px">&#10005;</button>
+            </div>
+        `).join('');
+    }
+
+    function removeSpecFile(idx) {
+        APP.specFiles.splice(idx, 1);
+        renderSpecFileList();
+    }
+
+    function skipPreScan() {
+        document.getElementById('preScanCard').style.display = 'none';
+        runAiScanWithFiles();
+    }
+
+    function applyPreScanAndRun() {
+        // Gather any extra selections
+        APP.preScanData.ceilingHeight = parseFloat(document.getElementById('psCeilingHeight').value) || 9;
+        APP.preScanData.windZone = document.getElementById('psWindZone').value;
+        // Merge pre-scan data into wizard data for AI use
+        Object.assign(APP.wizardData, APP.preScanData);
+        document.getElementById('preScanCard').style.display = 'none';
+        runAiScanWithFiles();
+    }
+
     // ==================== AI PLAN SCAN ENGINE ====================
     function handleScanUpload(event) {
         handleScanFiles(event.target.files);
@@ -1182,8 +1414,18 @@
 
     async function handleScanFiles(files) {
         if (!files || files.length === 0) return;
-        document.getElementById('scanProgressCard').style.display = 'block';
+        // Store files and show pre-scan questionnaire first
+        APP.pendingScanFiles = files;
         document.getElementById('scanUploadCard').style.display = 'none';
+        document.getElementById('preScanCard').style.display = 'block';
+    }
+
+    async function runAiScanWithFiles() {
+        const files = APP.pendingScanFiles;
+        if (!files || files.length === 0) return;
+        APP.pendingScanFiles = null;
+
+        document.getElementById('scanProgressCard').style.display = 'block';
 
         // Step 1: Load plans
         setStepStatus('step-upload', 'active');
@@ -1253,7 +1495,7 @@
         });
     }
 
-    // AI Room Detection (heuristic analysis of plan image)
+    // AI Room Detection (enhanced heuristic analysis using pre-scan data)
     function aiIdentifyRooms() {
         const d = APP.wizardData;
         const sqft = parseFloat(d.sqft) || 2000;
@@ -1262,6 +1504,7 @@
         const stories = (d.stories || '').includes('2') ? 2 : (d.stories || '').includes('1.5') ? 1.5 : 1;
         const hasGarage = d.garage && !d.garage.includes('No');
         const garageSize = (d.garage || '').includes('3') ? 3 : (d.garage || '').includes('2') ? 2 : 1;
+        const wallHeight = parseFloat(d.ceilingHeight) || 9;
 
         const floorSF = sqft / stories;
 
@@ -1270,25 +1513,25 @@
 
         // Kitchen
         const kitchenSF = Math.round(floorSF * 0.1 + Math.random() * 40);
-        rooms.push({ name: 'Kitchen', type: 'kitchen', area: kitchenSF, perimeter: Math.round(Math.sqrt(kitchenSF) * 4), wallHeight: 9 });
+        rooms.push({ name: 'Kitchen', type: 'kitchen', area: kitchenSF, perimeter: Math.round(Math.sqrt(kitchenSF) * 4), wallHeight });
 
         // Living/Great Room
         const livingSF = Math.round(floorSF * 0.15 + Math.random() * 60);
-        rooms.push({ name: 'Living Room', type: 'living', area: livingSF, perimeter: Math.round(Math.sqrt(livingSF) * 4), wallHeight: stories > 1 ? 9 : 10 });
+        rooms.push({ name: 'Living Room', type: 'living', area: livingSF, perimeter: Math.round(Math.sqrt(livingSF) * 4), wallHeight: stories > 1 ? wallHeight : wallHeight + 1 });
 
         // Dining
         const diningSF = Math.round(floorSF * 0.07 + Math.random() * 20);
-        rooms.push({ name: 'Dining Room', type: 'dining', area: diningSF, perimeter: Math.round(Math.sqrt(diningSF) * 4), wallHeight: 9 });
+        rooms.push({ name: 'Dining Room', type: 'dining', area: diningSF, perimeter: Math.round(Math.sqrt(diningSF) * 4), wallHeight });
 
         // Bedrooms
         for (let i = 0; i < bedrooms; i++) {
             const isMaster = i === 0;
             const sf = isMaster ? Math.round(floorSF * 0.12 + Math.random() * 40) : Math.round(100 + Math.random() * 60);
             rooms.push({
-                name: isMaster ? 'Master Bedroom' : `Bedroom ${i + 1}`,
+                name: isMaster ? 'Primary Bedroom' : `Bedroom ${i + 1}`,
                 type: 'bedroom', area: sf,
                 perimeter: Math.round(Math.sqrt(sf) * 4),
-                wallHeight: 9
+                wallHeight
             });
         }
 
@@ -1297,24 +1540,34 @@
             const isMaster = i === 0;
             const sf = isMaster ? Math.round(60 + Math.random() * 40) : Math.round(35 + Math.random() * 25);
             rooms.push({
-                name: isMaster ? 'Master Bath' : `Bathroom ${i + 1}`,
+                name: isMaster ? 'Primary Bath' : `Bathroom ${i + 1}`,
                 type: 'bathroom', area: sf,
                 perimeter: Math.round(Math.sqrt(sf) * 4),
-                wallHeight: 9,
+                wallHeight,
                 hasTile: true
             });
         }
 
         // Laundry
-        rooms.push({ name: 'Laundry', type: 'utility', area: Math.round(40 + Math.random() * 20), perimeter: 26, wallHeight: 9 });
+        rooms.push({ name: 'Laundry', type: 'utility', area: Math.round(40 + Math.random() * 20), perimeter: 26, wallHeight });
 
         // Hallway/Entry
-        rooms.push({ name: 'Entry/Hallway', type: 'hall', area: Math.round(60 + Math.random() * 40), perimeter: 40, wallHeight: 9 });
+        rooms.push({ name: 'Entry/Hallway', type: 'hall', area: Math.round(60 + Math.random() * 40), perimeter: 40, wallHeight });
 
         // Closets
-        rooms.push({ name: 'Master Closet', type: 'closet', area: Math.round(40 + Math.random() * 30), perimeter: 28, wallHeight: 9 });
+        rooms.push({ name: 'Primary Closet', type: 'closet', area: Math.round(40 + Math.random() * 30), perimeter: 28, wallHeight });
         for (let i = 1; i < bedrooms; i++) {
-            rooms.push({ name: `Closet ${i+1}`, type: 'closet', area: Math.round(16 + Math.random() * 12), perimeter: 16, wallHeight: 9 });
+            rooms.push({ name: `Closet ${i+1}`, type: 'closet', area: Math.round(16 + Math.random() * 12), perimeter: 16, wallHeight });
+        }
+
+        // Pantry (for homes > 1800 SF)
+        if (sqft > 1800) {
+            rooms.push({ name: 'Pantry', type: 'utility', area: Math.round(25 + Math.random() * 15), perimeter: 20, wallHeight });
+        }
+
+        // Mudroom (if garage attached)
+        if (hasGarage && !d.garage?.includes('Detached')) {
+            rooms.push({ name: 'Mudroom', type: 'utility', area: Math.round(40 + Math.random() * 20), perimeter: 26, wallHeight });
         }
 
         // Garage
@@ -1327,8 +1580,18 @@
         rooms.totalSF = rooms.reduce((s, r) => s + r.area, 0);
         rooms.exteriorPerimeter = Math.round(Math.sqrt(floorSF) * 4.2);
         rooms.stories = stories;
-        rooms.roofSF = Math.round(floorSF * 1.15); // pitch factor
+        rooms.wallHeight = wallHeight;
+
+        // Roof pitch factor based on style
+        const roofStyle = d.roofStyle || '';
+        let pitchFactor = 1.15;
+        if (roofStyle.includes('Hip')) pitchFactor = 1.2;
+        else if (roofStyle.includes('Complex') || roofStyle.includes('Gambrel')) pitchFactor = 1.25;
+        else if (roofStyle.includes('Flat')) pitchFactor = 1.02;
+        else if (roofStyle.includes('Shed')) pitchFactor = 1.1;
+        rooms.roofSF = Math.round(floorSF * pitchFactor);
         rooms.foundationSF = floorSF;
+        rooms.pitchFactor = pitchFactor;
 
         return rooms;
     }
@@ -1367,62 +1630,197 @@
         const extPerimeter = rooms.exteriorPerimeter || Math.round(Math.sqrt(totalSF) * 4);
         const stories = rooms.stories || 1;
         const roofSF = rooms.roofSF || Math.round(totalSF * 1.15);
-        const wallHeight = 9;
+        const wallHeight = rooms.wallHeight || parseFloat(d.ceilingHeight) || 9;
         const extWallSF = extPerimeter * wallHeight * stories;
         const intWallLF = rooms.reduce((s,r) => s + (r.perimeter || 0), 0);
         const intWallSF = intWallLF * wallHeight;
         const bedrooms = parseInt(d.bedrooms) || 3;
         const bathrooms = parseFloat(d.bathrooms) || 2;
 
+        // Pre-scan construction details
+        const isICF = (d.concreteType || '').includes('ICF');
+        const isCMU = (d.concreteType || '').includes('Block') || (d.concreteType || '').includes('CMU');
+        const studSpacing = parseInt(d.studSpacing) || 16;
+        const wallType = d.wallType || '2x6';
+        const roofStructure = d.roofStructure || 'Manufactured Trusses';
+        const floorSystem = d.floorSystem || 'TJI / I-Joists';
+        const insulTypes = d.insulationType || [];
+        const foundationType = d.foundationType || d.foundation || 'Slab on Grade';
+        const hasBasement = foundationType.includes('Basement');
+
         const items = [];
 
-        // Foundation
+        // Foundation - Enhanced with concrete type awareness
         if (template.categories.includes('foundation') || template.categories.includes('concrete')) {
-            items.push({ category:'foundation', description:'Foundation footings', type:'linear', quantity:extPerimeter, unit:'LF', wastePct:5, source:'AI' });
-            items.push({ category:'foundation', description:'Foundation walls', type:'linear', quantity:extPerimeter, unit:'LF', wastePct:5, source:'AI' });
-            items.push({ category:'foundation', description:'Slab / basement floor', type:'area', quantity:rooms.foundationSF, unit:'SF', wastePct:5, source:'AI' });
+            items.push({ category:'foundation', description:'Foundation footings (continuous)', type:'linear', quantity:extPerimeter, unit:'LF', wastePct:5, source:'AI' });
+            items.push({ category:'foundation', description:'Footing rebar (#4 cont.)', type:'linear', quantity:extPerimeter * 3, unit:'LF', wastePct:8, source:'AI' });
+
+            if (isICF) {
+                items.push({ category:'foundation', description:'ICF wall forms', type:'area', quantity:extPerimeter * (hasBasement ? 8 : 4), unit:'SF', wastePct:5, source:'AI' });
+                items.push({ category:'foundation', description:'ICF concrete fill', type:'linear', quantity:extPerimeter, unit:'CY', wastePct:5, source:'AI' });
+                items.push({ category:'foundation', description:'ICF rebar (horizontal)', type:'linear', quantity:extPerimeter * (hasBasement ? 4 : 2), unit:'LF', wastePct:10, source:'AI' });
+                items.push({ category:'foundation', description:'ICF rebar (vertical)', type:'count', quantity:Math.round(extPerimeter / 2), unit:'EA', wastePct:5, source:'AI' });
+            } else if (isCMU) {
+                const blockCourses = hasBasement ? 12 : 6;
+                items.push({ category:'foundation', description:'CMU block (8" standard)', type:'count', quantity:Math.round(extPerimeter * blockCourses * 0.75), unit:'EA', wastePct:8, source:'AI' });
+                items.push({ category:'foundation', description:'Mortar mix', type:'count', quantity:Math.ceil(extPerimeter * blockCourses * 0.75 / 40), unit:'BAG', wastePct:10, source:'AI' });
+                items.push({ category:'foundation', description:'Rebar (vertical fill)', type:'linear', quantity:Math.round(extPerimeter / 4) * (hasBasement ? 8 : 4), unit:'LF', wastePct:10, source:'AI' });
+            } else {
+                items.push({ category:'foundation', description:'Foundation walls (poured)', type:'linear', quantity:extPerimeter, unit:'LF', wastePct:5, source:'AI' });
+                const wallHeightFdn = hasBasement ? 8 : 4;
+                const concreteCY = Math.round(extPerimeter * wallHeightFdn * 0.67 / 27);
+                items.push({ category:'foundation', description:'Foundation concrete', type:'count', quantity:concreteCY, unit:'CY', wastePct:5, source:'AI' });
+                items.push({ category:'foundation', description:'Foundation wall forms', type:'area', quantity:extPerimeter * wallHeightFdn * 2, unit:'SF', wastePct:5, source:'AI' });
+            }
+
+            // Slab
+            const slabCY = Math.round(rooms.foundationSF * 0.33 / 27); // 4" slab
+            items.push({ category:'foundation', description:'Slab concrete (4" thick)', type:'count', quantity:slabCY, unit:'CY', wastePct:5, source:'AI' });
+            items.push({ category:'foundation', description:'Vapor barrier (6mil poly)', type:'area', quantity:rooms.foundationSF, unit:'SF', wastePct:10, source:'AI' });
+            items.push({ category:'foundation', description:'Wire mesh / rebar mat', type:'area', quantity:rooms.foundationSF, unit:'SF', wastePct:10, source:'AI' });
+            items.push({ category:'foundation', description:'Gravel base (4")', type:'count', quantity:Math.round(rooms.foundationSF * 0.33 / 27), unit:'CY', wastePct:10, source:'AI' });
+            items.push({ category:'foundation', description:'Anchor bolts', type:'count', quantity:Math.round(extPerimeter / 4), unit:'EA', wastePct:5, source:'AI' });
+
+            if (hasBasement) {
+                items.push({ category:'foundation', description:'Waterproofing membrane', type:'area', quantity:extPerimeter * 8, unit:'SF', wastePct:10, source:'AI' });
+                items.push({ category:'foundation', description:'Drain tile / French drain', type:'linear', quantity:extPerimeter, unit:'LF', wastePct:5, source:'AI' });
+            }
         }
 
-        // Framing
+        // Framing - Enhanced with stud spacing, wall type, truss/rafter
         if (template.categories.includes('framing')) {
-            items.push({ category:'framing', description:'Exterior wall framing', type:'linear', quantity:extPerimeter * stories, unit:'LF', wastePct:10, source:'AI' });
-            items.push({ category:'framing', description:'Interior wall framing', type:'linear', quantity:intWallLF, unit:'LF', wastePct:10, source:'AI' });
-            items.push({ category:'framing', description:'Floor framing/sheathing', type:'area', quantity:totalSF, unit:'SF', wastePct:10, source:'AI' });
-            items.push({ category:'framing', description:'Roof framing/trusses', type:'area', quantity:roofSF, unit:'SF', wastePct:5, source:'AI' });
-            if (stories >= 2) items.push({ category:'framing', description:'Stair framing', type:'count', quantity:1, unit:'EA', wastePct:0, source:'AI' });
+            // Stud calculation based on spacing
+            const studMultiplier = studSpacing === 24 ? 0.5 : studSpacing === 12 ? 1.0 : 0.75; // studs per LF
+            const extStudCount = Math.round(extPerimeter * stories * studMultiplier);
+            const intStudCount = Math.round(intWallLF * 0.75); // interior always 16OC typically
+
+            items.push({ category:'framing', description:`Exterior wall framing (${wallType} @ ${studSpacing}" OC)`, type:'linear', quantity:extPerimeter * stories, unit:'LF', wastePct:10, source:'AI' });
+            items.push({ category:'framing', description:`${wallType} studs (exterior)`, type:'count', quantity:extStudCount, unit:'EA', wastePct:10, source:'AI' });
+            items.push({ category:'framing', description:'Interior wall framing (2x4 @ 16" OC)', type:'linear', quantity:intWallLF, unit:'LF', wastePct:10, source:'AI' });
+            items.push({ category:'framing', description:'2x4 studs (interior)', type:'count', quantity:intStudCount, unit:'EA', wastePct:10, source:'AI' });
+
+            // Plates (top double + bottom = 3 per wall)
+            items.push({ category:'framing', description:`Top/bottom plates (${wallType} ext)`, type:'linear', quantity:extPerimeter * stories * 3, unit:'LF', wastePct:10, source:'AI' });
+            items.push({ category:'framing', description:'Top/bottom plates (2x4 int)', type:'linear', quantity:intWallLF * 3, unit:'LF', wastePct:10, source:'AI' });
+
+            // Headers
+            const windowCount = Math.round(totalSF / 100) + bedrooms;
+            const doorCount = rooms.length;
+            items.push({ category:'framing', description:'Headers (LVL/built-up)', type:'count', quantity:windowCount + doorCount, unit:'EA', wastePct:5, source:'AI' });
+
+            // Floor system
+            if (floorSystem.includes('TJI') || floorSystem.includes('I-Joist')) {
+                items.push({ category:'framing', description:'TJI / I-Joists (floor)', type:'count', quantity:Math.round(totalSF / stories / 1.33), unit:'EA', wastePct:5, source:'AI' });
+            } else if (floorSystem.includes('Truss')) {
+                items.push({ category:'framing', description:'Floor trusses', type:'count', quantity:Math.round(totalSF / stories / 1.33), unit:'EA', wastePct:5, source:'AI' });
+            } else {
+                items.push({ category:'framing', description:'Floor joists (dimensional)', type:'area', quantity:totalSF / stories, unit:'SF', wastePct:10, source:'AI' });
+            }
+
+            // Sheathing
+            const sheathingSF = extPerimeter * wallHeight * stories;
+            items.push({ category:'framing', description:'Wall sheathing (OSB/plywood)', type:'area', quantity:sheathingSF, unit:'SF', wastePct:10, source:'AI' });
+            items.push({ category:'framing', description:'Floor sheathing (3/4" T&G)', type:'area', quantity:totalSF, unit:'SF', wastePct:8, source:'AI' });
+            items.push({ category:'framing', description:'Roof sheathing (OSB/plywood)', type:'area', quantity:roofSF, unit:'SF', wastePct:8, source:'AI' });
+
+            // Roof structure
+            if (roofStructure.includes('Truss')) {
+                const trussCount = Math.round(Math.sqrt(rooms.foundationSF) / 2);
+                items.push({ category:'framing', description:'Manufactured roof trusses', type:'count', quantity:trussCount, unit:'EA', wastePct:0, source:'AI' });
+                items.push({ category:'framing', description:'Truss bracing', type:'linear', quantity:Math.round(trussCount * 8), unit:'LF', wastePct:10, source:'AI' });
+            } else if (roofStructure.includes('Rafter') || roofStructure.includes('Stick')) {
+                items.push({ category:'framing', description:'Rafters (2x10 or 2x12)', type:'count', quantity:Math.round(Math.sqrt(rooms.foundationSF) / 1.33), unit:'EA', wastePct:10, source:'AI' });
+                items.push({ category:'framing', description:'Ridge board/beam', type:'linear', quantity:Math.round(Math.sqrt(rooms.foundationSF)), unit:'LF', wastePct:5, source:'AI' });
+                items.push({ category:'framing', description:'Collar ties', type:'count', quantity:Math.round(Math.sqrt(rooms.foundationSF) / 4), unit:'EA', wastePct:10, source:'AI' });
+            } else {
+                items.push({ category:'framing', description:'Roof framing', type:'area', quantity:roofSF, unit:'SF', wastePct:5, source:'AI' });
+            }
+
+            // Fasteners
+            items.push({ category:'framing', description:'Framing nails (16d)', type:'count', quantity:Math.round(totalSF / 50), unit:'LB', wastePct:10, source:'AI' });
+            items.push({ category:'framing', description:'Joist hangers', type:'count', quantity:Math.round(totalSF / stories / 1.33) * 2, unit:'EA', wastePct:5, source:'AI' });
+            items.push({ category:'framing', description:'Hurricane ties/straps', type:'count', quantity:Math.round(Math.sqrt(rooms.foundationSF) / 2), unit:'EA', wastePct:5, source:'AI' });
+
+            if (stories >= 2) items.push({ category:'framing', description:'Stair framing (stringers + treads)', type:'count', quantity:1, unit:'SET', wastePct:0, source:'AI' });
         }
 
         // Roofing
         if (template.categories.includes('roofing')) {
-            const squares = Math.ceil(roofSF / 100);
-            items.push({ category:'roofing', description:`${d.roofMaterial || 'Asphalt shingle'} roofing`, type:'area', quantity:roofSF, unit:'SF', wastePct:12, source:'AI' });
-            items.push({ category:'roofing', description:'Roof underlayment', type:'area', quantity:roofSF, unit:'SF', wastePct:10, source:'AI' });
-            items.push({ category:'roofing', description:'Ridge/hip cap', type:'linear', quantity:Math.round(extPerimeter * 0.3), unit:'LF', wastePct:5, source:'AI' });
+            items.push({ category:'roofing', description:`${d.roofMaterial || 'Architectural shingle'} roofing`, type:'area', quantity:roofSF, unit:'SF', wastePct:12, source:'AI' });
+            items.push({ category:'roofing', description:'Synthetic underlayment', type:'area', quantity:roofSF, unit:'SF', wastePct:10, source:'AI' });
+            items.push({ category:'roofing', description:'Ice & water shield (eaves)', type:'linear', quantity:extPerimeter, unit:'LF', wastePct:5, source:'AI' });
+            items.push({ category:'roofing', description:'Ridge cap shingles', type:'linear', quantity:Math.round(extPerimeter * 0.3), unit:'LF', wastePct:5, source:'AI' });
             items.push({ category:'roofing', description:'Drip edge', type:'linear', quantity:extPerimeter * 2, unit:'LF', wastePct:5, source:'AI' });
+            items.push({ category:'roofing', description:'Ridge vent', type:'linear', quantity:Math.round(Math.sqrt(rooms.foundationSF) * 0.8), unit:'LF', wastePct:5, source:'AI' });
+            items.push({ category:'roofing', description:'Step/counter flashing', type:'count', quantity:Math.round(extPerimeter * 0.1), unit:'PC', wastePct:10, source:'AI' });
+            items.push({ category:'roofing', description:'Roofing nails', type:'count', quantity:Math.ceil(roofSF / 100) * 2, unit:'LB', wastePct:10, source:'AI' });
             items.push({ category:'roofing', description:'Gutters', type:'linear', quantity:extPerimeter, unit:'LF', wastePct:5, source:'AI' });
+            items.push({ category:'roofing', description:'Downspouts', type:'count', quantity:Math.round(extPerimeter / 40), unit:'EA', wastePct:0, source:'AI' });
         }
 
         // Siding
         if (template.categories.includes('siding')) {
-            items.push({ category:'siding', description:`${d.exteriorMaterial || 'Siding'} exterior`, type:'area', quantity:extWallSF, unit:'SF', wastePct:12, source:'AI' });
+            // Subtract window/door openings (~15% of wall area)
+            const netExtWallSF = Math.round(extWallSF * 0.85);
+            items.push({ category:'siding', description:`${d.exteriorMaterial || 'Siding'} exterior`, type:'area', quantity:netExtWallSF, unit:'SF', wastePct:12, source:'AI' });
             items.push({ category:'siding', description:'House wrap / WRB', type:'area', quantity:extWallSF, unit:'SF', wastePct:10, source:'AI' });
-            items.push({ category:'siding', description:'Exterior trim', type:'linear', quantity:extPerimeter * 1.5, unit:'LF', wastePct:10, source:'AI' });
-            items.push({ category:'siding', description:'Soffit & fascia', type:'linear', quantity:extPerimeter, unit:'LF', wastePct:5, source:'AI' });
+            items.push({ category:'siding', description:'Exterior trim (corners, windows, doors)', type:'linear', quantity:Math.round(extPerimeter * 1.5 + windowCount * 12 + doorCount * 14), unit:'LF', wastePct:10, source:'AI' });
+            items.push({ category:'siding', description:'Soffit', type:'linear', quantity:extPerimeter, unit:'LF', wastePct:5, source:'AI' });
+            items.push({ category:'siding', description:'Fascia board', type:'linear', quantity:extPerimeter, unit:'LF', wastePct:5, source:'AI' });
+            items.push({ category:'siding', description:'Siding nails/screws', type:'count', quantity:Math.round(netExtWallSF / 10), unit:'LB', wastePct:10, source:'AI' });
         }
 
-        // Insulation
+        // Insulation - Enhanced with type awareness
         if (template.categories.includes('insulation')) {
-            items.push({ category:'insulation', description:'Wall insulation (R-13/R-19)', type:'area', quantity:extWallSF, unit:'SF', wastePct:5, source:'AI' });
-            items.push({ category:'insulation', description:'Attic insulation (R-30/R-38)', type:'area', quantity:Math.round(totalSF / stories), unit:'SF', wastePct:5, source:'AI' });
+            const hasSprayFoam = insulTypes.some(t => t.includes('Spray Foam'));
+            const hasRigidFoam = insulTypes.some(t => t.includes('Rigid'));
+            const hasCellulose = insulTypes.some(t => t.includes('Cellulose'));
+
+            if (hasSprayFoam) {
+                const rValue = wallType === '2x6' ? 'R-21' : 'R-13';
+                items.push({ category:'insulation', description:`Spray foam walls (${rValue})`, type:'area', quantity:extWallSF, unit:'SF', wastePct:5, source:'AI' });
+            } else {
+                const rValue = wallType === '2x6' ? 'R-19' : 'R-13';
+                items.push({ category:'insulation', description:`Fiberglass batt walls (${rValue})`, type:'area', quantity:extWallSF, unit:'SF', wastePct:5, source:'AI' });
+            }
+
+            if (hasRigidFoam) {
+                items.push({ category:'insulation', description:'Rigid foam board (exterior CI)', type:'area', quantity:extWallSF, unit:'SF', wastePct:8, source:'AI' });
+            }
+
+            if (hasCellulose) {
+                items.push({ category:'insulation', description:'Blown-in cellulose (attic)', type:'area', quantity:Math.round(totalSF / stories), unit:'SF', wastePct:5, source:'AI' });
+            } else {
+                items.push({ category:'insulation', description:'Attic insulation (R-38)', type:'area', quantity:Math.round(totalSF / stories), unit:'SF', wastePct:5, source:'AI' });
+            }
+
+            if (hasBasement && !isICF) {
+                items.push({ category:'insulation', description:'Basement wall insulation', type:'area', quantity:extPerimeter * 8, unit:'SF', wastePct:5, source:'AI' });
+            }
         }
 
         // Drywall
         if (template.categories.includes('drywall')) {
             const totalWallSF = extWallSF + intWallSF;
+            // Account for window/door openings (-15% exterior)
+            const netWallSF = Math.round(intWallSF + extWallSF * 0.85);
             const ceilingSF = totalSF;
-            items.push({ category:'drywall', description:'Drywall - walls', type:'area', quantity:totalWallSF, unit:'SF', wastePct:10, source:'AI' });
-            items.push({ category:'drywall', description:'Drywall - ceilings', type:'area', quantity:ceilingSF, unit:'SF', wastePct:10, source:'AI' });
-            items.push({ category:'drywall', description:'Tape, mud & finish', type:'area', quantity:totalWallSF + ceilingSF, unit:'SF', wastePct:5, source:'AI' });
+            const sheets4x8 = Math.ceil(netWallSF / 32); // 4x8 = 32 SF
+            const ceilingSheets = Math.ceil(ceilingSF / 32);
+            items.push({ category:'drywall', description:'Drywall 1/2" (walls)', type:'count', quantity:sheets4x8, unit:'SHT', wastePct:10, source:'AI' });
+            items.push({ category:'drywall', description:'Drywall 1/2" (ceilings)', type:'count', quantity:ceilingSheets, unit:'SHT', wastePct:10, source:'AI' });
+
+            // Garage = 5/8" fire-rated
+            if (rooms.some(r => r.isGarage)) {
+                const garageRoom = rooms.find(r => r.isGarage);
+                const garageSheets = Math.ceil((garageRoom.perimeter * 10 + garageRoom.area) / 32);
+                items.push({ category:'drywall', description:'Drywall 5/8" fire-rated (garage)', type:'count', quantity:garageSheets, unit:'SHT', wastePct:10, source:'AI' });
+            }
+
+            items.push({ category:'drywall', description:'Joint compound (5 gal)', type:'count', quantity:Math.ceil((netWallSF + ceilingSF) / 500), unit:'EA', wastePct:5, source:'AI' });
+            items.push({ category:'drywall', description:'Drywall tape', type:'count', quantity:Math.ceil((netWallSF + ceilingSF) / 300), unit:'ROLL', wastePct:10, source:'AI' });
+            items.push({ category:'drywall', description:'Corner bead', type:'linear', quantity:Math.round(rooms.length * 8), unit:'LF', wastePct:10, source:'AI' });
+            items.push({ category:'drywall', description:'Drywall screws', type:'count', quantity:Math.ceil((sheets4x8 + ceilingSheets) / 5), unit:'LB', wastePct:10, source:'AI' });
         }
 
         // Flooring
@@ -1430,69 +1828,117 @@
             const flooringTypes = Array.isArray(d.flooringTypes) ? d.flooringTypes : ['LVP/Vinyl Plank'];
             const bathRooms = rooms.filter(r => r.type === 'bathroom');
             const bathSF = bathRooms.reduce((s,r) => s + r.area, 0);
+            const kitchenSF = rooms.filter(r => r.type === 'kitchen').reduce((s,r) => s + r.area, 0);
+            const bedroomSF = rooms.filter(r => r.type === 'bedroom').reduce((s,r) => s + r.area, 0);
             const mainSF = totalSF - bathSF;
 
             if (flooringTypes.includes('Hardwood')) {
-                items.push({ category:'flooring', description:'Hardwood flooring', type:'area', quantity:Math.round(mainSF * 0.5), unit:'SF', wastePct:10, source:'AI' });
+                const hwSF = Math.round(mainSF * 0.4);
+                items.push({ category:'flooring', description:'Hardwood flooring (living/dining)', type:'area', quantity:hwSF, unit:'SF', wastePct:10, source:'AI' });
+                items.push({ category:'flooring', description:'Hardwood floor underlayment', type:'area', quantity:hwSF, unit:'SF', wastePct:5, source:'AI' });
             }
             if (flooringTypes.includes('LVP/Vinyl Plank')) {
-                items.push({ category:'flooring', description:'LVP flooring', type:'area', quantity:Math.round(mainSF * 0.4), unit:'SF', wastePct:10, source:'AI' });
+                const lvpSF = Math.round(mainSF * (flooringTypes.includes('Hardwood') ? 0.2 : 0.5));
+                items.push({ category:'flooring', description:'LVP flooring', type:'area', quantity:lvpSF, unit:'SF', wastePct:10, source:'AI' });
+                items.push({ category:'flooring', description:'LVP underlayment', type:'area', quantity:lvpSF, unit:'SF', wastePct:5, source:'AI' });
             }
             if (flooringTypes.includes('Tile') || bathSF > 0) {
-                items.push({ category:'flooring', description:'Tile flooring (bathrooms)', type:'area', quantity:bathSF, unit:'SF', wastePct:12, source:'AI' });
+                const tileSF = bathSF + (flooringTypes.includes('Tile') ? kitchenSF : 0);
+                items.push({ category:'flooring', description:'Tile flooring (bath/kitchen)', type:'area', quantity:tileSF, unit:'SF', wastePct:12, source:'AI' });
+                items.push({ category:'flooring', description:'Tile thin-set mortar', type:'count', quantity:Math.ceil(tileSF / 50), unit:'BAG', wastePct:10, source:'AI' });
+                items.push({ category:'flooring', description:'Tile grout', type:'count', quantity:Math.ceil(tileSF / 75), unit:'BAG', wastePct:10, source:'AI' });
+                items.push({ category:'flooring', description:'Cement backer board', type:'area', quantity:tileSF, unit:'SF', wastePct:10, source:'AI' });
             }
             if (flooringTypes.includes('Carpet')) {
-                items.push({ category:'flooring', description:'Carpet (bedrooms)', type:'area', quantity:Math.round(mainSF * 0.3), unit:'SF', wastePct:5, source:'AI' });
+                items.push({ category:'flooring', description:'Carpet w/ pad (bedrooms)', type:'area', quantity:bedroomSF, unit:'SF', wastePct:8, source:'AI' });
             }
+            // Transition strips
+            items.push({ category:'flooring', description:'Floor transition strips', type:'count', quantity:rooms.length, unit:'EA', wastePct:0, source:'AI' });
         }
 
         // Electrical
         if (template.categories.includes('electrical')) {
-            const outlets = Math.round(totalSF / 60) + bathrooms * 2;
-            const switches = Math.round(rooms.length * 1.5);
-            const lights = rooms.length + 4;
-            items.push({ category:'electrical', description:'Rough-in wiring', type:'area', quantity:totalSF, unit:'SF', wastePct:5, source:'AI' });
+            // NEC code: outlet every 6ft of wall, 12ft max spacing. Kitchen: outlet every 4ft counter.
+            const outlets = Math.round(intWallLF / 6) + 4; // Every 6ft + extras
+            const gfciCount = Math.ceil(bathrooms) * 2 + 3; // baths + kitchen
+            const switches = Math.round(rooms.filter(r => !r.isGarage).length * 1.5);
+            const lights = rooms.filter(r => !r.isGarage).length + 4;
+            const circuits20A = Math.ceil(outlets / 10) + gfciCount;
+            const circuits15A = Math.ceil(lights / 8);
+
+            items.push({ category:'electrical', description:'Romex 14/2 (lighting circuits)', type:'count', quantity:Math.ceil(circuits15A * 250 / 250), unit:'ROLL', wastePct:10, source:'AI' });
+            items.push({ category:'electrical', description:'Romex 12/2 (outlet circuits)', type:'count', quantity:Math.ceil(circuits20A * 250 / 250), unit:'ROLL', wastePct:10, source:'AI' });
             items.push({ category:'electrical', description:'Outlets/receptacles', type:'count', quantity:outlets, unit:'EA', wastePct:0, source:'AI' });
-            items.push({ category:'electrical', description:'Switches', type:'count', quantity:switches, unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'electrical', description:'GFCI outlets (kitchen/bath/ext)', type:'count', quantity:gfciCount, unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'electrical', description:'Switches (single-pole)', type:'count', quantity:switches, unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'electrical', description:'3-way switches', type:'count', quantity:Math.round(switches * 0.3), unit:'EA', wastePct:0, source:'AI' });
             items.push({ category:'electrical', description:'Light fixtures', type:'count', quantity:lights, unit:'EA', wastePct:0, source:'AI' });
-            items.push({ category:'electrical', description:'GFCI outlets (kitchen/bath)', type:'count', quantity:Math.round(bathrooms * 2 + 3), unit:'EA', wastePct:0, source:'AI' });
-            items.push({ category:'electrical', description:'Electrical panel', type:'count', quantity:1, unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'electrical', description:'Recessed lights', type:'count', quantity:Math.round(lights * 0.5), unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'electrical', description:'Exterior lights', type:'count', quantity:Math.round(3 + bedrooms * 0.5), unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'electrical', description:'200A panel', type:'count', quantity:1, unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'electrical', description:'Breakers (20A)', type:'count', quantity:circuits20A, unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'electrical', description:'Breakers (15A)', type:'count', quantity:circuits15A, unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'electrical', description:'Smoke/CO detectors', type:'count', quantity:bedrooms + Math.ceil(stories) + 1, unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'electrical', description:'Electrical boxes', type:'count', quantity:outlets + switches + lights, unit:'EA', wastePct:5, source:'AI' });
         }
 
         // Plumbing
         if (template.categories.includes('plumbing')) {
-            items.push({ category:'plumbing', description:'Plumbing rough-in', type:'count', quantity:Math.ceil(bathrooms) + 1, unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'plumbing', description:'Plumbing rough-in (per fixture)', type:'count', quantity:Math.ceil(bathrooms * 3) + 2, unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'plumbing', description:'PEX supply piping (1/2")', type:'linear', quantity:Math.round(totalSF * 0.3), unit:'LF', wastePct:10, source:'AI' });
+            items.push({ category:'plumbing', description:'PVC drain pipe (3")', type:'linear', quantity:Math.round(totalSF * 0.15), unit:'LF', wastePct:10, source:'AI' });
             items.push({ category:'plumbing', description:'Toilets', type:'count', quantity:Math.ceil(bathrooms), unit:'EA', wastePct:0, source:'AI' });
-            items.push({ category:'plumbing', description:'Sinks (bath)', type:'count', quantity:Math.ceil(bathrooms), unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'plumbing', description:'Bathroom sinks/vanities', type:'count', quantity:Math.ceil(bathrooms), unit:'EA', wastePct:0, source:'AI' });
             items.push({ category:'plumbing', description:'Kitchen sink', type:'count', quantity:1, unit:'EA', wastePct:0, source:'AI' });
-            items.push({ category:'plumbing', description:'Shower/tub', type:'count', quantity:Math.ceil(bathrooms * 0.8), unit:'EA', wastePct:0, source:'AI' });
-            items.push({ category:'plumbing', description:'Water heater', type:'count', quantity:1, unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'plumbing', description:'Shower/tub units', type:'count', quantity:Math.ceil(bathrooms * 0.8), unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'plumbing', description:'Water heater (50 gal)', type:'count', quantity:totalSF > 3000 ? 2 : 1, unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'plumbing', description:'Laundry hookups', type:'count', quantity:1, unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'plumbing', description:'Hose bibs (exterior)', type:'count', quantity:2, unit:'EA', wastePct:0, source:'AI' });
         }
 
         // HVAC
         if (template.categories.includes('hvac')) {
-            items.push({ category:'hvac', description:`${d.hvacType || 'HVAC'} equipment`, type:'count', quantity:1, unit:'EA', wastePct:0, source:'AI' });
-            items.push({ category:'hvac', description:'Ductwork', type:'linear', quantity:Math.round(totalSF * 0.3), unit:'LF', wastePct:10, source:'AI' });
-            items.push({ category:'hvac', description:'Registers/grilles', type:'count', quantity:rooms.filter(r=>!r.isGarage).length + 2, unit:'EA', wastePct:0, source:'AI' });
+            const tonnage = Math.ceil(totalSF / 600);
+            const btu = tonnage * 12000;
+            items.push({ category:'hvac', description:`${d.hvacType || 'Furnace/AC'} equipment (${tonnage} ton)`, type:'count', quantity:1, unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'hvac', description:'Supply ductwork (insulated flex)', type:'linear', quantity:Math.round(totalSF * 0.25), unit:'LF', wastePct:10, source:'AI' });
+            items.push({ category:'hvac', description:'Return ductwork', type:'linear', quantity:Math.round(totalSF * 0.08), unit:'LF', wastePct:10, source:'AI' });
+            items.push({ category:'hvac', description:'Supply registers', type:'count', quantity:rooms.filter(r=>!r.isGarage).length + 2, unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'hvac', description:'Return grilles', type:'count', quantity:Math.max(2, Math.ceil(stories * 2)), unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'hvac', description:'Thermostat', type:'count', quantity:stories > 1 ? 2 : 1, unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'hvac', description:'Exhaust fans (bath)', type:'count', quantity:Math.ceil(bathrooms), unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'hvac', description:'Range hood/vent', type:'count', quantity:1, unit:'EA', wastePct:0, source:'AI' });
         }
 
         // Paint
         if (template.categories.includes('paint')) {
-            items.push({ category:'paint', description:'Interior wall paint', type:'area', quantity:extWallSF + intWallSF, unit:'SF', wastePct:5, source:'AI' });
-            items.push({ category:'paint', description:'Ceiling paint', type:'area', quantity:totalSF, unit:'SF', wastePct:5, source:'AI' });
-            items.push({ category:'paint', description:'Interior trim paint', type:'linear', quantity:intWallLF + extPerimeter, unit:'LF', wastePct:5, source:'AI' });
-            items.push({ category:'paint', description:'Exterior paint', type:'area', quantity:extWallSF, unit:'SF', wastePct:5, source:'AI' });
+            // Paint coverage: ~350 SF/gal, 2 coats
+            const intWallPaintSF = Math.round((extWallSF + intWallSF) * 0.85);
+            const intGallons = Math.ceil(intWallPaintSF / 350 * 2);
+            const ceilingGallons = Math.ceil(totalSF / 350 * 1);
+            const extGallons = Math.ceil(extWallSF * 0.85 / 300 * 2);
+            const primerGallons = Math.ceil((intWallPaintSF + totalSF) / 400);
+            items.push({ category:'paint', description:'Interior wall paint', type:'count', quantity:intGallons, unit:'GAL', wastePct:5, source:'AI' });
+            items.push({ category:'paint', description:'Ceiling paint', type:'count', quantity:ceilingGallons, unit:'GAL', wastePct:5, source:'AI' });
+            items.push({ category:'paint', description:'Interior trim paint', type:'count', quantity:Math.ceil(intGallons * 0.3), unit:'GAL', wastePct:5, source:'AI' });
+            items.push({ category:'paint', description:'Primer', type:'count', quantity:primerGallons, unit:'GAL', wastePct:5, source:'AI' });
+            items.push({ category:'paint', description:'Exterior paint', type:'count', quantity:extGallons, unit:'GAL', wastePct:5, source:'AI' });
+            items.push({ category:'paint', description:'Caulk tubes', type:'count', quantity:Math.round(extPerimeter / 10), unit:'EA', wastePct:10, source:'AI' });
         }
 
         // Windows & Doors
         if (template.categories.includes('windows')) {
             const windowCount = Math.round(totalSF / 100) + bedrooms;
-            items.push({ category:'windows', description:'Windows', type:'count', quantity:windowCount, unit:'EA', wastePct:0, source:'AI' });
-            items.push({ category:'windows', description:'Exterior doors', type:'count', quantity:2 + (d.garage && !d.garage.includes('No') ? 1 : 0), unit:'EA', wastePct:0, source:'AI' });
-            items.push({ category:'windows', description:'Interior doors', type:'count', quantity:rooms.length - 2, unit:'EA', wastePct:0, source:'AI' });
-            if (d.garage && d.garage.includes('Sliding')) {
-                items.push({ category:'windows', description:'Sliding glass door', type:'count', quantity:1, unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'windows', description:'Windows (vinyl double-hung)', type:'count', quantity:windowCount, unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'windows', description:'Entry door (insulated)', type:'count', quantity:2, unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'windows', description:'Interior doors (prehung)', type:'count', quantity:rooms.filter(r => !r.isGarage && r.type !== 'hall').length, unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'windows', description:'Sliding glass door', type:'count', quantity:1, unit:'EA', wastePct:0, source:'AI' });
+            if (d.garage && !d.garage?.includes('No')) {
+                items.push({ category:'windows', description:'Garage door', type:'count', quantity:d.garage?.includes('2') ? 1 : (d.garage?.includes('3') ? 1 : 1), unit:'EA', wastePct:0, source:'AI' });
+                items.push({ category:'windows', description:'Garage service door', type:'count', quantity:1, unit:'EA', wastePct:0, source:'AI' });
             }
+            items.push({ category:'windows', description:'Door hardware (locksets)', type:'count', quantity:rooms.filter(r => !r.isGarage).length + 2, unit:'EA', wastePct:0, source:'AI' });
+            items.push({ category:'windows', description:'Door/window trim (casing)', type:'linear', quantity:(windowCount + rooms.length) * 16, unit:'LF', wastePct:10, source:'AI' });
         }
 
         // Add all items
@@ -1502,7 +1948,7 @@
                 ...item,
                 quantity: parseFloat(item.quantity.toFixed(2)),
                 aiGenerated: true,
-                aiConfidence: Math.round(75 + Math.random() * 20),
+                aiConfidence: Math.round(78 + Math.random() * 17),
             });
         });
 
@@ -1511,34 +1957,53 @@
     }
 
     function aiPriceMaterials() {
-        // Auto-generate materials from takeoff
+        // Smart material matching: try to find best price match per takeoff item
         APP.takeoffItems.forEach(item => {
             const prices = DEFAULT_PRICES[item.category];
             if (!prices || prices.length === 0) return;
             const totalQty = item.quantity * (1 + item.wastePct / 100);
-            const material = prices.find(p => item.description.toLowerCase().includes(p.name.toLowerCase().split(' ')[0])) || prices[0];
+            const desc = item.description.toLowerCase();
+
+            // Find best matching material by keyword
+            let material = null;
+            for (const p of prices) {
+                const keywords = p.name.toLowerCase().split(/[\s()\/]+/);
+                if (keywords.some(kw => kw.length > 2 && desc.includes(kw))) {
+                    material = p; break;
+                }
+            }
+            // Fallback: first price in category
+            if (!material) material = prices[0];
 
             if (!APP.materials[item.category]) APP.materials[item.category] = [];
             APP.materials[item.category].push({
-                name: material.name,
+                name: item.description,
                 qty: parseFloat(totalQty.toFixed(1)),
-                unit: material.unit,
+                unit: item.unit || material.unit,
                 unitPrice: material.price,
                 total: parseFloat((totalQty * material.price).toFixed(2)),
                 aiGenerated: true,
             });
         });
 
-        // Also auto-generate labor
+        // Auto-generate labor: match best labor task per takeoff item
         APP.takeoffItems.forEach(item => {
             const catRates = LABOR_RATES[item.category];
             if (!catRates) return;
-            const task = catRates.tasks[0];
+            const desc = item.description.toLowerCase();
+
+            // Try to match a specific task
+            let task = catRates.tasks.find(t => {
+                const keywords = t.desc.toLowerCase().split(/[\s()\/]+/);
+                return keywords.some(kw => kw.length > 2 && desc.includes(kw));
+            });
+            if (!task) task = catRates.tasks[0];
+
             const qty = item.quantity * (1 + item.wastePct / 100);
             APP.laborItems.push({
                 id: Date.now() + Math.random(),
                 category: item.category,
-                description: task.desc,
+                description: task.desc + (item.description !== task.desc ? ` (${item.description})` : ''),
                 quantity: parseFloat(qty.toFixed(2)),
                 unit: task.unit,
                 hoursPerUnit: task.hoursPerUnit,
@@ -1747,15 +2212,47 @@
         APP.pages.forEach((p, i) => {
             const t = document.createElement('div');
             t.className = 'page-thumb' + (i === APP.currentPage ? ' active' : '');
-            t.onclick = () => showPage(i);
+            t.onclick = (e) => { if(!e.target.classList.contains('page-remove')) showPage(i); };
             const tc = document.createElement('canvas'); tc.width=80; tc.height=60;
             const s = Math.min(80/p.width, 60/p.height);
             tc.getContext('2d').drawImage(p.img, 0, 0, p.width*s, p.height*s);
             t.appendChild(tc);
             const n = document.createElement('div'); n.className='page-num'; n.textContent=i+1;
             t.appendChild(n);
+            const rm = document.createElement('button'); rm.className='page-remove'; rm.innerHTML='&#10005;';
+            rm.title='Remove page'; rm.onclick=(e)=>{e.stopPropagation();removePage(i);};
+            t.appendChild(rm);
             c.appendChild(t);
         });
+    }
+
+    function removePage(index) {
+        if(!confirm(`Remove page ${index+1} (${APP.pages[index].name})?`)) return;
+        APP.pages.splice(index, 1);
+        // Remove measurements on this page and shift page numbers for later pages
+        APP.measurements = APP.measurements.filter(m => m.page !== index).map(m => {
+            if (m.page > index) m.page--;
+            return m;
+        });
+        // Shift scale per page
+        const newScales = {};
+        Object.entries(APP.scalePerPage).forEach(([k,v]) => {
+            const ki = parseInt(k);
+            if (ki < index) newScales[ki] = v;
+            else if (ki > index) newScales[ki-1] = v;
+        });
+        APP.scalePerPage = newScales;
+        // Adjust current page
+        if (APP.pages.length === 0) {
+            document.getElementById('wsViewerSection').style.display = 'none';
+            APP.currentPage = 0;
+        } else {
+            if (APP.currentPage >= APP.pages.length) APP.currentPage = APP.pages.length - 1;
+            showPage(APP.currentPage);
+        }
+        updateWsPageThumbs();
+        updateMeasurementList();
+        showToast('Page removed', 'info');
     }
 
     function showPage(index) {
@@ -1892,8 +2389,14 @@
 
     function updateMeasurementList() {
         const list=document.getElementById('measurementList'), pg=APP.measurements.filter(m=>m.page===APP.currentPage);
-        if(!pg.length) { list.innerHTML='<div style="text-align:center;color:var(--text-sec);padding:20px;font-size:13px">No measurements.</div>'; document.getElementById('measurementSummary').innerHTML=''; return; }
-        list.innerHTML=pg.map(m=>`<div class="measurement-item ${m.aiGenerated?'ai-detected':''}"><span><span class="type-badge type-${m.type}">${m.type}</span> ${m.label||''} ${m.aiGenerated?'<span class="ai-badge">AI</span>':''}</span><span>${m.type==='count'?'#'+m.countIndex:(m.type==='area'?formatArea(m.value):formatDistance(m.value))}<button class="btn btn-sm" onclick="deleteMeasurement(${m.id})" style="padding:2px 6px;margin-left:4px">&#128465;</button></span></div>`).join('');
+        if(!pg.length) { list.innerHTML='<div style="text-align:center;color:var(--text-sec);padding:20px;font-size:13px">No measurements. Use drawing tools or AI Auto-Measure.</div>'; document.getElementById('measurementSummary').innerHTML=''; return; }
+        list.innerHTML=pg.map(m=>`<div class="measurement-item ${m.aiGenerated?'ai-detected':''}">
+            <span><span class="type-badge type-${m.type}">${m.type}</span> ${m.label||''} ${m.aiGenerated?'<span class="ai-badge">AI</span>':''}</span>
+            <div class="meas-actions">
+                <span style="font-size:12px;margin-right:4px">${m.type==='count'?'#'+m.countIndex:(m.type==='area'?formatArea(m.value):formatDistance(m.value))}</span>
+                <button onclick="deleteMeasurement(${m.id})" title="Delete">&#128465;</button>
+            </div>
+        </div>`).join('');
         const lin=pg.filter(m=>['linear','polyline'].includes(m.type)), areas=pg.filter(m=>m.type==='area'), counts=pg.filter(m=>m.type==='count');
         document.getElementById('measurementSummary').innerHTML=`<strong>Summary:</strong> Linear: ${formatDistance(lin.reduce((s,m)=>s+m.value,0))} | Area: ${formatArea(areas.reduce((s,m)=>s+m.value,0))} | Count: ${counts.length}`;
         if(pg.some(m=>m.aiGenerated)) document.getElementById('measAiBadge').style.display='inline-flex';
@@ -1924,9 +2427,29 @@
     }
     function autoDetectScale() {
         if(!APP.pages.length) return;
-        const p=APP.pages[APP.currentPage||0], ar=p.width/p.height;
-        let pw=ar>1.3?36:11; const dpi=p.width/pw, pxPerFt=0.25*dpi;
-        APP.scalePerPage[APP.currentPage||0]=pxPerFt; if(!APP.scale) APP.scale=pxPerFt;
+        // Improved scale detection: analyze each page independently
+        APP.pages.forEach((p, idx) => {
+            const ar = p.width / p.height;
+            // Architectural plans are typically printed on ARCH D (24x36), ARCH E (36x48), or ANSI D (22x34)
+            // Landscape = wider than tall
+            let paperWidthInches, paperHeightInches;
+            if (ar > 1.3) { // Landscape
+                paperWidthInches = p.width > 3000 ? 36 : 24;
+                paperHeightInches = p.width > 3000 ? 24 : 18;
+            } else if (ar < 0.77) { // Portrait
+                paperWidthInches = p.width > 2000 ? 24 : 11;
+                paperHeightInches = p.width > 2000 ? 36 : 17;
+            } else { // Nearly square
+                paperWidthInches = 24;
+                paperHeightInches = 24;
+            }
+            const dpi = p.width / paperWidthInches;
+            // Default to 1/4" = 1'-0" scale which is most common for residential floor plans
+            const scaleRatio = 0.25; // 1/4 inch per foot
+            const pxPerFt = scaleRatio * dpi;
+            APP.scalePerPage[idx] = pxPerFt;
+            if (!APP.scale) APP.scale = pxPerFt;
+        });
     }
 
     // ==================== TAKEOFF ====================
