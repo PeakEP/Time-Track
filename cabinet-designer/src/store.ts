@@ -90,6 +90,7 @@ function defaultProject(): Project {
       markup: 1.2,
       hstRate: 0.15,
       wallMode: 4,
+      wallViewAngle: 45,
     },
     room: rectangleRoom(144, 120),
     items: [],

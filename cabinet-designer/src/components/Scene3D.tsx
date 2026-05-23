@@ -8,6 +8,7 @@ import type { Item, Point } from "../types";
 import { bounds, edges, visibleWallSet } from "../utils/roomPresets";
 import { darken, finishColor } from "../utils/finishColors";
 import { generateCountertops } from "../utils/snapping";
+import { isCornerCabinet } from "../utils/placement";
 
 type OrbitRef = {
   object: THREE.Camera & { position: THREE.Vector3; up: THREE.Vector3; lookAt: (v: THREE.Vector3) => void };
@@ -22,6 +23,7 @@ export function Scene3D() {
   const settings = useStore((s) => s.project.settings);
   const selectedId = useStore((s) => s.selectedId);
   const select = useStore((s) => s.select);
+  const catalog = useStore((s) => s.catalog);
 
   const b = useMemo(() => bounds(room.points), [room.points]);
   const cx = (b.minX + b.maxX) / 2;
@@ -62,12 +64,19 @@ export function Scene3D() {
         gl={{ antialias: true }}
       >
         <color attach="background" args={["#eef1f7"]} />
-        <hemisphereLight args={["#ffffff", "#b8bfd0", 0.7]} />
-        <directionalLight position={[cx + 200, 300, cy + 200]} intensity={0.85} />
-        <ambientLight intensity={0.25} />
+        <hemisphereLight args={["#ffffff", "#b8bfd0", 0.8]} />
+        <directionalLight position={[cx + 200, 320, cy + 200]} intensity={0.8} />
+        <directionalLight position={[cx - 150, 260, cy - 100]} intensity={0.3} />
+        <ambientLight intensity={0.4} />
 
         <Floor room={room} />
-        <Walls room={room} wallHeight={settings.wallHeight} items={items} wallMode={settings.wallMode ?? 4} />
+        <Walls
+          room={room}
+          wallHeight={settings.wallHeight}
+          items={items}
+          wallMode={settings.wallMode ?? 4}
+          wallViewAngle={settings.wallViewAngle ?? 45}
+        />
         <Grid
           position={[cx, 0.01, cy]}
           args={[dim * 2, dim * 2]}
@@ -88,6 +97,7 @@ export function Scene3D() {
             selected={it.id === selectedId}
             onSelect={() => select(it.id)}
             finishHex={finishHex}
+            corner={isCornerCabinet(catalog?.products.find((p) => p.sku === it.sku) ?? null)}
           />
         ))}
 
@@ -154,17 +164,19 @@ function Walls({
   wallHeight,
   items,
   wallMode,
+  wallViewAngle,
 }: {
   room: { points: Point[]; wallThickness: number };
   wallHeight: number;
   items: Item[];
   wallMode: 1 | 2 | 3 | 4;
+  wallViewAngle: number;
 }) {
   const windows = items.filter((i) => i.kind === "window");
   const doors = items.filter((i) => i.kind === "door");
   const ee = edges(room.points);
   const thickness = room.wallThickness;
-  const visible = visibleWallSet(room.points, wallMode);
+  const visible = visibleWallSet(room.points, wallMode, wallViewAngle);
   return (
     <group>
       {ee.map((e, i) =>
@@ -282,11 +294,13 @@ function CabinetMesh({
   selected,
   onSelect,
   finishHex,
+  corner,
 }: {
   item: Item;
   selected: boolean;
   onSelect: () => void;
   finishHex: string;
+  corner?: boolean;
 }) {
   if (item.scheduleOnly) return null;
   if (item.kind === "window" || item.kind === "door") return null;
@@ -300,6 +314,12 @@ function CabinetMesh({
   const isAppliance = item.kind === "appliance";
   const bodyColor = isAppliance ? "#cfd6e0" : darken(finishHex, 0.04);
   const doorColor = isAppliance ? "#1c1f28" : finishHex;
+
+  if (corner) {
+    return (
+      <CornerMesh item={item} selected={selected} onSelect={onSelect} bodyColor={bodyColor} />
+    );
+  }
   return (
     <group
       position={[cx, cy, cz]}
@@ -320,6 +340,60 @@ function CabinetMesh({
       {selected && (
         <mesh>
           <boxGeometry args={[w + 1.2, h + 1.2, d + 1.2]} />
+          <meshBasicMaterial color="#2C327C" wireframe />
+        </mesh>
+      )}
+    </group>
+  );
+}
+
+function CornerMesh({
+  item,
+  selected,
+  onSelect,
+  bodyColor,
+}: {
+  item: Item;
+  selected: boolean;
+  onSelect: () => void;
+  bodyColor: string;
+}) {
+  const h = item.height;
+  const mountZ = item.mountZ ?? 0;
+  const S = item.width;
+  const L = Math.min(24, S);
+  const rad = (item.rotation * Math.PI) / 180;
+  // two 24"-deep legs forming an L; box normals are always correct.
+  const legs = [
+    { w: S, d: L, cx: S / 2, cy: L / 2 }, // back leg (along width)
+    { w: L, d: S, cx: L / 2, cy: S / 2 }, // side leg (along depth)
+  ];
+  // rotate a local point about the footprint centre (S/2, S/2) to match 2D
+  const rot = (px: number, py: number) => {
+    const dx = px - S / 2;
+    const dy = py - S / 2;
+    return [S / 2 + dx * Math.cos(rad) - dy * Math.sin(rad), S / 2 + dx * Math.sin(rad) - 0 + dy * Math.cos(rad)] as const;
+  };
+  return (
+    <group
+      position={[item.x, mountZ, item.y]}
+      onClick={(e) => {
+        e.stopPropagation();
+        onSelect();
+      }}
+    >
+      {legs.map((leg, i) => {
+        const [rx, rz] = rot(leg.cx, leg.cy);
+        return (
+          <mesh key={i} position={[rx, h / 2, rz]} rotation={[0, -rad, 0]}>
+            <boxGeometry args={[leg.w, h, leg.d]} />
+            <meshStandardMaterial color={bodyColor} roughness={0.55} />
+          </mesh>
+        );
+      })}
+      {selected && (
+        <mesh position={[S / 2, h / 2, S / 2]}>
+          <boxGeometry args={[S + 1, h + 1, S + 1]} />
           <meshBasicMaterial color="#2C327C" wireframe />
         </mesh>
       )}

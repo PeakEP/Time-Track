@@ -91,13 +91,19 @@ function centroid(points: Point[]): Point {
  * walls facing the default camera (toward +x/+y in plan = front-right), so
  * you can see into the room — most useful in 3D.
  */
-export function visibleWallSet(points: Point[], mode: 1 | 2 | 3 | 4): Set<number> {
+export function visibleWallSet(
+  points: Point[],
+  mode: 1 | 2 | 3 | 4,
+  viewAngleDeg = 45,
+): Set<number> {
   const ee = edges(points);
   if (mode >= 4) return new Set(ee.map((e) => e.index));
   const c = centroid(points);
-  // front direction: toward the default 3D camera (bottom-right of plan)
-  const fx = 1;
-  const fy = 1;
+  // front direction: rotate the default (bottom-right, 45°) by viewAngleDeg so
+  // the user can cycle which walls stay visible.
+  const a = (viewAngleDeg * Math.PI) / 180;
+  const fx = Math.cos(a);
+  const fy = Math.sin(a);
   const fmag = Math.hypot(fx, fy);
   const scored = ee.map((e) => {
     const mx = (e.a.x + e.b.x) / 2;

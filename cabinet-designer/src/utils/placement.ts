@@ -91,6 +91,43 @@ function fmtIn(n: number): string {
   return Number.isInteger(n) ? String(n) : n.toFixed(2).replace(/\.?0+$/, "");
 }
 
+// A square corner cabinet (easy-reach / lazy-susan) is drawn as an L of two
+// 24"-deep legs rather than a solid square.
+export function isCornerCabinet(product: Product | null): boolean {
+  return (
+    !!product &&
+    product.cat === "Corner" &&
+    product.width_in != null &&
+    product.depth_in != null &&
+    product.width_in === product.depth_in
+  );
+}
+
+const CORNER_LEG_DEPTH = 24;
+
+/** L-shaped footprint points (local 0..size coords), notch rotated per item rotation. */
+export function cornerLPoints(size: number, rotation: number): [number, number][] {
+  const S = size;
+  const L = Math.min(CORNER_LEG_DEPTH, size);
+  const base: [number, number][] = [
+    [0, 0],
+    [S, 0],
+    [S, L],
+    [L, L],
+    [L, S],
+    [0, S],
+  ];
+  const c = S / 2;
+  const rad = (rotation * Math.PI) / 180;
+  const cos = Math.cos(rad);
+  const sin = Math.sin(rad);
+  return base.map(([x, y]) => {
+    const dx = x - c;
+    const dy = y - c;
+    return [c + dx * cos - dy * sin, c + dx * sin + dy * cos];
+  });
+}
+
 // Fillers and panels get cut to fit on site, so show their current item
 // dimensions rather than the fixed catalog string.
 export function itemDimsLabel(item: Item, product: Product | null): string {

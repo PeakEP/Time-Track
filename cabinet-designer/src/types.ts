@@ -94,6 +94,7 @@ export type ProjectSettings = {
   markup: number;
   hstRate: number;
   wallMode: 1 | 2 | 3 | 4;
+  wallViewAngle: number;
 };
 
 export type Project = {

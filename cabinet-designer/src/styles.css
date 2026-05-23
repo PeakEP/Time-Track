@@ -414,6 +414,12 @@ input, select, textarea { font-family: inherit; font-size: 13px; }
 .wall-mode button:last-of-type { border-radius: 0 4px 4px 0; }
 .wall-mode button + button { border-left: 0; }
 .wall-mode button.active { background: var(--indigo); color: #fff; border-color: var(--indigo); }
+.wall-mode .wall-rotate {
+  border-radius: 4px;
+  margin-left: 4px;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.wall-mode .wall-rotate:disabled { opacity: 0.4; cursor: not-allowed; }
 .blueprint-btn {
   background: #fff; border: 1px solid var(--line); color: var(--text-muted);
   padding: 4px 10px; border-radius: 4px; font-size: 11.5px; font-weight: 600;

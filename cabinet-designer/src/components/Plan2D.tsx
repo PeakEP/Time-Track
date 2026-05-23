@@ -1,8 +1,9 @@
 import { useMemo, useRef, useState, useEffect, useLayoutEffect, useCallback } from "react";
+import { RotateCw } from "lucide-react";
 import { useStore } from "../store";
 import type { Item, Point } from "../types";
 import { bounds, edges, visibleWallSet } from "../utils/roomPresets";
-import { isScheduleOnly, makeId, snap } from "../utils/placement";
+import { isScheduleOnly, makeId, snap, isCornerCabinet, cornerLPoints } from "../utils/placement";
 import { snapToNearestWall } from "../utils/snapping";
 import { findOverlappingIds } from "../utils/overlaps";
 
@@ -399,7 +400,11 @@ function VertexEditor({
 function RoomPolygon() {
   const room = useStore((s) => s.project.room);
   const wallMode = useStore((s) => s.project.settings.wallMode ?? 4);
-  const visible = useMemo(() => visibleWallSet(room.points, wallMode), [room.points, wallMode]);
+  const wallViewAngle = useStore((s) => s.project.settings.wallViewAngle ?? 45);
+  const visible = useMemo(
+    () => visibleWallSet(room.points, wallMode, wallViewAngle),
+    [room.points, wallMode, wallViewAngle],
+  );
   return (
     <>
       {edges(room.points).map((e, i) => {
@@ -424,6 +429,7 @@ function RoomPolygon() {
 
 function WallModeControl() {
   const wallMode = useStore((s) => s.project.settings.wallMode ?? 4);
+  const wallViewAngle = useStore((s) => s.project.settings.wallViewAngle ?? 45);
   const patchSettings = useStore((s) => s.patchSettings);
   const opts: (1 | 2 | 3 | 4)[] = [1, 2, 3, 4];
   return (
@@ -438,6 +444,14 @@ function WallModeControl() {
           {n === 4 ? "All" : n}
         </button>
       ))}
+      <button
+        className="wall-rotate"
+        title="Rotate which walls are shown"
+        disabled={wallMode >= 4}
+        onClick={() => patchSettings({ wallViewAngle: (wallViewAngle + 90) % 360 })}
+      >
+        <RotateCw size={13} />
+      </button>
     </div>
   );
 }
@@ -536,12 +550,15 @@ function ItemNode({
   onMouseDown: (e: React.MouseEvent, it: Item) => void;
 }) {
   const settings = useStore((s) => s.project.settings);
+  const catalog = useStore((s) => s.catalog);
   if (item.scheduleOnly) return null;
   const w = item.rotation === 90 || item.rotation === 270 ? item.depth : item.width;
   const h = item.rotation === 90 || item.rotation === 270 ? item.width : item.depth;
   const isWall = (item.mountZ ?? 0) > 0;
   const isWindow = item.kind === "window";
   const isDoor = item.kind === "door";
+  const product = catalog && item.sku ? catalog.products.find((p) => p.sku === item.sku) ?? null : null;
+  const isCorner = isCornerCabinet(product);
 
   if (isWindow) {
     return (
@@ -592,6 +609,41 @@ function ItemNode({
         : isWall
           ? "#9aa4b6"
           : "#1f2532";
+
+  if (isCorner) {
+    const pts = cornerLPoints(item.width, item.rotation);
+    const ptsStr = pts.map((p) => `${p[0]},${p[1]}`).join(" ");
+    const cxL = pts.reduce((a, p) => a + p[0], 0) / pts.length;
+    const cyL = pts.reduce((a, p) => a + p[1], 0) / pts.length;
+    return (
+      <g
+        transform={`translate(${item.x} ${item.y})`}
+        onMouseDown={(e) => onMouseDown(e, item)}
+        style={{ cursor: "grab" }}
+      >
+        <polygon
+          points={ptsStr}
+          fill={fill}
+          stroke={stroke}
+          strokeWidth={overlap ? 0.7 : selected ? 0.7 : 0.4}
+          strokeDasharray={overlap ? "1.5 0.6" : isWall ? "1.2 0.6" : undefined}
+        />
+        <rect x={cxL - 5} y={cyL - 2.6} width={10} height={5.4} rx={0.6} fill="#ffffff" opacity={0.82} />
+        <text x={cxL} y={cyL} textAnchor="middle" fontSize={2.5} fill="#1f2532" fontFamily="Inter" fontWeight={600}>
+          {item.sku ?? ""}
+        </text>
+        <text x={cxL} y={cyL + 2.5} textAnchor="middle" fontSize={1.9} fill="#4a5364" fontFamily="Inter">
+          corner
+        </text>
+        {overlap && (
+          <text x={item.width / 2} y={-2.5} textAnchor="middle" fontSize={2.6} fill="#c0392b" fontFamily="Inter" fontWeight={700}>
+            ⚠ overlap
+          </text>
+        )}
+      </g>
+    );
+  }
+
   return (
     <g
       transform={`translate(${item.x} ${item.y})`}
