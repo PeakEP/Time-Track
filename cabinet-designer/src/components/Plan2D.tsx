@@ -99,12 +99,14 @@ export function Plan2D() {
       let newX = snap(pos.x - dragging.offsetX, SNAP_IN);
       let newY = snap(pos.y - dragging.offsetY, SNAP_IN);
       const item = items.find((i) => i.id === dragging.id);
-      if (item && !item.scheduleOnly) {
+      const snapsToWall =
+        item && !item.scheduleOnly && item.kind !== "panel" && item.kind !== "filler";
+      if (snapsToWall) {
         const wallSnap = snapToNearestWall(room, {
           x: newX,
           y: newY,
-          width: item.width,
-          depth: item.depth,
+          width: item!.width,
+          depth: item!.depth,
         });
         if (wallSnap) {
           newX = snap(wallSnap.x, SNAP_IN);
@@ -147,18 +149,22 @@ export function Plan2D() {
     if (isScheduleOnly(sku)) return; // ignore; user should use Add-to-schedule
     const w = sku.width_in ?? 24;
     const d = placedDepth(sku);
+    const kind = placedKind(sku);
     let x = snap(pos.x - w / 2, SNAP_IN);
     let y = snap(pos.y - d / 2, SNAP_IN);
     let rotation: Item["rotation"] = 0;
-    const ws = snapToNearestWall(room, { x, y, width: w, depth: d });
-    if (ws) {
-      x = snap(ws.x, SNAP_IN);
-      y = snap(ws.y, SNAP_IN);
-      rotation = ws.rotation;
+    // panels/fillers are positioned and rotated by hand; don't wall-snap them
+    if (kind !== "panel" && kind !== "filler") {
+      const ws = snapToNearestWall(room, { x, y, width: w, depth: d });
+      if (ws) {
+        x = snap(ws.x, SNAP_IN);
+        y = snap(ws.y, SNAP_IN);
+        rotation = ws.rotation;
+      }
     }
     const item: Item = {
       id: makeId(),
-      kind: placedKind(sku),
+      kind,
       sku: sku.sku,
       x,
       y,
