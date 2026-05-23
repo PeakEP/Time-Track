@@ -220,6 +220,14 @@ input, select, textarea { font-family: inherit; font-size: 13px; }
   border-radius: 9px;
   padding: 1px 6px;
 }
+.pane-resizer {
+  background: var(--line);
+  cursor: col-resize;
+  touch-action: none;
+  z-index: 4;
+}
+.pane-resizer:hover { background: var(--steel); }
+.pane-resizer:active { background: var(--cyan); }
 .canvas-area {
   background: #eef1f7;
   position: relative;

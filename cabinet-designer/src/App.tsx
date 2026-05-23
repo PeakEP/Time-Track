@@ -30,6 +30,15 @@ export default function App() {
   const catalogError = useStore((s) => s.catalogError);
   const view = useStore((s) => s.view);
   const scheduleCollapsed = useStore((s) => s.scheduleCollapsed);
+  const [paletteWidth, setPaletteWidth] = useState(() => readWidth("jmrc.cabinet.paletteW", 280));
+  const [scheduleWidth, setScheduleWidth] = useState(() => readWidth("jmrc.cabinet.scheduleW", 340));
+
+  useEffect(() => {
+    writeWidth("jmrc.cabinet.paletteW", paletteWidth);
+  }, [paletteWidth]);
+  useEffect(() => {
+    writeWidth("jmrc.cabinet.scheduleW", scheduleWidth);
+  }, [scheduleWidth]);
   const [draftPrompt, setDraftPrompt] = useState<{ name: string } | null>(null);
 
   useEffect(() => {
@@ -102,14 +111,31 @@ export default function App() {
           </span>
         </div>
       )}
-      <main className={`workspace ${scheduleCollapsed ? "schedule-collapsed" : ""}`}>
+      <main
+        className="workspace"
+        style={{
+          gridTemplateColumns: scheduleCollapsed
+            ? `${paletteWidth}px 6px 1fr 44px`
+            : `${paletteWidth}px 6px 1fr 6px ${scheduleWidth}px`,
+        }}
+      >
         <CatalogPalette />
+        <PaneResizer
+          onDelta={(dx) => setPaletteWidth((w) => clamp(w + dx, 200, 480))}
+          title="Drag to resize catalog"
+        />
         <section className="canvas-area">
           {view === "plan" && <Plan2D />}
           {view === "3d" && <ThreePane />}
           {view === "split" && <SplitView />}
           <Inspector />
         </section>
+        {!scheduleCollapsed && (
+          <PaneResizer
+            onDelta={(dx) => setScheduleWidth((w) => clamp(w - dx, 240, 560))}
+            title="Drag to resize schedule"
+          />
+        )}
         {scheduleCollapsed ? <ScheduleRail /> : <SchedulePanel />}
       </main>
       <footer className="app-footer">
@@ -124,6 +150,55 @@ export default function App() {
         <span>J.M Robins Construction Ltd.</span>
       </footer>
     </div>
+  );
+}
+
+function clamp(n: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, n));
+}
+
+function readWidth(key: string, fallback: number): number {
+  try {
+    const v = Number(localStorage.getItem(key));
+    return Number.isFinite(v) && v > 0 ? v : fallback;
+  } catch {
+    return fallback;
+  }
+}
+function writeWidth(key: string, value: number): void {
+  try {
+    localStorage.setItem(key, String(Math.round(value)));
+  } catch {
+    // ignore
+  }
+}
+
+function PaneResizer({ onDelta, title }: { onDelta: (dx: number) => void; title: string }) {
+  const dragging = useRef(false);
+  const lastX = useRef(0);
+  function down(e: React.PointerEvent) {
+    dragging.current = true;
+    lastX.current = e.clientX;
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  }
+  function move(e: React.PointerEvent) {
+    if (!dragging.current) return;
+    const dx = e.clientX - lastX.current;
+    lastX.current = e.clientX;
+    if (dx !== 0) onDelta(dx);
+  }
+  function up(e: React.PointerEvent) {
+    dragging.current = false;
+    (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+  }
+  return (
+    <div
+      className="pane-resizer"
+      onPointerDown={down}
+      onPointerMove={move}
+      onPointerUp={up}
+      title={title}
+    />
   );
 }
 
