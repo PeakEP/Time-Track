@@ -1,12 +1,19 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, GizmoHelper, GizmoViewport, Grid } from "@react-three/drei";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import * as THREE from "three";
+import { Eye, Box as BoxIcon, Square as SquareIcon } from "lucide-react";
 import { useStore } from "../store";
 import type { Item, Point } from "../types";
 import { bounds, edges } from "../utils/roomPresets";
 import { darken, finishColor } from "../utils/finishColors";
 import { generateCountertops } from "../utils/snapping";
+
+type OrbitRef = {
+  object: THREE.Camera & { position: THREE.Vector3; up: THREE.Vector3; lookAt: (v: THREE.Vector3) => void };
+  target: THREE.Vector3;
+  update: () => void;
+};
 
 // World units = inches. Convert to feet for camera distances feels too large; keep inches.
 export function Scene3D() {
@@ -28,6 +35,23 @@ export function Scene3D() {
     () => generateCountertops(items, settings.counterHeight),
     [items, settings.counterHeight],
   );
+  const orbitRef = useRef<OrbitRef | null>(null);
+
+  function setView(kind: "iso" | "top" | "front") {
+    const c = orbitRef.current;
+    if (!c) return;
+    const center = new THREE.Vector3(cx, settings.wallHeight / 3, cy);
+    if (kind === "top") {
+      c.object.position.set(cx, dim * 1.6 + 200, cy);
+    } else if (kind === "front") {
+      c.object.position.set(cx, settings.wallHeight * 0.6, cy + dim * 1.2 + 120);
+    } else {
+      c.object.position.set(cx + cameraDistance, cameraDistance * 0.7, cy + cameraDistance);
+    }
+    c.target.copy(center);
+    c.object.lookAt(center);
+    c.update();
+  }
 
   return (
     <div className="three-wrap">
@@ -78,17 +102,31 @@ export function Scene3D() {
         ))}
 
         <OrbitControls
+          ref={(r) => {
+            orbitRef.current = r as unknown as OrbitRef | null;
+          }}
           enableDamping
           dampingFactor={0.1}
           target={cameraTarget}
           minDistance={48}
           maxDistance={2400}
-          maxPolarAngle={Math.PI * 0.49}
+          maxPolarAngle={Math.PI * 0.495}
         />
         <GizmoHelper alignment="bottom-right" margin={[60, 60]}>
           <GizmoViewport axisColors={["#2C327C", "#3A7AA0", "#49C1C4"]} labelColor="white" />
         </GizmoHelper>
       </Canvas>
+      <div className="cam-presets" role="toolbar" aria-label="Camera presets">
+        <button onClick={() => setView("iso")} title="Iso view">
+          <BoxIcon size={14} /> Iso
+        </button>
+        <button onClick={() => setView("top")} title="Top-down view">
+          <SquareIcon size={14} /> Top
+        </button>
+        <button onClick={() => setView("front")} title="Front view">
+          <Eye size={14} /> Front
+        </button>
+      </div>
     </div>
   );
 }

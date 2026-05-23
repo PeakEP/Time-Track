@@ -1,11 +1,24 @@
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { useStore, loadCatalog, attachAutosave, restoreDraft, clearDraft } from "./store";
 import { CatalogPalette } from "./components/CatalogPalette";
 import { Plan2D } from "./components/Plan2D";
-import { Scene3D } from "./components/Scene3D";
 import { SchedulePanel } from "./components/SchedulePanel";
 import { SettingsBar } from "./components/SettingsBar";
 import { Inspector } from "./components/Inspector";
+import { Welcome } from "./components/Welcome";
+
+// 3D scene is large (three.js + r3f). Lazy-load so first paint is fast.
+const LazyScene3D = lazy(() =>
+  import("./components/Scene3D").then((m) => ({ default: m.Scene3D })),
+);
+
+function ThreePane() {
+  return (
+    <Suspense fallback={<div className="three-loading">Loading 3D…</div>}>
+      <LazyScene3D />
+    </Suspense>
+  );
+}
 
 export default function App() {
   const setCatalog = useStore((s) => s.setCatalog);
@@ -73,6 +86,7 @@ export default function App() {
   return (
     <div className="app-shell">
       <SettingsBar />
+      <Welcome />
       {catalogError && (
         <div className="banner-error">Failed to load catalog: {catalogError}</div>
       )}
@@ -91,7 +105,7 @@ export default function App() {
         <CatalogPalette />
         <section className="canvas-area">
           {view === "plan" && <Plan2D />}
-          {view === "3d" && <Scene3D />}
+          {view === "3d" && <ThreePane />}
           {view === "split" && <SplitView />}
           <Inspector />
         </section>
@@ -149,7 +163,7 @@ function SplitView() {
         onPointerUp={onPointerUp}
         title="Drag to resize"
       />
-      <div className="split-pane"><Scene3D /></div>
+      <div className="split-pane"><ThreePane /></div>
     </div>
   );
 }

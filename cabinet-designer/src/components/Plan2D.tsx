@@ -4,6 +4,7 @@ import type { Item, Point } from "../types";
 import { bounds, edges } from "../utils/roomPresets";
 import { isScheduleOnly, isWallMounted, makeId, snap } from "../utils/placement";
 import { snapToNearestWall } from "../utils/snapping";
+import { findOverlappingIds } from "../utils/overlaps";
 
 const SNAP_IN = 3;
 
@@ -26,6 +27,7 @@ export function Plan2D() {
   const vertexEdit = useStore((s) => s.vertexEdit);
 
   const b = useMemo(() => bounds(room.points), [room.points]);
+  const overlapping = useMemo(() => findOverlappingIds(items), [items]);
   const padIn = 24;
   const viewWidthIn = b.maxX - b.minX + padIn * 2;
   const viewHeightIn = b.maxY - b.minY + padIn * 2;
@@ -235,6 +237,7 @@ export function Plan2D() {
                 key={it.id}
                 item={it}
                 selected={it.id === selectedId}
+                overlap={overlapping.has(it.id)}
                 onMouseDown={onItemMouseDown}
               />
             ))}
@@ -391,10 +394,12 @@ function DimensionLines() {
 function ItemNode({
   item,
   selected,
+  overlap,
   onMouseDown,
 }: {
   item: Item;
   selected: boolean;
+  overlap?: boolean;
   onMouseDown: (e: React.MouseEvent, it: Item) => void;
 }) {
   const settings = useStore((s) => s.project.settings);
@@ -438,8 +443,22 @@ function ItemNode({
   }
 
   const isAppliance = item.kind === "appliance";
-  const fill = isAppliance ? "#e6ecf3" : isWall ? "#f7f4ec" : "#f1ece1";
-  const stroke = selected ? "#2C327C" : isAppliance ? "#5a6478" : isWall ? "#9aa4b6" : "#1f2532";
+  const fill = overlap
+    ? "#fde8e6"
+    : isAppliance
+      ? "#e6ecf3"
+      : isWall
+        ? "#f7f4ec"
+        : "#f1ece1";
+  const stroke = overlap
+    ? "#c0392b"
+    : selected
+      ? "#2C327C"
+      : isAppliance
+        ? "#5a6478"
+        : isWall
+          ? "#9aa4b6"
+          : "#1f2532";
   return (
     <g
       transform={`translate(${item.x} ${item.y})`}
@@ -453,9 +472,22 @@ function ItemNode({
         height={h}
         fill={fill}
         stroke={stroke}
-        strokeWidth={selected ? 0.7 : 0.4}
-        strokeDasharray={isWall ? "1.2 0.6" : undefined}
+        strokeWidth={overlap ? 0.7 : selected ? 0.7 : 0.4}
+        strokeDasharray={overlap ? "1.5 0.6" : isWall ? "1.2 0.6" : undefined}
       />
+      {overlap && (
+        <text
+          x={w / 2}
+          y={-2.5}
+          textAnchor="middle"
+          fontSize={2.6}
+          fill="#c0392b"
+          fontFamily="Inter"
+          fontWeight={700}
+        >
+          ⚠ overlap
+        </text>
+      )}
       {/* Door face hint at front: a thin band */}
       {!isWall && (
         <rect x={0} y={h - 0.7} width={w} height={0.7} fill="#d4cab3" />
