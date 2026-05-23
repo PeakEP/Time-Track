@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Search, Plus, Box, MoveDown } from "lucide-react";
 import { useStore } from "../store";
 import type { Product } from "../types";
-import { isScheduleOnly, makeScheduleItem } from "../utils/placement";
+import { isScheduleOnly, isWallMounted, makeScheduleItem } from "../utils/placement";
 import { findFinish, unitListPrice, formatCAD } from "../utils/pricing";
 
 export function CatalogPalette() {
@@ -55,7 +55,7 @@ export function CatalogPalette() {
       addItem(makeScheduleItem(p));
       return;
     }
-    setGhost({ product: p, mountZ: 0 });
+    setGhost({ product: p, mountZ: isWallMounted(p) ? settings.wallCabinetAFF : 0 });
   }
 
   return (
@@ -73,8 +73,27 @@ export function CatalogPalette() {
         </div>
         {ghost && (
           <div className="ghost-banner">
-            Placing: <strong>{ghost.product.sku}</strong> — click on plan. Shift-click to place multiple. Esc to cancel.
-            <button className="link" onClick={() => setGhost(null)}>cancel</button>
+            <div className="ghost-line">
+              Placing: <strong>{ghost.product.sku}</strong> — click on plan. Shift-click for multiple. Esc to cancel.
+              <button className="link" onClick={() => setGhost(null)}>cancel</button>
+            </div>
+            {isWallMounted(ghost.product) && (
+              <div className="ghost-aff">
+                <label>
+                  Gap above counter
+                  <input
+                    type="number"
+                    step={1}
+                    value={Math.round((ghost.mountZ - settings.counterHeight) * 10) / 10}
+                    onChange={(e) =>
+                      setGhost({ ...ghost, mountZ: settings.counterHeight + (+e.target.value || 0) })
+                    }
+                  />
+                  in
+                </label>
+                <span className="ghost-aff-note">bottom {Math.round(ghost.mountZ)}" AFF</span>
+              </div>
+            )}
           </div>
         )}
       </header>

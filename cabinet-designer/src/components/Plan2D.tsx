@@ -2,7 +2,7 @@ import { useMemo, useRef, useState, useEffect, useLayoutEffect, useCallback } fr
 import { useStore } from "../store";
 import type { Item, Point } from "../types";
 import { bounds, edges, visibleWallSet } from "../utils/roomPresets";
-import { isScheduleOnly, isWallMounted, makeId, snap } from "../utils/placement";
+import { isScheduleOnly, makeId, snap } from "../utils/placement";
 import { snapToNearestWall } from "../utils/snapping";
 import { findOverlappingIds } from "../utils/overlaps";
 
@@ -129,10 +129,6 @@ export function Plan2D() {
 
   function onClick(e: React.MouseEvent) {
     if (!ghost) return;
-    // Only place when clicking empty floor/background, not on top of an item.
-    const target = e.target as SVGElement;
-    const onBackground = target.tagName === "svg" || target.dataset.bg === "1";
-    if (!onBackground) return;
     const pos = screenToWorldIn(e.clientX, e.clientY);
     if (!pos) return;
     const sku = ghost.product;
@@ -158,13 +154,16 @@ export function Plan2D() {
       width: w,
       depth: d,
       height: sku.height_in ?? 34.5,
-      mountZ: isWallMounted(sku) ? settings.wallCabinetAFF : 0,
+      mountZ: ghost.mountZ,
     };
     addItem(item);
     if (!e.shiftKey) setGhost(null);
   }
 
   function onItemMouseDown(e: React.MouseEvent, it: Item) {
+    // While placing (ghost active), let the click fall through to placement so
+    // uppers can be dropped directly over base cabinets.
+    if (ghost) return;
     e.stopPropagation();
     select(it.id);
     const pos = screenToWorldIn(e.clientX, e.clientY);
@@ -291,7 +290,9 @@ export function Plan2D() {
               <rect x={b.minX - padIn} y={b.minY - padIn} width={viewWidthIn} height={viewHeightIn} fill="url(#grid-bold)" />
             </g>
             <RoomPolygon />
-            {items.map((it) => (
+            {[...items]
+              .sort((a, b) => (a.mountZ ?? 0) - (b.mountZ ?? 0))
+              .map((it) => (
               <ItemNode
                 key={it.id}
                 item={it}
@@ -624,12 +625,32 @@ function ItemNode({
       {!isWall && (
         <rect x={0} y={h - 0.7} width={w} height={0.7} fill="#d4cab3" />
       )}
-      <text x={w / 2} y={h / 2 - 0.5} textAnchor="middle" fontSize={2.5} fill="#1f2532" fontFamily="Inter" fontWeight={600}>
-        {item.sku ?? item.label ?? ""}
-      </text>
-      <text x={w / 2} y={h / 2 + 2.5} textAnchor="middle" fontSize={2} fill="#4a5364" fontFamily="Inter">
-        {Math.round(item.width)}" {isAppliance ? "(appl.)" : isWall ? "(wall)" : ""}
-      </text>
+      {(() => {
+        // Offset labels vertically by mount type so an upper over a base
+        // doesn't collide: wall labels sit near the wall (back), base near front.
+        const label = item.sku ?? item.label ?? "";
+        const labelY = isWall ? Math.min(4.6, h / 2) : Math.max(h - 5.5, h / 2);
+        const chipW = Math.max(label.length * 1.45 + 2, 8);
+        return (
+          <g>
+            <rect
+              x={w / 2 - chipW / 2}
+              y={labelY - 2.5}
+              width={chipW}
+              height={5.4}
+              rx={0.6}
+              fill={isWall ? "#fbf6ea" : "#ffffff"}
+              opacity={0.82}
+            />
+            <text x={w / 2} y={labelY} textAnchor="middle" fontSize={2.5} fill="#1f2532" fontFamily="Inter" fontWeight={600}>
+              {label}
+            </text>
+            <text x={w / 2} y={labelY + 2.5} textAnchor="middle" fontSize={1.9} fill="#4a5364" fontFamily="Inter">
+              {Math.round(item.width)}"{isAppliance ? " appl" : isWall ? " up" : ""}
+            </text>
+          </g>
+        );
+      })()}
       {selected && (
         <>
           {/* width dim */}

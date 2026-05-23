@@ -451,13 +451,6 @@ function SettingsDialog({ onClose }: { onClose: () => void }) {
           onChange={(e) => patchSettings({ wallHeight: +e.target.value })}
         />
       </Field>
-      <Field label="Wall cabinet AFF">
-        <input
-          type="number"
-          value={settings.wallCabinetAFF}
-          onChange={(e) => patchSettings({ wallCabinetAFF: +e.target.value })}
-        />
-      </Field>
       <Field label="Counter height">
         <input
           type="number"
@@ -465,6 +458,27 @@ function SettingsDialog({ onClose }: { onClose: () => void }) {
           onChange={(e) => patchSettings({ counterHeight: +e.target.value })}
         />
       </Field>
+      <Field label="Wall cabinet AFF">
+        <input
+          type="number"
+          value={settings.wallCabinetAFF}
+          onChange={(e) => patchSettings({ wallCabinetAFF: +e.target.value })}
+        />
+      </Field>
+      <Field label="Gap above counter">
+        <input
+          type="number"
+          value={Math.round((settings.wallCabinetAFF - settings.counterHeight) * 10) / 10}
+          onChange={(e) =>
+            patchSettings({ wallCabinetAFF: settings.counterHeight + (+e.target.value || 0) })
+          }
+        />
+      </Field>
+      <div className="settings-note">
+        Default 18" gap (uppers at 54" AFF over a 36" counter) is the standard backsplash
+        height. Set 24" for taller clearances. You can also adjust the gap per-cabinet while
+        placing it.
+      </div>
 
       <h4>Pricing</h4>
       <Field label="Show pricing">

@@ -86,7 +86,7 @@ export function Inspector() {
               disabled={isCabinet && !!item.sku}
             />
           </Field>
-          <Field label="Mount Z (in)">
+          <Field label="Bottom AFF (in)">
             <input
               type="number"
               value={item.mountZ ?? 0}
@@ -94,6 +94,18 @@ export function Inspector() {
             />
           </Field>
         </div>
+        {isCabinet && (item.mountZ ?? 0) > 0 && (
+          <div className="inspector-row">
+            <Field label="Gap above counter (in)">
+              <input
+                type="number"
+                value={Math.round(((item.mountZ ?? 0) - settings.counterHeight) * 10) / 10}
+                onChange={(e) => patch({ mountZ: settings.counterHeight + (+e.target.value || 0) })}
+              />
+            </Field>
+            <span />
+          </div>
+        )}
         {isOpening && item.kind === "window" && (
           <div className="inspector-row">
             <Field label="Sill height (in)">
