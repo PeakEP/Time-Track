@@ -453,21 +453,37 @@ function drawSchedule(
           5: { halign: "right", cellWidth: 90 },
         };
 
+  let tablePage = 0;
   autoTable(doc, {
-    startY: doc.internal.pageSize.getHeight() * 0.56,
+    startY: 92,
     head,
     body: body as unknown as (string | number)[][],
-    styles: { fontSize: 8, cellPadding: 3 },
+    styles: { fontSize: 8, cellPadding: 3, overflow: "linebreak" },
     headStyles,
     columnStyles,
-    margin: { left: 24, right: 24 },
+    margin: { top: 92, left: 24, right: 24, bottom: 40 },
+    rowPageBreak: "avoid",
+    didDrawPage: () => {
+      tablePage += 1;
+      // page 1 already has the title (drawn by exportProjectPdf); redraw it on
+      // any overflow pages so a long schedule stays readable
+      if (tablePage > 1) {
+        drawTitleBlock(doc, project, mode, pageW, pricing, "Cabinet Schedule (cont.)");
+      }
+    },
   });
 
-  const finalY = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 8;
+  let finalY = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 10;
+  // if the totals won't fit at the bottom of this page, start a fresh page
+  if (pricing && finalY > doc.internal.pageSize.getHeight() - 90) {
+    doc.addPage();
+    drawTitleBlock(doc, project, mode, pageW, pricing, "Pricing summary");
+    finalY = 100;
+  }
   doc.setFontSize(9);
   doc.setTextColor("#222");
   const right = pageW - 24;
-  const labelX = right - 200;
+  const labelX = right - 220;
   let yy = finalY;
   const line = (k: string, v: string, bold = false) => {
     doc.setFont("helvetica", bold ? "bold" : "normal");
