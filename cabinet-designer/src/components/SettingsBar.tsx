@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   FolderOpen,
   Save,
+  FilePlus,
   FileText,
   FileSpreadsheet,
   Square,
@@ -12,15 +13,19 @@ import {
   Settings as SettingsIcon,
   DoorClosed,
   Square as Window,
+  Undo2,
+  Redo2,
+  Edit3,
 } from "lucide-react";
-import { useStore } from "../store";
-import { rectangleRoom, lShapeRoom, uShapeRoom } from "../utils/roomPresets";
+import { useStore, clearDraft } from "../store";
+import { rectangleRoom, lShapeRoom, uShapeRoom, edges } from "../utils/roomPresets";
 import { openProject, saveProject, exportScheduleCsv } from "../utils/persistence";
 import { exportProjectPdf } from "../utils/pdf";
 import { computeLines, formatCAD } from "../utils/pricing";
 import { makeId } from "../utils/placement";
 import { APPLIANCES } from "../data/appliances";
 import type { AppliancePreset } from "../data/appliances";
+import type { Item } from "../types";
 
 export function SettingsBar() {
   const project = useStore((s) => s.project);
@@ -29,9 +34,16 @@ export function SettingsBar() {
   const patchSettings = useStore((s) => s.patchSettings);
   const setRoom = useStore((s) => s.setRoom);
   const setProject = useStore((s) => s.setProject);
+  const newProject = useStore((s) => s.newProject);
   const view = useStore((s) => s.view);
   const setView = useStore((s) => s.setView);
   const addItem = useStore((s) => s.addItem);
+  const undo = useStore((s) => s.undo);
+  const redo = useStore((s) => s.redo);
+  const pastLen = useStore((s) => s.past.length);
+  const futureLen = useStore((s) => s.future.length);
+  const vertexEdit = useStore((s) => s.vertexEdit);
+  const setVertexEdit = useStore((s) => s.setVertexEdit);
 
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [showRoomDlg, setShowRoomDlg] = useState(false);
@@ -45,6 +57,15 @@ export function SettingsBar() {
   }
   function onSave() {
     saveProject(project);
+  }
+  function onNew() {
+    if (
+      project.items.length > 0 &&
+      !confirm("Start a new project? Unsaved changes in the current project will be lost.")
+    )
+      return;
+    newProject();
+    clearDraft();
   }
   function onExportPdf(mode: "client" | "internal") {
     if (!catalog) return;
@@ -121,8 +142,9 @@ export function SettingsBar() {
           isOpen={openMenu === "file"}
           onToggle={() => setOpenMenu(openMenu === "file" ? null : "file")}
         >
-          <button onClick={onOpen}><FolderOpen size={14} /> Open…</button>
-          <button onClick={onSave}><Save size={14} /> Save</button>
+          <button onClick={() => { onNew(); setOpenMenu(null); }}><FilePlus size={14} /> New project</button>
+          <button onClick={() => { onOpen(); setOpenMenu(null); }}><FolderOpen size={14} /> Open…</button>
+          <button onClick={() => { onSave(); setOpenMenu(null); }}><Save size={14} /> Save</button>
           <hr />
           <button onClick={() => onExportPdf("client")}><FileText size={14} /> Export Client PDF</button>
           <button onClick={() => onExportPdf("internal")}><FileText size={14} /> Export Internal PDF</button>
@@ -145,6 +167,9 @@ export function SettingsBar() {
           </button>
           <hr />
           <button onClick={() => { setShowRoomDlg(true); setOpenMenu(null); }}>Custom dimensions…</button>
+          <button onClick={() => { setVertexEdit(!vertexEdit); setOpenMenu(null); }}>
+            <Edit3 size={14}/> {vertexEdit ? "Exit vertex edit" : "Edit vertices"}
+          </button>
         </Menu>
 
         <Menu
@@ -172,6 +197,22 @@ export function SettingsBar() {
           ))}
         </Menu>
 
+        <button
+          className="icon-btn"
+          onClick={() => undo()}
+          disabled={pastLen === 0}
+          title="Undo (Cmd/Ctrl-Z)"
+        >
+          <Undo2 size={15} />
+        </button>
+        <button
+          className="icon-btn"
+          onClick={() => redo()}
+          disabled={futureLen === 0}
+          title="Redo (Shift-Cmd/Ctrl-Z)"
+        >
+          <Redo2 size={15} />
+        </button>
         <button className="icon-btn" onClick={() => setShowSettingsDlg(true)} title="Project settings">
           <SettingsIcon size={16}/>
         </button>
@@ -196,17 +237,8 @@ export function SettingsBar() {
           kind="window"
           onClose={() => setShowWindowDlg(false)}
           onAdd={(w, h, sill) => {
-            addItem({
-              id: makeId(),
-              kind: "window",
-              x: 12,
-              y: 0,
-              rotation: 0,
-              width: w,
-              depth: 6,
-              height: h,
-              sillHeight: sill,
-            });
+            const placed = placeOnLongestWall(project.room, { width: w, depth: 6, kind: "window", height: h, sillHeight: sill });
+            addItem(placed);
             setShowWindowDlg(false);
           }}
         />
@@ -216,18 +248,10 @@ export function SettingsBar() {
           kind="door"
           onClose={() => setShowDoorDlg(false)}
           onAdd={(w, h, _, hinge, swing) => {
-            addItem({
-              id: makeId(),
-              kind: "door",
-              x: 12,
-              y: 0,
-              rotation: 0,
-              width: w,
-              depth: 6,
-              height: h,
-              hingeSide: hinge,
-              swing,
-            });
+            const placed = placeOnLongestWall(project.room, { width: w, depth: 6, kind: "door", height: h });
+            placed.hingeSide = hinge;
+            placed.swing = swing;
+            addItem(placed);
             setShowDoorDlg(false);
           }}
         />
@@ -237,6 +261,56 @@ export function SettingsBar() {
       {formatCAD(0).length === 0 && null}
     </header>
   );
+}
+
+function placeOnLongestWall(
+  room: { points: { x: number; y: number }[] },
+  opening: { width: number; depth: number; height: number; kind: "window" | "door"; sillHeight?: number },
+): Item {
+  const ee = edges(room.points);
+  let best = ee[0];
+  let bestLen = -1;
+  for (const e of ee) {
+    const len = Math.hypot(e.b.x - e.a.x, e.b.y - e.a.y);
+    if (len > bestLen) {
+      bestLen = len;
+      best = e;
+    }
+  }
+  const len = Math.hypot(best.b.x - best.a.x, best.b.y - best.a.y);
+  const mid = { x: (best.a.x + best.b.x) / 2, y: (best.a.y + best.b.y) / 2 };
+  const dx = (best.b.x - best.a.x) / len;
+  const dy = (best.b.y - best.a.y) / len;
+  // top-left of opening: midpoint minus half-width along wall, with depth centered on wall line
+  const tlx = mid.x - dx * (opening.width / 2) - (-dy) * (opening.depth / 2);
+  const tly = mid.y - dy * (opening.width / 2) - dx * (opening.depth / 2);
+  const angleDeg = (Math.atan2(dy, dx) * 180) / Math.PI;
+  // pick nearest 90° rotation
+  const opts: (0 | 90 | 180 | 270)[] = [0, 90, 180, 270];
+  let rot: 0 | 90 | 180 | 270 = 0;
+  let bestDiff = Infinity;
+  for (const r of opts) {
+    const d = Math.min(
+      Math.abs(angleDeg - r),
+      Math.abs(angleDeg - r + 360),
+      Math.abs(angleDeg - r - 360),
+    );
+    if (d < bestDiff) {
+      bestDiff = d;
+      rot = r;
+    }
+  }
+  return {
+    id: makeId(),
+    kind: opening.kind,
+    x: tlx,
+    y: tly,
+    rotation: rot,
+    width: opening.width,
+    depth: opening.depth,
+    height: opening.height,
+    sillHeight: opening.sillHeight,
+  };
 }
 
 function Menu({

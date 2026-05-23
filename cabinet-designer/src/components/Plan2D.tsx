@@ -23,6 +23,7 @@ export function Plan2D() {
   const settings = useStore((s) => s.project.settings);
   const pxPerInch = useStore((s) => s.pxPerInch);
   const setZoom = useStore((s) => s.setZoom);
+  const vertexEdit = useStore((s) => s.vertexEdit);
 
   const b = useMemo(() => bounds(room.points), [room.points]);
   const padIn = 24;
@@ -90,11 +91,15 @@ export function Plan2D() {
         if (wallSnap) {
           newX = snap(wallSnap.x, SNAP_IN);
           newY = snap(wallSnap.y, SNAP_IN);
-          updateItem(dragging.id, { x: newX, y: newY, rotation: wallSnap.rotation });
+          updateItem(
+            dragging.id,
+            { x: newX, y: newY, rotation: wallSnap.rotation },
+            { snapshot: false },
+          );
           return;
         }
       }
-      updateItem(dragging.id, { x: newX, y: newY });
+      updateItem(dragging.id, { x: newX, y: newY }, { snapshot: false });
     }
   }
 
@@ -108,6 +113,11 @@ export function Plan2D() {
   }
 
   function onMouseUp() {
+    if (dragging) {
+      // commit a single history snapshot at end of drag
+      const item = items.find((i) => i.id === dragging.id);
+      if (item) updateItem(dragging.id, { x: item.x, y: item.y });
+    }
     setDragging(null);
   }
 
@@ -230,10 +240,95 @@ export function Plan2D() {
             ))}
             <DimensionLines />
             {ghost && cursor && <GhostPreview cursor={cursor} />}
+            <VertexEditor screenToWorldIn={screenToWorldIn} />
           </g>
         </svg>
       </div>
+      {vertexEdit && (
+        <div className="vertex-edit-banner">
+          Vertex edit mode · drag dots to reshape walls · click + on midpoints to add a vertex · right-click a dot to remove
+        </div>
+      )}
     </div>
+  );
+}
+
+function VertexEditor({
+  screenToWorldIn,
+}: {
+  screenToWorldIn: (x: number, y: number) => { x: number; y: number } | null;
+}) {
+  const vertexEdit = useStore((s) => s.vertexEdit);
+  const room = useStore((s) => s.project.room);
+  const setRoom = useStore((s) => s.setRoom);
+  if (!vertexEdit) return null;
+
+  function moveVertex(i: number, e: React.MouseEvent) {
+    e.stopPropagation();
+    const start = screenToWorldIn(e.clientX, e.clientY);
+    if (!start) return;
+    const original = room.points[i];
+    function onMove(ev: MouseEvent) {
+      const pos = screenToWorldIn(ev.clientX, ev.clientY);
+      if (!pos) return;
+      const dx = pos.x - start!.x;
+      const dy = pos.y - start!.y;
+      const next = room.points.map((p, idx) =>
+        idx === i ? { x: snap(original.x + dx, 3), y: snap(original.y + dy, 3) } : p,
+      );
+      setRoom({ ...room, points: next });
+    }
+    function onUp() {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+    }
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+  }
+  function removeVertex(i: number, e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (room.points.length <= 3) return;
+    setRoom({ ...room, points: room.points.filter((_, idx) => idx !== i) });
+  }
+  function insertVertex(edgeIndex: number) {
+    const a = room.points[edgeIndex];
+    const b = room.points[(edgeIndex + 1) % room.points.length];
+    const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+    const next = [...room.points];
+    next.splice(edgeIndex + 1, 0, mid);
+    setRoom({ ...room, points: next });
+  }
+
+  return (
+    <g className="vertex-handles">
+      {edges(room.points).map((e, i) => {
+        const mx = (e.a.x + e.b.x) / 2;
+        const my = (e.a.y + e.b.y) / 2;
+        return (
+          <g key={`edge-${i}`} onClick={() => insertVertex(i)} style={{ cursor: "copy" }}>
+            <circle cx={mx} cy={my} r={1.8} fill="#fff" stroke="#49C1C4" strokeWidth={0.4} />
+            <text x={mx} y={my + 0.7} textAnchor="middle" fontSize={2.2} fill="#3A7AA0" fontFamily="Inter" fontWeight={700}>
+              +
+            </text>
+          </g>
+        );
+      })}
+      {room.points.map((p, i) => (
+        <circle
+          key={`v-${i}`}
+          cx={p.x}
+          cy={p.y}
+          r={2.4}
+          fill="#2C327C"
+          stroke="#fff"
+          strokeWidth={0.6}
+          style={{ cursor: "grab" }}
+          onMouseDown={(e) => moveVertex(i, e)}
+          onContextMenu={(e) => removeVertex(i, e)}
+        />
+      ))}
+    </g>
   );
 }
 

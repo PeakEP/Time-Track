@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useStore, loadCatalog } from "./store";
+import { useStore, loadCatalog, attachAutosave, restoreDraft, clearDraft } from "./store";
 import { CatalogPalette } from "./components/CatalogPalette";
 import { Plan2D } from "./components/Plan2D";
 import { Scene3D } from "./components/Scene3D";
@@ -10,9 +10,13 @@ import { Inspector } from "./components/Inspector";
 export default function App() {
   const setCatalog = useStore((s) => s.setCatalog);
   const setCatalogError = useStore((s) => s.setCatalogError);
+  const setProject = useStore((s) => s.setProject);
+  const undo = useStore((s) => s.undo);
+  const redo = useStore((s) => s.redo);
   const catalog = useStore((s) => s.catalog);
   const catalogError = useStore((s) => s.catalogError);
   const view = useStore((s) => s.view);
+  const [draftPrompt, setDraftPrompt] = useState<{ name: string } | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -23,16 +27,65 @@ export default function App() {
       .catch((e) => {
         if (!cancelled) setCatalogError(e.message ?? "Unknown error");
       });
+    // restore draft prompt
+    const draft = restoreDraft();
+    if (draft && (draft.items.length > 0 || draft.meta.name !== "Untitled Kitchen")) {
+      setDraftPrompt({ name: draft.meta.name });
+    }
+    // start autosave only after initial paint to avoid persisting the default project
+    const unsub = attachAutosave();
     return () => {
       cancelled = true;
+      unsub();
     };
   }, [setCatalog, setCatalogError]);
+
+  // global keyboard shortcuts (undo/redo)
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || (e.target as HTMLElement)?.isContentEditable) return;
+      const mod = e.metaKey || e.ctrlKey;
+      if (!mod) return;
+      const k = e.key.toLowerCase();
+      if (k === "z" && !e.shiftKey) {
+        undo();
+        e.preventDefault();
+      } else if ((k === "z" && e.shiftKey) || k === "y") {
+        redo();
+        e.preventDefault();
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [undo, redo]);
+
+  function acceptDraft() {
+    const draft = restoreDraft();
+    if (draft) setProject(draft);
+    setDraftPrompt(null);
+  }
+  function discardDraft() {
+    clearDraft();
+    setDraftPrompt(null);
+  }
 
   return (
     <div className="app-shell">
       <SettingsBar />
       {catalogError && (
         <div className="banner-error">Failed to load catalog: {catalogError}</div>
+      )}
+      {draftPrompt && (
+        <div className="banner-info">
+          <span>
+            Found an autosaved draft: <strong>{draftPrompt.name}</strong>. Restore it?
+          </span>
+          <span className="banner-actions">
+            <button className="btn-soft" onClick={acceptDraft}>Restore</button>
+            <button className="btn-soft" onClick={discardDraft}>Discard</button>
+          </span>
+        </div>
       )}
       <main className="workspace">
         <CatalogPalette />
@@ -44,12 +97,14 @@ export default function App() {
         </section>
         <SchedulePanel />
       </main>
-      {/* footer */}
       <footer className="app-footer">
         <span>
           {catalog
             ? `Catalog: OPPEIN RTA ${catalog._meta.pricing_year ?? 2025} · ${catalog.products.length} SKUs · ${catalog.finishes.length} finishes`
             : "Loading catalog…"}
+        </span>
+        <span>
+          Cmd/Ctrl-Z undo · Shift-Cmd/Ctrl-Z redo · R rotate · Del delete
         </span>
         <span>J.M Robins Construction Ltd.</span>
       </footer>
