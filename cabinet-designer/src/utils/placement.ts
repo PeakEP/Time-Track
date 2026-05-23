@@ -1,4 +1,4 @@
-import type { Item, Product } from "../types";
+import type { Item, ItemKind, Product } from "../types";
 
 const WALL_CATEGORIES = new Set([
   "Wall 30",
@@ -12,26 +12,42 @@ const WALL_CATEGORIES = new Set([
   "Open",
 ]);
 
-const SCHEDULE_ONLY_CATEGORIES = new Set([
-  "Panels",
-  "Fillers",
-  "Accessories",
-  "Hardware",
-  "Glass",
-]);
+// These have no real footprint, so they only ever appear in the schedule.
+const SCHEDULE_ONLY_CATEGORIES = new Set(["Accessories", "Hardware", "Glass"]);
+
+const PANEL_THICKNESS = 0.75;
 
 export function isWallMounted(product: Product): boolean {
   return WALL_CATEGORIES.has(product.cat);
 }
 
+export function isPanelOrFiller(product: Product): boolean {
+  return product.cat === "Panels" || product.cat === "Fillers";
+}
+
 export function isScheduleOnly(product: Product): boolean {
   if (SCHEDULE_ONLY_CATEGORIES.has(product.cat)) return true;
-  // Also schedule-only when dimensions are missing
+  // Panels and fillers are placeable even though their catalog depth is null.
+  if (isPanelOrFiller(product)) return false;
   return product.width_in == null || product.depth_in == null;
 }
 
+export function placedKind(product: Product): ItemKind {
+  if (product.cat === "Panels") return "panel";
+  if (product.cat === "Fillers") return "filler";
+  return "cabinet";
+}
+
+export function placedDepth(product: Product): number {
+  if (isPanelOrFiller(product)) return PANEL_THICKNESS;
+  return product.depth_in ?? 24;
+}
+
 export function defaultMountZ(product: Product, wallCabinetAFF: number): number {
-  return isWallMounted(product) ? wallCabinetAFF : 0;
+  if (isWallMounted(product)) return wallCabinetAFF;
+  // Wall end panels / wall fillers ride up with the uppers.
+  if (isPanelOrFiller(product) && /^wall/i.test(product.desc)) return wallCabinetAFF;
+  return 0;
 }
 
 export function makeItemFromProduct(
@@ -101,6 +117,32 @@ export function isCornerCabinet(product: Product | null): boolean {
     product.depth_in != null &&
     product.width_in === product.depth_in
   );
+}
+
+export function isLazySusan(product: Product | null): boolean {
+  return !!product && (/^BLS/i.test(product.sku) || /lazy susan/i.test(product.desc));
+}
+
+export function isWallDiagonal(product: Product | null): boolean {
+  return !!product && product.cat === "Wall Diagonal";
+}
+
+/** Right-triangle footprint for a diagonal corner cabinet; door is the hypotenuse. */
+export function diagonalPoints(legRun: number, rotation: number): [number, number][] {
+  const base: [number, number][] = [
+    [0, 0],
+    [legRun, 0],
+    [0, legRun],
+  ];
+  const c = legRun / 2;
+  const rad = (rotation * Math.PI) / 180;
+  const cos = Math.cos(rad);
+  const sin = Math.sin(rad);
+  return base.map(([x, y]) => {
+    const dx = x - c;
+    const dy = y - c;
+    return [c + dx * cos - dy * sin, c + dx * sin + dy * cos];
+  });
 }
 
 const CORNER_LEG_DEPTH = 24;

@@ -14,7 +14,10 @@ export function findOverlappingIds(items: Item[]): Set<string> {
     (i) =>
       !i.scheduleOnly &&
       i.kind !== "window" &&
-      i.kind !== "door",
+      i.kind !== "door" &&
+      // panels/fillers are meant to sit flush against cabinets
+      i.kind !== "panel" &&
+      i.kind !== "filler",
   );
   for (let i = 0; i < candidates.length; i++) {
     for (let j = i + 1; j < candidates.length; j++) {

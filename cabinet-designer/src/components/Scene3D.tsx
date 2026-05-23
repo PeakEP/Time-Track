@@ -1,6 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, GizmoHelper, GizmoViewport, Grid } from "@react-three/drei";
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
+import type { ThreeEvent } from "@react-three/fiber";
 import * as THREE from "three";
 import { Eye, Box as BoxIcon, Square as SquareIcon } from "lucide-react";
 import { useStore } from "../store";
@@ -8,13 +9,26 @@ import type { Item, Point } from "../types";
 import { bounds, edges, visibleWallSet } from "../utils/roomPresets";
 import { darken, finishColor } from "../utils/finishColors";
 import { generateCountertops } from "../utils/snapping";
-import { isCornerCabinet } from "../utils/placement";
+import { isCornerCabinet, isLazySusan, isWallDiagonal, diagonalPoints, snap } from "../utils/placement";
 
 type OrbitRef = {
   object: THREE.Camera & { position: THREE.Vector3; up: THREE.Vector3; lookAt: (v: THREE.Vector3) => void };
   target: THREE.Vector3;
   update: () => void;
 };
+
+export type DragHandlers = {
+  down: (item: Item, e: ThreeEvent<PointerEvent>) => void;
+  move: (item: Item, e: ThreeEvent<PointerEvent>) => void;
+  up: () => void;
+};
+
+const _dragPlane = new THREE.Plane();
+const _dragHit = new THREE.Vector3();
+function rayToGround(ray: THREE.Ray, y: number): THREE.Vector3 | null {
+  _dragPlane.set(new THREE.Vector3(0, 1, 0), -y);
+  return ray.intersectPlane(_dragPlane, _dragHit) ? _dragHit.clone() : null;
+}
 
 // World units = inches. Convert to feet for camera distances feels too large; keep inches.
 export function Scene3D() {
@@ -24,6 +38,45 @@ export function Scene3D() {
   const selectedId = useStore((s) => s.selectedId);
   const select = useStore((s) => s.select);
   const catalog = useStore((s) => s.catalog);
+  const updateItem = useStore((s) => s.updateItem);
+  const [orbitEnabled, setOrbitEnabled] = useState(true);
+  const dragState = useRef<{ id: string; offX: number; offZ: number; y: number } | null>(null);
+
+  const drag: DragHandlers = useMemo(
+    () => ({
+      down: (item, e) => {
+        e.stopPropagation();
+        (e.target as Element).setPointerCapture?.(e.pointerId);
+        select(item.id);
+        const y = item.mountZ ?? 0;
+        const p = rayToGround(e.ray, y);
+        if (!p) return;
+        dragState.current = { id: item.id, offX: p.x - item.x, offZ: p.z - item.y, y };
+        setOrbitEnabled(false);
+      },
+      move: (item, e) => {
+        const ds = dragState.current;
+        if (!ds || ds.id !== item.id) return;
+        const p = rayToGround(e.ray, ds.y);
+        if (!p) return;
+        updateItem(
+          ds.id,
+          { x: snap(p.x - ds.offX, 3), y: snap(p.z - ds.offZ, 3) },
+          { snapshot: false },
+        );
+      },
+      up: () => {
+        const ds = dragState.current;
+        if (ds) {
+          const it = useStore.getState().project.items.find((i) => i.id === ds.id);
+          if (it) updateItem(ds.id, { x: it.x, y: it.y }); // commit one history step
+        }
+        dragState.current = null;
+        setOrbitEnabled(true);
+      },
+    }),
+    [select, updateItem],
+  );
 
   const b = useMemo(() => bounds(room.points), [room.points]);
   const cx = (b.minX + b.maxX) / 2;
@@ -90,16 +143,22 @@ export function Scene3D() {
           infiniteGrid={false}
         />
 
-        {items.map((it) => (
-          <CabinetMesh
-            key={it.id}
-            item={it}
-            selected={it.id === selectedId}
-            onSelect={() => select(it.id)}
-            finishHex={finishHex}
-            corner={isCornerCabinet(catalog?.products.find((p) => p.sku === it.sku) ?? null)}
-          />
-        ))}
+        {items.map((it) => {
+          const prod = catalog?.products.find((p) => p.sku === it.sku) ?? null;
+          return (
+            <CabinetMesh
+              key={it.id}
+              item={it}
+              selected={it.id === selectedId}
+              onSelect={() => select(it.id)}
+              finishHex={finishHex}
+              corner={isCornerCabinet(prod)}
+              lazySusan={isLazySusan(prod)}
+              diagonal={isWallDiagonal(prod)}
+              drag={drag}
+            />
+          );
+        })}
 
         {counters.map((c, i) => (
           <mesh
@@ -118,6 +177,7 @@ export function Scene3D() {
           enableDamping
           dampingFactor={0.1}
           target={cameraTarget}
+          enabled={orbitEnabled}
           minDistance={48}
           maxDistance={2400}
           maxPolarAngle={Math.PI * 0.495}
@@ -289,19 +349,41 @@ function Wall({
   );
 }
 
+function useDragProps(item: Item, onSelect: () => void, drag?: DragHandlers) {
+  return {
+    onPointerDown: (e: ThreeEvent<PointerEvent>) => drag?.down(item, e),
+    onPointerMove: (e: ThreeEvent<PointerEvent>) => drag?.move(item, e),
+    onPointerUp: (e: ThreeEvent<PointerEvent>) => {
+      (e.target as Element).releasePointerCapture?.(e.pointerId);
+      drag?.up();
+    },
+    onClick: (e: ThreeEvent<MouseEvent>) => {
+      e.stopPropagation();
+      onSelect();
+    },
+  };
+}
+
 function CabinetMesh({
   item,
   selected,
   onSelect,
   finishHex,
   corner,
+  lazySusan,
+  diagonal,
+  drag,
 }: {
   item: Item;
   selected: boolean;
   onSelect: () => void;
   finishHex: string;
   corner?: boolean;
+  lazySusan?: boolean;
+  diagonal?: boolean;
+  drag?: DragHandlers;
 }) {
+  const dragProps = useDragProps(item, onSelect, drag);
   if (item.scheduleOnly) return null;
   if (item.kind === "window" || item.kind === "door") return null;
   const w = item.rotation === 90 || item.rotation === 270 ? item.depth : item.width;
@@ -317,17 +399,29 @@ function CabinetMesh({
 
   if (corner) {
     return (
-      <CornerMesh item={item} selected={selected} onSelect={onSelect} bodyColor={bodyColor} />
+      <CornerMesh
+        item={item}
+        selected={selected}
+        bodyColor={bodyColor}
+        doorColor={doorColor}
+        lazySusan={lazySusan}
+        dragProps={dragProps}
+      />
+    );
+  }
+  if (diagonal) {
+    return (
+      <DiagonalMesh
+        item={item}
+        selected={selected}
+        bodyColor={bodyColor}
+        doorColor={doorColor}
+        dragProps={dragProps}
+      />
     );
   }
   return (
-    <group
-      position={[cx, cy, cz]}
-      onClick={(e) => {
-        e.stopPropagation();
-        onSelect();
-      }}
-    >
+    <group position={[cx, cy, cz]} {...dragProps}>
       <mesh>
         <boxGeometry args={[w, h, d]} />
         <meshStandardMaterial color={bodyColor} roughness={isAppliance ? 0.3 : 0.6} metalness={isAppliance ? 0.4 : 0} />
@@ -350,13 +444,17 @@ function CabinetMesh({
 function CornerMesh({
   item,
   selected,
-  onSelect,
   bodyColor,
+  doorColor,
+  lazySusan,
+  dragProps,
 }: {
   item: Item;
   selected: boolean;
-  onSelect: () => void;
   bodyColor: string;
+  doorColor: string;
+  lazySusan?: boolean;
+  dragProps: ReturnType<typeof useDragProps>;
 }) {
   const h = item.height;
   const mountZ = item.mountZ ?? 0;
@@ -368,20 +466,19 @@ function CornerMesh({
     { w: S, d: L, cx: S / 2, cy: L / 2 }, // back leg (along width)
     { w: L, d: S, cx: L / 2, cy: S / 2 }, // side leg (along depth)
   ];
-  // rotate a local point about the footprint centre (S/2, S/2) to match 2D
+  // door faces sit on the two inner front edges of the L (facing the room)
+  const doors = [
+    { w: S - L, d: 0.6, cx: (S + L) / 2, cy: L - 0.3 }, // front of back leg, beyond the corner
+    { w: 0.6, d: S - L, cx: L - 0.3, cy: (S + L) / 2 }, // front of side leg
+  ];
+  // rotate a local point about the footprint centre to match 2D
   const rot = (px: number, py: number) => {
     const dx = px - S / 2;
     const dy = py - S / 2;
-    return [S / 2 + dx * Math.cos(rad) - dy * Math.sin(rad), S / 2 + dx * Math.sin(rad) - 0 + dy * Math.cos(rad)] as const;
+    return [S / 2 + dx * Math.cos(rad) - dy * Math.sin(rad), S / 2 + dx * Math.sin(rad) + dy * Math.cos(rad)] as const;
   };
   return (
-    <group
-      position={[item.x, mountZ, item.y]}
-      onClick={(e) => {
-        e.stopPropagation();
-        onSelect();
-      }}
-    >
+    <group position={[item.x, mountZ, item.y]} {...dragProps}>
       {legs.map((leg, i) => {
         const [rx, rz] = rot(leg.cx, leg.cy);
         return (
@@ -391,9 +488,83 @@ function CornerMesh({
           </mesh>
         );
       })}
+      {/* door faces (bi-fold for lazy susan) on the inner front edges */}
+      {doors.map((dr, i) => {
+        const [rx, rz] = rot(dr.cx, dr.cy);
+        return (
+          <mesh key={`d${i}`} position={[rx, h / 2, rz]} rotation={[0, -rad, 0]}>
+            <boxGeometry args={[dr.w, h - 0.5, dr.d]} />
+            <meshStandardMaterial color={doorColor} roughness={0.4} />
+          </mesh>
+        );
+      })}
+      {lazySusan &&
+        doors.map((dr, i) => {
+          // hinge seam line down the middle of each door panel (bi-fold hint)
+          const [rx, rz] = rot(dr.cx, dr.cy);
+          return (
+            <mesh key={`s${i}`} position={[rx, h / 2, rz]} rotation={[0, -rad, 0]}>
+              <boxGeometry args={[dr.w > dr.d ? 0.3 : dr.w, h - 1, dr.d > dr.w ? 0.3 : dr.d]} />
+              <meshStandardMaterial color={darken(doorColor, 0.18)} roughness={0.5} />
+            </mesh>
+          );
+        })}
       {selected && (
         <mesh position={[S / 2, h / 2, S / 2]}>
           <boxGeometry args={[S + 1, h + 1, S + 1]} />
+          <meshBasicMaterial color="#2C327C" wireframe />
+        </mesh>
+      )}
+    </group>
+  );
+}
+
+function DiagonalMesh({
+  item,
+  selected,
+  bodyColor,
+  doorColor,
+  dragProps,
+}: {
+  item: Item;
+  selected: boolean;
+  bodyColor: string;
+  doorColor: string;
+  dragProps: ReturnType<typeof useDragProps>;
+}) {
+  const h = item.height;
+  const mountZ = item.mountZ ?? 0;
+  const legRun = item.width;
+  const pts = diagonalPoints(legRun, item.rotation);
+  const geo = useMemo(() => {
+    // negate y + reverse to keep winding (normals) correct after laying flat
+    const shp = pts.map(([x, y]) => [x, -y] as [number, number]).reverse();
+    const shape = new THREE.Shape();
+    shp.forEach(([x, y], i) => (i === 0 ? shape.moveTo(x, y) : shape.lineTo(x, y)));
+    shape.closePath();
+    const g = new THREE.ExtrudeGeometry(shape, { depth: h, bevelEnabled: false });
+    g.rotateX(-Math.PI / 2);
+    g.computeVertexNormals();
+    return g;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [legRun, item.rotation, h]);
+  const [p1, p2] = [pts[1], pts[2]];
+  const mx = (p1[0] + p2[0]) / 2;
+  const mz = (p1[1] + p2[1]) / 2;
+  const doorAng = -Math.atan2(p2[1] - p1[1], p2[0] - p1[0]);
+  const doorLen = Math.hypot(p2[0] - p1[0], p2[1] - p1[1]) - 1;
+  return (
+    <group position={[item.x, mountZ, item.y]} {...dragProps}>
+      <mesh geometry={geo}>
+        <meshStandardMaterial color={bodyColor} roughness={0.55} side={THREE.DoubleSide} />
+      </mesh>
+      {/* door slab on the diagonal (hypotenuse) */}
+      <mesh position={[mx, h / 2, mz]} rotation={[0, doorAng, 0]}>
+        <boxGeometry args={[doorLen, h - 0.5, 0.6]} />
+        <meshStandardMaterial color={doorColor} roughness={0.4} />
+      </mesh>
+      {selected && (
+        <mesh geometry={geo}>
           <meshBasicMaterial color="#2C327C" wireframe />
         </mesh>
       )}

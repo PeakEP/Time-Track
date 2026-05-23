@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Search, Plus, Box, MoveDown } from "lucide-react";
 import { useStore } from "../store";
 import type { Product } from "../types";
-import { isScheduleOnly, isWallMounted, makeScheduleItem } from "../utils/placement";
+import { isScheduleOnly, isWallMounted, defaultMountZ, makeScheduleItem } from "../utils/placement";
 import { findFinish, unitListPrice, formatCAD } from "../utils/pricing";
 
 export function CatalogPalette() {
@@ -55,7 +55,7 @@ export function CatalogPalette() {
       addItem(makeScheduleItem(p));
       return;
     }
-    setGhost({ product: p, mountZ: isWallMounted(p) ? settings.wallCabinetAFF : 0 });
+    setGhost({ product: p, mountZ: defaultMountZ(p, settings.wallCabinetAFF) });
   }
 
   return (

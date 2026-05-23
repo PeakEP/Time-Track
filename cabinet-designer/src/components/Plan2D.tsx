@@ -3,7 +3,18 @@ import { RotateCw } from "lucide-react";
 import { useStore } from "../store";
 import type { Item, Point } from "../types";
 import { bounds, edges, visibleWallSet } from "../utils/roomPresets";
-import { isScheduleOnly, makeId, snap, isCornerCabinet, cornerLPoints } from "../utils/placement";
+import {
+  isScheduleOnly,
+  makeId,
+  snap,
+  isCornerCabinet,
+  cornerLPoints,
+  placedDepth,
+  placedKind,
+  isLazySusan,
+  isWallDiagonal,
+  diagonalPoints,
+} from "../utils/placement";
 import { snapToNearestWall } from "../utils/snapping";
 import { findOverlappingIds } from "../utils/overlaps";
 
@@ -135,7 +146,7 @@ export function Plan2D() {
     const sku = ghost.product;
     if (isScheduleOnly(sku)) return; // ignore; user should use Add-to-schedule
     const w = sku.width_in ?? 24;
-    const d = sku.depth_in ?? 24;
+    const d = placedDepth(sku);
     let x = snap(pos.x - w / 2, SNAP_IN);
     let y = snap(pos.y - d / 2, SNAP_IN);
     let rotation: Item["rotation"] = 0;
@@ -147,7 +158,7 @@ export function Plan2D() {
     }
     const item: Item = {
       id: makeId(),
-      kind: "cabinet",
+      kind: placedKind(sku),
       sku: sku.sku,
       x,
       y,
@@ -559,6 +570,8 @@ function ItemNode({
   const isDoor = item.kind === "door";
   const product = catalog && item.sku ? catalog.products.find((p) => p.sku === item.sku) ?? null : null;
   const isCorner = isCornerCabinet(product);
+  const lazySusan = isLazySusan(product);
+  const diagonal = isWallDiagonal(product);
 
   if (isWindow) {
     return (
@@ -615,6 +628,11 @@ function ItemNode({
     const ptsStr = pts.map((p) => `${p[0]},${p[1]}`).join(" ");
     const cxL = pts.reduce((a, p) => a + p[0], 0) / pts.length;
     const cyL = pts.reduce((a, p) => a + p[1], 0) / pts.length;
+    // inner front edges of the L (door faces): pts[2]->pts[3] and pts[3]->pts[4]
+    const doorEdges: [number, number, number, number][] = [
+      [pts[2][0], pts[2][1], pts[3][0], pts[3][1]],
+      [pts[3][0], pts[3][1], pts[4][0], pts[4][1]],
+    ];
     return (
       <g
         transform={`translate(${item.x} ${item.y})`}
@@ -628,18 +646,54 @@ function ItemNode({
           strokeWidth={overlap ? 0.7 : selected ? 0.7 : 0.4}
           strokeDasharray={overlap ? "1.5 0.6" : isWall ? "1.2 0.6" : undefined}
         />
+        {doorEdges.map(([x1, y1, x2, y2], i) => (
+          <g key={i}>
+            <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#b0651f" strokeWidth={0.9} />
+            {lazySusan && (
+              <circle cx={(x1 + x2) / 2} cy={(y1 + y2) / 2} r={0.8} fill="#fff" stroke="#b0651f" strokeWidth={0.3} />
+            )}
+          </g>
+        ))}
         <rect x={cxL - 5} y={cyL - 2.6} width={10} height={5.4} rx={0.6} fill="#ffffff" opacity={0.82} />
         <text x={cxL} y={cyL} textAnchor="middle" fontSize={2.5} fill="#1f2532" fontFamily="Inter" fontWeight={600}>
           {item.sku ?? ""}
         </text>
         <text x={cxL} y={cyL + 2.5} textAnchor="middle" fontSize={1.9} fill="#4a5364" fontFamily="Inter">
-          corner
+          {lazySusan ? "lazy susan" : "corner"}
         </text>
         {overlap && (
           <text x={item.width / 2} y={-2.5} textAnchor="middle" fontSize={2.6} fill="#c0392b" fontFamily="Inter" fontWeight={700}>
             ⚠ overlap
           </text>
         )}
+      </g>
+    );
+  }
+
+  if (diagonal) {
+    const pts = diagonalPoints(item.width, item.rotation);
+    const ptsStr = pts.map((p) => `${p[0]},${p[1]}`).join(" ");
+    const cxL = pts.reduce((a, p) => a + p[0], 0) / pts.length;
+    const cyL = pts.reduce((a, p) => a + p[1], 0) / pts.length;
+    const [p1, p2] = [pts[1], pts[2]];
+    return (
+      <g
+        transform={`translate(${item.x} ${item.y})`}
+        onMouseDown={(e) => onMouseDown(e, item)}
+        style={{ cursor: "grab" }}
+      >
+        <polygon
+          points={ptsStr}
+          fill={fill}
+          stroke={stroke}
+          strokeWidth={selected ? 0.7 : 0.4}
+          strokeDasharray={isWall ? "1.2 0.6" : undefined}
+        />
+        {/* diagonal door face on the hypotenuse */}
+        <line x1={p1[0]} y1={p1[1]} x2={p2[0]} y2={p2[1]} stroke="#b0651f" strokeWidth={1} />
+        <text x={cxL} y={cyL + 1} textAnchor="middle" fontSize={2.2} fill="#1f2532" fontFamily="Inter" fontWeight={600}>
+          {item.sku ?? ""}
+        </text>
       </g>
     );
   }
@@ -733,7 +787,7 @@ function GhostPreview({ cursor }: { cursor: Point }) {
   if (!ghost) return null;
   const p = ghost.product;
   const w = p.width_in ?? 24;
-  const d = p.depth_in ?? 24;
+  const d = placedDepth(p);
   const x = snap(cursor.x - w / 2, SNAP_IN);
   const y = snap(cursor.y - d / 2, SNAP_IN);
   return (
