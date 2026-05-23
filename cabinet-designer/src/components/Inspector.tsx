@@ -23,6 +23,7 @@ export function Inspector() {
   const isOpening = item.kind === "window" || item.kind === "door";
   const isAppliance = item.kind === "appliance";
   const isCabinet = item.kind === "cabinet";
+  const isPanel = item.kind === "panel" || item.kind === "filler";
 
   function patch(p: Partial<Item>) {
     if (!item) return;
@@ -47,14 +48,16 @@ export function Inspector() {
           <Field label="X (in)">
             <input
               type="number"
-              value={Math.round(item.x * 100) / 100}
+              step={0.125}
+              value={Math.round(item.x * 1000) / 1000}
               onChange={(e) => patch({ x: +e.target.value })}
             />
           </Field>
           <Field label="Y (in)">
             <input
               type="number"
-              value={Math.round(item.y * 100) / 100}
+              step={0.125}
+              value={Math.round(item.y * 1000) / 1000}
               onChange={(e) => patch({ y: +e.target.value })}
             />
           </Field>
@@ -148,6 +151,17 @@ export function Inspector() {
                 onChange={(e) => patch({ label: e.target.value })}
               />
             </Field>
+          </div>
+        )}
+        {isPanel && (
+          <div className="inspector-row full">
+            <button
+              className="btn-soft"
+              onClick={() => patch({ width: item.height, height: item.width })}
+              title="Swap which dimension is the plan length vs. the vertical height"
+            >
+              {item.height >= item.width ? "Lay flat (horizontal)" : "Stand up (vertical)"}
+            </button>
           </div>
         )}
       </div>

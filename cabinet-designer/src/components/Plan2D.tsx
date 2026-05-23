@@ -69,6 +69,7 @@ export function Plan2D() {
 
   // Keyboard shortcuts
   useEffect(() => {
+    const NUDGE = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"];
     function onKey(e: KeyboardEvent) {
       const tag = (e.target as HTMLElement)?.tagName;
       if (tag === "INPUT" || tag === "TEXTAREA" || (e.target as HTMLElement)?.isContentEditable) return;
@@ -82,6 +83,19 @@ export function Plan2D() {
       } else if (e.key === "d" && (e.metaKey || e.ctrlKey)) {
         if (selectedId) duplicateItem(selectedId);
         e.preventDefault();
+      } else if (NUDGE.includes(e.key)) {
+        // arrow keys nudge the selected item; Shift = fine (1/8"), else 1"
+        if (!selectedId) return;
+        const it = items.find((i) => i.id === selectedId);
+        if (!it) return;
+        const step = e.shiftKey ? 0.125 : 1;
+        const dx = e.key === "ArrowLeft" ? -step : e.key === "ArrowRight" ? step : 0;
+        const dy = e.key === "ArrowUp" ? -step : e.key === "ArrowDown" ? step : 0;
+        updateItem(selectedId, {
+          x: Math.round((it.x + dx) * 1000) / 1000,
+          y: Math.round((it.y + dy) * 1000) / 1000,
+        });
+        e.preventDefault();
       } else if (e.key === "Escape") {
         select(null);
         setGhost(null);
@@ -89,16 +103,18 @@ export function Plan2D() {
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [selectedId, rotateSelected, removeItem, duplicateItem, select, setGhost]);
+  }, [selectedId, items, updateItem, rotateSelected, removeItem, duplicateItem, select, setGhost]);
 
   function onMouseMove(e: React.MouseEvent) {
     const pos = screenToWorldIn(e.clientX, e.clientY);
     if (!pos) return;
     setCursor(pos);
     if (dragging) {
-      let newX = snap(pos.x - dragging.offsetX, SNAP_IN);
-      let newY = snap(pos.y - dragging.offsetY, SNAP_IN);
       const item = items.find((i) => i.id === dragging.id);
+      // panels/fillers move on a fine 1/4" grid so they can seat flush
+      const grid = item && (item.kind === "panel" || item.kind === "filler") ? 0.25 : SNAP_IN;
+      let newX = snap(pos.x - dragging.offsetX, grid);
+      let newY = snap(pos.y - dragging.offsetY, grid);
       const snapsToWall =
         item && !item.scheduleOnly && item.kind !== "panel" && item.kind !== "filler";
       if (snapsToWall) {
@@ -150,11 +166,13 @@ export function Plan2D() {
     const w = sku.width_in ?? 24;
     const d = placedDepth(sku);
     const kind = placedKind(sku);
-    let x = snap(pos.x - w / 2, SNAP_IN);
-    let y = snap(pos.y - d / 2, SNAP_IN);
+    const isPF = kind === "panel" || kind === "filler";
+    const grid = isPF ? 0.25 : SNAP_IN;
+    let x = snap(pos.x - w / 2, grid);
+    let y = snap(pos.y - d / 2, grid);
     let rotation: Item["rotation"] = 0;
     // panels/fillers are positioned and rotated by hand; don't wall-snap them
-    if (kind !== "panel" && kind !== "filler") {
+    if (!isPF) {
       const ws = snapToNearestWall(room, { x, y, width: w, depth: d });
       if (ws) {
         x = snap(ws.x, SNAP_IN);
