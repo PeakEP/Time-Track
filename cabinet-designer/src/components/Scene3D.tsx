@@ -1,0 +1,269 @@
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, GizmoHelper, GizmoViewport, Grid } from "@react-three/drei";
+import { useMemo } from "react";
+import * as THREE from "three";
+import { useStore } from "../store";
+import type { Item, Point } from "../types";
+import { bounds, edges } from "../utils/roomPresets";
+import { darken, finishColor } from "../utils/finishColors";
+
+// World units = inches. Convert to feet for camera distances feels too large; keep inches.
+export function Scene3D() {
+  const room = useStore((s) => s.project.room);
+  const items = useStore((s) => s.project.items);
+  const settings = useStore((s) => s.project.settings);
+  const selectedId = useStore((s) => s.selectedId);
+  const select = useStore((s) => s.select);
+
+  const b = useMemo(() => bounds(room.points), [room.points]);
+  const cx = (b.minX + b.maxX) / 2;
+  const cy = (b.minY + b.maxY) / 2;
+  const dim = Math.max(b.maxX - b.minX, b.maxY - b.minY);
+  const cameraDistance = dim * 1.4 + 120;
+  const cameraTarget: [number, number, number] = [cx, settings.wallHeight / 3, cy];
+
+  const finishHex = finishColor(settings.finishCode);
+
+  return (
+    <div className="three-wrap">
+      <Canvas
+        shadows={false}
+        camera={{ position: [cx + cameraDistance, cameraDistance * 0.7, cy + cameraDistance], fov: 40, near: 1, far: 5000 }}
+        onPointerMissed={() => select(null)}
+        gl={{ antialias: true }}
+      >
+        <color attach="background" args={["#eef1f7"]} />
+        <hemisphereLight args={["#ffffff", "#b8bfd0", 0.7]} />
+        <directionalLight position={[cx + 200, 300, cy + 200]} intensity={0.85} />
+        <ambientLight intensity={0.25} />
+
+        <Floor room={room} />
+        <Walls room={room} wallHeight={settings.wallHeight} items={items} />
+        <Grid
+          position={[cx, 0.01, cy]}
+          args={[dim * 2, dim * 2]}
+          cellSize={12}
+          sectionSize={48}
+          cellColor="#cdd4df"
+          sectionColor="#9ba6b7"
+          fadeDistance={dim * 3}
+          fadeStrength={1}
+          followCamera={false}
+          infiniteGrid={false}
+        />
+
+        {items.map((it) => (
+          <CabinetMesh
+            key={it.id}
+            item={it}
+            selected={it.id === selectedId}
+            onSelect={() => select(it.id)}
+            finishHex={finishHex}
+          />
+        ))}
+
+        <OrbitControls
+          enableDamping
+          dampingFactor={0.1}
+          target={cameraTarget}
+          minDistance={48}
+          maxDistance={2400}
+          maxPolarAngle={Math.PI * 0.49}
+        />
+        <GizmoHelper alignment="bottom-right" margin={[60, 60]}>
+          <GizmoViewport axisColors={["#2C327C", "#3A7AA0", "#49C1C4"]} labelColor="white" />
+        </GizmoHelper>
+      </Canvas>
+    </div>
+  );
+}
+
+function Floor({ room }: { room: { points: Point[] } }) {
+  const shape = useMemo(() => {
+    const s = new THREE.Shape();
+    room.points.forEach((p, i) => {
+      if (i === 0) s.moveTo(p.x, p.y);
+      else s.lineTo(p.x, p.y);
+    });
+    s.closePath();
+    return s;
+  }, [room.points]);
+  const geo = useMemo(() => new THREE.ShapeGeometry(shape), [shape]);
+  return (
+    <mesh rotation={[-Math.PI / 2, 0, 0]} geometry={geo} receiveShadow>
+      <meshStandardMaterial color="#d9d1bf" roughness={0.9} />
+    </mesh>
+  );
+}
+
+function Walls({
+  room,
+  wallHeight,
+  items,
+}: {
+  room: { points: Point[]; wallThickness: number };
+  wallHeight: number;
+  items: Item[];
+}) {
+  const windows = items.filter((i) => i.kind === "window");
+  const doors = items.filter((i) => i.kind === "door");
+  const ee = edges(room.points);
+  const thickness = room.wallThickness;
+  return (
+    <group>
+      {ee.map((e, i) => (
+        <Wall
+          key={i}
+          a={e.a}
+          b={e.b}
+          height={wallHeight}
+          thickness={thickness}
+          windows={windows}
+          doors={doors}
+        />
+      ))}
+    </group>
+  );
+}
+
+function Wall({
+  a,
+  b,
+  height,
+  thickness,
+  windows,
+  doors,
+}: {
+  a: Point;
+  b: Point;
+  height: number;
+  thickness: number;
+  windows: Item[];
+  doors: Item[];
+}) {
+  const dx = b.x - a.x;
+  const dz = b.y - a.y;
+  const length = Math.hypot(dx, dz);
+  const cx = (a.x + b.x) / 2;
+  const cz = (a.y + b.y) / 2;
+  const angle = -Math.atan2(dz, dx);
+  // Determine cutouts attached to this wall (within thickness perpendicular)
+  const tol = thickness + 6;
+  const ax = a.x;
+  const az = a.y;
+  function projectAlong(p: Item): number | null {
+    // project center of p (which lies on wall) along (a→b)
+    const px = p.x + p.width / 2 - ax;
+    const pz = p.y + p.depth / 2 - az;
+    const along = (px * dx + pz * dz) / length;
+    const perp = Math.abs((px * -dz + pz * dx) / length);
+    if (perp > tol) return null;
+    if (along < 0 || along > length) return null;
+    return along;
+  }
+  const cuts = [
+    ...windows.map((w) => ({ at: projectAlong(w), w: w.width, h: w.height, sill: w.sillHeight ?? 36, kind: "window" as const })),
+    ...doors.map((d) => ({ at: projectAlong(d), w: d.width, h: d.height, sill: 0, kind: "door" as const })),
+  ].filter((c): c is { at: number; w: number; h: number; sill: number; kind: "window" | "door" } => c.at !== null);
+
+  // Build wall as horizontal stripe segments split around openings
+  type Seg = { x0: number; x1: number; y0: number; y1: number };
+  const segs: Seg[] = [{ x0: 0, x1: length, y0: 0, y1: height }];
+  function splitSeg(segments: Seg[], cut: { x0: number; x1: number; y0: number; y1: number }): Seg[] {
+    const out: Seg[] = [];
+    for (const s of segments) {
+      // Vertical (x) split
+      const overlap = s.x0 < cut.x1 && s.x1 > cut.x0 && s.y0 < cut.y1 && s.y1 > cut.y0;
+      if (!overlap) {
+        out.push(s);
+        continue;
+      }
+      // Up to 4 sub-segments around the cut
+      if (s.x0 < cut.x0) out.push({ x0: s.x0, x1: cut.x0, y0: s.y0, y1: s.y1 });
+      if (s.x1 > cut.x1) out.push({ x0: cut.x1, x1: s.x1, y0: s.y0, y1: s.y1 });
+      const midX0 = Math.max(s.x0, cut.x0);
+      const midX1 = Math.min(s.x1, cut.x1);
+      if (s.y0 < cut.y0) out.push({ x0: midX0, x1: midX1, y0: s.y0, y1: cut.y0 });
+      if (s.y1 > cut.y1) out.push({ x0: midX0, x1: midX1, y0: cut.y1, y1: s.y1 });
+    }
+    return out;
+  }
+  let working = segs;
+  for (const c of cuts) {
+    working = splitSeg(working, { x0: c.at - c.w / 2, x1: c.at + c.w / 2, y0: c.sill, y1: c.sill + c.h });
+  }
+
+  return (
+    <group position={[cx, 0, cz]} rotation={[0, angle, 0]}>
+      {working.map((s, i) => {
+        const w = s.x1 - s.x0;
+        const h = s.y1 - s.y0;
+        const cxw = s.x0 + w / 2 - length / 2;
+        const cyw = s.y0 + h / 2;
+        return (
+          <mesh key={i} position={[cxw, cyw, 0]}>
+            <boxGeometry args={[w, h, thickness]} />
+            <meshStandardMaterial color="#f3f1ec" roughness={0.95} />
+          </mesh>
+        );
+      })}
+      {cuts.map((c, i) =>
+        c.kind === "window" ? (
+          <mesh key={`gl-${i}`} position={[c.at - length / 2, c.sill + c.h / 2, 0]}>
+            <boxGeometry args={[c.w, c.h, thickness * 0.2]} />
+            <meshStandardMaterial color="#9ec5d8" transparent opacity={0.45} roughness={0.1} metalness={0} />
+          </mesh>
+        ) : null,
+      )}
+    </group>
+  );
+}
+
+function CabinetMesh({
+  item,
+  selected,
+  onSelect,
+  finishHex,
+}: {
+  item: Item;
+  selected: boolean;
+  onSelect: () => void;
+  finishHex: string;
+}) {
+  if (item.scheduleOnly) return null;
+  if (item.kind === "window" || item.kind === "door") return null;
+  const w = item.rotation === 90 || item.rotation === 270 ? item.depth : item.width;
+  const d = item.rotation === 90 || item.rotation === 270 ? item.width : item.depth;
+  const h = item.height;
+  const mountZ = item.mountZ ?? 0;
+  const cx = item.x + w / 2;
+  const cy = mountZ + h / 2;
+  const cz = item.y + d / 2;
+  const bodyColor = darken(finishHex, 0.04);
+  const doorColor = finishHex;
+  return (
+    <group
+      position={[cx, cy, cz]}
+      onClick={(e) => {
+        e.stopPropagation();
+        onSelect();
+      }}
+    >
+      <mesh>
+        <boxGeometry args={[w, h, d]} />
+        <meshStandardMaterial color={bodyColor} roughness={0.6} />
+      </mesh>
+      {/* front face / door plane */}
+      <mesh position={[0, 0, d / 2 - 0.05]}>
+        <boxGeometry args={[w - 0.5, h - 0.5, 0.5]} />
+        <meshStandardMaterial color={doorColor} roughness={0.4} />
+      </mesh>
+      {selected && (
+        <mesh>
+          <boxGeometry args={[w + 1.2, h + 1.2, d + 1.2]} />
+          <meshBasicMaterial color="#2C327C" wireframe />
+        </mesh>
+      )}
+    </group>
+  );
+}

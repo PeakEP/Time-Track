@@ -1,0 +1,5078 @@
+{
+  "_meta": {
+    "source": "OPPEIN RTA Ordering System (Mike Robins upload) + OPPEIN RTA Kitchen Spec Book 08-2025",
+    "pricing_year": 2025,
+    "currency": "CAD",
+    "price_type": "dealer list price (pre-discount)",
+    "dealer_discount": 0.58,
+    "box_types": {
+      "PB": "Particle Board",
+      "PLY": "Plywood"
+    },
+    "notes": "Prices are OPPEIN dealer LIST. JMRC dealer cost = list * (1 - 0.58). flat-priced items ignore box type. null tier/box = not offered in that combo."
+  },
+  "tiers": {
+    "essential": "Essential",
+    "plus": "Essential Plus",
+    "trend": "Trend/Edge",
+    "premium": "Premium",
+    "elite": "Elite"
+  },
+  "finishes": [
+    {
+      "code": "MPW",
+      "name": "Pure White",
+      "tier": "essential",
+      "tierName": "Essential"
+    },
+    {
+      "code": "MNW",
+      "name": "Natural Wood",
+      "tier": "essential",
+      "tierName": "Essential"
+    },
+    {
+      "code": "MSO",
+      "name": "Smoked Oak",
+      "tier": "essential",
+      "tierName": "Essential"
+    },
+    {
+      "code": "SPW",
+      "name": "Shaker Pure White",
+      "tier": "plus",
+      "tierName": "Essential Plus"
+    },
+    {
+      "code": "KNW",
+      "name": "Edge White",
+      "tier": "trend",
+      "tierName": "Trend/Edge"
+    },
+    {
+      "code": "WSS",
+      "name": "White Shaker",
+      "tier": "premium",
+      "tierName": "Premium"
+    },
+    {
+      "code": "GSS",
+      "name": "Gray Shaker",
+      "tier": "premium",
+      "tierName": "Premium"
+    },
+    {
+      "code": "BSS",
+      "name": "Blue Shaker",
+      "tier": "premium",
+      "tierName": "Premium"
+    },
+    {
+      "code": "PGW",
+      "name": "Gray White",
+      "tier": "premium",
+      "tierName": "Premium"
+    },
+    {
+      "code": "PMW",
+      "name": "Matte White",
+      "tier": "premium",
+      "tierName": "Premium"
+    },
+    {
+      "code": "PMA",
+      "name": "Matte Ash",
+      "tier": "premium",
+      "tierName": "Premium"
+    },
+    {
+      "code": "PMB",
+      "name": "Matte Black",
+      "tier": "premium",
+      "tierName": "Premium"
+    },
+    {
+      "code": "PGG",
+      "name": "Gloss Gray",
+      "tier": "premium",
+      "tierName": "Premium"
+    },
+    {
+      "code": "PMG",
+      "name": "Matte Gray",
+      "tier": "premium",
+      "tierName": "Premium"
+    },
+    {
+      "code": "PGA",
+      "name": "Gloss Ash",
+      "tier": "premium",
+      "tierName": "Premium"
+    },
+    {
+      "code": "SSW",
+      "name": "Slim Shaker White",
+      "tier": "elite",
+      "tierName": "Elite"
+    }
+  ],
+  "products": [
+    {
+      "sku": "B12",
+      "desc": "Base Cabinet 12\"",
+      "cat": "Base",
+      "dims": "12\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 270,
+        "plus": 282,
+        "trend": 298,
+        "premium": 317,
+        "elite": 333
+      },
+      "ply": {
+        "essential": 366,
+        "plus": 378,
+        "trend": 394,
+        "premium": 413,
+        "elite": 429
+      },
+      "width_in": 12.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "B15",
+      "desc": "Base Cabinet 15\"",
+      "cat": "Base",
+      "dims": "15\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 295,
+        "plus": 310,
+        "trend": 330,
+        "premium": 353,
+        "elite": 374
+      },
+      "ply": {
+        "essential": 399,
+        "plus": 414,
+        "trend": 434,
+        "premium": 457,
+        "elite": 478
+      },
+      "width_in": 15.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "B18",
+      "desc": "Base Cabinet 18\"",
+      "cat": "Base",
+      "dims": "18\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 320,
+        "plus": 337,
+        "trend": 361,
+        "premium": 390,
+        "elite": 414
+      },
+      "ply": {
+        "essential": 433,
+        "plus": 450,
+        "trend": 474,
+        "premium": 503,
+        "elite": 527
+      },
+      "width_in": 18.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "BTC18",
+      "desc": "Base Trash Can 18\"",
+      "cat": "Base",
+      "dims": "18\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 644,
+        "plus": 661,
+        "trend": 685,
+        "premium": 714,
+        "elite": 738
+      },
+      "ply": {
+        "essential": 780,
+        "plus": 797,
+        "trend": 821,
+        "premium": 850,
+        "elite": 874
+      },
+      "width_in": 18.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "B21",
+      "desc": "Base Cabinet 21\"",
+      "cat": "Base",
+      "dims": "21\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 344,
+        "plus": 365,
+        "trend": 393,
+        "premium": 426,
+        "elite": 455
+      },
+      "ply": {
+        "essential": 465,
+        "plus": 486,
+        "trend": 514,
+        "premium": 547,
+        "elite": 576
+      },
+      "width_in": 21.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "B24",
+      "desc": "Base Cabinet 24\"",
+      "cat": "Base",
+      "dims": "24\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 383,
+        "plus": 406,
+        "trend": 438,
+        "premium": 477,
+        "elite": 510
+      },
+      "ply": {
+        "essential": 507,
+        "plus": 530,
+        "trend": 562,
+        "premium": 601,
+        "elite": 634
+      },
+      "width_in": 24.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "B27",
+      "desc": "Base Cabinet 27\"",
+      "cat": "Base",
+      "dims": "27\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 408,
+        "plus": 433,
+        "trend": 469,
+        "premium": 513,
+        "elite": 550
+      },
+      "ply": {
+        "essential": 540,
+        "plus": 675,
+        "trend": 645,
+        "premium": 682,
+        "elite": 682
+      },
+      "width_in": 27.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "B30",
+      "desc": "Base Cabinet 30\"",
+      "cat": "Base",
+      "dims": "30\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 433,
+        "plus": 462,
+        "trend": 502,
+        "premium": 549,
+        "elite": 591
+      },
+      "ply": {
+        "essential": 574,
+        "plus": 603,
+        "trend": 643,
+        "premium": 690,
+        "elite": 732
+      },
+      "width_in": 30.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "B33",
+      "desc": "Base Cabinet 33\"",
+      "cat": "Base",
+      "dims": "33\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 459,
+        "plus": 490,
+        "trend": 534,
+        "premium": 587,
+        "elite": 632
+      },
+      "ply": {
+        "essential": 607,
+        "plus": 638,
+        "trend": 682,
+        "premium": 735,
+        "elite": 780
+      },
+      "width_in": 33.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "B36",
+      "desc": "Base Cabinet 36\"",
+      "cat": "Base",
+      "dims": "36\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 486,
+        "plus": 520,
+        "trend": 569,
+        "premium": 626,
+        "elite": 676
+      },
+      "ply": {
+        "essential": 641,
+        "plus": 675,
+        "trend": 724,
+        "premium": 781,
+        "elite": 831
+      },
+      "width_in": 36.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "B42",
+      "desc": "Base Cabinet 42\"",
+      "cat": "Base",
+      "dims": "42\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 536,
+        "plus": 575,
+        "trend": 631,
+        "premium": 699,
+        "elite": 755
+      },
+      "ply": {
+        "essential": 710,
+        "plus": 749,
+        "trend": 805,
+        "premium": 873,
+        "elite": 929
+      },
+      "width_in": 42.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "SB30",
+      "desc": "Sink Base 30\"",
+      "cat": "Sink Base",
+      "dims": "30\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 290,
+        "plus": 319,
+        "trend": 359,
+        "premium": 406,
+        "elite": 448
+      },
+      "ply": {
+        "essential": 376,
+        "plus": 405,
+        "trend": 445,
+        "premium": 492,
+        "elite": 534
+      },
+      "width_in": 30.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "SB33",
+      "desc": "Sink Base 33\"",
+      "cat": "Sink Base",
+      "dims": "33\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 308,
+        "plus": 339,
+        "trend": 383,
+        "premium": 436,
+        "elite": 481
+      },
+      "ply": {
+        "essential": 394,
+        "plus": 425,
+        "trend": 469,
+        "premium": 522,
+        "elite": 567
+      },
+      "width_in": 33.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "SB36",
+      "desc": "Sink Base 36\"",
+      "cat": "Sink Base",
+      "dims": "36\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 328,
+        "plus": 362,
+        "trend": 411,
+        "premium": 468,
+        "elite": 518
+      },
+      "ply": {
+        "essential": 416,
+        "plus": 450,
+        "trend": 499,
+        "premium": 556,
+        "elite": 606
+      },
+      "width_in": 36.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "SB42",
+      "desc": "Sink Base 42\"",
+      "cat": "Sink Base",
+      "dims": "42\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 363,
+        "plus": 402,
+        "trend": 458,
+        "premium": 526,
+        "elite": 582
+      },
+      "ply": {
+        "essential": 462,
+        "plus": 501,
+        "trend": 557,
+        "premium": 625,
+        "elite": 681
+      },
+      "width_in": 42.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "BBC42",
+      "desc": "Base Blind Corner 42\"",
+      "cat": "Corner",
+      "dims": "42\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 318,
+        "plus": 335,
+        "trend": 361,
+        "premium": 395,
+        "elite": 422
+      },
+      "ply": {
+        "essential": 495,
+        "plus": 512,
+        "trend": 538,
+        "premium": 572,
+        "elite": 599
+      },
+      "width_in": 42.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "BBC45",
+      "desc": "Base Blind Corner 45\"",
+      "cat": "Corner",
+      "dims": "45\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 336,
+        "plus": 358,
+        "trend": 388,
+        "premium": 420,
+        "elite": 450
+      },
+      "ply": {
+        "essential": 575,
+        "plus": 597,
+        "trend": 627,
+        "premium": 659,
+        "elite": 689
+      },
+      "width_in": 45.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "BER33",
+      "desc": "Base Easy Reach 33\"",
+      "cat": "Corner",
+      "dims": "33\"W x 33\"D x 34.5\"H",
+      "pb": {
+        "essential": 482,
+        "plus": 485,
+        "trend": 510,
+        "premium": 539,
+        "elite": 605
+      },
+      "ply": {
+        "essential": 762,
+        "plus": 765,
+        "trend": 790,
+        "premium": 819,
+        "elite": 885
+      },
+      "width_in": 33.0,
+      "depth_in": 33.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "BER36",
+      "desc": "Base Easy Reach 36\"",
+      "cat": "Corner",
+      "dims": "36\"W x 36\"D x 34.5\"H",
+      "pb": {
+        "essential": 536,
+        "plus": 541,
+        "trend": 573,
+        "premium": 613,
+        "elite": 700
+      },
+      "ply": {
+        "essential": 839,
+        "plus": 844,
+        "trend": 876,
+        "premium": 916,
+        "elite": 1003
+      },
+      "width_in": 36.0,
+      "depth_in": 36.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "BLS33",
+      "desc": "Base Lazy Susan 33\"",
+      "cat": "Corner",
+      "dims": "33\"W x 33\"D x 34.5\"H",
+      "pb": {
+        "essential": 818,
+        "plus": 821,
+        "trend": 846,
+        "premium": 875,
+        "elite": 941
+      },
+      "ply": {
+        "essential": 1098,
+        "plus": 1101,
+        "trend": 1126,
+        "premium": 1155,
+        "elite": 1221
+      },
+      "width_in": 33.0,
+      "depth_in": 33.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "BLS36",
+      "desc": "Base Lazy Susan 36\"",
+      "cat": "Corner",
+      "dims": "36\"W x 36\"D x 34.5\"H",
+      "pb": {
+        "essential": 872,
+        "plus": 877,
+        "trend": 909,
+        "premium": 949,
+        "elite": 1036
+      },
+      "ply": {
+        "essential": 1175,
+        "plus": 1180,
+        "trend": 1212,
+        "premium": 1252,
+        "elite": 1339
+      },
+      "width_in": 36.0,
+      "depth_in": 36.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "3DB12",
+      "desc": "3 Drawer Base 12\"",
+      "cat": "3 Drawer",
+      "dims": "12\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 470,
+        "plus": 482,
+        "trend": 498,
+        "premium": 517,
+        "elite": 533
+      },
+      "ply": {
+        "essential": 598,
+        "plus": 610,
+        "trend": 626,
+        "premium": 645,
+        "elite": 661
+      },
+      "width_in": 12.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "3DB15",
+      "desc": "3 Drawer Base 15\"",
+      "cat": "3 Drawer",
+      "dims": "15\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 499,
+        "plus": 514,
+        "trend": 534,
+        "premium": 557,
+        "elite": 578
+      },
+      "ply": {
+        "essential": 639,
+        "plus": 654,
+        "trend": 674,
+        "premium": 697,
+        "elite": 718
+      },
+      "width_in": 15.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "3DB18",
+      "desc": "3 Drawer Base 18\"",
+      "cat": "3 Drawer",
+      "dims": "18\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 528,
+        "plus": 545,
+        "trend": 569,
+        "premium": 598,
+        "elite": 622
+      },
+      "ply": {
+        "essential": 679,
+        "plus": 696,
+        "trend": 720,
+        "premium": 749,
+        "elite": 773
+      },
+      "width_in": 18.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "3DB21",
+      "desc": "3 Drawer Base 21\"",
+      "cat": "3 Drawer",
+      "dims": "21\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 556,
+        "plus": 577,
+        "trend": 605,
+        "premium": 638,
+        "elite": 667
+      },
+      "ply": {
+        "essential": 719,
+        "plus": 740,
+        "trend": 768,
+        "premium": 801,
+        "elite": 830
+      },
+      "width_in": 21.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "3DB24",
+      "desc": "3 Drawer Base 24\"",
+      "cat": "3 Drawer",
+      "dims": "24\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 584,
+        "plus": 607,
+        "trend": 639,
+        "premium": 678,
+        "elite": 711
+      },
+      "ply": {
+        "essential": 760,
+        "plus": 783,
+        "trend": 815,
+        "premium": 854,
+        "elite": 887
+      },
+      "width_in": 24.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "3DB27",
+      "desc": "3 Drawer Base 27\"",
+      "cat": "3 Drawer",
+      "dims": "27\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 612,
+        "plus": 637,
+        "trend": 673,
+        "premium": 717,
+        "elite": 754
+      },
+      "ply": {
+        "essential": 800,
+        "plus": 825,
+        "trend": 861,
+        "premium": 905,
+        "elite": 942
+      },
+      "width_in": 27.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "3DB30",
+      "desc": "3 Drawer Base 30\"",
+      "cat": "3 Drawer",
+      "dims": "30\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 642,
+        "plus": 671,
+        "trend": 711,
+        "premium": 758,
+        "elite": 800
+      },
+      "ply": {
+        "essential": 841,
+        "plus": 870,
+        "trend": 910,
+        "premium": 957,
+        "elite": 999
+      },
+      "width_in": 30.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "3DB33",
+      "desc": "3 Drawer Base 33\"",
+      "cat": "3 Drawer",
+      "dims": "33\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 670,
+        "plus": 701,
+        "trend": 745,
+        "premium": 798,
+        "elite": 843
+      },
+      "ply": {
+        "essential": 881,
+        "plus": 912,
+        "trend": 956,
+        "premium": 1009,
+        "elite": 1054
+      },
+      "width_in": 33.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "3DB36",
+      "desc": "3 Drawer Base 36\"",
+      "cat": "3 Drawer",
+      "dims": "36\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 701,
+        "plus": 735,
+        "trend": 784,
+        "premium": 841,
+        "elite": 891
+      },
+      "ply": {
+        "essential": 945,
+        "plus": 979,
+        "trend": 1028,
+        "premium": 1085,
+        "elite": 1135
+      },
+      "width_in": 36.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "2DB30",
+      "desc": "2 Drawer Base 30\"",
+      "cat": "2 Drawer",
+      "dims": "30\"W x 24\"D x 34.5\"H",
+      "pb": null,
+      "ply": {
+        "essential": 678,
+        "plus": 707,
+        "trend": 747,
+        "premium": 794,
+        "elite": 836
+      },
+      "width_in": 30.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "2DB36",
+      "desc": "2 Drawer Base 36\"",
+      "cat": "2 Drawer",
+      "dims": "36\"W x 24\"D x 34.5\"H",
+      "pb": null,
+      "ply": {
+        "essential": 745,
+        "plus": 779,
+        "trend": 828,
+        "premium": 885,
+        "elite": 935
+      },
+      "width_in": 36.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "BSR06",
+      "desc": "Base Spice Rack 6\"",
+      "cat": "Specialty",
+      "dims": "6\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 425,
+        "plus": 431,
+        "trend": 439,
+        "premium": 448,
+        "elite": 456
+      },
+      "ply": {
+        "essential": 560,
+        "plus": 566,
+        "trend": 574,
+        "premium": 583,
+        "elite": 591
+      },
+      "width_in": 6.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "BSR09",
+      "desc": "Base Spice Rack 9\"",
+      "cat": "Specialty",
+      "dims": "9\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 454,
+        "plus": 468,
+        "trend": 480,
+        "premium": 494,
+        "elite": 517
+      },
+      "ply": {
+        "essential": 590,
+        "plus": 604,
+        "trend": 616,
+        "premium": 630,
+        "elite": 653
+      },
+      "width_in": 9.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "BSR12",
+      "desc": "Base Spice Rack 12\"",
+      "cat": "Specialty",
+      "dims": "12\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 502,
+        "plus": 519,
+        "trend": 535,
+        "premium": 554,
+        "elite": 583
+      },
+      "ply": {
+        "essential": 647,
+        "plus": 664,
+        "trend": 680,
+        "premium": 699,
+        "elite": 728
+      },
+      "width_in": 12.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "B06FH",
+      "desc": "Base Full Height 6\"",
+      "cat": "Full Height",
+      "dims": "6\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 141,
+        "plus": 147,
+        "trend": 155,
+        "premium": 164,
+        "elite": 172
+      },
+      "ply": {
+        "essential": 193,
+        "plus": 199,
+        "trend": 207,
+        "premium": 216,
+        "elite": 224
+      },
+      "width_in": 6.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "B09FH",
+      "desc": "Base Full Height 9\"",
+      "cat": "Full Height",
+      "dims": "9\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 162,
+        "plus": 171,
+        "trend": 183,
+        "premium": 197,
+        "elite": 220
+      },
+      "ply": {
+        "essential": 213,
+        "plus": 222,
+        "trend": 234,
+        "premium": 248,
+        "elite": 271
+      },
+      "width_in": 9.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "B12FH",
+      "desc": "Base Full Height 12\"",
+      "cat": "Full Height",
+      "dims": "12\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 183,
+        "plus": 195,
+        "trend": 211,
+        "premium": 230,
+        "elite": 259
+      },
+      "ply": null,
+      "width_in": 12.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "B15FH",
+      "desc": "Base Full Height 15\"",
+      "cat": "Full Height",
+      "dims": "15\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 204,
+        "plus": 219,
+        "trend": 239,
+        "premium": 262,
+        "elite": 285
+      },
+      "ply": null,
+      "width_in": 15.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "B18FH",
+      "desc": "Base Full Height 18\"",
+      "cat": "Full Height",
+      "dims": "18\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 225,
+        "plus": 242,
+        "trend": 266,
+        "premium": 295,
+        "elite": 322
+      },
+      "ply": null,
+      "width_in": 18.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "B21FH",
+      "desc": "Base Full Height 21\"",
+      "cat": "Full Height",
+      "dims": "21\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 245,
+        "plus": 266,
+        "trend": 294,
+        "premium": 327,
+        "elite": 359
+      },
+      "ply": null,
+      "width_in": 21.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "B24FH",
+      "desc": "Base Full Height 24\"",
+      "cat": "Full Height",
+      "dims": "24\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 280,
+        "plus": 303,
+        "trend": 335,
+        "premium": 374,
+        "elite": 410
+      },
+      "ply": null,
+      "width_in": 24.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "B27FH",
+      "desc": "Base Full Height 27\"",
+      "cat": "Full Height",
+      "dims": "27\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 301,
+        "plus": 326,
+        "trend": 362,
+        "premium": 406,
+        "elite": 447
+      },
+      "ply": null,
+      "width_in": 27.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "B30FH",
+      "desc": "Base Full Height 30\"",
+      "cat": "Full Height",
+      "dims": "30\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 322,
+        "plus": 351,
+        "trend": 391,
+        "premium": 438,
+        "elite": 482
+      },
+      "ply": null,
+      "width_in": 30.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "B33FH",
+      "desc": "Base Full Height 33\"",
+      "cat": "Full Height",
+      "dims": "33\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 343,
+        "plus": 374,
+        "trend": 418,
+        "premium": 471,
+        "elite": 521
+      },
+      "ply": null,
+      "width_in": 33.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "B36FH",
+      "desc": "Base Full Height 36\"",
+      "cat": "Full Height",
+      "dims": "36\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 367,
+        "plus": 401,
+        "trend": 450,
+        "premium": 507,
+        "elite": 560
+      },
+      "ply": null,
+      "width_in": 36.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "BMC24",
+      "desc": "Base Microwave 24\"",
+      "cat": "Specialty",
+      "dims": "24\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 337,
+        "plus": 348,
+        "trend": 363,
+        "premium": 381,
+        "elite": 400
+      },
+      "ply": {
+        "essential": 456,
+        "plus": 467,
+        "trend": 482,
+        "premium": 500,
+        "elite": 519
+      },
+      "width_in": 24.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "BMC30",
+      "desc": "Base Microwave 30\"",
+      "cat": "Specialty",
+      "dims": "30\"W x 24\"D x 34.5\"H",
+      "pb": {
+        "essential": 376,
+        "plus": 390,
+        "trend": 409,
+        "premium": 431,
+        "elite": 452
+      },
+      "ply": {
+        "essential": 508,
+        "plus": 522,
+        "trend": 541,
+        "premium": 563,
+        "elite": 584
+      },
+      "width_in": 30.0,
+      "depth_in": 24.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "W0930",
+      "desc": "Wall Cabinet 9x30\"",
+      "cat": "Wall 30",
+      "dims": "9\"W x 12\"D x 30\"H",
+      "pb": {
+        "essential": 114,
+        "plus": 123,
+        "trend": 135,
+        "premium": 149,
+        "elite": 162
+      },
+      "ply": {
+        "essential": 163,
+        "plus": 172,
+        "trend": 184,
+        "premium": 198,
+        "elite": 211
+      },
+      "width_in": 9.0,
+      "depth_in": 12.0,
+      "height_in": 30.0
+    },
+    {
+      "sku": "W1230",
+      "desc": "Wall Cabinet 12x30\"",
+      "cat": "Wall 30",
+      "dims": "12\"W x 12\"D x 30\"H",
+      "pb": {
+        "essential": 134,
+        "plus": 146,
+        "trend": 162,
+        "premium": 181,
+        "elite": 197
+      },
+      "ply": {
+        "essential": 190,
+        "plus": 202,
+        "trend": 218,
+        "premium": 237,
+        "elite": 253
+      },
+      "width_in": 12.0,
+      "depth_in": 12.0,
+      "height_in": 30.0
+    },
+    {
+      "sku": "W1530",
+      "desc": "Wall Cabinet 15x30\"",
+      "cat": "Wall 30",
+      "dims": "15\"W x 12\"D x 30\"H",
+      "pb": {
+        "essential": 154,
+        "plus": 169,
+        "trend": 189,
+        "premium": 212,
+        "elite": 233
+      },
+      "ply": {
+        "essential": 218,
+        "plus": 233,
+        "trend": 253,
+        "premium": 276,
+        "elite": 297
+      },
+      "width_in": 15.0,
+      "depth_in": 12.0,
+      "height_in": 30.0
+    },
+    {
+      "sku": "W1830",
+      "desc": "Wall Cabinet 18x30\"",
+      "cat": "Wall 30",
+      "dims": "18\"W x 12\"D x 30\"H",
+      "pb": {
+        "essential": 173,
+        "plus": 190,
+        "trend": 214,
+        "premium": 243,
+        "elite": 267
+      },
+      "ply": {
+        "essential": 246,
+        "plus": 263,
+        "trend": 287,
+        "premium": 316,
+        "elite": 340
+      },
+      "width_in": 18.0,
+      "depth_in": 12.0,
+      "height_in": 30.0
+    },
+    {
+      "sku": "W2130",
+      "desc": "Wall Cabinet 21x30\"",
+      "cat": "Wall 30",
+      "dims": "21\"W x 12\"D x 30\"H",
+      "pb": {
+        "essential": 192,
+        "plus": 213,
+        "trend": 241,
+        "premium": 274,
+        "elite": 303
+      },
+      "ply": {
+        "essential": 273,
+        "plus": 294,
+        "trend": 322,
+        "premium": 355,
+        "elite": 384
+      },
+      "width_in": 21.0,
+      "depth_in": 12.0,
+      "height_in": 30.0
+    },
+    {
+      "sku": "W2430",
+      "desc": "Wall Cabinet 24x30\"",
+      "cat": "Wall 30",
+      "dims": "24\"W x 12\"D x 30\"H",
+      "pb": {
+        "essential": 225,
+        "plus": 248,
+        "trend": 280,
+        "premium": 319,
+        "elite": 352
+      },
+      "ply": {
+        "essential": 309,
+        "plus": 332,
+        "trend": 364,
+        "premium": 403,
+        "elite": 436
+      },
+      "width_in": 24.0,
+      "depth_in": 12.0,
+      "height_in": 30.0
+    },
+    {
+      "sku": "W2730",
+      "desc": "Wall Cabinet 27x30\"",
+      "cat": "Wall 30",
+      "dims": "27\"W x 12\"D x 30\"H",
+      "pb": {
+        "essential": 245,
+        "plus": 270,
+        "trend": 306,
+        "premium": 350,
+        "elite": 387
+      },
+      "ply": {
+        "essential": 339,
+        "plus": 364,
+        "trend": 400,
+        "premium": 444,
+        "elite": 481
+      },
+      "width_in": 27.0,
+      "depth_in": 12.0,
+      "height_in": 30.0
+    },
+    {
+      "sku": "W3030",
+      "desc": "Wall Cabinet 30x30\"",
+      "cat": "Wall 30",
+      "dims": "30\"W x 12\"D x 30\"H",
+      "pb": {
+        "essential": 265,
+        "plus": 294,
+        "trend": 334,
+        "premium": 381,
+        "elite": 423
+      },
+      "ply": {
+        "essential": 366,
+        "plus": 395,
+        "trend": 435,
+        "premium": 482,
+        "elite": 524
+      },
+      "width_in": 30.0,
+      "depth_in": 12.0,
+      "height_in": 30.0
+    },
+    {
+      "sku": "W3330",
+      "desc": "Wall Cabinet 33x30\"",
+      "cat": "Wall 30",
+      "dims": "33\"W x 12\"D x 30\"H",
+      "pb": {
+        "essential": 284,
+        "plus": 315,
+        "trend": 359,
+        "premium": 412,
+        "elite": 457
+      },
+      "ply": {
+        "essential": 394,
+        "plus": 425,
+        "trend": 469,
+        "premium": 522,
+        "elite": 567
+      },
+      "width_in": 33.0,
+      "depth_in": 12.0,
+      "height_in": 30.0
+    },
+    {
+      "sku": "W3630",
+      "desc": "Wall Cabinet 36x30\"",
+      "cat": "Wall 30",
+      "dims": "36\"W x 12\"D x 30\"H",
+      "pb": {
+        "essential": 303,
+        "plus": 337,
+        "trend": 386,
+        "premium": 443,
+        "elite": 493
+      },
+      "ply": {
+        "essential": 421,
+        "plus": 455,
+        "trend": 504,
+        "premium": 561,
+        "elite": 611
+      },
+      "width_in": 36.0,
+      "depth_in": 12.0,
+      "height_in": 30.0
+    },
+    {
+      "sku": "W0936",
+      "desc": "Wall Cabinet 9x36\"",
+      "cat": "Wall 36",
+      "dims": "9\"W x 12\"D x 36\"H",
+      "pb": {
+        "essential": 136,
+        "plus": 147,
+        "trend": 161,
+        "premium": 178,
+        "elite": 193
+      },
+      "ply": {
+        "essential": 188,
+        "plus": 199,
+        "trend": 213,
+        "premium": 230,
+        "elite": 245
+      },
+      "width_in": 9.0,
+      "depth_in": 12.0,
+      "height_in": 36.0
+    },
+    {
+      "sku": "W1236",
+      "desc": "Wall Cabinet 12x36\"",
+      "cat": "Wall 36",
+      "dims": "12\"W x 12\"D x 36\"H",
+      "pb": {
+        "essential": 157,
+        "plus": 171,
+        "trend": 190,
+        "premium": 213,
+        "elite": 233
+      },
+      "ply": {
+        "essential": 218,
+        "plus": 232,
+        "trend": 251,
+        "premium": 274,
+        "elite": 294
+      },
+      "width_in": 12.0,
+      "depth_in": 12.0,
+      "height_in": 36.0
+    },
+    {
+      "sku": "W1536",
+      "desc": "Wall Cabinet 15x36\"",
+      "cat": "Wall 36",
+      "dims": "15\"W x 12\"D x 36\"H",
+      "pb": {
+        "essential": 180,
+        "plus": 197,
+        "trend": 221,
+        "premium": 250,
+        "elite": 274
+      },
+      "ply": {
+        "essential": 248,
+        "plus": 265,
+        "trend": 289,
+        "premium": 318,
+        "elite": 342
+      },
+      "width_in": 15.0,
+      "depth_in": 12.0,
+      "height_in": 36.0
+    },
+    {
+      "sku": "W1836",
+      "desc": "Wall Cabinet 18x36\"",
+      "cat": "Wall 36",
+      "dims": "18\"W x 12\"D x 36\"H",
+      "pb": {
+        "essential": 201,
+        "plus": 221,
+        "trend": 250,
+        "premium": 285,
+        "elite": 308
+      },
+      "ply": {
+        "essential": 278,
+        "plus": 298,
+        "trend": 327,
+        "premium": 362,
+        "elite": 392
+      },
+      "width_in": 18.0,
+      "depth_in": 12.0,
+      "height_in": 36.0
+    },
+    {
+      "sku": "W2136",
+      "desc": "Wall Cabinet 21x36\"",
+      "cat": "Wall 36",
+      "dims": "21\"W x 12\"D x 36\"H",
+      "pb": {
+        "essential": 222,
+        "plus": 247,
+        "trend": 281,
+        "premium": 320,
+        "elite": 355
+      },
+      "ply": {
+        "essential": 307,
+        "plus": 332,
+        "trend": 366,
+        "premium": 405,
+        "elite": 440
+      },
+      "width_in": 21.0,
+      "depth_in": 12.0,
+      "height_in": 36.0
+    },
+    {
+      "sku": "W2436",
+      "desc": "Wall Cabinet 24x36\"",
+      "cat": "Wall 36",
+      "dims": "24\"W x 12\"D x 36\"H",
+      "pb": {
+        "essential": 264,
+        "plus": 291,
+        "trend": 329,
+        "premium": 376,
+        "elite": 415
+      },
+      "ply": {
+        "essential": 351,
+        "plus": 378,
+        "trend": 416,
+        "premium": 463,
+        "elite": 502
+      },
+      "width_in": 24.0,
+      "depth_in": 12.0,
+      "height_in": 36.0
+    },
+    {
+      "sku": "W2736",
+      "desc": "Wall Cabinet 27x36\"",
+      "cat": "Wall 36",
+      "dims": "27\"W x 12\"D x 36\"H",
+      "pb": {
+        "essential": 286,
+        "plus": 317,
+        "trend": 361,
+        "premium": 412,
+        "elite": 457
+      },
+      "ply": {
+        "essential": 383,
+        "plus": 414,
+        "trend": 458,
+        "premium": 509,
+        "elite": 554
+      },
+      "width_in": 27.0,
+      "depth_in": 12.0,
+      "height_in": 36.0
+    },
+    {
+      "sku": "W3036",
+      "desc": "Wall Cabinet 30x36\"",
+      "cat": "Wall 36",
+      "dims": "30\"W x 12\"D x 36\"H",
+      "pb": {
+        "essential": 307,
+        "plus": 341,
+        "trend": 390,
+        "premium": 447,
+        "elite": 497
+      },
+      "ply": {
+        "essential": 412,
+        "plus": 446,
+        "trend": 495,
+        "premium": 552,
+        "elite": 602
+      },
+      "width_in": 30.0,
+      "depth_in": 12.0,
+      "height_in": 36.0
+    },
+    {
+      "sku": "W3336",
+      "desc": "Wall Cabinet 33x36\"",
+      "cat": "Wall 36",
+      "dims": "33\"W x 12\"D x 36\"H",
+      "pb": {
+        "essential": 329,
+        "plus": 365,
+        "trend": 418,
+        "premium": 483,
+        "elite": 537
+      },
+      "ply": {
+        "essential": 443,
+        "plus": 479,
+        "trend": 532,
+        "premium": 597,
+        "elite": 651
+      },
+      "width_in": 33.0,
+      "depth_in": 12.0,
+      "height_in": 36.0
+    },
+    {
+      "sku": "W3636",
+      "desc": "Wall Cabinet 36x36\"",
+      "cat": "Wall 36",
+      "dims": "36\"W x 12\"D x 36\"H",
+      "pb": {
+        "essential": 350,
+        "plus": 390,
+        "trend": 449,
+        "premium": 518,
+        "elite": 577
+      },
+      "ply": {
+        "essential": 472,
+        "plus": 512,
+        "trend": 571,
+        "premium": 640,
+        "elite": 699
+      },
+      "width_in": 36.0,
+      "depth_in": 12.0,
+      "height_in": 36.0
+    },
+    {
+      "sku": "W0942",
+      "desc": "Wall Cabinet 9x42\"",
+      "cat": "Wall 42",
+      "dims": "9\"W x 12\"D x 42\"H",
+      "pb": {
+        "essential": 157,
+        "plus": 170,
+        "trend": 186,
+        "premium": 206,
+        "elite": 223
+      },
+      "ply": {
+        "essential": 224,
+        "plus": 237,
+        "trend": 253,
+        "premium": 273,
+        "elite": 290
+      },
+      "width_in": 9.0,
+      "depth_in": 12.0,
+      "height_in": 42.0
+    },
+    {
+      "sku": "W1242",
+      "desc": "Wall Cabinet 12x42\"",
+      "cat": "Wall 42",
+      "dims": "12\"W x 12\"D x 42\"H",
+      "pb": {
+        "essential": 183,
+        "plus": 199,
+        "trend": 221,
+        "premium": 248,
+        "elite": 271
+      },
+      "ply": {
+        "essential": 261,
+        "plus": 277,
+        "trend": 299,
+        "premium": 326,
+        "elite": 349
+      },
+      "width_in": 12.0,
+      "depth_in": 12.0,
+      "height_in": 42.0
+    },
+    {
+      "sku": "W1542",
+      "desc": "Wall Cabinet 15x42\"",
+      "cat": "Wall 42",
+      "dims": "15\"W x 12\"D x 42\"H",
+      "pb": {
+        "essential": 208,
+        "plus": 229,
+        "trend": 257,
+        "premium": 290,
+        "elite": 319
+      },
+      "ply": {
+        "essential": 297,
+        "plus": 318,
+        "trend": 346,
+        "premium": 379,
+        "elite": 408
+      },
+      "width_in": 15.0,
+      "depth_in": 12.0,
+      "height_in": 42.0
+    },
+    {
+      "sku": "W1842",
+      "desc": "Wall Cabinet 18x42\"",
+      "cat": "Wall 42",
+      "dims": "18\"W x 12\"D x 42\"H",
+      "pb": {
+        "essential": 235,
+        "plus": 260,
+        "trend": 294,
+        "premium": 333,
+        "elite": 368
+      },
+      "ply": {
+        "essential": 334,
+        "plus": 359,
+        "trend": 393,
+        "premium": 432,
+        "elite": 467
+      },
+      "width_in": 18.0,
+      "depth_in": 12.0,
+      "height_in": 42.0
+    },
+    {
+      "sku": "W2142",
+      "desc": "Wall Cabinet 21x42\"",
+      "cat": "Wall 42",
+      "dims": "21\"W x 12\"D x 42\"H",
+      "pb": {
+        "essential": 261,
+        "plus": 289,
+        "trend": 328,
+        "premium": 376,
+        "elite": 416
+      },
+      "ply": {
+        "essential": 370,
+        "plus": 398,
+        "trend": 437,
+        "premium": 485,
+        "elite": 525
+      },
+      "width_in": 21.0,
+      "depth_in": 12.0,
+      "height_in": 42.0
+    },
+    {
+      "sku": "W2442",
+      "desc": "Wall Cabinet 24x42\"",
+      "cat": "Wall 42",
+      "dims": "24\"W x 12\"D x 42\"H",
+      "pb": {
+        "essential": 307,
+        "plus": 339,
+        "trend": 384,
+        "premium": 438,
+        "elite": 484
+      },
+      "ply": {
+        "essential": 420,
+        "plus": 452,
+        "trend": 497,
+        "premium": 551,
+        "elite": 597
+      },
+      "width_in": 24.0,
+      "depth_in": 12.0,
+      "height_in": 42.0
+    },
+    {
+      "sku": "W2742",
+      "desc": "Wall Cabinet 27x42\"",
+      "cat": "Wall 42",
+      "dims": "27\"W x 12\"D x 42\"H",
+      "pb": {
+        "essential": 333,
+        "plus": 369,
+        "trend": 420,
+        "premium": 480,
+        "elite": 532
+      },
+      "ply": {
+        "essential": 457,
+        "plus": 493,
+        "trend": 544,
+        "premium": 604,
+        "elite": 656
+      },
+      "width_in": 27.0,
+      "depth_in": 12.0,
+      "height_in": 42.0
+    },
+    {
+      "sku": "W3042",
+      "desc": "Wall Cabinet 30x42\"",
+      "cat": "Wall 42",
+      "dims": "30\"W x 12\"D x 42\"H",
+      "pb": {
+        "essential": 359,
+        "plus": 398,
+        "trend": 454,
+        "premium": 522,
+        "elite": 580
+      },
+      "ply": {
+        "essential": 493,
+        "plus": 532,
+        "trend": 588,
+        "premium": 656,
+        "elite": 714
+      },
+      "width_in": 30.0,
+      "depth_in": 12.0,
+      "height_in": 42.0
+    },
+    {
+      "sku": "W3342",
+      "desc": "Wall Cabinet 33x42\"",
+      "cat": "Wall 42",
+      "dims": "33\"W x 12\"D x 42\"H",
+      "pb": {
+        "essential": 386,
+        "plus": 429,
+        "trend": 491,
+        "premium": 565,
+        "elite": 629
+      },
+      "ply": {
+        "essential": 530,
+        "plus": 573,
+        "trend": 635,
+        "premium": 709,
+        "elite": 773
+      },
+      "width_in": 33.0,
+      "depth_in": 12.0,
+      "height_in": 42.0
+    },
+    {
+      "sku": "W3642",
+      "desc": "Wall Cabinet 36x42\"",
+      "cat": "Wall 42",
+      "dims": "36\"W x 12\"D x 42\"H",
+      "pb": {
+        "essential": 412,
+        "plus": 459,
+        "trend": 527,
+        "premium": 608,
+        "elite": 677
+      },
+      "ply": {
+        "essential": 567,
+        "plus": 614,
+        "trend": 682,
+        "premium": 763,
+        "elite": 832
+      },
+      "width_in": 36.0,
+      "depth_in": 12.0,
+      "height_in": 42.0
+    },
+    {
+      "sku": "W1212",
+      "desc": "Wall Short 12x12\"",
+      "cat": "Wall Short",
+      "dims": "12\"W x 12\"D x 12\"H",
+      "pb": {
+        "essential": 70,
+        "plus": 75,
+        "trend": 81,
+        "premium": 89,
+        "elite": 96
+      },
+      "ply": {
+        "essential": 93,
+        "plus": 98,
+        "trend": 104,
+        "premium": 112,
+        "elite": 119
+      },
+      "width_in": 12.0,
+      "depth_in": 12.0,
+      "height_in": 12.0
+    },
+    {
+      "sku": "W1512",
+      "desc": "Wall Short 15x12\"",
+      "cat": "Wall Short",
+      "dims": "15\"W x 12\"D x 12\"H",
+      "pb": {
+        "essential": 81,
+        "plus": 87,
+        "trend": 95,
+        "premium": 104,
+        "elite": 112
+      },
+      "ply": {
+        "essential": 107,
+        "plus": 113,
+        "trend": 121,
+        "premium": 130,
+        "elite": 138
+      },
+      "width_in": 15.0,
+      "depth_in": 12.0,
+      "height_in": 12.0
+    },
+    {
+      "sku": "W1812",
+      "desc": "Wall Short 18x12\"",
+      "cat": "Wall Short",
+      "dims": "18\"W x 12\"D x 12\"H",
+      "pb": {
+        "essential": 90,
+        "plus": 97,
+        "trend": 106,
+        "premium": 118,
+        "elite": 128
+      },
+      "ply": {
+        "essential": 121,
+        "plus": 128,
+        "trend": 137,
+        "premium": 149,
+        "elite": 159
+      },
+      "width_in": 18.0,
+      "depth_in": 12.0,
+      "height_in": 12.0
+    },
+    {
+      "sku": "W2112",
+      "desc": "Wall Short 21x12\"",
+      "cat": "Wall Short",
+      "dims": "21\"W x 12\"D x 12\"H",
+      "pb": {
+        "essential": 100,
+        "plus": 109,
+        "trend": 120,
+        "premium": 132,
+        "elite": 144
+      },
+      "ply": {
+        "essential": 134,
+        "plus": 143,
+        "trend": 154,
+        "premium": 166,
+        "elite": 178
+      },
+      "width_in": 21.0,
+      "depth_in": 12.0,
+      "height_in": 12.0
+    },
+    {
+      "sku": "W2412",
+      "desc": "Wall Short 24x12\"",
+      "cat": "Wall Short",
+      "dims": "24\"W x 12\"D x 12\"H",
+      "pb": {
+        "essential": 122,
+        "plus": 131,
+        "trend": 144,
+        "premium": 159,
+        "elite": 173
+      },
+      "ply": {
+        "essential": 156,
+        "plus": 165,
+        "trend": 178,
+        "premium": 193,
+        "elite": 207
+      },
+      "width_in": 24.0,
+      "depth_in": 12.0,
+      "height_in": 12.0
+    },
+    {
+      "sku": "W2712",
+      "desc": "Wall Short 27x12\"",
+      "cat": "Wall Short",
+      "dims": "27\"W x 12\"D x 12\"H",
+      "pb": {
+        "essential": 132,
+        "plus": 143,
+        "trend": 157,
+        "premium": 174,
+        "elite": 189
+      },
+      "ply": {
+        "essential": 169,
+        "plus": 180,
+        "trend": 194,
+        "premium": 211,
+        "elite": 226
+      },
+      "width_in": 27.0,
+      "depth_in": 12.0,
+      "height_in": 12.0
+    },
+    {
+      "sku": "W3012",
+      "desc": "Wall Short 30x12\"",
+      "cat": "Wall Short",
+      "dims": "30\"W x 12\"D x 12\"H",
+      "pb": {
+        "essential": 141,
+        "plus": 153,
+        "trend": 169,
+        "premium": 188,
+        "elite": 204
+      },
+      "ply": {
+        "essential": 182,
+        "plus": 194,
+        "trend": 210,
+        "premium": 229,
+        "elite": 245
+      },
+      "width_in": 30.0,
+      "depth_in": 12.0,
+      "height_in": 12.0
+    },
+    {
+      "sku": "W3312",
+      "desc": "Wall Short 33x12\"",
+      "cat": "Wall Short",
+      "dims": "33\"W x 12\"D x 12\"H",
+      "pb": {
+        "essential": 151,
+        "plus": 164,
+        "trend": 182,
+        "premium": 203,
+        "elite": 221
+      },
+      "ply": {
+        "essential": 196,
+        "plus": 209,
+        "trend": 227,
+        "premium": 248,
+        "elite": 266
+      },
+      "width_in": 33.0,
+      "depth_in": 12.0,
+      "height_in": 12.0
+    },
+    {
+      "sku": "W3612",
+      "desc": "Wall Short 36x12\"",
+      "cat": "Wall Short",
+      "dims": "36\"W x 12\"D x 12\"H",
+      "pb": {
+        "essential": 160,
+        "plus": 174,
+        "trend": 193,
+        "premium": 216,
+        "elite": 236
+      },
+      "ply": {
+        "essential": 211,
+        "plus": 225,
+        "trend": 244,
+        "premium": 267,
+        "elite": 287
+      },
+      "width_in": 36.0,
+      "depth_in": 12.0,
+      "height_in": 12.0
+    },
+    {
+      "sku": "W2415",
+      "desc": "Wall Short 24x15\"",
+      "cat": "Wall Short",
+      "dims": "24\"W x 12\"D x 15\"H",
+      "pb": {
+        "essential": 146,
+        "plus": 157,
+        "trend": 173,
+        "premium": 186,
+        "elite": 203
+      },
+      "ply": {
+        "essential": 174,
+        "plus": 185,
+        "trend": 201,
+        "premium": 214,
+        "elite": 231
+      },
+      "width_in": 24.0,
+      "depth_in": 12.0,
+      "height_in": 15.0
+    },
+    {
+      "sku": "W3015",
+      "desc": "Wall Short 30x15\"",
+      "cat": "Wall Short",
+      "dims": "30\"W x 12\"D x 15\"H",
+      "pb": {
+        "essential": 157,
+        "plus": 172,
+        "trend": 192,
+        "premium": 215,
+        "elite": 236
+      },
+      "ply": {
+        "essential": 202,
+        "plus": 217,
+        "trend": 237,
+        "premium": 260,
+        "elite": 281
+      },
+      "width_in": 30.0,
+      "depth_in": 12.0,
+      "height_in": 15.0
+    },
+    {
+      "sku": "W3315",
+      "desc": "Wall Short 33x15\"",
+      "cat": "Wall Short",
+      "dims": "33\"W x 12\"D x 15\"H",
+      "pb": {
+        "essential": 167,
+        "plus": 183,
+        "trend": 205,
+        "premium": 231,
+        "elite": 254
+      },
+      "ply": {
+        "essential": 216,
+        "plus": 232,
+        "trend": 254,
+        "premium": 280,
+        "elite": 303
+      },
+      "width_in": 33.0,
+      "depth_in": 12.0,
+      "height_in": 15.0
+    },
+    {
+      "sku": "W3615",
+      "desc": "Wall Short 36x15\"",
+      "cat": "Wall Short",
+      "dims": "36\"W x 12\"D x 15\"H",
+      "pb": {
+        "essential": 178,
+        "plus": 195,
+        "trend": 219,
+        "premium": 248,
+        "elite": 272
+      },
+      "ply": {
+        "essential": 233,
+        "plus": 250,
+        "trend": 274,
+        "premium": 303,
+        "elite": 327
+      },
+      "width_in": 36.0,
+      "depth_in": 12.0,
+      "height_in": 15.0
+    },
+    {
+      "sku": "W2418",
+      "desc": "Wall Short 24x18\"",
+      "cat": "Wall Short",
+      "dims": "24\"W x 12\"D x 18\"H",
+      "pb": {
+        "essential": 159,
+        "plus": 172,
+        "trend": 191,
+        "premium": 207,
+        "elite": 229
+      },
+      "ply": {
+        "essential": 191,
+        "plus": 204,
+        "trend": 223,
+        "premium": 239,
+        "elite": 261
+      },
+      "width_in": 24.0,
+      "depth_in": 12.0,
+      "height_in": 18.0
+    },
+    {
+      "sku": "W3018",
+      "desc": "Wall Short 30x18\"",
+      "cat": "Wall Short",
+      "dims": "30\"W x 12\"D x 18\"H",
+      "pb": {
+        "essential": 171,
+        "plus": 188,
+        "trend": 212,
+        "premium": 241,
+        "elite": 265
+      },
+      "ply": {
+        "essential": 221,
+        "plus": 238,
+        "trend": 262,
+        "premium": 291,
+        "elite": 315
+      },
+      "width_in": 30.0,
+      "depth_in": 12.0,
+      "height_in": 18.0
+    },
+    {
+      "sku": "W3318",
+      "desc": "Wall Short 33x18\"",
+      "cat": "Wall Short",
+      "dims": "33\"W x 12\"D x 18\"H",
+      "pb": {
+        "essential": 182,
+        "plus": 201,
+        "trend": 227,
+        "premium": 259,
+        "elite": 286
+      },
+      "ply": {
+        "essential": 236,
+        "plus": 255,
+        "trend": 281,
+        "premium": 313,
+        "elite": 340
+      },
+      "width_in": 33.0,
+      "depth_in": 12.0,
+      "height_in": 18.0
+    },
+    {
+      "sku": "W3618",
+      "desc": "Wall Short 36x18\"",
+      "cat": "Wall Short",
+      "dims": "36\"W x 12\"D x 18\"H",
+      "pb": {
+        "essential": 194,
+        "plus": 214,
+        "trend": 243,
+        "premium": 278,
+        "elite": 308
+      },
+      "ply": {
+        "essential": 254,
+        "plus": 274,
+        "trend": 303,
+        "premium": 338,
+        "elite": 368
+      },
+      "width_in": 36.0,
+      "depth_in": 12.0,
+      "height_in": 18.0
+    },
+    {
+      "sku": "W2421",
+      "desc": "Wall Short 24x21\"",
+      "cat": "Wall Short",
+      "dims": "24\"W x 12\"D x 21\"H",
+      "pb": {
+        "essential": 173,
+        "plus": 189,
+        "trend": 211,
+        "premium": 230,
+        "elite": 254
+      },
+      "ply": {
+        "essential": 207,
+        "plus": 223,
+        "trend": 245,
+        "premium": 264,
+        "elite": 288
+      },
+      "width_in": 24.0,
+      "depth_in": 12.0,
+      "height_in": 21.0
+    },
+    {
+      "sku": "W3021",
+      "desc": "Wall Short 30x21\"",
+      "cat": "Wall Short",
+      "dims": "30\"W x 12\"D x 21\"H",
+      "pb": {
+        "essential": 185,
+        "plus": 206,
+        "trend": 234,
+        "premium": 267,
+        "elite": 296
+      },
+      "ply": {
+        "essential": 239,
+        "plus": 260,
+        "trend": 288,
+        "premium": 321,
+        "elite": 350
+      },
+      "width_in": 30.0,
+      "depth_in": 12.0,
+      "height_in": 21.0
+    },
+    {
+      "sku": "W3321",
+      "desc": "Wall Short 33x21\"",
+      "cat": "Wall Short",
+      "dims": "33\"W x 12\"D x 21\"H",
+      "pb": {
+        "essential": 199,
+        "plus": 221,
+        "trend": 252,
+        "premium": 289,
+        "elite": 320
+      },
+      "ply": {
+        "essential": 256,
+        "plus": 278,
+        "trend": 309,
+        "premium": 346,
+        "elite": 377
+      },
+      "width_in": 33.0,
+      "depth_in": 12.0,
+      "height_in": 21.0
+    },
+    {
+      "sku": "W3621",
+      "desc": "Wall Short 36x21\"",
+      "cat": "Wall Short",
+      "dims": "36\"W x 12\"D x 21\"H",
+      "pb": {
+        "essential": 227,
+        "plus": 251,
+        "trend": 285,
+        "premium": 324,
+        "elite": 360
+      },
+      "ply": {
+        "essential": 277,
+        "plus": 301,
+        "trend": 335,
+        "premium": 374,
+        "elite": 410
+      },
+      "width_in": 36.0,
+      "depth_in": 12.0,
+      "height_in": 21.0
+    },
+    {
+      "sku": "W2424",
+      "desc": "Wall Short 24x24\"",
+      "cat": "Wall Short",
+      "dims": "24\"W x 12\"D x 24\"H",
+      "pb": {
+        "essential": 201,
+        "plus": 219,
+        "trend": 245,
+        "premium": 266,
+        "elite": 293
+      },
+      "ply": {
+        "essential": 250,
+        "plus": 268,
+        "trend": 294,
+        "premium": 315,
+        "elite": 342
+      },
+      "width_in": 24.0,
+      "depth_in": 12.0,
+      "height_in": 24.0
+    },
+    {
+      "sku": "W3024",
+      "desc": "Wall Short 30x24\"",
+      "cat": "Wall Short",
+      "dims": "30\"W x 12\"D x 24\"H",
+      "pb": {
+        "essential": 218,
+        "plus": 241,
+        "trend": 273,
+        "premium": 312,
+        "elite": 345
+      },
+      "ply": {
+        "essential": 292,
+        "plus": 315,
+        "trend": 347,
+        "premium": 386,
+        "elite": 419
+      },
+      "width_in": 30.0,
+      "depth_in": 12.0,
+      "height_in": 24.0
+    },
+    {
+      "sku": "W3324",
+      "desc": "Wall Short 33x24\"",
+      "cat": "Wall Short",
+      "dims": "33\"W x 12\"D x 24\"H",
+      "pb": {
+        "essential": 233,
+        "plus": 258,
+        "trend": 294,
+        "premium": 336,
+        "elite": 373
+      },
+      "ply": {
+        "essential": 313,
+        "plus": 338,
+        "trend": 374,
+        "premium": 416,
+        "elite": 453
+      },
+      "width_in": 33.0,
+      "depth_in": 12.0,
+      "height_in": 24.0
+    },
+    {
+      "sku": "W3624",
+      "desc": "Wall Short 36x24\"",
+      "cat": "Wall Short",
+      "dims": "36\"W x 12\"D x 24\"H",
+      "pb": {
+        "essential": 249,
+        "plus": 276,
+        "trend": 314,
+        "premium": 361,
+        "elite": 400
+      },
+      "ply": {
+        "essential": 338,
+        "plus": 365,
+        "trend": 403,
+        "premium": 450,
+        "elite": 489
+      },
+      "width_in": 36.0,
+      "depth_in": 12.0,
+      "height_in": 24.0
+    },
+    {
+      "sku": "W301224",
+      "desc": "Wall Fridge 30x12x24\"",
+      "cat": "Wall Fridge",
+      "dims": "30\"W x 24\"D x 12\"H",
+      "pb": {
+        "essential": 199,
+        "plus": 211,
+        "trend": 227,
+        "premium": 246,
+        "elite": 262
+      },
+      "ply": {
+        "essential": 275,
+        "plus": 287,
+        "trend": 303,
+        "premium": 322,
+        "elite": 338
+      },
+      "width_in": 30.0,
+      "depth_in": 24.0,
+      "height_in": 12.0
+    },
+    {
+      "sku": "W331224",
+      "desc": "Wall Fridge 33x12x24\"",
+      "cat": "Wall Fridge",
+      "dims": "33\"W x 24\"D x 12\"H",
+      "pb": {
+        "essential": 213,
+        "plus": 226,
+        "trend": 244,
+        "premium": 265,
+        "elite": 283
+      },
+      "ply": {
+        "essential": 295,
+        "plus": 308,
+        "trend": 326,
+        "premium": 347,
+        "elite": 365
+      },
+      "width_in": 33.0,
+      "depth_in": 24.0,
+      "height_in": 12.0
+    },
+    {
+      "sku": "W361224",
+      "desc": "Wall Fridge 36x12x24\"",
+      "cat": "Wall Fridge",
+      "dims": "36\"W x 24\"D x 12\"H",
+      "pb": {
+        "essential": 226,
+        "plus": 240,
+        "trend": 259,
+        "premium": 282,
+        "elite": 302
+      },
+      "ply": {
+        "essential": 315,
+        "plus": 329,
+        "trend": 348,
+        "premium": 371,
+        "elite": 391
+      },
+      "width_in": 36.0,
+      "depth_in": 24.0,
+      "height_in": 12.0
+    },
+    {
+      "sku": "W301524",
+      "desc": "Wall Fridge 30x15x24\"",
+      "cat": "Wall Fridge",
+      "dims": "30\"W x 24\"D x 15\"H",
+      "pb": {
+        "essential": 219,
+        "plus": 234,
+        "trend": 254,
+        "premium": 277,
+        "elite": 298
+      },
+      "ply": {
+        "essential": 301,
+        "plus": 316,
+        "trend": 336,
+        "premium": 359,
+        "elite": 380
+      },
+      "width_in": 30.0,
+      "depth_in": 24.0,
+      "height_in": 15.0
+    },
+    {
+      "sku": "W331524",
+      "desc": "Wall Fridge 33x15x24\"",
+      "cat": "Wall Fridge",
+      "dims": "33\"W x 24\"D x 15\"H",
+      "pb": {
+        "essential": 233,
+        "plus": 249,
+        "trend": 271,
+        "premium": 297,
+        "elite": 320
+      },
+      "ply": {
+        "essential": 322,
+        "plus": 338,
+        "trend": 360,
+        "premium": 386,
+        "elite": 409
+      },
+      "width_in": 33.0,
+      "depth_in": 24.0,
+      "height_in": 15.0
+    },
+    {
+      "sku": "W361524",
+      "desc": "Wall Fridge 36x15x24\"",
+      "cat": "Wall Fridge",
+      "dims": "36\"W x 24\"D x 15\"H",
+      "pb": {
+        "essential": 249,
+        "plus": 266,
+        "trend": 290,
+        "premium": 319,
+        "elite": 343
+      },
+      "ply": {
+        "essential": 344,
+        "plus": 361,
+        "trend": 385,
+        "premium": 414,
+        "elite": 438
+      },
+      "width_in": 36.0,
+      "depth_in": 24.0,
+      "height_in": 15.0
+    },
+    {
+      "sku": "W301824",
+      "desc": "Wall Fridge 30x18x24\"",
+      "cat": "Wall Fridge",
+      "dims": "30\"W x 24\"D x 18\"H",
+      "pb": {
+        "essential": 248,
+        "plus": 265,
+        "trend": 289,
+        "premium": 318,
+        "elite": 343
+      },
+      "ply": {
+        "essential": 329,
+        "plus": 346,
+        "trend": 370,
+        "premium": 399,
+        "elite": 424
+      },
+      "width_in": 30.0,
+      "depth_in": 24.0,
+      "height_in": 18.0
+    },
+    {
+      "sku": "W331824",
+      "desc": "Wall Fridge 33x18x24\"",
+      "cat": "Wall Fridge",
+      "dims": "33\"W x 24\"D x 18\"H",
+      "pb": {
+        "essential": 253,
+        "plus": 272,
+        "trend": 298,
+        "premium": 330,
+        "elite": 357
+      },
+      "ply": {
+        "essential": 349,
+        "plus": 368,
+        "trend": 394,
+        "premium": 426,
+        "elite": 453
+      },
+      "width_in": 33.0,
+      "depth_in": 24.0,
+      "height_in": 18.0
+    },
+    {
+      "sku": "W361824",
+      "desc": "Wall Fridge 36x18x24\"",
+      "cat": "Wall Fridge",
+      "dims": "36\"W x 24\"D x 18\"H",
+      "pb": {
+        "essential": 269,
+        "plus": 289,
+        "trend": 318,
+        "premium": 353,
+        "elite": 383
+      },
+      "ply": {
+        "essential": 371,
+        "plus": 391,
+        "trend": 420,
+        "premium": 455,
+        "elite": 485
+      },
+      "width_in": 36.0,
+      "depth_in": 24.0,
+      "height_in": 18.0
+    },
+    {
+      "sku": "W302124",
+      "desc": "Wall Fridge 30x21x24\"",
+      "cat": "Wall Fridge",
+      "dims": "30\"W x 24\"D x 21\"H",
+      "pb": {
+        "essential": 266,
+        "plus": 287,
+        "trend": 315,
+        "premium": 348,
+        "elite": 378
+      },
+      "ply": {
+        "essential": 354,
+        "plus": 375,
+        "trend": 403,
+        "premium": 436,
+        "elite": 466
+      },
+      "width_in": 30.0,
+      "depth_in": 24.0,
+      "height_in": 21.0
+    },
+    {
+      "sku": "W332124",
+      "desc": "Wall Fridge 33x21x24\"",
+      "cat": "Wall Fridge",
+      "dims": "33\"W x 24\"D x 21\"H",
+      "pb": {
+        "essential": 284,
+        "plus": 306,
+        "trend": 337,
+        "premium": 374,
+        "elite": 407
+      },
+      "ply": {
+        "essential": 378,
+        "plus": 400,
+        "trend": 431,
+        "premium": 468,
+        "elite": 501
+      },
+      "width_in": 33.0,
+      "depth_in": 24.0,
+      "height_in": 21.0
+    },
+    {
+      "sku": "W362124",
+      "desc": "Wall Fridge 36x21x24\"",
+      "cat": "Wall Fridge",
+      "dims": "36\"W x 24\"D x 21\"H",
+      "pb": {
+        "essential": 302,
+        "plus": 326,
+        "trend": 360,
+        "premium": 399,
+        "elite": 435
+      },
+      "ply": {
+        "essential": 403,
+        "plus": 427,
+        "trend": 461,
+        "premium": 500,
+        "elite": 536
+      },
+      "width_in": 36.0,
+      "depth_in": 24.0,
+      "height_in": 21.0
+    },
+    {
+      "sku": "W302424",
+      "desc": "Wall Fridge 30x24x24\"",
+      "cat": "Wall Fridge",
+      "dims": "30\"W x 24\"D x 24\"H",
+      "pb": {
+        "essential": 326,
+        "plus": 349,
+        "trend": 381,
+        "premium": 420,
+        "elite": 456
+      },
+      "ply": {
+        "essential": 439,
+        "plus": 462,
+        "trend": 494,
+        "premium": 533,
+        "elite": 569
+      },
+      "width_in": 30.0,
+      "depth_in": 24.0,
+      "height_in": 24.0
+    },
+    {
+      "sku": "W332424",
+      "desc": "Wall Fridge 33x24x24\"",
+      "cat": "Wall Fridge",
+      "dims": "33\"W x 24\"D x 24\"H",
+      "pb": {
+        "essential": 348,
+        "plus": 373,
+        "trend": 409,
+        "premium": 451,
+        "elite": 491
+      },
+      "ply": {
+        "essential": 469,
+        "plus": 494,
+        "trend": 530,
+        "premium": 572,
+        "elite": 612
+      },
+      "width_in": 33.0,
+      "depth_in": 24.0,
+      "height_in": 24.0
+    },
+    {
+      "sku": "W362424",
+      "desc": "Wall Fridge 36x24x24\"",
+      "cat": "Wall Fridge",
+      "dims": "36\"W x 24\"D x 24\"H",
+      "pb": {
+        "essential": 357,
+        "plus": 384,
+        "trend": 422,
+        "premium": 469,
+        "elite": 508
+      },
+      "ply": {
+        "essential": 508,
+        "plus": 535,
+        "trend": 573,
+        "premium": 620,
+        "elite": 659
+      },
+      "width_in": 36.0,
+      "depth_in": 24.0,
+      "height_in": 24.0
+    },
+    {
+      "sku": "WBC2730",
+      "desc": "Wall Blind Corner 27x30\"",
+      "cat": "Wall Corner",
+      "dims": "27\"W x 12\"D x 30\"H",
+      "pb": {
+        "essential": 238,
+        "plus": 255,
+        "trend": 276,
+        "premium": 300,
+        "elite": 322
+      },
+      "ply": {
+        "essential": 343,
+        "plus": 360,
+        "trend": 381,
+        "premium": 405,
+        "elite": 427
+      },
+      "width_in": 27.0,
+      "depth_in": 12.0,
+      "height_in": 30.0
+    },
+    {
+      "sku": "WBC2736",
+      "desc": "Wall Blind Corner 27x36\"",
+      "cat": "Wall Corner",
+      "dims": "27\"W x 12\"D x 36\"H",
+      "pb": {
+        "essential": 274,
+        "plus": 293,
+        "trend": 319,
+        "premium": 348,
+        "elite": 374
+      },
+      "ply": {
+        "essential": 386,
+        "plus": 405,
+        "trend": 431,
+        "premium": 460,
+        "elite": 486
+      },
+      "width_in": 27.0,
+      "depth_in": 12.0,
+      "height_in": 36.0
+    },
+    {
+      "sku": "WBC2742",
+      "desc": "Wall Blind Corner 27x42\"",
+      "cat": "Wall Corner",
+      "dims": "27\"W x 12\"D x 42\"H",
+      "pb": {
+        "essential": 302,
+        "plus": 323,
+        "trend": 353,
+        "premium": 389,
+        "elite": 419
+      },
+      "ply": {
+        "essential": 454,
+        "plus": 475,
+        "trend": 505,
+        "premium": 541,
+        "elite": 571
+      },
+      "width_in": 27.0,
+      "depth_in": 12.0,
+      "height_in": 42.0
+    },
+    {
+      "sku": "WER2412",
+      "desc": "Wall Easy Reach 24x12\"",
+      "cat": "Wall Corner",
+      "dims": "24\"W x 24\"D x 12\"H",
+      "pb": {
+        "essential": 176,
+        "plus": 185,
+        "trend": 198,
+        "premium": 212,
+        "elite": 227
+      },
+      "ply": {
+        "essential": 266,
+        "plus": 275,
+        "trend": 288,
+        "premium": 302,
+        "elite": 317
+      },
+      "width_in": 24.0,
+      "depth_in": 24.0,
+      "height_in": 12.0
+    },
+    {
+      "sku": "WER2430",
+      "desc": "Wall Easy Reach 24x30\"",
+      "cat": "Wall Corner",
+      "dims": "24\"W x 24\"D x 30\"H",
+      "pb": {
+        "essential": 292,
+        "plus": 314,
+        "trend": 346,
+        "premium": 383,
+        "elite": 419
+      },
+      "ply": {
+        "essential": 529,
+        "plus": 551,
+        "trend": 583,
+        "premium": 620,
+        "elite": 656
+      },
+      "width_in": 24.0,
+      "depth_in": 24.0,
+      "height_in": 30.0
+    },
+    {
+      "sku": "WER2436",
+      "desc": "Wall Easy Reach 24x36\"",
+      "cat": "Wall Corner",
+      "dims": "24\"W x 24\"D x 36\"H",
+      "pb": {
+        "essential": 345,
+        "plus": 370,
+        "trend": 408,
+        "premium": 454,
+        "elite": 496
+      },
+      "ply": {
+        "essential": 606,
+        "plus": 631,
+        "trend": 669,
+        "premium": 715,
+        "elite": 757
+      },
+      "width_in": 24.0,
+      "depth_in": 24.0,
+      "height_in": 36.0
+    },
+    {
+      "sku": "WER2442",
+      "desc": "Wall Easy Reach 24x42\"",
+      "cat": "Wall Corner",
+      "dims": "24\"W x 24\"D x 42\"H",
+      "pb": {
+        "essential": 398,
+        "plus": 428,
+        "trend": 472,
+        "premium": 525,
+        "elite": 575
+      },
+      "ply": {
+        "essential": 711,
+        "plus": 741,
+        "trend": 785,
+        "premium": 838,
+        "elite": 888
+      },
+      "width_in": 24.0,
+      "depth_in": 24.0,
+      "height_in": 42.0
+    },
+    {
+      "sku": "WDC2412",
+      "desc": "Wall Diagonal 24x12\"",
+      "cat": "Wall Diagonal",
+      "dims": "24\"W x 15.5\"D x 12\"H",
+      "pb": {
+        "essential": 123,
+        "plus": 129,
+        "trend": 137,
+        "premium": 147,
+        "elite": 158
+      },
+      "ply": {
+        "essential": 234,
+        "plus": 240,
+        "trend": 248,
+        "premium": 258,
+        "elite": 269
+      },
+      "width_in": 24.0,
+      "depth_in": 15.5,
+      "height_in": 12.0
+    },
+    {
+      "sku": "WDC2430",
+      "desc": "Wall Diagonal 24x30\"",
+      "cat": "Wall Diagonal",
+      "dims": "24\"W x 15.5\"D x 30\"H",
+      "pb": {
+        "essential": 257,
+        "plus": 272,
+        "trend": 293,
+        "premium": 318,
+        "elite": 340
+      },
+      "ply": {
+        "essential": 477,
+        "plus": 492,
+        "trend": 513,
+        "premium": 538,
+        "elite": 560
+      },
+      "width_in": 24.0,
+      "depth_in": 15.5,
+      "height_in": 30.0
+    },
+    {
+      "sku": "WDC2436",
+      "desc": "Wall Diagonal 24x36\"",
+      "cat": "Wall Diagonal",
+      "dims": "24\"W x 15.5\"D x 36\"H",
+      "pb": {
+        "essential": 297,
+        "plus": 315,
+        "trend": 340,
+        "premium": 370,
+        "elite": 396
+      },
+      "ply": {
+        "essential": 531,
+        "plus": 549,
+        "trend": 574,
+        "premium": 604,
+        "elite": 630
+      },
+      "width_in": 24.0,
+      "depth_in": 15.5,
+      "height_in": 36.0
+    },
+    {
+      "sku": "WDC2442",
+      "desc": "Wall Diagonal 24x42\"",
+      "cat": "Wall Diagonal",
+      "dims": "24\"W x 15.5\"D x 42\"H",
+      "pb": {
+        "essential": 346,
+        "plus": 367,
+        "trend": 397,
+        "premium": 432,
+        "elite": 462
+      },
+      "ply": {
+        "essential": 634,
+        "plus": 655,
+        "trend": 685,
+        "premium": 720,
+        "elite": 750
+      },
+      "width_in": 24.0,
+      "depth_in": 15.5,
+      "height_in": 42.0
+    },
+    {
+      "sku": "WBF3030",
+      "desc": "Wall Bi-Fold 30x30\"",
+      "cat": "Wall Lift",
+      "dims": "30\"W x 12\"D x 30\"H",
+      "pb": null,
+      "ply": {
+        "essential": 963,
+        "plus": 981,
+        "trend": 1021,
+        "premium": 1095,
+        "elite": 1143
+      },
+      "width_in": 30.0,
+      "depth_in": 12.0,
+      "height_in": 30.0
+    },
+    {
+      "sku": "WBF3630",
+      "desc": "Wall Bi-Fold 36x30\"",
+      "cat": "Wall Lift",
+      "dims": "36\"W x 12\"D x 30\"H",
+      "pb": null,
+      "ply": {
+        "essential": 1025,
+        "plus": 1046,
+        "trend": 1095,
+        "premium": 1185,
+        "elite": 1242
+      },
+      "width_in": 36.0,
+      "depth_in": 12.0,
+      "height_in": 30.0
+    },
+    {
+      "sku": "WSL3015",
+      "desc": "Wall Stay Lift 30x15\"",
+      "cat": "Wall Lift",
+      "dims": "30\"W x 12\"D x 15\"H",
+      "pb": null,
+      "ply": {
+        "essential": 350,
+        "plus": 360,
+        "trend": 380,
+        "premium": 417,
+        "elite": 441
+      },
+      "width_in": 30.0,
+      "depth_in": 12.0,
+      "height_in": 15.0
+    },
+    {
+      "sku": "WSL3615",
+      "desc": "Wall Stay Lift 36x15\"",
+      "cat": "Wall Lift",
+      "dims": "36\"W x 12\"D x 15\"H",
+      "pb": null,
+      "ply": {
+        "essential": 389,
+        "plus": 399,
+        "trend": 423,
+        "premium": 468,
+        "elite": 452
+      },
+      "width_in": 36.0,
+      "depth_in": 12.0,
+      "height_in": 15.0
+    },
+    {
+      "sku": "WSL3018",
+      "desc": "Wall Stay Lift 30x18\"",
+      "cat": "Wall Lift",
+      "dims": "30\"W x 12\"D x 18\"H",
+      "pb": null,
+      "ply": {
+        "essential": 373,
+        "plus": 383,
+        "trend": 407,
+        "premium": 452,
+        "elite": 480
+      },
+      "width_in": 30.0,
+      "depth_in": 12.0,
+      "height_in": 18.0
+    },
+    {
+      "sku": "WSL3618",
+      "desc": "Wall Stay Lift 36x18\"",
+      "cat": "Wall Lift",
+      "dims": "36\"W x 12\"D x 18\"H",
+      "pb": null,
+      "ply": {
+        "essential": 413,
+        "plus": 425,
+        "trend": 454,
+        "premium": 509,
+        "elite": 543
+      },
+      "width_in": 36.0,
+      "depth_in": 12.0,
+      "height_in": 18.0
+    },
+    {
+      "sku": "PC1884",
+      "desc": "Pantry Cabinet 18x84\"",
+      "cat": "Pantry",
+      "dims": "18\"W x 24\"D x 84\"H",
+      "pb": {
+        "essential": 592,
+        "plus": 619,
+        "trend": 684,
+        "premium": 760,
+        "elite": 879
+      },
+      "ply": {
+        "essential": 855,
+        "plus": 882,
+        "trend": 947,
+        "premium": 1023,
+        "elite": 1142
+      },
+      "width_in": 18.0,
+      "depth_in": 24.0,
+      "height_in": 84.0
+    },
+    {
+      "sku": "PC1890",
+      "desc": "Pantry Cabinet 18x90\"",
+      "cat": "Pantry",
+      "dims": "18\"W x 24\"D x 90\"H",
+      "pb": {
+        "essential": 626,
+        "plus": 655,
+        "trend": 724,
+        "premium": 806,
+        "elite": 933
+      },
+      "ply": {
+        "essential": 898,
+        "plus": 927,
+        "trend": 996,
+        "premium": 1078,
+        "elite": 1205
+      },
+      "width_in": 18.0,
+      "depth_in": 24.0,
+      "height_in": 90.0
+    },
+    {
+      "sku": "PC1896",
+      "desc": "Pantry Cabinet 18x96\"",
+      "cat": "Pantry",
+      "dims": "18\"W x 24\"D x 96\"H",
+      "pb": {
+        "essential": 656,
+        "plus": 688,
+        "trend": 762,
+        "premium": 850,
+        "elite": 985
+      },
+      "ply": {
+        "essential": 940,
+        "plus": 972,
+        "trend": 1046,
+        "premium": 1134,
+        "elite": 1269
+      },
+      "width_in": 18.0,
+      "depth_in": 24.0,
+      "height_in": 96.0
+    },
+    {
+      "sku": "PC2484",
+      "desc": "Pantry Cabinet 24x84\"",
+      "cat": "Pantry",
+      "dims": "24\"W x 24\"D x 84\"H",
+      "pb": {
+        "essential": 750,
+        "plus": 786,
+        "trend": 871,
+        "premium": 974,
+        "elite": 1132
+      },
+      "ply": {
+        "essential": 1033,
+        "plus": 1069,
+        "trend": 1154,
+        "premium": 1257,
+        "elite": 1415
+      },
+      "width_in": 24.0,
+      "depth_in": 24.0,
+      "height_in": 84.0
+    },
+    {
+      "sku": "PC2490",
+      "desc": "Pantry Cabinet 24x90\"",
+      "cat": "Pantry",
+      "dims": "24\"W x 24\"D x 90\"H",
+      "pb": {
+        "essential": 787,
+        "plus": 825,
+        "trend": 917,
+        "premium": 1027,
+        "elite": 1197
+      },
+      "ply": {
+        "essential": 1084,
+        "plus": 1122,
+        "trend": 1214,
+        "premium": 1324,
+        "elite": 1494
+      },
+      "width_in": 24.0,
+      "depth_in": 24.0,
+      "height_in": 90.0
+    },
+    {
+      "sku": "PC2496",
+      "desc": "Pantry Cabinet 24x96\"",
+      "cat": "Pantry",
+      "dims": "24\"W x 24\"D x 96\"H",
+      "pb": {
+        "essential": 822,
+        "plus": 863,
+        "trend": 961,
+        "premium": 1079,
+        "elite": 1261
+      },
+      "ply": {
+        "essential": 1132,
+        "plus": 1173,
+        "trend": 1271,
+        "premium": 1389,
+        "elite": 1571
+      },
+      "width_in": 24.0,
+      "depth_in": 24.0,
+      "height_in": 96.0
+    },
+    {
+      "sku": "PC3084",
+      "desc": "Pantry Cabinet 30x84\"",
+      "cat": "Pantry",
+      "dims": "30\"W x 24\"D x 84\"H",
+      "pb": {
+        "essential": 867,
+        "plus": 912,
+        "trend": 1019,
+        "premium": 1147,
+        "elite": 1345
+      },
+      "ply": {
+        "essential": 1192,
+        "plus": 1237,
+        "trend": 1344,
+        "premium": 1472,
+        "elite": 1670
+      },
+      "width_in": 30.0,
+      "depth_in": 24.0,
+      "height_in": 84.0
+    },
+    {
+      "sku": "PC3090",
+      "desc": "Pantry Cabinet 30x90\"",
+      "cat": "Pantry",
+      "dims": "30\"W x 24\"D x 90\"H",
+      "pb": {
+        "essential": 907,
+        "plus": 955,
+        "trend": 1070,
+        "premium": 1208,
+        "elite": 1420
+      },
+      "ply": {
+        "essential": 1246,
+        "plus": 1294,
+        "trend": 1409,
+        "premium": 1547,
+        "elite": 1759
+      },
+      "width_in": 30.0,
+      "depth_in": 24.0,
+      "height_in": 90.0
+    },
+    {
+      "sku": "PC3096",
+      "desc": "Pantry Cabinet 30x96\"",
+      "cat": "Pantry",
+      "dims": "30\"W x 24\"D x 96\"H",
+      "pb": {
+        "essential": 947,
+        "plus": 998,
+        "trend": 1122,
+        "premium": 1270,
+        "elite": 1497
+      },
+      "ply": {
+        "essential": 1298,
+        "plus": 1349,
+        "trend": 1473,
+        "premium": 1621,
+        "elite": 1848
+      },
+      "width_in": 30.0,
+      "depth_in": 24.0,
+      "height_in": 96.0
+    },
+    {
+      "sku": "DOC3084",
+      "desc": "Double Oven Cabinet 84\"",
+      "cat": "Oven",
+      "dims": "30\"W x 24\"D x 84\"H",
+      "pb": null,
+      "ply": {
+        "essential": 1306,
+        "plus": 1323,
+        "trend": 1362,
+        "premium": 1434,
+        "elite": 1481
+      },
+      "width_in": 30.0,
+      "depth_in": 24.0,
+      "height_in": 84.0
+    },
+    {
+      "sku": "DOC3090",
+      "desc": "Double Oven Cabinet 90\"",
+      "cat": "Oven",
+      "dims": "30\"W x 24\"D x 90\"H",
+      "pb": null,
+      "ply": {
+        "essential": 1364,
+        "plus": 1384,
+        "trend": 1432,
+        "premium": 1520,
+        "elite": 1576
+      },
+      "width_in": 30.0,
+      "depth_in": 24.0,
+      "height_in": 90.0
+    },
+    {
+      "sku": "DOC3096",
+      "desc": "Double Oven Cabinet 96\"",
+      "cat": "Oven",
+      "dims": "30\"W x 24\"D x 96\"H",
+      "pb": null,
+      "ply": {
+        "essential": 1423,
+        "plus": 1447,
+        "trend": 1503,
+        "premium": 1605,
+        "elite": 1670
+      },
+      "width_in": 30.0,
+      "depth_in": 24.0,
+      "height_in": 96.0
+    },
+    {
+      "sku": "WOC3015",
+      "desc": "Wall Open Box 30x15\"",
+      "cat": "Open",
+      "dims": "30\"W x 12\"D x 15\"H",
+      "flat": {
+        "essential": 142,
+        "plus": 142,
+        "trend": 142,
+        "premium": 238,
+        "elite": 238
+      },
+      "width_in": 30.0,
+      "depth_in": 12.0,
+      "height_in": 15.0
+    },
+    {
+      "sku": "WOC3018",
+      "desc": "Wall Open Box 30x18\"",
+      "cat": "Open",
+      "dims": "30\"W x 12\"D x 18\"H",
+      "flat": {
+        "essential": 156,
+        "plus": 156,
+        "trend": 156,
+        "premium": 263,
+        "elite": 263
+      },
+      "width_in": 30.0,
+      "depth_in": 12.0,
+      "height_in": 18.0
+    },
+    {
+      "sku": "WOC3615",
+      "desc": "Wall Open Box 36x15\"",
+      "cat": "Open",
+      "dims": "36\"W x 12\"D x 15\"H",
+      "flat": {
+        "essential": 163,
+        "plus": 163,
+        "trend": 163,
+        "premium": 274,
+        "elite": 274
+      },
+      "width_in": 36.0,
+      "depth_in": 12.0,
+      "height_in": 15.0
+    },
+    {
+      "sku": "WOC3618",
+      "desc": "Wall Open Box 36x18\"",
+      "cat": "Open",
+      "dims": "36\"W x 12\"D x 18\"H",
+      "flat": {
+        "essential": 180,
+        "plus": 180,
+        "trend": 180,
+        "premium": 302,
+        "elite": 302
+      },
+      "width_in": 36.0,
+      "depth_in": 12.0,
+      "height_in": 18.0
+    },
+    {
+      "sku": "WRC0630",
+      "desc": "Wine Rack 6x30\"",
+      "cat": "Open",
+      "dims": "6\"W x 12\"D x 30\"H",
+      "flat": {
+        "essential": 104,
+        "plus": 104,
+        "trend": 104,
+        "premium": 283,
+        "elite": 283
+      },
+      "width_in": 6.0,
+      "depth_in": 12.0,
+      "height_in": 30.0
+    },
+    {
+      "sku": "WRC0636",
+      "desc": "Wine Rack 6x36\"",
+      "cat": "Open",
+      "dims": "6\"W x 12\"D x 36\"H",
+      "flat": {
+        "essential": 120,
+        "plus": 120,
+        "trend": 120,
+        "premium": 328,
+        "elite": 328
+      },
+      "width_in": 6.0,
+      "depth_in": 12.0,
+      "height_in": 36.0
+    },
+    {
+      "sku": "WRC0642",
+      "desc": "Wine Rack 6x42\"",
+      "cat": "Open",
+      "dims": "6\"W x 12\"D x 42\"H",
+      "flat": {
+        "essential": 142,
+        "plus": 142,
+        "trend": 142,
+        "premium": 367,
+        "elite": 367
+      },
+      "width_in": 6.0,
+      "depth_in": 12.0,
+      "height_in": 42.0
+    },
+    {
+      "sku": "WMC2418",
+      "desc": "Wall Microwave 24x18\"",
+      "cat": "Specialty",
+      "dims": "24\"W x 12\"D x 18\"H",
+      "flat": {
+        "essential": 189,
+        "plus": 189,
+        "trend": 189,
+        "premium": 292,
+        "elite": 292
+      },
+      "width_in": 24.0,
+      "depth_in": 12.0,
+      "height_in": 18.0
+    },
+    {
+      "sku": "WMC3018",
+      "desc": "Wall Microwave 30x18\"",
+      "cat": "Specialty",
+      "dims": "30\"W x 12\"D x 18\"H",
+      "flat": {
+        "essential": 230,
+        "plus": 230,
+        "trend": 230,
+        "premium": 308,
+        "elite": 308
+      },
+      "width_in": 30.0,
+      "depth_in": 12.0,
+      "height_in": 18.0
+    },
+    {
+      "sku": "BEP24",
+      "desc": "Base End Panel 24\"",
+      "cat": "Panels",
+      "dims": "24.75\"W x 34.5\"H",
+      "flat": {
+        "essential": 77,
+        "plus": 77,
+        "trend": 77,
+        "premium": 148,
+        "elite": 148
+      },
+      "width_in": 24.75,
+      "depth_in": null,
+      "height_in": 34.5
+    },
+    {
+      "sku": "BEP26",
+      "desc": "Base End Panel 26\"",
+      "cat": "Panels",
+      "dims": "25.25\"W x 34.5\"H",
+      "flat": {
+        "essential": 80,
+        "plus": 80,
+        "trend": 80,
+        "premium": 152,
+        "elite": 152
+      },
+      "width_in": 25.25,
+      "depth_in": null,
+      "height_in": 34.5
+    },
+    {
+      "sku": "BEP36",
+      "desc": "Base End Panel 36\"",
+      "cat": "Panels",
+      "dims": "37.25\"W x 34.5\"H",
+      "flat": {
+        "essential": 118,
+        "plus": 118,
+        "trend": 118,
+        "premium": 225,
+        "elite": 225
+      },
+      "width_in": 37.25,
+      "depth_in": null,
+      "height_in": 34.5
+    },
+    {
+      "sku": "BEP48",
+      "desc": "Base End Panel 48\"",
+      "cat": "Panels",
+      "dims": "49.25\"W x 34.5\"H",
+      "flat": {
+        "essential": 154,
+        "plus": 154,
+        "trend": 154,
+        "premium": 298,
+        "elite": 298
+      },
+      "width_in": 49.25,
+      "depth_in": null,
+      "height_in": 34.5
+    },
+    {
+      "sku": "WEP1230",
+      "desc": "Wall End Panel 12x30\"",
+      "cat": "Panels",
+      "dims": "12.75\"W x 30\"H",
+      "flat": {
+        "essential": 35,
+        "plus": 35,
+        "trend": 35,
+        "premium": 68,
+        "elite": 68
+      },
+      "width_in": 12.75,
+      "depth_in": null,
+      "height_in": 30.0
+    },
+    {
+      "sku": "WEP1236",
+      "desc": "Wall End Panel 12x36\"",
+      "cat": "Panels",
+      "dims": "12.75\"W x 36\"H",
+      "flat": {
+        "essential": 42,
+        "plus": 42,
+        "trend": 42,
+        "premium": 82,
+        "elite": 82
+      },
+      "width_in": 12.75,
+      "depth_in": null,
+      "height_in": 36.0
+    },
+    {
+      "sku": "WEP1242",
+      "desc": "Wall End Panel 12x42\"",
+      "cat": "Panels",
+      "dims": "12.75\"W x 42\"H",
+      "flat": {
+        "essential": 48,
+        "plus": 48,
+        "trend": 48,
+        "premium": 95,
+        "elite": 95
+      },
+      "width_in": 12.75,
+      "depth_in": null,
+      "height_in": 42.0
+    },
+    {
+      "sku": "REF2496",
+      "desc": "Refrigerator Panel 24x96\"",
+      "cat": "Panels",
+      "dims": "24.75\"W x 96\"H",
+      "flat": {
+        "essential": 214,
+        "plus": 214,
+        "trend": 214,
+        "premium": 348,
+        "elite": 348
+      },
+      "width_in": 24.75,
+      "depth_in": null,
+      "height_in": 96.0
+    },
+    {
+      "sku": "REF3696",
+      "desc": "Refrigerator Panel 36x96\"",
+      "cat": "Panels",
+      "dims": "36\"W x 96\"H",
+      "flat": {
+        "essential": 297,
+        "plus": 297,
+        "trend": 297,
+        "premium": 494,
+        "elite": 494
+      },
+      "width_in": 36.0,
+      "depth_in": null,
+      "height_in": 96.0
+    },
+    {
+      "sku": "PNL3696",
+      "desc": "Skin Panel 36x96\"",
+      "cat": "Panels",
+      "dims": "36\"W x 96\"H",
+      "flat": {
+        "essential": null,
+        "plus": null,
+        "trend": null,
+        "premium": 262,
+        "elite": 262
+      },
+      "width_in": 36.0,
+      "depth_in": null,
+      "height_in": 96.0
+    },
+    {
+      "sku": "DWEP3",
+      "desc": "Dishwasher End Panel",
+      "cat": "Panels",
+      "dims": "24.75\"W x 34.5\"H",
+      "flat": {
+        "essential": 76,
+        "plus": 76,
+        "trend": 76,
+        "premium": 158,
+        "elite": 158
+      },
+      "width_in": 24.75,
+      "depth_in": null,
+      "height_in": 34.5
+    },
+    {
+      "sku": "TK8",
+      "desc": "Toe Kick 8ft",
+      "cat": "Panels",
+      "dims": "96\"L x 4.5\"H",
+      "flat": {
+        "essential": 65,
+        "plus": 65,
+        "trend": 65,
+        "premium": 94,
+        "elite": 84
+      },
+      "width_in": 96.0,
+      "depth_in": null,
+      "height_in": 4.5
+    },
+    {
+      "sku": "WF330",
+      "desc": "Wall Filler 3x30\"",
+      "cat": "Fillers",
+      "dims": "3\"W x 30\"H",
+      "flat": {
+        "essential": 25,
+        "plus": 25,
+        "trend": 25,
+        "premium": 36,
+        "elite": 36
+      },
+      "width_in": 3.0,
+      "depth_in": null,
+      "height_in": 30.0
+    },
+    {
+      "sku": "WF336",
+      "desc": "Wall Filler 3x36\"",
+      "cat": "Fillers",
+      "dims": "3\"W x 36\"H",
+      "flat": {
+        "essential": 27,
+        "plus": 27,
+        "trend": 27,
+        "premium": 42,
+        "elite": 42
+      },
+      "width_in": 3.0,
+      "depth_in": null,
+      "height_in": 36.0
+    },
+    {
+      "sku": "WF342",
+      "desc": "Wall Filler 3x42\"",
+      "cat": "Fillers",
+      "dims": "3\"W x 42\"H",
+      "flat": {
+        "essential": 30,
+        "plus": 30,
+        "trend": 30,
+        "premium": 46,
+        "elite": 46
+      },
+      "width_in": 3.0,
+      "depth_in": null,
+      "height_in": 42.0
+    },
+    {
+      "sku": "TF396",
+      "desc": "Tall Filler 3x96\"",
+      "cat": "Fillers",
+      "dims": "3\"W x 96\"H",
+      "flat": {
+        "essential": 56,
+        "plus": 56,
+        "trend": 56,
+        "premium": 84,
+        "elite": 84
+      },
+      "width_in": 3.0,
+      "depth_in": null,
+      "height_in": 96.0
+    },
+    {
+      "sku": "WF630",
+      "desc": "Wall Filler 6x30\"",
+      "cat": "Fillers",
+      "dims": "6\"W x 30\"H",
+      "flat": {
+        "essential": 39,
+        "plus": 39,
+        "trend": 39,
+        "premium": 64,
+        "elite": 64
+      },
+      "width_in": 6.0,
+      "depth_in": null,
+      "height_in": 30.0
+    },
+    {
+      "sku": "WF636",
+      "desc": "Wall Filler 6x36\"",
+      "cat": "Fillers",
+      "dims": "6\"W x 36\"H",
+      "flat": {
+        "essential": 45,
+        "plus": 45,
+        "trend": 45,
+        "premium": 74,
+        "elite": 74
+      },
+      "width_in": 6.0,
+      "depth_in": null,
+      "height_in": 36.0
+    },
+    {
+      "sku": "WF642",
+      "desc": "Wall Filler 6x42\"",
+      "cat": "Fillers",
+      "dims": "6\"W x 42\"H",
+      "flat": {
+        "essential": 50,
+        "plus": 50,
+        "trend": 50,
+        "premium": 84,
+        "elite": 84
+      },
+      "width_in": 6.0,
+      "depth_in": null,
+      "height_in": 42.0
+    },
+    {
+      "sku": "TF696",
+      "desc": "Tall Filler 6x96\"",
+      "cat": "Fillers",
+      "dims": "6\"W x 96\"H",
+      "flat": {
+        "essential": 103,
+        "plus": 103,
+        "trend": 103,
+        "premium": 158,
+        "elite": 158
+      },
+      "width_in": 6.0,
+      "depth_in": null,
+      "height_in": 96.0
+    },
+    {
+      "sku": "W2430S",
+      "desc": "Shaker End Panel 24x30\"",
+      "cat": "Panels",
+      "dims": "24\"W x 30\"H",
+      "flat": {
+        "essential": 72,
+        "plus": 85,
+        "trend": 117,
+        "premium": 178,
+        "elite": 223
+      },
+      "width_in": 24.0,
+      "depth_in": null,
+      "height_in": 30.0
+    },
+    {
+      "sku": "MWEP1230",
+      "desc": "Shaker Wall End Panel 12x30\"",
+      "cat": "Panels",
+      "dims": "12\"W x 30\"H",
+      "flat": {
+        "essential": null,
+        "plus": 46,
+        "trend": 63,
+        "premium": 101,
+        "elite": 128
+      },
+      "width_in": 12.0,
+      "depth_in": null,
+      "height_in": 30.0
+    },
+    {
+      "sku": "MWEP1236",
+      "desc": "Shaker Wall End Panel 12x36\"",
+      "cat": "Panels",
+      "dims": "12\"W x 36\"H",
+      "flat": {
+        "essential": null,
+        "plus": 55,
+        "trend": 75,
+        "premium": 121,
+        "elite": 152
+      },
+      "width_in": 12.0,
+      "depth_in": null,
+      "height_in": 36.0
+    },
+    {
+      "sku": "MWEP1242",
+      "desc": "Shaker Wall End Panel 12x42\"",
+      "cat": "Panels",
+      "dims": "12\"W x 42\"H",
+      "flat": {
+        "essential": null,
+        "plus": 63,
+        "trend": 87,
+        "premium": 141,
+        "elite": 177
+      },
+      "width_in": 12.0,
+      "depth_in": null,
+      "height_in": 42.0
+    },
+    {
+      "sku": "MBEP2430",
+      "desc": "Shaker Base End Panel 24x30\"",
+      "cat": "Panels",
+      "dims": "24\"W x 30\"H",
+      "flat": {
+        "essential": null,
+        "plus": null,
+        "trend": null,
+        "premium": 194,
+        "elite": 243
+      },
+      "width_in": 24.0,
+      "depth_in": null,
+      "height_in": 30.0
+    },
+    {
+      "sku": "MTEP2484",
+      "desc": "Shaker Tall End Panel 24x84\"",
+      "cat": "Panels",
+      "dims": "24\"W x 84\"H",
+      "flat": {
+        "essential": null,
+        "plus": null,
+        "trend": null,
+        "premium": 512,
+        "elite": 632
+      },
+      "width_in": 24.0,
+      "depth_in": null,
+      "height_in": 84.0
+    },
+    {
+      "sku": "MTEP2490",
+      "desc": "Shaker Tall End Panel 24x90\"",
+      "cat": "Panels",
+      "dims": "24\"W x 90\"H",
+      "flat": {
+        "essential": null,
+        "plus": null,
+        "trend": null,
+        "premium": 551,
+        "elite": 685
+      },
+      "width_in": 24.0,
+      "depth_in": null,
+      "height_in": 90.0
+    },
+    {
+      "sku": "MTEP2496",
+      "desc": "Shaker Tall End Panel 24x96\"",
+      "cat": "Panels",
+      "dims": "24\"W x 96\"H",
+      "flat": {
+        "essential": null,
+        "plus": 279,
+        "trend": 386,
+        "premium": 590,
+        "elite": 735
+      },
+      "width_in": 24.0,
+      "depth_in": null,
+      "height_in": 96.0
+    },
+    {
+      "sku": "CVCM",
+      "desc": "Crown Valance Center Molding",
+      "cat": "Accessories",
+      "dims": "",
+      "flat": {
+        "essential": null,
+        "plus": null,
+        "trend": null,
+        "premium": 200,
+        "elite": 200
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "CM4",
+      "desc": "Crown Molding 4\"",
+      "cat": "Accessories",
+      "dims": "",
+      "flat": {
+        "essential": null,
+        "plus": null,
+        "trend": null,
+        "premium": 217,
+        "elite": 217
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "RISER",
+      "desc": "Riser",
+      "cat": "Accessories",
+      "dims": "",
+      "flat": {
+        "essential": null,
+        "plus": null,
+        "trend": null,
+        "premium": 122,
+        "elite": 122
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "LM8",
+      "desc": "Light Molding 8ft",
+      "cat": "Accessories",
+      "dims": "",
+      "flat": {
+        "essential": null,
+        "plus": null,
+        "trend": null,
+        "premium": 157,
+        "elite": 157
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "OCM8",
+      "desc": "Outside Corner Molding 8ft",
+      "cat": "Accessories",
+      "dims": "",
+      "flat": {
+        "essential": null,
+        "plus": null,
+        "trend": null,
+        "premium": 86,
+        "elite": 86
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "SM8",
+      "desc": "Scribe Molding 8ft",
+      "cat": "Accessories",
+      "dims": "",
+      "flat": {
+        "essential": null,
+        "plus": null,
+        "trend": null,
+        "premium": 42,
+        "elite": 42
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "BM8",
+      "desc": "Base Molding 8ft",
+      "cat": "Accessories",
+      "dims": "",
+      "flat": {
+        "essential": null,
+        "plus": null,
+        "trend": null,
+        "premium": 226,
+        "elite": 226
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "COBEL-S",
+      "desc": "Corbel Small",
+      "cat": "Accessories",
+      "dims": "",
+      "flat": {
+        "essential": null,
+        "plus": null,
+        "trend": null,
+        "premium": 102,
+        "elite": 102
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "VAL36",
+      "desc": "Valance 36\"",
+      "cat": "Accessories",
+      "dims": "",
+      "flat": {
+        "essential": null,
+        "plus": null,
+        "trend": null,
+        "premium": 68,
+        "elite": 68
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "VAL48",
+      "desc": "Valance 48\"",
+      "cat": "Accessories",
+      "dims": "",
+      "flat": {
+        "essential": null,
+        "plus": null,
+        "trend": null,
+        "premium": 82,
+        "elite": 82
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "ROT18",
+      "desc": "Roll-Out Tray 18\"",
+      "cat": "Hardware",
+      "dims": "",
+      "flat": {
+        "essential": 239,
+        "plus": 239,
+        "trend": 239,
+        "premium": 239,
+        "elite": 239
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "ROT24",
+      "desc": "Roll-Out Tray 24\"",
+      "cat": "Hardware",
+      "dims": "",
+      "flat": {
+        "essential": 273,
+        "plus": 273,
+        "trend": 273,
+        "premium": 273,
+        "elite": 273
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "ROT30",
+      "desc": "Roll-Out Tray 30\"",
+      "cat": "Hardware",
+      "dims": "",
+      "flat": {
+        "essential": 307,
+        "plus": 307,
+        "trend": 307,
+        "premium": 307,
+        "elite": 307
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "BLS33-TRAY",
+      "desc": "Lazy Susan Tray 33\"",
+      "cat": "Hardware",
+      "dims": "",
+      "flat": {
+        "essential": 336,
+        "plus": 336,
+        "trend": 336,
+        "premium": 336,
+        "elite": 336
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "BLS36-TRAY",
+      "desc": "Lazy Susan Tray 36\"",
+      "cat": "Hardware",
+      "dims": "",
+      "flat": {
+        "essential": 336,
+        "plus": 336,
+        "trend": 336,
+        "premium": 336,
+        "elite": 336
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "BSR06-SPICE",
+      "desc": "Spice Rack Insert 6\"",
+      "cat": "Hardware",
+      "dims": "",
+      "flat": {
+        "essential": 304,
+        "plus": 304,
+        "trend": 304,
+        "premium": 304,
+        "elite": 304
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "BSR09-SPICE",
+      "desc": "Spice Rack Insert 9\"",
+      "cat": "Hardware",
+      "dims": "",
+      "flat": {
+        "essential": 321,
+        "plus": 321,
+        "trend": 321,
+        "premium": 321,
+        "elite": 321
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "BSR12-SPICE",
+      "desc": "Spice Rack Insert 12\"",
+      "cat": "Hardware",
+      "dims": "",
+      "flat": {
+        "essential": 351,
+        "plus": 351,
+        "trend": 351,
+        "premium": 351,
+        "elite": 351
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "BTC18-TRASH",
+      "desc": "Trash Can Insert",
+      "cat": "Hardware",
+      "dims": "",
+      "flat": {
+        "essential": 460,
+        "plus": 460,
+        "trend": 460,
+        "premium": 460,
+        "elite": 460
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "A-TK10",
+      "desc": "Toe Kick Legs A",
+      "cat": "Hardware",
+      "dims": "",
+      "flat": {
+        "essential": 110,
+        "plus": 110,
+        "trend": 110,
+        "premium": 110,
+        "elite": 110
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "B-TK10",
+      "desc": "Toe Kick Legs B",
+      "cat": "Hardware",
+      "dims": "",
+      "flat": {
+        "essential": 110,
+        "plus": 110,
+        "trend": 110,
+        "premium": 110,
+        "elite": 110
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "DRAWER-HIGH",
+      "desc": "Drawer Box High",
+      "cat": "Hardware",
+      "dims": "",
+      "flat": {
+        "essential": 148,
+        "plus": 148,
+        "trend": 148,
+        "premium": 148,
+        "elite": 148
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "DRAWER-LOW",
+      "desc": "Drawer Box Low",
+      "cat": "Hardware",
+      "dims": "",
+      "flat": {
+        "essential": 125,
+        "plus": 125,
+        "trend": 125,
+        "premium": 125,
+        "elite": 125
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "PLASTIC-LEG",
+      "desc": "Plastic Leg",
+      "cat": "Hardware",
+      "dims": "",
+      "flat": {
+        "essential": 12,
+        "plus": 12,
+        "trend": 12,
+        "premium": 12,
+        "elite": 12
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "HINGE45",
+      "desc": "Hinge 45\u00b0",
+      "cat": "Hardware",
+      "dims": "",
+      "flat": {
+        "essential": 18,
+        "plus": 18,
+        "trend": 18,
+        "premium": 18,
+        "elite": 18
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "HINGE105",
+      "desc": "Hinge 105\u00b0",
+      "cat": "Hardware",
+      "dims": "",
+      "flat": {
+        "essential": 10,
+        "plus": 10,
+        "trend": 10,
+        "premium": 10,
+        "elite": 10
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "HINGE135",
+      "desc": "Hinge 135\u00b0",
+      "cat": "Hardware",
+      "dims": "",
+      "flat": {
+        "essential": 22,
+        "plus": 22,
+        "trend": 22,
+        "premium": 22,
+        "elite": 22
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "HINGE155",
+      "desc": "Hinge 155\u00b0",
+      "cat": "Hardware",
+      "dims": "",
+      "flat": {
+        "essential": 18,
+        "plus": 18,
+        "trend": 18,
+        "premium": 18,
+        "elite": 18
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "BLUM-STAY",
+      "desc": "Blum Stay Lift",
+      "cat": "Hardware",
+      "dims": "",
+      "flat": {
+        "essential": 138,
+        "plus": 138,
+        "trend": 138,
+        "premium": 138,
+        "elite": 138
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "BLUM-FOLD",
+      "desc": "Blum Fold Lift",
+      "cat": "Hardware",
+      "dims": "",
+      "flat": {
+        "essential": 395,
+        "plus": 395,
+        "trend": 395,
+        "premium": 395,
+        "elite": 395
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GL-W1230",
+      "desc": "Aluminum Glass Door 12x30\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 217,
+        "plus": 217,
+        "trend": 217,
+        "premium": 217,
+        "elite": 217
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GL-W1236",
+      "desc": "Aluminum Glass Door 12x36\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 240,
+        "plus": 240,
+        "trend": 240,
+        "premium": 240,
+        "elite": 240
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GL-W1242",
+      "desc": "Aluminum Glass Door 12x42\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 263,
+        "plus": 263,
+        "trend": 263,
+        "premium": 263,
+        "elite": 263
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GL-W1530",
+      "desc": "Aluminum Glass Door 15x30\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 246,
+        "plus": 246,
+        "trend": 246,
+        "premium": 246,
+        "elite": 246
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GL-W1536",
+      "desc": "Aluminum Glass Door 15x36\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 275,
+        "plus": 275,
+        "trend": 275,
+        "premium": 275,
+        "elite": 275
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GL-W1542",
+      "desc": "Aluminum Glass Door 15x42\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 304,
+        "plus": 304,
+        "trend": 304,
+        "premium": 304,
+        "elite": 304
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GL-W1830",
+      "desc": "Aluminum Glass Door 18x30\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 275,
+        "plus": 275,
+        "trend": 275,
+        "premium": 275,
+        "elite": 275
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GL-W1836",
+      "desc": "Aluminum Glass Door 18x36\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 309,
+        "plus": 309,
+        "trend": 309,
+        "premium": 309,
+        "elite": 309
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GL-W1842",
+      "desc": "Aluminum Glass Door 18x42\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 356,
+        "plus": 356,
+        "trend": 356,
+        "premium": 356,
+        "elite": 356
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GL-WDC2430",
+      "desc": "Glass Door Diagonal 24x30\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 243,
+        "plus": 243,
+        "trend": 243,
+        "premium": 243,
+        "elite": 243
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GL-WDC2436",
+      "desc": "Glass Door Diagonal 24x36\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 291,
+        "plus": 291,
+        "trend": 291,
+        "premium": 291,
+        "elite": 291
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GL-WDC2442",
+      "desc": "Glass Door Diagonal 24x42\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 342,
+        "plus": 342,
+        "trend": 342,
+        "premium": 342,
+        "elite": 342
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GD-W1230",
+      "desc": "Clear Glass Door 12x30\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 172,
+        "plus": 172,
+        "trend": 172,
+        "premium": 172,
+        "elite": 172
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GD-W1236",
+      "desc": "Clear Glass Door 12x36\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 204,
+        "plus": 204,
+        "trend": 204,
+        "premium": 204,
+        "elite": 204
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GD-W1242",
+      "desc": "Clear Glass Door 12x42\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 238,
+        "plus": 238,
+        "trend": 238,
+        "premium": 238,
+        "elite": 238
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GD-W1530",
+      "desc": "Clear Glass Door 15x30\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 212,
+        "plus": 212,
+        "trend": 212,
+        "premium": 212,
+        "elite": 212
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GD-W1536",
+      "desc": "Clear Glass Door 15x36\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 254,
+        "plus": 254,
+        "trend": 254,
+        "premium": 254,
+        "elite": 254
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GD-W1542",
+      "desc": "Clear Glass Door 15x42\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 296,
+        "plus": 296,
+        "trend": 296,
+        "premium": 296,
+        "elite": 296
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GD-W1830",
+      "desc": "Clear Glass Door 18x30\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 258,
+        "plus": 258,
+        "trend": 258,
+        "premium": 258,
+        "elite": 258
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GD-W1836",
+      "desc": "Clear Glass Door 18x36\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 306,
+        "plus": 306,
+        "trend": 306,
+        "premium": 306,
+        "elite": 306
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GD-W1842",
+      "desc": "Clear Glass Door 18x42\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 356,
+        "plus": 356,
+        "trend": 356,
+        "premium": 356,
+        "elite": 356
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GD-WDC2430",
+      "desc": "Clear Glass Diagonal 24x30\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 224,
+        "plus": 224,
+        "trend": 224,
+        "premium": 224,
+        "elite": 224
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GD-WDC2436",
+      "desc": "Clear Glass Diagonal 24x36\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 265,
+        "plus": 265,
+        "trend": 265,
+        "premium": 265,
+        "elite": 265
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "GD-WDC2442",
+      "desc": "Clear Glass Diagonal 24x42\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 308,
+        "plus": 308,
+        "trend": 308,
+        "premium": 308,
+        "elite": 308
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "FT-WDC2430",
+      "desc": "Fishtail Glass Door 24x30\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 324,
+        "plus": 324,
+        "trend": 324,
+        "premium": 324,
+        "elite": 324
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "FT-WDC2436",
+      "desc": "Fishtail Glass Door 24x36\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 365,
+        "plus": 365,
+        "trend": 365,
+        "premium": 365,
+        "elite": 365
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "FT-WDC2442",
+      "desc": "Fishtail Glass Door 24x42\"",
+      "cat": "Glass",
+      "dims": "",
+      "flat": {
+        "essential": 408,
+        "plus": 408,
+        "trend": 408,
+        "premium": 408,
+        "elite": 408
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "FS24",
+      "desc": "Floating Shelf 24\"",
+      "cat": "Accessories",
+      "dims": "",
+      "flat": {
+        "essential": 216,
+        "plus": 216,
+        "trend": 216,
+        "premium": 258,
+        "elite": 258
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "FS30",
+      "desc": "Floating Shelf 30\"",
+      "cat": "Accessories",
+      "dims": "",
+      "flat": {
+        "essential": 252,
+        "plus": 252,
+        "trend": 252,
+        "premium": 307,
+        "elite": 307
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "FS36",
+      "desc": "Floating Shelf 36\"",
+      "cat": "Accessories",
+      "dims": "",
+      "flat": {
+        "essential": 295,
+        "plus": 295,
+        "trend": 295,
+        "premium": 361,
+        "elite": 361
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "VSB24",
+      "desc": "Vanity Sink Base 24\"",
+      "cat": "Vanity",
+      "dims": "24\"W x 21\"D x 34.5\"H",
+      "flat": {
+        "essential": 252,
+        "plus": 252,
+        "trend": null,
+        "premium": 346,
+        "elite": 379
+      },
+      "width_in": 24.0,
+      "depth_in": 21.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "VSB30",
+      "desc": "Vanity Sink Base 30\"",
+      "cat": "Vanity",
+      "dims": "30\"W x 21\"D x 34.5\"H",
+      "flat": {
+        "essential": 278,
+        "plus": 278,
+        "trend": null,
+        "premium": 394,
+        "elite": 436
+      },
+      "width_in": 30.0,
+      "depth_in": 21.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "VSB36",
+      "desc": "Vanity Sink Base 36\"",
+      "cat": "Vanity",
+      "dims": "36\"W x 21\"D x 34.5\"H",
+      "flat": {
+        "essential": 314,
+        "plus": 314,
+        "trend": null,
+        "premium": 454,
+        "elite": 504
+      },
+      "width_in": 36.0,
+      "depth_in": 21.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "VDB12",
+      "desc": "Vanity Drawer Base 12\"",
+      "cat": "Vanity",
+      "dims": "12\"W x 21\"D x 34.5\"H",
+      "flat": {
+        "essential": 466,
+        "plus": 466,
+        "trend": null,
+        "premium": 513,
+        "elite": 529
+      },
+      "width_in": 12.0,
+      "depth_in": 21.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "VDB15",
+      "desc": "Vanity Drawer Base 15\"",
+      "cat": "Vanity",
+      "dims": "15\"W x 21\"D x 34.5\"H",
+      "flat": {
+        "essential": 494,
+        "plus": 494,
+        "trend": null,
+        "premium": 552,
+        "elite": 573
+      },
+      "width_in": 15.0,
+      "depth_in": 21.0,
+      "height_in": 34.5
+    },
+    {
+      "sku": "VTK2",
+      "desc": "Vanity Toe Kick 2ft",
+      "cat": "Vanity",
+      "dims": "",
+      "flat": {
+        "essential": 16,
+        "plus": 16,
+        "trend": null,
+        "premium": 24,
+        "elite": 24
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "VTK3",
+      "desc": "Vanity Toe Kick 3ft",
+      "cat": "Vanity",
+      "dims": "",
+      "flat": {
+        "essential": 24,
+        "plus": 24,
+        "trend": null,
+        "premium": 35,
+        "elite": 35
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "VTK5",
+      "desc": "Vanity Toe Kick 5ft",
+      "cat": "Vanity",
+      "dims": "",
+      "flat": {
+        "essential": 41,
+        "plus": 41,
+        "trend": null,
+        "premium": 59,
+        "elite": 59
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    },
+    {
+      "sku": "BEP21",
+      "desc": "Vanity End Panel 21\"",
+      "cat": "Vanity",
+      "dims": "",
+      "flat": {
+        "essential": 77,
+        "plus": 77,
+        "trend": null,
+        "premium": 148,
+        "elite": 148
+      },
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null
+    }
+  ]
+}
