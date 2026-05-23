@@ -232,13 +232,13 @@ export function SettingsBar() {
 
         <div className="view-toggle">
           <button className={view === "plan" ? "active" : ""} onClick={() => setView("plan")} title="2D plan only">
-            <Layout size={15}/>
+            <Layout size={14}/> 2D
           </button>
           <button className={view === "split" ? "active" : ""} onClick={() => setView("split")} title="Split 2D + 3D">
-            <LayoutPanelLeft size={15}/>
+            <LayoutPanelLeft size={14}/> Split
           </button>
           <button className={view === "3d" ? "active" : ""} onClick={() => setView("3d")} title="3D only">
-            <Box size={15}/>
+            <Box size={14}/> 3D
           </button>
         </div>
       </nav>

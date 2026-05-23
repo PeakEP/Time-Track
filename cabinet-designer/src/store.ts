@@ -28,6 +28,7 @@ type State = {
   view: ViewMode;
   showPricing: boolean;
   showInternalPricing: boolean;
+  scheduleCollapsed: boolean;
   ghost: GhostState;
   pxPerInch: number;
   past: Project[];
@@ -49,6 +50,7 @@ type State = {
   select: (id: string | null) => void;
   setView: (v: ViewMode) => void;
   setShowPricing: (on: boolean) => void;
+  setScheduleCollapsed: (on: boolean) => void;
   toggleInternalPricing: () => void;
   setGhost: (g: GhostState) => void;
   setZoom: (px: number) => void;
@@ -96,6 +98,7 @@ export const useStore = create<State>((set, get) => ({
   view: "split",
   showPricing: initialShowPricing(),
   showInternalPricing: false,
+  scheduleCollapsed: false,
   ghost: null,
   pxPerInch: 4,
   past: [],
@@ -209,9 +212,10 @@ export const useStore = create<State>((set, get) => ({
     }
     set({ showPricing: on });
   },
+  setScheduleCollapsed: (on) => set({ scheduleCollapsed: on }),
   toggleInternalPricing: () => set((s) => ({ showInternalPricing: !s.showInternalPricing })),
   setGhost: (g) => set({ ghost: g }),
-  setZoom: (px) => set({ pxPerInch: Math.max(1.5, Math.min(12, px)) }),
+  setZoom: (px) => set({ pxPerInch: Math.max(1.5, Math.min(24, px)) }),
   setVertexEdit: (on) => set({ vertexEdit: on }),
 
   undo: () =>

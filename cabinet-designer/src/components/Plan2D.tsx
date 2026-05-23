@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, useEffect, useCallback } from "react";
+import { useMemo, useRef, useState, useEffect, useLayoutEffect, useCallback } from "react";
 import { useStore } from "../store";
 import type { Item, Point } from "../types";
 import { bounds, edges } from "../utils/roomPresets";
@@ -10,6 +10,8 @@ const SNAP_IN = 3;
 
 export function Plan2D() {
   const svgRef = useRef<SVGSVGElement | null>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const pendingZoom = useRef<{ px: number; py: number; ox: number; oy: number; ratio: number } | null>(null);
   const room = useStore((s) => s.project.room);
   const items = useStore((s) => s.project.items);
   const selectedId = useStore((s) => s.selectedId);
@@ -164,26 +166,70 @@ export function Plan2D() {
     setDragging({ id: it.id, offsetX: pos.x - it.x, offsetY: pos.y - it.y });
   }
 
-  function onWheel(e: React.WheelEvent) {
-    if (!e.ctrlKey && !e.metaKey) return;
-    e.preventDefault();
-    const delta = -Math.sign(e.deltaY) * 0.5;
-    setZoom(pxPerInch + delta);
+  function fitToView() {
+    const el = scrollRef.current;
+    if (!el) return;
+    const z = Math.min(el.clientWidth / viewWidthIn, el.clientHeight / viewHeightIn);
+    pendingZoom.current = null;
+    setZoom(z);
+    requestAnimationFrame(() => {
+      el.scrollLeft = 0;
+      el.scrollTop = 0;
+    });
   }
 
+  // Native, non-passive wheel listener so we can zoom toward the cursor.
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    function onWheelNative(e: WheelEvent) {
+      e.preventDefault();
+      const { pxPerInch: oldZoom, setZoom: setZ } = useStore.getState();
+      const factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
+      const newZoom = Math.max(1.5, Math.min(24, oldZoom * factor));
+      if (newZoom === oldZoom) return;
+      const rect = el!.getBoundingClientRect();
+      const ox = e.clientX - rect.left;
+      const oy = e.clientY - rect.top;
+      pendingZoom.current = {
+        px: ox + el!.scrollLeft,
+        py: oy + el!.scrollTop,
+        ox,
+        oy,
+        ratio: newZoom / oldZoom,
+      };
+      setZ(newZoom);
+    }
+    el.addEventListener("wheel", onWheelNative, { passive: false });
+    return () => el.removeEventListener("wheel", onWheelNative);
+  }, []);
+
+  // After a wheel zoom re-renders the SVG, re-anchor scroll so the point
+  // under the cursor stays put.
+  useLayoutEffect(() => {
+    const p = pendingZoom.current;
+    const el = scrollRef.current;
+    if (!p || !el) return;
+    el.scrollLeft = p.px * p.ratio - p.ox;
+    el.scrollTop = p.py * p.ratio - p.oy;
+    pendingZoom.current = null;
+  }, [pxPerInch]);
+
   return (
-    <div className="plan-wrap" onWheel={onWheel}>
+    <div className="plan-wrap">
       <div className="plan-toolbar">
         <div className="zoom-controls">
-          <button onClick={() => setZoom(pxPerInch - 0.5)} title="Zoom out">−</button>
-          <span>{Math.round(pxPerInch * 12)} px/ft</span>
-          <button onClick={() => setZoom(pxPerInch + 0.5)} title="Zoom in">+</button>
+          <button onClick={() => setZoom(pxPerInch / 1.2)} title="Zoom out">−</button>
+          <span className="zoom-readout">{Math.round((pxPerInch / 4) * 100)}%</span>
+          <button onClick={() => setZoom(pxPerInch * 1.2)} title="Zoom in">+</button>
+          <button className="fit-btn" onClick={fitToView} title="Fit room to view">Fit</button>
         </div>
+        <div className="zoom-hint">scroll to zoom</div>
         <div className="cursor-readout">
           {cursor ? `${cursor.x.toFixed(1)}", ${cursor.y.toFixed(1)}"` : ""}
         </div>
       </div>
-      <div className="plan-scroll">
+      <div className="plan-scroll" ref={scrollRef}>
         <svg
           ref={svgRef}
           width={svgWidth}

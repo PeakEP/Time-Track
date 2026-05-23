@@ -136,11 +136,15 @@ input, select, textarea { font-family: inherit; font-size: 13px; }
   background: transparent;
   border: 0;
   color: #fff;
-  padding: 6px 9px;
+  padding: 6px 11px;
   display: inline-flex;
   align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  font-weight: 600;
 }
-.view-toggle button.active { background: rgba(255,255,255,0.35); }
+.view-toggle button + button { border-left: 1px solid rgba(255,255,255,0.25); }
+.view-toggle button.active { background: rgba(255,255,255,0.4); }
 
 .banner-error {
   background: #fde8e6;
@@ -184,6 +188,37 @@ input, select, textarea { font-family: inherit; font-size: 13px; }
   grid-template-columns: 280px 1fr 340px;
   flex: 1;
   min-height: 0;
+}
+.workspace.schedule-collapsed {
+  grid-template-columns: 280px 1fr 44px;
+}
+.schedule-rail {
+  background: var(--panel);
+  border: 0;
+  border-left: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 0;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+.schedule-rail:hover { background: var(--line-soft); color: var(--indigo); }
+.rail-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+}
+.rail-count {
+  background: var(--cyan);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 9px;
+  padding: 1px 6px;
 }
 .canvas-area {
   background: #eef1f7;
@@ -313,8 +348,14 @@ input, select, textarea { font-family: inherit; font-size: 13px; }
 .zoom-controls { display: flex; align-items: center; gap: 6px; }
 .zoom-controls button {
   background: #fff; border: 1px solid var(--line); border-radius: 4px;
-  width: 22px; height: 22px; line-height: 1;
+  width: 24px; height: 24px; line-height: 1; font-size: 15px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--text);
 }
+.zoom-controls button:hover { background: var(--line-soft); border-color: var(--steel); }
+.zoom-controls .fit-btn { width: auto; padding: 0 9px; font-size: 11.5px; font-weight: 600; }
+.zoom-readout { min-width: 42px; text-align: center; font-variant-numeric: tabular-nums; font-weight: 600; color: var(--text); }
+.zoom-hint { font-size: 10.5px; color: var(--text-muted); font-style: italic; }
 .cursor-readout { font-variant-numeric: tabular-nums; }
 .plan-scroll { flex: 1; overflow: auto; background: #fff; }
 .plan-svg { display: block; user-select: none; }
@@ -385,6 +426,16 @@ input, select, textarea { font-family: inherit; font-size: 13px; }
   white-space: nowrap;
 }
 .pricing-switch:hover { background: #e6ecf3; color: var(--text); }
+.schedule-head-actions { display: flex; align-items: center; gap: 6px; }
+.schedule-collapse {
+  background: var(--line-soft);
+  border: 1px solid var(--line);
+  color: var(--text-muted);
+  width: 26px; height: 24px;
+  border-radius: 4px;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.schedule-collapse:hover { background: #e6ecf3; color: var(--indigo); }
 .toggle-line { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text); }
 .toggle-line input { width: 16px; height: 16px; }
 .schedule-toggle {

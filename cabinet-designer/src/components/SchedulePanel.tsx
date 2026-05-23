@@ -1,13 +1,31 @@
 import { useMemo } from "react";
-import { Trash2, Plus, Minus, DollarSign, EyeOff } from "lucide-react";
+import { Trash2, Plus, Minus, DollarSign, EyeOff, PanelRightClose, ClipboardList } from "lucide-react";
 import { useStore } from "../store";
 import { computeLines, computeTotals, findFinish, formatCAD } from "../utils/pricing";
+
+export function ScheduleRail() {
+  const setScheduleCollapsed = useStore((s) => s.setScheduleCollapsed);
+  const items = useStore((s) => s.project.items);
+  const count = items.reduce((n, i) => n + (i.qty ?? 1), 0);
+  return (
+    <button
+      className="schedule-rail"
+      onClick={() => setScheduleCollapsed(false)}
+      title="Expand schedule"
+    >
+      <ClipboardList size={16} />
+      <span className="rail-label">Schedule</span>
+      {count > 0 && <span className="rail-count">{count}</span>}
+    </button>
+  );
+}
 
 export function SchedulePanel() {
   const catalog = useStore((s) => s.catalog);
   const project = useStore((s) => s.project);
   const showPricing = useStore((s) => s.showPricing);
   const setShowPricing = useStore((s) => s.setShowPricing);
+  const setScheduleCollapsed = useStore((s) => s.setScheduleCollapsed);
   const showInternal = useStore((s) => s.showInternalPricing);
   const removeItem = useStore((s) => s.removeItem);
   const updateItem = useStore((s) => s.updateItem);
@@ -50,14 +68,23 @@ export function SchedulePanel() {
       <header className="schedule-header">
         <div className="schedule-head-row">
           <div className="schedule-title">{showPricing ? "Schedule & Pricing" : "Cabinet Schedule"}</div>
-          <button
-            className="pricing-switch"
-            onClick={() => setShowPricing(!showPricing)}
-            title={showPricing ? "Hide pricing" : "Show pricing"}
-          >
-            {showPricing ? <EyeOff size={13} /> : <DollarSign size={13} />}
-            {showPricing ? "Hide pricing" : "Show pricing"}
-          </button>
+          <div className="schedule-head-actions">
+            <button
+              className="pricing-switch"
+              onClick={() => setShowPricing(!showPricing)}
+              title={showPricing ? "Hide pricing" : "Show pricing"}
+            >
+              {showPricing ? <EyeOff size={13} /> : <DollarSign size={13} />}
+              {showPricing ? "Hide pricing" : "Show pricing"}
+            </button>
+            <button
+              className="schedule-collapse"
+              onClick={() => setScheduleCollapsed(true)}
+              title="Minimize schedule"
+            >
+              <PanelRightClose size={15} />
+            </button>
+          </div>
         </div>
         <div className="schedule-sub">
           {finish?.name ?? project.settings.finishCode}

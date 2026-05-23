@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { useStore, loadCatalog, attachAutosave, restoreDraft, clearDraft } from "./store";
 import { CatalogPalette } from "./components/CatalogPalette";
 import { Plan2D } from "./components/Plan2D";
-import { SchedulePanel } from "./components/SchedulePanel";
+import { SchedulePanel, ScheduleRail } from "./components/SchedulePanel";
 import { SettingsBar } from "./components/SettingsBar";
 import { Inspector } from "./components/Inspector";
 import { Welcome } from "./components/Welcome";
@@ -29,6 +29,7 @@ export default function App() {
   const catalog = useStore((s) => s.catalog);
   const catalogError = useStore((s) => s.catalogError);
   const view = useStore((s) => s.view);
+  const scheduleCollapsed = useStore((s) => s.scheduleCollapsed);
   const [draftPrompt, setDraftPrompt] = useState<{ name: string } | null>(null);
 
   useEffect(() => {
@@ -101,7 +102,7 @@ export default function App() {
           </span>
         </div>
       )}
-      <main className="workspace">
+      <main className={`workspace ${scheduleCollapsed ? "schedule-collapsed" : ""}`}>
         <CatalogPalette />
         <section className="canvas-area">
           {view === "plan" && <Plan2D />}
@@ -109,7 +110,7 @@ export default function App() {
           {view === "split" && <SplitView />}
           <Inspector />
         </section>
-        <SchedulePanel />
+        {scheduleCollapsed ? <ScheduleRail /> : <SchedulePanel />}
       </main>
       <footer className="app-footer">
         <span>
