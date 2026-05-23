@@ -442,24 +442,49 @@ function CabinetMesh({
       </group>
     );
   }
+  // door faces: one slab for short cabinets, two stacked for tall (>60")
+  const doorCount = !isAppliance && h > 60 ? 2 : 1;
+  const reveal = 1; // gap between door and carcass edge
+  const slabGap = 0.5; // gap between stacked doors
+  const slabH = (h - reveal * 2 - slabGap * (doorCount - 1)) / doorCount;
+  const doors = Array.from({ length: doorCount }, (_, i) => ({
+    y: -(h / 2) + reveal + slabH / 2 + i * (slabH + slabGap),
+    h: slabH,
+  }));
+
   return (
     <group position={[cx, cy, cz]} {...dragProps}>
+      {/* carcass (white box) */}
       <mesh>
         <boxGeometry args={[w, h, d]} />
-        <meshStandardMaterial color={bodyColor} roughness={isAppliance ? 0.3 : 0.6} metalness={isAppliance ? 0.4 : 0} />
+        <meshStandardMaterial color={bodyColor} roughness={isAppliance ? 0.3 : 0.7} metalness={isAppliance ? 0.4 : 0} />
         <Edges threshold={15} color="#3a4150" />
       </mesh>
-      {/* shaker-style door: frame in finish colour + recessed centre panel */}
-      <mesh position={[0, 0, d / 2 - 0.05]}>
-        <boxGeometry args={[w - 0.5, h - 0.5, 0.6]} />
-        <meshStandardMaterial color={doorColor} roughness={isAppliance ? 0.25 : 0.45} metalness={isAppliance ? 0.5 : 0} />
-        <Edges threshold={15} color="#3a4150" />
-      </mesh>
-      {!isAppliance && w > 6 && h > 6 && (
-        <mesh position={[0, 0, d / 2 - 0.2]}>
-          <boxGeometry args={[w - 4, h - 4, 0.4]} />
-          <meshStandardMaterial color={panelColor} roughness={0.5} />
+      {isAppliance ? (
+        <mesh position={[0, 0, d / 2 - 0.05]}>
+          <boxGeometry args={[w - 0.5, h - 0.5, 0.6]} />
+          <meshStandardMaterial color={doorColor} roughness={0.25} metalness={0.5} />
+          <Edges threshold={15} color="#3a4150" />
         </mesh>
+      ) : (
+        doors.map((dr, i) => (
+          <group key={i} position={[0, dr.y, d / 2]}>
+            {/* door slab, finish colour, proud of the carcass and inset (frame reveal) */}
+            <mesh position={[0, 0, 0.25]}>
+              <boxGeometry args={[w - reveal * 2, dr.h, 0.8]} />
+              <meshStandardMaterial color={doorColor} roughness={0.45} />
+              <Edges threshold={15} color="#3a4150" />
+            </mesh>
+            {/* recessed shaker centre panel (slightly darker + set back) */}
+            {w > 9 && dr.h > 8 && (
+              <mesh position={[0, 0, 0.15]}>
+                <boxGeometry args={[w - reveal * 2 - 5, dr.h - 5, 0.7]} />
+                <meshStandardMaterial color={darken(doorColor, 0.1)} roughness={0.55} />
+                <Edges threshold={15} color="#3a4150" />
+              </mesh>
+            )}
+          </group>
+        ))
       )}
       {selected && (
         <mesh>

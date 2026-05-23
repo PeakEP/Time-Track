@@ -159,10 +159,13 @@ export function Plan2D() {
   }
 
   function onClick(e: React.MouseEvent) {
-    if (!ghost) return;
+    // read the live ghost from the store so a click right after picking a
+    // catalog item still places (avoids a render-timing race)
+    const activeGhost = useStore.getState().ghost;
+    if (!activeGhost) return;
     const pos = screenToWorldIn(e.clientX, e.clientY);
     if (!pos) return;
-    const sku = ghost.product;
+    const sku = activeGhost.product;
     if (isScheduleOnly(sku)) return; // ignore; user should use Add-to-schedule
     const w = sku.width_in ?? 24;
     const d = placedDepth(sku);
@@ -191,7 +194,7 @@ export function Plan2D() {
       width: w,
       depth: d,
       height: sku.height_in ?? 34.5,
-      mountZ: ghost.mountZ,
+      mountZ: activeGhost.mountZ,
     };
     addItem(item);
     if (!e.shiftKey) setGhost(null);

@@ -500,7 +500,6 @@ function SettingsDialog({ onClose }: { onClose: () => void }) {
           type="number"
           step="0.05"
           value={settings.markup}
-          disabled={!showPricing}
           onChange={(e) => patchSettings({ markup: +e.target.value })}
         />
       </Field>
@@ -509,7 +508,6 @@ function SettingsDialog({ onClose }: { onClose: () => void }) {
           type="number"
           step="0.01"
           value={settings.hstRate}
-          disabled={!showPricing}
           onChange={(e) => patchSettings({ hstRate: +e.target.value })}
         />
       </Field>
