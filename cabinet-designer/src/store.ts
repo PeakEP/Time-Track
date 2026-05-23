@@ -11,10 +11,18 @@ const HISTORY_LIMIT = 60;
 const AUTOSAVE_KEY = "jmrc.cabinet.draft.v1";
 const AUTOSAVE_DEBOUNCE_MS = 600;
 const SHOW_PRICING_KEY = "jmrc.cabinet.showPricing.v1";
+const SHOW_DIMS_KEY = "jmrc.cabinet.showDimensions.v1";
 
 function initialShowPricing(): boolean {
   try {
     return localStorage.getItem(SHOW_PRICING_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+function initialShowDimensions(): boolean {
+  try {
+    return localStorage.getItem(SHOW_DIMS_KEY) === "1";
   } catch {
     return false;
   }
@@ -29,6 +37,7 @@ type State = {
   showPricing: boolean;
   showInternalPricing: boolean;
   scheduleCollapsed: boolean;
+  showDimensions: boolean;
   ghost: GhostState;
   pxPerInch: number;
   past: Project[];
@@ -51,6 +60,7 @@ type State = {
   setView: (v: ViewMode) => void;
   setShowPricing: (on: boolean) => void;
   setScheduleCollapsed: (on: boolean) => void;
+  setShowDimensions: (on: boolean) => void;
   toggleInternalPricing: () => void;
   setGhost: (g: GhostState) => void;
   setZoom: (px: number) => void;
@@ -79,6 +89,7 @@ function defaultProject(): Project {
       counterHeight: 36,
       markup: 1.2,
       hstRate: 0.15,
+      wallMode: 4,
     },
     room: rectangleRoom(144, 120),
     items: [],
@@ -99,6 +110,7 @@ export const useStore = create<State>((set, get) => ({
   showPricing: initialShowPricing(),
   showInternalPricing: false,
   scheduleCollapsed: false,
+  showDimensions: initialShowDimensions(),
   ghost: null,
   pxPerInch: 4,
   past: [],
@@ -213,6 +225,14 @@ export const useStore = create<State>((set, get) => ({
     set({ showPricing: on });
   },
   setScheduleCollapsed: (on) => set({ scheduleCollapsed: on }),
+  setShowDimensions: (on) => {
+    try {
+      localStorage.setItem(SHOW_DIMS_KEY, on ? "1" : "0");
+    } catch {
+      // ignore
+    }
+    set({ showDimensions: on });
+  },
   toggleInternalPricing: () => set((s) => ({ showInternalPricing: !s.showInternalPricing })),
   setGhost: (g) => set({ ghost: g }),
   setZoom: (px) => set({ pxPerInch: Math.max(1.5, Math.min(24, px)) }),

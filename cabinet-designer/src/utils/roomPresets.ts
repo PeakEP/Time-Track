@@ -80,6 +80,42 @@ export function edges(points: Point[]): { a: Point; b: Point; index: number }[] 
   return out;
 }
 
+function centroid(points: Point[]): Point {
+  const sum = points.reduce((a, p) => ({ x: a.x + p.x, y: a.y + p.y }), { x: 0, y: 0 });
+  return { x: sum.x / points.length, y: sum.y / points.length };
+}
+
+/**
+ * Choose which wall edges to display for a "dollhouse" view.
+ * Returns a Set of edge indices. mode 4 = all walls; fewer modes hide the
+ * walls facing the default camera (toward +x/+y in plan = front-right), so
+ * you can see into the room — most useful in 3D.
+ */
+export function visibleWallSet(points: Point[], mode: 1 | 2 | 3 | 4): Set<number> {
+  const ee = edges(points);
+  if (mode >= 4) return new Set(ee.map((e) => e.index));
+  const c = centroid(points);
+  // front direction: toward the default 3D camera (bottom-right of plan)
+  const fx = 1;
+  const fy = 1;
+  const fmag = Math.hypot(fx, fy);
+  const scored = ee.map((e) => {
+    const mx = (e.a.x + e.b.x) / 2;
+    const my = (e.a.y + e.b.y) / 2;
+    // outward normal ~ direction from centroid to edge midpoint
+    let nx = mx - c.x;
+    let ny = my - c.y;
+    const nmag = Math.hypot(nx, ny) || 1;
+    nx /= nmag;
+    ny /= nmag;
+    const frontness = (nx * fx + ny * fy) / fmag; // higher = more toward camera/front
+    return { index: e.index, frontness };
+  });
+  // keep the `mode` most-back walls (lowest frontness)
+  scored.sort((a, b) => a.frontness - b.frontness);
+  return new Set(scored.slice(0, mode).map((s) => s.index));
+}
+
 export function pointInPolygon(p: Point, poly: Point[]): boolean {
   let inside = false;
   for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {

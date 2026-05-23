@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState, useEffect, useLayoutEffect, useCallback } from "react";
 import { useStore } from "../store";
 import type { Item, Point } from "../types";
-import { bounds, edges } from "../utils/roomPresets";
+import { bounds, edges, visibleWallSet } from "../utils/roomPresets";
 import { isScheduleOnly, isWallMounted, makeId, snap } from "../utils/placement";
 import { snapToNearestWall } from "../utils/snapping";
 import { findOverlappingIds } from "../utils/overlaps";
@@ -27,6 +27,8 @@ export function Plan2D() {
   const pxPerInch = useStore((s) => s.pxPerInch);
   const setZoom = useStore((s) => s.setZoom);
   const vertexEdit = useStore((s) => s.vertexEdit);
+  const showDimensions = useStore((s) => s.showDimensions);
+  const setShowDimensions = useStore((s) => s.setShowDimensions);
 
   const b = useMemo(() => bounds(room.points), [room.points]);
   const overlapping = useMemo(() => findOverlappingIds(items), [items]);
@@ -127,6 +129,10 @@ export function Plan2D() {
 
   function onClick(e: React.MouseEvent) {
     if (!ghost) return;
+    // Only place when clicking empty floor/background, not on top of an item.
+    const target = e.target as SVGElement;
+    const onBackground = target.tagName === "svg" || target.dataset.bg === "1";
+    if (!onBackground) return;
     const pos = screenToWorldIn(e.clientX, e.clientY);
     if (!pos) return;
     const sku = ghost.product;
@@ -224,9 +230,16 @@ export function Plan2D() {
           <button onClick={() => setZoom(pxPerInch * 1.2)} title="Zoom in">+</button>
           <button className="fit-btn" onClick={fitToView} title="Fit room to view">Fit</button>
         </div>
-        <div className="zoom-hint">scroll to zoom</div>
+        <WallModeControl />
+        <button
+          className={`blueprint-btn ${showDimensions ? "active" : ""}`}
+          onClick={() => setShowDimensions(!showDimensions)}
+          title="Show measurements for the install team"
+        >
+          Blueprint {showDimensions ? "on" : "off"}
+        </button>
         <div className="cursor-readout">
-          {cursor ? `${cursor.x.toFixed(1)}", ${cursor.y.toFixed(1)}"` : ""}
+          {cursor ? `${cursor.x.toFixed(1)}", ${cursor.y.toFixed(1)}"` : "scroll to zoom"}
         </div>
       </div>
       <div className="plan-scroll" ref={scrollRef}>
@@ -243,40 +256,40 @@ export function Plan2D() {
         >
           <defs>
             <pattern id="grid-minor" width="6" height="6" patternUnits="userSpaceOnUse">
-              <path d="M 6 0 L 0 0 0 6" fill="none" stroke="#e6e9ef" strokeWidth="0.05" />
+              <path d="M 6 0 L 0 0 0 6" fill="none" stroke="#dfe4ec" strokeWidth="0.1" />
             </pattern>
             <pattern id="grid-major" width="12" height="12" patternUnits="userSpaceOnUse">
-              <path d="M 12 0 L 0 0 0 12" fill="none" stroke="#d4dae3" strokeWidth="0.1" />
+              <path d="M 12 0 L 0 0 0 12" fill="none" stroke="#c4ccd9" strokeWidth="0.18" />
             </pattern>
             <pattern id="grid-bold" width="48" height="48" patternUnits="userSpaceOnUse">
-              <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#aeb6c2" strokeWidth="0.15" />
+              <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#9aa6b8" strokeWidth="0.32" />
             </pattern>
+            <clipPath id="room-clip">
+              <polygon points={room.points.map((p) => `${p.x},${p.y}`).join(" ")} />
+            </clipPath>
           </defs>
           <g transform={`translate(${originX} ${originY})`}>
+            {/* faint grid outside the room */}
             <rect
               data-bg="1"
               x={b.minX - padIn}
               y={b.minY - padIn}
               width={viewWidthIn}
               height={viewHeightIn}
-              fill="url(#grid-minor)"
+              fill="#eef1f6"
             />
-            <rect
+            {/* room floor */}
+            <polygon
               data-bg="1"
-              x={b.minX - padIn}
-              y={b.minY - padIn}
-              width={viewWidthIn}
-              height={viewHeightIn}
-              fill="url(#grid-major)"
+              points={room.points.map((p) => `${p.x},${p.y}`).join(" ")}
+              fill="#ffffff"
             />
-            <rect
-              data-bg="1"
-              x={b.minX - padIn}
-              y={b.minY - padIn}
-              width={viewWidthIn}
-              height={viewHeightIn}
-              fill="url(#grid-bold)"
-            />
+            {/* scaled grid clipped to the room interior */}
+            <g clipPath="url(#room-clip)" pointerEvents="none">
+              <rect x={b.minX - padIn} y={b.minY - padIn} width={viewWidthIn} height={viewHeightIn} fill="url(#grid-minor)" />
+              <rect x={b.minX - padIn} y={b.minY - padIn} width={viewWidthIn} height={viewHeightIn} fill="url(#grid-major)" />
+              <rect x={b.minX - padIn} y={b.minY - padIn} width={viewWidthIn} height={viewHeightIn} fill="url(#grid-bold)" />
+            </g>
             <RoomPolygon />
             {items.map((it) => (
               <ItemNode
@@ -288,6 +301,7 @@ export function Plan2D() {
               />
             ))}
             <DimensionLines />
+            {showDimensions && <BlueprintDimensions items={items} />}
             {ghost && cursor && <GhostPreview cursor={cursor} />}
             <VertexEditor screenToWorldIn={screenToWorldIn} />
           </g>
@@ -383,24 +397,96 @@ function VertexEditor({
 
 function RoomPolygon() {
   const room = useStore((s) => s.project.room);
-  const points = room.points.map((p) => `${p.x},${p.y}`).join(" ");
+  const wallMode = useStore((s) => s.project.settings.wallMode ?? 4);
+  const visible = useMemo(() => visibleWallSet(room.points, wallMode), [room.points, wallMode]);
   return (
     <>
-      <polygon points={points} fill="#fafbfd" stroke="none" />
-      {edges(room.points).map((e, i) => (
-        <line
-          key={i}
-          x1={e.a.x}
-          y1={e.a.y}
-          x2={e.b.x}
-          y2={e.b.y}
-          stroke="#1f2532"
-          strokeWidth={room.wallThickness * 0.25}
-          strokeLinecap="square"
-        />
-      ))}
+      {edges(room.points).map((e, i) => {
+        const shown = visible.has(e.index);
+        return (
+          <line
+            key={i}
+            x1={e.a.x}
+            y1={e.a.y}
+            x2={e.b.x}
+            y2={e.b.y}
+            stroke={shown ? "#1f2532" : "#c4ccd9"}
+            strokeWidth={shown ? room.wallThickness * 0.25 : 0.4}
+            strokeLinecap="square"
+            strokeDasharray={shown ? undefined : "2 2"}
+          />
+        );
+      })}
     </>
   );
+}
+
+function WallModeControl() {
+  const wallMode = useStore((s) => s.project.settings.wallMode ?? 4);
+  const patchSettings = useStore((s) => s.patchSettings);
+  const opts: (1 | 2 | 3 | 4)[] = [1, 2, 3, 4];
+  return (
+    <div className="wall-mode" title="How many walls to show (hides front walls for a clearer 3D view)">
+      <span className="wall-mode-label">Walls</span>
+      {opts.map((n) => (
+        <button
+          key={n}
+          className={wallMode === n ? "active" : ""}
+          onClick={() => patchSettings({ wallMode: n })}
+        >
+          {n === 4 ? "All" : n}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function BlueprintDimensions({ items }: { items: Item[] }) {
+  return (
+    <g pointerEvents="none" className="blueprint-dims">
+      {items
+        .filter((it) => !it.scheduleOnly && it.kind !== "window" && it.kind !== "door")
+        .map((it) => {
+          const fpw = it.rotation === 90 || it.rotation === 270 ? it.depth : it.width;
+          const fph = it.rotation === 90 || it.rotation === 270 ? it.width : it.depth;
+          const x = it.x;
+          const y = it.y;
+          const off = 2.5; // dim line offset above/left, inches
+          return (
+            <g key={it.id}>
+              {/* width dimension above the item */}
+              <line x1={x} y1={y - off} x2={x + fpw} y2={y - off} stroke="#c0392b" strokeWidth={0.18} />
+              <line x1={x} y1={y - off - 1} x2={x} y2={y - off + 1} stroke="#c0392b" strokeWidth={0.18} />
+              <line x1={x + fpw} y1={y - off - 1} x2={x + fpw} y2={y - off + 1} stroke="#c0392b" strokeWidth={0.18} />
+              <rect x={x + fpw / 2 - 5} y={y - off - 3.2} width={10} height={3} fill="#fff" opacity={0.85} />
+              <text x={x + fpw / 2} y={y - off - 1} textAnchor="middle" fontSize={2.6} fill="#c0392b" fontFamily="Inter" fontWeight={700}>
+                {fmtInch(it.width)}
+              </text>
+              {/* depth dimension on the left */}
+              <line x1={x - off} y1={y} x2={x - off} y2={y + fph} stroke="#c0392b" strokeWidth={0.18} />
+              <line x1={x - off - 1} y1={y} x2={x - off + 1} y2={y} stroke="#c0392b" strokeWidth={0.18} />
+              <line x1={x - off - 1} y1={y + fph} x2={x - off + 1} y2={y + fph} stroke="#c0392b" strokeWidth={0.18} />
+              <text
+                x={x - off - 1}
+                y={y + fph / 2}
+                textAnchor="middle"
+                fontSize={2.6}
+                fill="#c0392b"
+                fontFamily="Inter"
+                fontWeight={700}
+                transform={`rotate(-90 ${x - off - 1} ${y + fph / 2})`}
+              >
+                {fmtInch(it.depth)}
+              </text>
+            </g>
+          );
+        })}
+    </g>
+  );
+}
+
+function fmtInch(n: number): string {
+  return Number.isInteger(n) ? `${n}"` : `${n.toFixed(2).replace(/\.?0+$/, "")}"`;
 }
 
 function DimensionLines() {

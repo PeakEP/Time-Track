@@ -5,7 +5,7 @@ import * as THREE from "three";
 import { Eye, Box as BoxIcon, Square as SquareIcon } from "lucide-react";
 import { useStore } from "../store";
 import type { Item, Point } from "../types";
-import { bounds, edges } from "../utils/roomPresets";
+import { bounds, edges, visibleWallSet } from "../utils/roomPresets";
 import { darken, finishColor } from "../utils/finishColors";
 import { generateCountertops } from "../utils/snapping";
 
@@ -67,7 +67,7 @@ export function Scene3D() {
         <ambientLight intensity={0.25} />
 
         <Floor room={room} />
-        <Walls room={room} wallHeight={settings.wallHeight} items={items} />
+        <Walls room={room} wallHeight={settings.wallHeight} items={items} wallMode={settings.wallMode ?? 4} />
         <Grid
           position={[cx, 0.01, cy]}
           args={[dim * 2, dim * 2]}
@@ -153,28 +153,33 @@ function Walls({
   room,
   wallHeight,
   items,
+  wallMode,
 }: {
   room: { points: Point[]; wallThickness: number };
   wallHeight: number;
   items: Item[];
+  wallMode: 1 | 2 | 3 | 4;
 }) {
   const windows = items.filter((i) => i.kind === "window");
   const doors = items.filter((i) => i.kind === "door");
   const ee = edges(room.points);
   const thickness = room.wallThickness;
+  const visible = visibleWallSet(room.points, wallMode);
   return (
     <group>
-      {ee.map((e, i) => (
-        <Wall
-          key={i}
-          a={e.a}
-          b={e.b}
-          height={wallHeight}
-          thickness={thickness}
-          windows={windows}
-          doors={doors}
-        />
-      ))}
+      {ee.map((e, i) =>
+        visible.has(e.index) ? (
+          <Wall
+            key={i}
+            a={e.a}
+            b={e.b}
+            height={wallHeight}
+            thickness={thickness}
+            windows={windows}
+            doors={doors}
+          />
+        ) : null,
+      )}
     </group>
   );
 }

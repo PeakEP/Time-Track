@@ -93,6 +93,7 @@ export type ProjectSettings = {
   counterHeight: number;
   markup: number;
   hstRate: number;
+  wallMode: 1 | 2 | 3 | 4;
 };
 
 export type Project = {
