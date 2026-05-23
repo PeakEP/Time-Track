@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Trash2, Plus, Minus, DollarSign, EyeOff, PanelRightClose, ClipboardList } from "lucide-react";
 import { useStore } from "../store";
 import { computeLines, computeTotals, findFinish, formatCAD } from "../utils/pricing";
+import { itemDimsLabel } from "../utils/placement";
 
 export function ScheduleRail() {
   const setScheduleCollapsed = useStore((s) => s.setScheduleCollapsed);
@@ -125,7 +126,32 @@ export function SchedulePanel() {
                     <div className="row-main">
                       <div className="row-sku">{l.item.sku}</div>
                       <div className="row-desc">{l.product?.desc ?? "—"}</div>
-                      <div className="row-dims">{l.product?.dims ?? ""}</div>
+                      <div className="row-dims">{itemDimsLabel(l.item, l.product)}</div>
+                      {(l.item.kind === "filler" || l.item.kind === "panel") && (
+                        <div className="row-cut" onClick={(e) => e.stopPropagation()}>
+                          <span className="row-cut-label">Cut to</span>
+                          <input
+                            type="number"
+                            className="cut-input"
+                            value={l.item.width || ""}
+                            min={0}
+                            step={0.25}
+                            title="Width (in)"
+                            onChange={(e) => updateItem(l.item.id, { width: +e.target.value })}
+                          />
+                          <span className="cut-x">×</span>
+                          <input
+                            type="number"
+                            className="cut-input"
+                            value={l.item.height || ""}
+                            min={0}
+                            step={0.25}
+                            title="Height (in)"
+                            onChange={(e) => updateItem(l.item.id, { height: +e.target.value })}
+                          />
+                          <span className="cut-unit">in</span>
+                        </div>
+                      )}
                     </div>
                     <div className="row-side">
                       {l.item.scheduleOnly ? (

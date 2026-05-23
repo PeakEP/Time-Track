@@ -86,3 +86,18 @@ export function footprint(item: Item): { w: number; d: number } {
   }
   return { w: item.width, d: item.depth };
 }
+
+function fmtIn(n: number): string {
+  return Number.isInteger(n) ? String(n) : n.toFixed(2).replace(/\.?0+$/, "");
+}
+
+// Fillers and panels get cut to fit on site, so show their current item
+// dimensions rather than the fixed catalog string.
+export function itemDimsLabel(item: Item, product: Product | null): string {
+  if ((item.kind === "filler" || item.kind === "panel") && item.width) {
+    const parts = [`${fmtIn(item.width)}"W`];
+    if (item.height) parts.push(`${fmtIn(item.height)}"H`);
+    return parts.join(" × ");
+  }
+  return product?.dims ?? "";
+}

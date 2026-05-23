@@ -3,6 +3,7 @@ import autoTable from "jspdf-autotable";
 import type { Catalog, Project } from "../types";
 import { computeLines, computeTotals, formatCAD, findFinish } from "./pricing";
 import { bounds } from "./roomPresets";
+import { itemDimsLabel } from "./placement";
 
 type Mode = "client" | "internal";
 
@@ -182,7 +183,7 @@ function drawSchedule(
         n,
         sample.item.sku ?? "",
         sample.product?.desc ?? "",
-        sample.product?.dims ?? "",
+        itemDimsLabel(sample.item, sample.product),
         qty,
       ];
       if (!pricing) {

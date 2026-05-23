@@ -22,7 +22,7 @@ import { rectangleRoom, lShapeRoom, uShapeRoom, edges } from "../utils/roomPrese
 import { openProject, saveProject, exportScheduleCsv } from "../utils/persistence";
 import { exportProjectPdf } from "../utils/pdf";
 import { computeLines, formatCAD } from "../utils/pricing";
-import { makeId } from "../utils/placement";
+import { makeId, itemDimsLabel } from "../utils/placement";
 import { APPLIANCES } from "../data/appliances";
 import type { AppliancePreset } from "../data/appliances";
 import type { Item } from "../types";
@@ -101,7 +101,7 @@ export function SettingsBar() {
         SKU: l.item.sku ?? "",
         Description: l.product?.desc ?? "",
         Category: l.product?.cat ?? "",
-        Dims: l.product?.dims ?? "",
+        Dims: itemDimsLabel(l.item, l.product),
         Qty: l.qty,
         Finish: project.settings.finishCode,
         Box: project.settings.boxMaterial,
