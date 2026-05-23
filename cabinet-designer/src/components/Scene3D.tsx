@@ -1,5 +1,5 @@
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, GizmoHelper, GizmoViewport, Grid } from "@react-three/drei";
+import { OrbitControls, GizmoHelper, GizmoViewport, Grid, Edges } from "@react-three/drei";
 import { useMemo, useRef, useState } from "react";
 import type { ThreeEvent } from "@react-three/fiber";
 import * as THREE from "three";
@@ -214,7 +214,7 @@ function Floor({ room }: { room: { points: Point[] } }) {
   const geo = useMemo(() => new THREE.ShapeGeometry(shape), [shape]);
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} geometry={geo} receiveShadow>
-      <meshStandardMaterial color="#d9d1bf" roughness={0.9} />
+      <meshStandardMaterial color="#b9b0a0" roughness={0.95} />
     </mesh>
   );
 }
@@ -333,7 +333,7 @@ function Wall({
         return (
           <mesh key={i} position={[cxw, cyw, 0]}>
             <boxGeometry args={[w, h, thickness]} />
-            <meshStandardMaterial color="#f3f1ec" roughness={0.95} />
+            <meshStandardMaterial color="#cdd3dc" roughness={0.97} />
           </mesh>
         );
       })}
@@ -394,8 +394,11 @@ function CabinetMesh({
   const cy = mountZ + h / 2;
   const cz = item.y + d / 2;
   const isAppliance = item.kind === "appliance";
-  const bodyColor = isAppliance ? "#cfd6e0" : darken(finishHex, 0.04);
-  const doorColor = isAppliance ? "#1c1f28" : finishHex;
+  // body (carcass/sides) noticeably darker than the door so the front reads,
+  // and both clearly differ from the wall colour.
+  const bodyColor = isAppliance ? "#aab2c0" : darken(finishHex, 0.16);
+  const doorColor = isAppliance ? "#20242e" : finishHex;
+  const panelColor = isAppliance ? "#2b2f3a" : darken(finishHex, 0.07);
 
   if (corner) {
     return (
@@ -425,12 +428,20 @@ function CabinetMesh({
       <mesh>
         <boxGeometry args={[w, h, d]} />
         <meshStandardMaterial color={bodyColor} roughness={isAppliance ? 0.3 : 0.6} metalness={isAppliance ? 0.4 : 0} />
+        <Edges threshold={15} color="#3a4150" />
       </mesh>
-      {/* front face / door plane */}
+      {/* shaker-style door: frame in finish colour + recessed centre panel */}
       <mesh position={[0, 0, d / 2 - 0.05]}>
-        <boxGeometry args={[w - 0.5, h - 0.5, 0.5]} />
-        <meshStandardMaterial color={doorColor} roughness={isAppliance ? 0.25 : 0.4} metalness={isAppliance ? 0.5 : 0} />
+        <boxGeometry args={[w - 0.5, h - 0.5, 0.6]} />
+        <meshStandardMaterial color={doorColor} roughness={isAppliance ? 0.25 : 0.45} metalness={isAppliance ? 0.5 : 0} />
+        <Edges threshold={15} color="#3a4150" />
       </mesh>
+      {!isAppliance && w > 6 && h > 6 && (
+        <mesh position={[0, 0, d / 2 - 0.2]}>
+          <boxGeometry args={[w - 4, h - 4, 0.4]} />
+          <meshStandardMaterial color={panelColor} roughness={0.5} />
+        </mesh>
+      )}
       {selected && (
         <mesh>
           <boxGeometry args={[w + 1.2, h + 1.2, d + 1.2]} />
@@ -485,6 +496,7 @@ function CornerMesh({
           <mesh key={i} position={[rx, h / 2, rz]} rotation={[0, -rad, 0]}>
             <boxGeometry args={[leg.w, h, leg.d]} />
             <meshStandardMaterial color={bodyColor} roughness={0.55} />
+            <Edges threshold={15} color="#3a4150" />
           </mesh>
         );
       })}
@@ -557,6 +569,7 @@ function DiagonalMesh({
     <group position={[item.x, mountZ, item.y]} {...dragProps}>
       <mesh geometry={geo}>
         <meshStandardMaterial color={bodyColor} roughness={0.55} side={THREE.DoubleSide} />
+        <Edges threshold={15} color="#3a4150" />
       </mesh>
       {/* door slab on the diagonal (hypotenuse) */}
       <mesh position={[mx, h / 2, mz]} rotation={[0, doorAng, 0]}>
