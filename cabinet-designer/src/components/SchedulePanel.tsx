@@ -1,11 +1,13 @@
 import { useMemo } from "react";
-import { Trash2, Plus, Minus } from "lucide-react";
+import { Trash2, Plus, Minus, DollarSign, EyeOff } from "lucide-react";
 import { useStore } from "../store";
 import { computeLines, computeTotals, findFinish, formatCAD } from "../utils/pricing";
 
 export function SchedulePanel() {
   const catalog = useStore((s) => s.catalog);
   const project = useStore((s) => s.project);
+  const showPricing = useStore((s) => s.showPricing);
+  const setShowPricing = useStore((s) => s.setShowPricing);
   const showInternal = useStore((s) => s.showInternalPricing);
   const removeItem = useStore((s) => s.removeItem);
   const updateItem = useStore((s) => s.updateItem);
@@ -41,22 +43,37 @@ export function SchedulePanel() {
 
   const finish = findFinish(catalog, project.settings.finishCode);
 
+  const totalItems = lines.reduce((n, l) => n + (l.item.qty ?? 1), 0);
+
   return (
     <aside className="schedule">
       <header className="schedule-header">
-        <div className="schedule-title">Schedule & Pricing</div>
+        <div className="schedule-head-row">
+          <div className="schedule-title">{showPricing ? "Schedule & Pricing" : "Cabinet Schedule"}</div>
+          <button
+            className="pricing-switch"
+            onClick={() => setShowPricing(!showPricing)}
+            title={showPricing ? "Hide pricing" : "Show pricing"}
+          >
+            {showPricing ? <EyeOff size={13} /> : <DollarSign size={13} />}
+            {showPricing ? "Hide pricing" : "Show pricing"}
+          </button>
+        </div>
         <div className="schedule-sub">
-          {finish?.name ?? project.settings.finishCode} · {finish?.tierName ?? ""} · {project.settings.boxMaterial === "PLY" ? "Plywood" : "Particle Board"}
+          {finish?.name ?? project.settings.finishCode}
+          {showPricing ? ` · ${finish?.tierName ?? ""}` : ""} · {project.settings.boxMaterial === "PLY" ? "Plywood" : "Particle Board"} · {totalItems} item{totalItems === 1 ? "" : "s"}
         </div>
       </header>
-      <div className="schedule-toggle">
-        <button className={!showInternal ? "active" : ""} onClick={() => showInternal && toggleInternal()}>
-          Client
-        </button>
-        <button className={showInternal ? "active" : ""} onClick={() => !showInternal && toggleInternal()}>
-          Internal
-        </button>
-      </div>
+      {showPricing && (
+        <div className="schedule-toggle">
+          <button className={!showInternal ? "active" : ""} onClick={() => showInternal && toggleInternal()}>
+            Client
+          </button>
+          <button className={showInternal ? "active" : ""} onClick={() => !showInternal && toggleInternal()}>
+            Internal
+          </button>
+        </div>
+      )}
       <div className="schedule-list">
         {lines.length === 0 && (
           <div className="schedule-empty">
@@ -107,9 +124,11 @@ export function SchedulePanel() {
                       ) : (
                         <div className="qty-static">1</div>
                       )}
-                      <div className="row-price">
-                        {l.available ? formatCAD(showInternal ? cost : client) : "N/A"}
-                      </div>
+                      {showPricing && (
+                        <div className="row-price">
+                          {l.available ? formatCAD(showInternal ? cost : client) : "N/A"}
+                        </div>
+                      )}
                       <button
                         className="row-del"
                         title="Remove"
@@ -128,27 +147,29 @@ export function SchedulePanel() {
           );
         })}
       </div>
-      <div className="schedule-totals">
-        {showInternal ? (
-          <>
-            <Row label="Subtotal (list)" value={formatCAD(totals.subtotalList)} />
-            <Row
-              label={`Dealer discount (${Math.round(catalog._meta.dealer_discount * 100)}%)`}
-              value={`- ${formatCAD(totals.dealerDiscount)}`}
-            />
-            <Row label="JMRC cost" value={formatCAD(totals.jmrcCost)} bold />
-            <Row label={`Markup (${totals.markup.toFixed(2)}×)`} value={formatCAD(totals.clientSubtotal)} />
-            <Row label={`HST (${Math.round(totals.hstRate * 100)}%)`} value={formatCAD(totals.hst)} />
-            <Row label="Client total" value={formatCAD(totals.clientTotal)} bold big />
-          </>
-        ) : (
-          <>
-            <Row label="Subtotal" value={formatCAD(totals.clientSubtotal)} />
-            <Row label={`HST (${Math.round(totals.hstRate * 100)}%)`} value={formatCAD(totals.hst)} />
-            <Row label="Total (CAD)" value={formatCAD(totals.clientTotal)} bold big />
-          </>
-        )}
-      </div>
+      {showPricing && (
+        <div className="schedule-totals">
+          {showInternal ? (
+            <>
+              <Row label="Subtotal (list)" value={formatCAD(totals.subtotalList)} />
+              <Row
+                label={`Dealer discount (${Math.round(catalog._meta.dealer_discount * 100)}%)`}
+                value={`- ${formatCAD(totals.dealerDiscount)}`}
+              />
+              <Row label="JMRC cost" value={formatCAD(totals.jmrcCost)} bold />
+              <Row label={`Markup (${totals.markup.toFixed(2)}×)`} value={formatCAD(totals.clientSubtotal)} />
+              <Row label={`HST (${Math.round(totals.hstRate * 100)}%)`} value={formatCAD(totals.hst)} />
+              <Row label="Client total" value={formatCAD(totals.clientTotal)} bold big />
+            </>
+          ) : (
+            <>
+              <Row label="Subtotal" value={formatCAD(totals.clientSubtotal)} />
+              <Row label={`HST (${Math.round(totals.hstRate * 100)}%)`} value={formatCAD(totals.hst)} />
+              <Row label="Total (CAD)" value={formatCAD(totals.clientTotal)} bold big />
+            </>
+          )}
+        </div>
+      )}
     </aside>
   );
 }

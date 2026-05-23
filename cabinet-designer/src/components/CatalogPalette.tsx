@@ -11,6 +11,7 @@ export function CatalogPalette() {
   const ghost = useStore((s) => s.ghost);
   const settings = useStore((s) => s.project.settings);
   const addItem = useStore((s) => s.addItem);
+  const showPricing = useStore((s) => s.showPricing);
   const [q, setQ] = useState("");
   const [openCat, setOpenCat] = useState<string | null>("Base");
 
@@ -99,9 +100,11 @@ export function CatalogPalette() {
                         <button className="pick" onClick={() => onPick(p)}>
                           <div className="pick-row">
                             <span className="pick-sku">{p.sku}</span>
-                            <span className="pick-price">
-                              {price != null ? formatCAD(price) : "—"}
-                            </span>
+                            {showPricing && (
+                              <span className="pick-price">
+                                {price != null ? formatCAD(price) : "—"}
+                              </span>
+                            )}
                           </div>
                           <div className="pick-desc">{p.desc}</div>
                           <div className="pick-meta">

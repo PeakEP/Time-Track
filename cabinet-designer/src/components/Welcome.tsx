@@ -60,14 +60,14 @@ export function Welcome() {
             />
             <Step
               icon={<FileText size={18} />}
-              title="Quote & export"
-              body="The right panel toggles between Client and Internal pricing. File → Export Client PDF builds a branded landscape sheet with plan + schedule. Save the .json to keep working."
+              title="Schedule & export"
+              body="The right panel lists every cabinet you place. File → Export PDF builds a branded landscape sheet with the plan + schedule. Save the .json to keep working."
             />
           </div>
           <div className="welcome-tips">
-            <strong>Heads up:</strong> the default markup is <em>1.20×</em> on JMRC cost
-            (Settings → Pricing). Confirm this matches your cabinet markup before sending a
-            quote. HST defaults to 15% (NB).
+            <strong>Pricing is off by default.</strong> Turn it on anytime with “Show pricing”
+            in the schedule panel or Settings → Pricing — it adds live OPPEIN dealer costs,
+            markup and HST to the schedule and exports.
           </div>
         </div>
         <div className="dialog-foot welcome-foot">

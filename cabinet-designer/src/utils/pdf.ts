@@ -8,23 +8,29 @@ type Mode = "client" | "internal";
 
 const BRAND = { indigo: "#2C327C", steel: "#3A7AA0", cyan: "#49C1C4" };
 
-export function exportProjectPdf(project: Project, catalog: Catalog, mode: Mode): void {
+export function exportProjectPdf(
+  project: Project,
+  catalog: Catalog,
+  mode: Mode,
+  pricing = true,
+): void {
   const doc = new jsPDF({ orientation: "landscape", unit: "pt", format: "letter" });
   const pageW = doc.internal.pageSize.getWidth();
   const pageH = doc.internal.pageSize.getHeight();
 
-  drawTitleBlock(doc, project, mode, pageW);
+  drawTitleBlock(doc, project, mode, pageW, pricing);
   drawPlan(doc, project, pageW, pageH);
-  drawSchedule(doc, project, catalog, mode, pageW);
-  doc.save(filename(project, mode));
+  drawSchedule(doc, project, catalog, mode, pageW, pricing);
+  doc.save(filename(project, mode, pricing));
 }
 
-function filename(project: Project, mode: Mode): string {
+function filename(project: Project, mode: Mode, pricing: boolean): string {
   const safe = (project.meta.name || "Untitled").replace(/[^a-z0-9\-_ ]/gi, "_").trim();
-  return `JMRC-${safe || "Untitled"}-${mode === "client" ? "Quote" : "Internal"}.pdf`;
+  const suffix = !pricing ? "Schedule" : mode === "client" ? "Quote" : "Internal";
+  return `JMRC-${safe || "Untitled"}-${suffix}.pdf`;
 }
 
-function drawTitleBlock(doc: jsPDF, project: Project, mode: Mode, pageW: number): void {
+function drawTitleBlock(doc: jsPDF, project: Project, mode: Mode, pageW: number, pricing: boolean): void {
   // gradient bar approximation
   const stripeH = 36;
   doc.setFillColor(BRAND.indigo);
@@ -40,7 +46,8 @@ function drawTitleBlock(doc: jsPDF, project: Project, mode: Mode, pageW: number)
   doc.text("JMRC — Cabinet Designer", 24, 24);
   doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
-  doc.text(mode === "client" ? "Client Quote" : "Internal Cost Sheet", pageW - 24, 24, {
+  const headerLabel = !pricing ? "Cabinet Schedule" : mode === "client" ? "Client Quote" : "Internal Cost Sheet";
+  doc.text(headerLabel, pageW - 24, 24, {
     align: "right",
   });
 
@@ -125,6 +132,7 @@ function drawSchedule(
   catalog: Catalog,
   mode: Mode,
   pageW: number,
+  pricing: boolean,
 ): void {
   const lines = computeLines(
     project.items,
@@ -142,7 +150,9 @@ function drawSchedule(
 
   const headStyles = { fillColor: BRAND.indigo, textColor: "#ffffff", fontStyle: "bold" as const };
 
-  // group by cat
+  // number of columns depends on mode + whether pricing is shown
+  const colCount = !pricing ? 5 : mode === "internal" ? 8 : 6;
+
   type Row = (string | number)[];
   const grouped = new Map<string, typeof lines>();
   for (const l of lines) {
@@ -154,8 +164,7 @@ function drawSchedule(
   const body: Row[] = [];
   let n = 0;
   for (const [cat, ls] of grouped) {
-    body.push([{ content: cat, colSpan: mode === "internal" ? 8 : 6, styles: { fillColor: "#eef1f7", fontStyle: "bold" } } as unknown as string]);
-    // collapse same SKU
+    body.push([{ content: cat, colSpan: colCount, styles: { fillColor: "#eef1f7", fontStyle: "bold" } } as unknown as string]);
     const counts = new Map<string, { sample: typeof ls[number]; qty: number }>();
     for (const l of ls) {
       const key = `${l.item.sku}|${l.unitListPrice ?? "x"}`;
@@ -169,34 +178,44 @@ function drawSchedule(
       const lineList = unitList * qty;
       const lineCost = lineList * (1 - catalog._meta.dealer_discount);
       const lineClient = lineCost * project.settings.markup;
-      if (mode === "internal") {
-        body.push([
-          n,
-          sample.item.sku ?? "",
-          sample.product?.desc ?? "",
-          sample.product?.dims ?? "",
-          qty,
-          formatCAD(unitList),
-          formatCAD(lineList),
-          formatCAD(lineCost),
-        ]);
+      const base = [
+        n,
+        sample.item.sku ?? "",
+        sample.product?.desc ?? "",
+        sample.product?.dims ?? "",
+        qty,
+      ];
+      if (!pricing) {
+        body.push(base);
+      } else if (mode === "internal") {
+        body.push([...base, formatCAD(unitList), formatCAD(lineList), formatCAD(lineCost)]);
       } else {
-        body.push([
-          n,
-          sample.item.sku ?? "",
-          sample.product?.desc ?? "",
-          sample.product?.dims ?? "",
-          qty,
-          formatCAD(lineClient),
-        ]);
+        body.push([...base, formatCAD(lineClient)]);
       }
     }
   }
 
-  const head: Row[] =
-    mode === "internal"
+  const head: Row[] = !pricing
+    ? [["#", "SKU", "Description", "Dims", "Qty"]]
+    : mode === "internal"
       ? [["#", "SKU", "Description", "Dims", "Qty", "Unit List", "Line List", "JMRC Cost"]]
       : [["#", "SKU", "Description", "Dims", "Qty", "Line Price"]];
+
+  const columnStyles: Record<number, { halign?: "right"; cellWidth?: number }> = !pricing
+    ? { 0: { cellWidth: 28 }, 4: { halign: "right", cellWidth: 40 } }
+    : mode === "internal"
+      ? {
+          0: { cellWidth: 24 },
+          4: { halign: "right", cellWidth: 36 },
+          5: { halign: "right", cellWidth: 70 },
+          6: { halign: "right", cellWidth: 70 },
+          7: { halign: "right", cellWidth: 70 },
+        }
+      : {
+          0: { cellWidth: 28 },
+          4: { halign: "right", cellWidth: 40 },
+          5: { halign: "right", cellWidth: 90 },
+        };
 
   autoTable(doc, {
     startY: doc.internal.pageSize.getHeight() * 0.56,
@@ -204,20 +223,7 @@ function drawSchedule(
     body: body as unknown as (string | number)[][],
     styles: { fontSize: 8, cellPadding: 3 },
     headStyles,
-    columnStyles:
-      mode === "internal"
-        ? {
-            0: { cellWidth: 24 },
-            4: { halign: "right", cellWidth: 36 },
-            5: { halign: "right", cellWidth: 70 },
-            6: { halign: "right", cellWidth: 70 },
-            7: { halign: "right", cellWidth: 70 },
-          }
-        : {
-            0: { cellWidth: 28 },
-            4: { halign: "right", cellWidth: 40 },
-            5: { halign: "right", cellWidth: 90 },
-          },
+    columnStyles,
     margin: { left: 24, right: 24 },
   });
 
@@ -233,7 +239,7 @@ function drawSchedule(
     doc.text(v, right, yy, { align: "right" });
     yy += 12;
   };
-  if (mode === "internal") {
+  if (pricing && mode === "internal") {
     line("Subtotal (list)", formatCAD(totals.subtotalList));
     line(
       `Dealer discount (${Math.round(catalog._meta.dealer_discount * 100)}%)`,
@@ -243,7 +249,7 @@ function drawSchedule(
     line(`Markup (${totals.markup.toFixed(2)}×)`, formatCAD(totals.clientSubtotal));
     line(`HST (${Math.round(totals.hstRate * 100)}%)`, formatCAD(totals.hst));
     line("Client total", formatCAD(totals.clientTotal), true);
-  } else {
+  } else if (pricing) {
     line("Subtotal", formatCAD(totals.clientSubtotal));
     line(`HST (${Math.round(totals.hstRate * 100)}%)`, formatCAD(totals.hst));
     line("Total (CAD)", formatCAD(totals.clientTotal), true);
@@ -252,8 +258,11 @@ function drawSchedule(
   doc.setFont("helvetica", "italic");
   doc.setFontSize(7);
   doc.setTextColor("#666");
+  const pricingNote = pricing
+    ? ` Pricing per OPPEIN ${catalog._meta.pricing_year ?? 2025} dealer list.`
+    : "";
   doc.text(
-    `Finish: ${finish?.name ?? project.settings.finishCode} (${finish?.tierName ?? ""}) · Box: ${project.settings.boxMaterial === "PLY" ? "Plywood" : "Particle Board"}. Dimensions nominal; verify field measurements before ordering. Pricing per OPPEIN ${catalog._meta.pricing_year ?? 2025} dealer list.`,
+    `Finish: ${finish?.name ?? project.settings.finishCode}${pricing ? ` (${finish?.tierName ?? ""})` : ""} · Box: ${project.settings.boxMaterial === "PLY" ? "Plywood" : "Particle Board"}. Dimensions nominal; verify field measurements before ordering.${pricingNote}`,
     24,
     doc.internal.pageSize.getHeight() - 14,
     { maxWidth: pageW - 48 },

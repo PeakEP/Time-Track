@@ -44,6 +44,7 @@ export function SettingsBar() {
   const futureLen = useStore((s) => s.future.length);
   const vertexEdit = useStore((s) => s.vertexEdit);
   const setVertexEdit = useStore((s) => s.setVertexEdit);
+  const showPricing = useStore((s) => s.showPricing);
 
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [showRoomDlg, setShowRoomDlg] = useState(false);
@@ -69,7 +70,7 @@ export function SettingsBar() {
   }
   function onExportPdf(mode: "client" | "internal") {
     if (!catalog) return;
-    exportProjectPdf(project, catalog, mode);
+    exportProjectPdf(project, catalog, mode, showPricing);
   }
   function addAppliance(a: AppliancePreset) {
     addItem({
@@ -94,20 +95,26 @@ export function SettingsBar() {
       project.settings.finishCode,
       project.settings.boxMaterial,
     );
-    const rows = lines.map((l, i) => ({
-      "#": i + 1,
-      SKU: l.item.sku ?? "",
-      Description: l.product?.desc ?? "",
-      Category: l.product?.cat ?? "",
-      Dims: l.product?.dims ?? "",
-      Qty: l.qty,
-      Finish: project.settings.finishCode,
-      Box: project.settings.boxMaterial,
-      "Unit List (CAD)": l.unitListPrice ?? "",
-      "Line List (CAD)": l.lineList,
-      "Line Cost (CAD)": l.lineList * (1 - catalog._meta.dealer_discount),
-      "Line Client (CAD)": l.lineList * (1 - catalog._meta.dealer_discount) * project.settings.markup,
-    }));
+    const rows = lines.map((l, i) => {
+      const base: Record<string, string | number> = {
+        "#": i + 1,
+        SKU: l.item.sku ?? "",
+        Description: l.product?.desc ?? "",
+        Category: l.product?.cat ?? "",
+        Dims: l.product?.dims ?? "",
+        Qty: l.qty,
+        Finish: project.settings.finishCode,
+        Box: project.settings.boxMaterial,
+      };
+      if (!showPricing) return base;
+      return {
+        ...base,
+        "Unit List (CAD)": l.unitListPrice ?? "",
+        "Line List (CAD)": l.lineList,
+        "Line Cost (CAD)": l.lineList * (1 - catalog._meta.dealer_discount),
+        "Line Client (CAD)": l.lineList * (1 - catalog._meta.dealer_discount) * project.settings.markup,
+      };
+    });
     exportScheduleCsv(rows, `JMRC-${(project.meta.name || "Untitled").replace(/[^a-z0-9\-_ ]/gi, "_")}-Schedule.csv`);
   }
 
@@ -146,8 +153,14 @@ export function SettingsBar() {
           <button onClick={() => { onOpen(); setOpenMenu(null); }}><FolderOpen size={14} /> Open…</button>
           <button onClick={() => { onSave(); setOpenMenu(null); }}><Save size={14} /> Save</button>
           <hr />
-          <button onClick={() => onExportPdf("client")}><FileText size={14} /> Export Client PDF</button>
-          <button onClick={() => onExportPdf("internal")}><FileText size={14} /> Export Internal PDF</button>
+          {showPricing ? (
+            <>
+              <button onClick={() => onExportPdf("client")}><FileText size={14} /> Export Client PDF</button>
+              <button onClick={() => onExportPdf("internal")}><FileText size={14} /> Export Internal PDF</button>
+            </>
+          ) : (
+            <button onClick={() => onExportPdf("client")}><FileText size={14} /> Export PDF (plan + schedule)</button>
+          )}
           <button onClick={onExportCsv}><FileSpreadsheet size={14} /> Export Schedule CSV</button>
         </Menu>
 
@@ -386,6 +399,8 @@ function SettingsDialog({ onClose }: { onClose: () => void }) {
   const patchSettings = useStore((s) => s.patchSettings);
   const patchMeta = useStore((s) => s.patchMeta);
   const catalog = useStore((s) => s.catalog);
+  const showPricing = useStore((s) => s.showPricing);
+  const setShowPricing = useStore((s) => s.setShowPricing);
   return (
     <Dialog title="Project settings" onClose={onClose}>
       <h4>Job</h4>
@@ -452,11 +467,22 @@ function SettingsDialog({ onClose }: { onClose: () => void }) {
       </Field>
 
       <h4>Pricing</h4>
+      <Field label="Show pricing">
+        <label className="toggle-line">
+          <input
+            type="checkbox"
+            checked={showPricing}
+            onChange={(e) => setShowPricing(e.target.checked)}
+          />
+          <span>{showPricing ? "Prices shown in app & exports" : "Prices hidden everywhere"}</span>
+        </label>
+      </Field>
       <Field label="Markup multiplier">
         <input
           type="number"
           step="0.05"
           value={settings.markup}
+          disabled={!showPricing}
           onChange={(e) => patchSettings({ markup: +e.target.value })}
         />
       </Field>
@@ -465,6 +491,7 @@ function SettingsDialog({ onClose }: { onClose: () => void }) {
           type="number"
           step="0.01"
           value={settings.hstRate}
+          disabled={!showPricing}
           onChange={(e) => patchSettings({ hstRate: +e.target.value })}
         />
       </Field>

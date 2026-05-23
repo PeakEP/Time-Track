@@ -371,8 +371,22 @@ input, select, textarea { font-family: inherit; font-size: 13px; }
   min-width: 0;
 }
 .schedule-header { padding: 12px; border-bottom: 1px solid var(--line-soft); }
+.schedule-head-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .schedule-title { font-family: "Montserrat"; font-weight: 700; font-size: 14px; }
 .schedule-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.pricing-switch {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--line-soft);
+  border: 1px solid var(--line);
+  color: var(--text-muted);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.pricing-switch:hover { background: #e6ecf3; color: var(--text); }
+.toggle-line { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text); }
+.toggle-line input { width: 16px; height: 16px; }
 .schedule-toggle {
   display: flex; padding: 6px 12px; gap: 0;
   border-bottom: 1px solid var(--line-soft);

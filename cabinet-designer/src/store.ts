@@ -10,6 +10,15 @@ type GhostState = { product: import("./types").Product; mountZ: number } | null;
 const HISTORY_LIMIT = 60;
 const AUTOSAVE_KEY = "jmrc.cabinet.draft.v1";
 const AUTOSAVE_DEBOUNCE_MS = 600;
+const SHOW_PRICING_KEY = "jmrc.cabinet.showPricing.v1";
+
+function initialShowPricing(): boolean {
+  try {
+    return localStorage.getItem(SHOW_PRICING_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
 
 type State = {
   catalog: Catalog | null;
@@ -17,6 +26,7 @@ type State = {
   project: Project;
   selectedId: string | null;
   view: ViewMode;
+  showPricing: boolean;
   showInternalPricing: boolean;
   ghost: GhostState;
   pxPerInch: number;
@@ -38,6 +48,7 @@ type State = {
   rotateSelected: () => void;
   select: (id: string | null) => void;
   setView: (v: ViewMode) => void;
+  setShowPricing: (on: boolean) => void;
   toggleInternalPricing: () => void;
   setGhost: (g: GhostState) => void;
   setZoom: (px: number) => void;
@@ -83,6 +94,7 @@ export const useStore = create<State>((set, get) => ({
   project: defaultProject(),
   selectedId: null,
   view: "split",
+  showPricing: initialShowPricing(),
   showInternalPricing: false,
   ghost: null,
   pxPerInch: 4,
@@ -189,6 +201,14 @@ export const useStore = create<State>((set, get) => ({
 
   select: (id) => set({ selectedId: id }),
   setView: (v) => set({ view: v }),
+  setShowPricing: (on) => {
+    try {
+      localStorage.setItem(SHOW_PRICING_KEY, on ? "1" : "0");
+    } catch {
+      // ignore
+    }
+    set({ showPricing: on });
+  },
   toggleInternalPricing: () => set((s) => ({ showInternalPricing: !s.showInternalPricing })),
   setGhost: (g) => set({ ghost: g }),
   setZoom: (px) => set({ pxPerInch: Math.max(1.5, Math.min(12, px)) }),
