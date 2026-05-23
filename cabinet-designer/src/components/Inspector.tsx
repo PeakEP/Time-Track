@@ -1,11 +1,11 @@
-import { RotateCw, Copy, Trash2, X } from "lucide-react";
+import { useRef, useState } from "react";
+import { RotateCw, Copy, Trash2, X, GripHorizontal } from "lucide-react";
 import { useStore } from "../store";
 import type { Item, Rotation } from "../types";
 
 /**
- * Floating inspector overlay for the currently selected item.
- * Anchors to the bottom-left of the canvas area; visible whenever
- * an item is selected and dismissible.
+ * Floating inspector for the selected item — draggable by its header,
+ * resizable, and scrollable so no field gets clipped.
  */
 export function Inspector() {
   const selectedId = useStore((s) => s.selectedId);
@@ -15,6 +15,26 @@ export function Inspector() {
   const duplicateItem = useStore((s) => s.duplicateItem);
   const select = useStore((s) => s.select);
   const settings = useStore((s) => s.project.settings);
+  const [pos, setPos] = useState<{ left: number; top: number } | null>(null);
+  const dragRef = useRef<{ dx: number; dy: number } | null>(null);
+
+  function onHeaderPointerDown(e: React.PointerEvent) {
+    const el = (e.currentTarget as HTMLElement).parentElement as HTMLElement;
+    const rect = el.getBoundingClientRect();
+    dragRef.current = { dx: e.clientX - rect.left, dy: e.clientY - rect.top };
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  }
+  function onHeaderPointerMove(e: React.PointerEvent) {
+    if (!dragRef.current) return;
+    setPos({
+      left: Math.max(4, e.clientX - dragRef.current.dx),
+      top: Math.max(56, e.clientY - dragRef.current.dy),
+    });
+  }
+  function onHeaderPointerUp(e: React.PointerEvent) {
+    dragRef.current = null;
+    (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+  }
 
   if (!selectedId) return null;
   const item = items.find((i) => i.id === selectedId);
@@ -30,14 +50,26 @@ export function Inspector() {
     updateItem(item.id, p);
   }
 
+  const style: React.CSSProperties = pos
+    ? { left: pos.left, top: pos.top, right: "auto", bottom: "auto" }
+    : {};
+
   return (
-    <div className="inspector">
-      <header className="inspector-head">
-        <div>
-          <div className="inspector-title">
-            {item.label ?? item.sku ?? item.kind.toUpperCase()}
+    <div className="inspector" style={style}>
+      <header
+        className="inspector-head"
+        onPointerDown={onHeaderPointerDown}
+        onPointerMove={onHeaderPointerMove}
+        onPointerUp={onHeaderPointerUp}
+      >
+        <div className="inspector-grab">
+          <GripHorizontal size={13} />
+          <div>
+            <div className="inspector-title">
+              {item.label ?? item.sku ?? item.kind.toUpperCase()}
+            </div>
+            <div className="inspector-sub">{kindLabel(item)}</div>
           </div>
-          <div className="inspector-sub">{kindLabel(item)}</div>
         </div>
         <button className="inspector-close" onClick={() => select(null)} title="Deselect">
           <X size={14} />

@@ -46,9 +46,9 @@ export function SchedulePanel() {
 
   const totals = useMemo(() => {
     if (!catalog)
-      return { subtotalList: 0, dealerDiscount: 0, jmrcCost: 0, markup: 1.2, clientSubtotal: 0, hstRate: 0.15, hst: 0, clientTotal: 0 };
-    return computeTotals(lines, catalog, project.settings.markup, project.settings.hstRate);
-  }, [catalog, lines, project.settings.markup, project.settings.hstRate]);
+      return { subtotalList: 0, dealerDiscount: 0, jmrcCost: 0, markup: 1.2, clientSubtotal: 0, hstRate: 0.15, hst: 0, clientTotal: 0, achievedMarginPct: 0, achievedDiscountPct: 0 };
+    return computeTotals(lines, catalog, project.settings);
+  }, [catalog, lines, project.settings]);
 
   if (!catalog) return <aside className="schedule">Loading…</aside>;
 
@@ -202,15 +202,17 @@ export function SchedulePanel() {
       </div>
       {showPricing && (
         <div className="schedule-totals">
+          <PriceControls />
           {showInternal ? (
             <>
-              <Row label="Subtotal (list)" value={formatCAD(totals.subtotalList)} />
+              <Row label="Subtotal (MSRP/list)" value={formatCAD(totals.subtotalList)} />
               <Row
                 label={`Dealer discount (${Math.round(catalog._meta.dealer_discount * 100)}%)`}
                 value={`- ${formatCAD(totals.dealerDiscount)}`}
               />
               <Row label="JMRC cost" value={formatCAD(totals.jmrcCost)} bold />
-              <Row label={`Markup (${totals.markup.toFixed(2)}×)`} value={formatCAD(totals.clientSubtotal)} />
+              <Row label="Client price" value={formatCAD(totals.clientSubtotal)} />
+              <Row label="Margin / Disc. off MSRP" value={`${totals.achievedMarginPct.toFixed(1)}% / ${totals.achievedDiscountPct.toFixed(1)}%`} />
               <Row label={`HST (${Math.round(totals.hstRate * 100)}%)`} value={formatCAD(totals.hst)} />
               <Row label="Client total" value={formatCAD(totals.clientTotal)} bold big />
             </>
@@ -224,6 +226,64 @@ export function SchedulePanel() {
         </div>
       )}
     </aside>
+  );
+}
+
+function PriceControls() {
+  const settings = useStore((s) => s.project.settings);
+  const patchSettings = useStore((s) => s.patchSettings);
+  const mode = settings.pricingMode ?? "markup";
+  return (
+    <div className="price-controls">
+      <div className="price-mode">
+        {(["markup", "discount", "margin"] as const).map((m) => (
+          <button
+            key={m}
+            className={mode === m ? "active" : ""}
+            onClick={() => patchSettings({ pricingMode: m })}
+          >
+            {m === "markup" ? "Markup" : m === "discount" ? "% off MSRP" : "Margin"}
+          </button>
+        ))}
+      </div>
+      <label className="price-field">
+        {mode === "markup" && (
+          <>
+            <span>Markup ×</span>
+            <input
+              type="number"
+              step="0.05"
+              value={settings.markup}
+              onChange={(e) => patchSettings({ markup: +e.target.value })}
+            />
+          </>
+        )}
+        {mode === "discount" && (
+          <>
+            <span>Discount off MSRP</span>
+            <input
+              type="number"
+              step="1"
+              value={settings.discountPct ?? 30}
+              onChange={(e) => patchSettings({ discountPct: +e.target.value })}
+            />
+            <span className="suffix">%</span>
+          </>
+        )}
+        {mode === "margin" && (
+          <>
+            <span>Target margin</span>
+            <input
+              type="number"
+              step="1"
+              value={settings.marginPct ?? 35}
+              onChange={(e) => patchSettings({ marginPct: +e.target.value })}
+            />
+            <span className="suffix">%</span>
+          </>
+        )}
+      </label>
+    </div>
   );
 }
 

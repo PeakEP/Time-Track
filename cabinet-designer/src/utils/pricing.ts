@@ -1,4 +1,4 @@
-import type { BoxMaterial, Catalog, Finish, Item, Product, TierKey } from "../types";
+import type { BoxMaterial, Catalog, Finish, Item, Product, ProjectSettings, TierKey } from "../types";
 
 export type LineCost = {
   item: Item;
@@ -18,6 +18,8 @@ export type PricingTotals = {
   hstRate: number;
   hst: number;
   clientTotal: number;
+  achievedMarginPct: number; // (price - cost) / price
+  achievedDiscountPct: number; // off MSRP/list
 };
 
 export function findFinish(catalog: Catalog, code: string): Finish | undefined {
@@ -69,18 +71,28 @@ export function computeLines(
     });
 }
 
-export function computeTotals(
-  lines: LineCost[],
-  catalog: Catalog,
-  markup: number,
-  hstRate: number,
-): PricingTotals {
+export function computeTotals(lines: LineCost[], catalog: Catalog, settings: ProjectSettings): PricingTotals {
+  const { markup, hstRate, pricingMode, discountPct, marginPct } = settings;
   const subtotalList = lines.reduce((s, l) => s + (l.available ? l.lineList : 0), 0);
   const dealerDiscount = subtotalList * catalog._meta.dealer_discount;
   const jmrcCost = subtotalList - dealerDiscount;
-  const clientSubtotal = jmrcCost * markup;
+
+  let clientSubtotal: number;
+  if (pricingMode === "discount") {
+    // sell at a discount off MSRP (list)
+    clientSubtotal = subtotalList * (1 - (discountPct ?? 0) / 100);
+  } else if (pricingMode === "margin") {
+    // price to hit a target gross margin on cost
+    const m = Math.min(Math.max(marginPct ?? 0, 0), 99) / 100;
+    clientSubtotal = jmrcCost / (1 - m);
+  } else {
+    clientSubtotal = jmrcCost * markup;
+  }
+
   const hst = clientSubtotal * hstRate;
   const clientTotal = clientSubtotal + hst;
+  const achievedMarginPct = clientSubtotal > 0 ? ((clientSubtotal - jmrcCost) / clientSubtotal) * 100 : 0;
+  const achievedDiscountPct = subtotalList > 0 ? ((subtotalList - clientSubtotal) / subtotalList) * 100 : 0;
   return {
     subtotalList,
     dealerDiscount,
@@ -90,6 +102,8 @@ export function computeTotals(
     hstRate,
     hst,
     clientTotal,
+    achievedMarginPct,
+    achievedDiscountPct,
   };
 }
 

@@ -95,6 +95,9 @@ export type ProjectSettings = {
   hstRate: number;
   wallMode: 1 | 2 | 3 | 4;
   wallViewAngle: number;
+  pricingMode: "markup" | "discount" | "margin";
+  discountPct: number; // % off MSRP (list)
+  marginPct: number; // target gross margin %
 };
 
 export type Project = {

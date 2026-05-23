@@ -22,6 +22,15 @@ export const APPLIANCES: AppliancePreset[] = [
     color: "#cfd6e0",
   },
   {
+    id: "fridge-33",
+    label: "Fridge 33\"",
+    width: 33,
+    depth: 30,
+    height: 70,
+    mountZ: 0,
+    color: "#cfd6e0",
+  },
+  {
     id: "fridge-30",
     label: "Fridge 30\"",
     width: 30,

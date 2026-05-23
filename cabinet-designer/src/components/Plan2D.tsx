@@ -55,7 +55,28 @@ export function Plan2D() {
   const originY = padIn - b.minY;
 
   const [cursor, setCursor] = useState<Point | null>(null);
-  const [dragging, setDragging] = useState<{ id: string; offsetX: number; offsetY: number } | null>(null);
+  const [dragging, setDragging] = useState<
+    { id: string; offsetX: number; offsetY: number; sx: number; sy: number } | null
+  >(null);
+  const movedRef = useRef(false);
+
+  const endDrag = useCallback(() => {
+    setDragging((d) => {
+      if (d && movedRef.current) {
+        const it = useStore.getState().project.items.find((i) => i.id === d.id);
+        if (it) useStore.getState().updateItem(d.id, { x: it.x, y: it.y }); // one history step
+      }
+      return null;
+    });
+    movedRef.current = false;
+  }, []);
+
+  // End any drag on a global mouseup so boxes never "stick" to the cursor when
+  // the button is released outside the canvas.
+  useEffect(() => {
+    window.addEventListener("mouseup", endDrag);
+    return () => window.removeEventListener("mouseup", endDrag);
+  }, [endDrag]);
 
   const screenToWorldIn = useCallback(
     (clientX: number, clientY: number): Point | null => {
@@ -112,6 +133,17 @@ export function Plan2D() {
     if (!pos) return;
     setCursor(pos);
     if (dragging) {
+      // the mouse button was released elsewhere — stop following the cursor
+      if (e.buttons === 0) {
+        endDrag();
+        return;
+      }
+      // require a small movement before a click becomes a drag (avoids
+      // accidental nudges when you just meant to select)
+      if (!movedRef.current) {
+        if (Math.hypot(e.clientX - dragging.sx, e.clientY - dragging.sy) < 4) return;
+        movedRef.current = true;
+      }
       const item = items.find((i) => i.id === dragging.id);
       if (!item) return;
       const free = e.altKey; // hold Alt to move freely (no snapping)
@@ -169,12 +201,7 @@ export function Plan2D() {
   }
 
   function onMouseUp() {
-    if (dragging) {
-      // commit a single history snapshot at end of drag
-      const item = items.find((i) => i.id === dragging.id);
-      if (item) updateItem(dragging.id, { x: item.x, y: item.y });
-    }
-    setDragging(null);
+    endDrag();
   }
 
   function onClick(e: React.MouseEvent) {
@@ -242,7 +269,15 @@ export function Plan2D() {
     select(it.id);
     const pos = screenToWorldIn(e.clientX, e.clientY);
     if (!pos) return;
-    setDragging({ id: it.id, offsetX: pos.x - it.x, offsetY: pos.y - it.y });
+    movedRef.current = false;
+    setDragging({ id: it.id, offsetX: pos.x - it.x, offsetY: pos.y - it.y, sx: e.clientX, sy: e.clientY });
+  }
+
+  function onItemDoubleClick(e: React.MouseEvent) {
+    // double-click locks the piece in place (ends drag) and closes the inspector
+    e.stopPropagation();
+    endDrag();
+    select(null);
   }
 
   function fitToView() {
@@ -325,6 +360,7 @@ export function Plan2D() {
           onMouseDown={onMouseDown}
           onMouseUp={onMouseUp}
           onClick={onClick}
+          onDoubleClick={onItemDoubleClick}
           className="plan-svg"
         >
           <defs>

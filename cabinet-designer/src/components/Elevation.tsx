@@ -28,9 +28,11 @@ export function Elevation() {
   const settings = useStore((s) => s.project.settings);
   const selectedId = useStore((s) => s.selectedId);
   const select = useStore((s) => s.select);
+  const updateItem = useStore((s) => s.updateItem);
   const catalog = useStore((s) => s.catalog);
   const frontWall = useStore((s) => s.frontWall);
   const setFrontWall = useStore((s) => s.setFrontWall);
+  const [zoom, setZoom] = useState(1);
 
   const ee = edges(room.points);
   const wallCount = ee.length;
@@ -39,6 +41,39 @@ export function Elevation() {
 
   const doorHex = finishColor(settings.finishCode);
   const wallHeight = settings.wallHeight;
+
+  // wall axis for nudging the selected item along the wall / vertically
+  const axis = useMemo(() => {
+    const dx = wall.b.x - wall.a.x;
+    const dy = wall.b.y - wall.a.y;
+    const len = Math.hypot(dx, dy) || 1;
+    return { tx: dx / len, ty: dy / len };
+  }, [wall]);
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA") return;
+      if (!selectedId) return;
+      const it = useStore.getState().project.items.find((i) => i.id === selectedId);
+      if (!it) return;
+      const step = e.shiftKey ? 0.125 : 1;
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+        const s = e.key === "ArrowLeft" ? -step : step;
+        updateItem(selectedId, {
+          x: Math.round((it.x + axis.tx * s) * 1000) / 1000,
+          y: Math.round((it.y + axis.ty * s) * 1000) / 1000,
+        });
+        e.preventDefault();
+      } else if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+        const s = e.key === "ArrowUp" ? step : -step;
+        updateItem(selectedId, { mountZ: Math.max(0, Math.round(((it.mountZ ?? 0) + s) * 1000) / 1000) });
+        e.preventDefault();
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selectedId, axis, updateItem]);
 
   const { len, projected } = useMemo(() => {
     const a = wall.a;
@@ -102,7 +137,13 @@ export function Elevation() {
             <ChevronRight size={15} />
           </button>
         </div>
-        <div className="elev-hint">Front elevation — flip walls for L-shapes & peninsulas</div>
+        <div className="zoom-controls">
+          <button onClick={() => setZoom((z) => Math.max(0.3, z / 1.2))} title="Zoom out">−</button>
+          <span className="zoom-readout">{Math.round(zoom * 100)}%</span>
+          <button onClick={() => setZoom((z) => Math.min(6, z * 1.2))} title="Zoom in">+</button>
+          <button className="fit-btn" onClick={() => setZoom(1)} title="Fit to view">Fit</button>
+        </div>
+        <div className="elev-hint">arrows nudge · ↑↓ height · scroll to zoom</div>
       </div>
       <ElevCanvas
         len={len}
@@ -114,6 +155,8 @@ export function Elevation() {
         selectedId={selectedId}
         onSelect={select}
         catalog={catalog}
+        zoom={zoom}
+        setZoom={setZoom}
       />
     </div>
   );
@@ -129,6 +172,8 @@ function ElevCanvas({
   selectedId,
   onSelect,
   catalog,
+  zoom,
+  setZoom,
 }: {
   len: number;
   wallHeight: number;
@@ -139,6 +184,8 @@ function ElevCanvas({
   selectedId: string | null;
   onSelect: (id: string | null) => void;
   catalog: import("../types").Catalog | null;
+  zoom: number;
+  setZoom: (fn: (z: number) => number) => void;
 }) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const [size, setSize] = useState({ w: 800, h: 500 });
@@ -149,11 +196,21 @@ function ElevCanvas({
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    function onWheel(e: WheelEvent) {
+      e.preventDefault();
+      setZoom((z) => Math.max(0.3, Math.min(6, e.deltaY < 0 ? z * 1.12 : z / 1.12)));
+    }
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [setZoom]);
 
   const pad = 24; // inches of margin around the drawing
   const viewW = len + pad * 2;
   const viewH = wallHeight + pad * 2;
-  const scale = Math.min(size.w / viewW, size.h / viewH);
+  const scale = Math.min(size.w / viewW, size.h / viewH) * zoom;
   const svgW = viewW * scale;
   const svgH = viewH * scale;
 

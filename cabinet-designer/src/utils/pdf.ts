@@ -1,9 +1,10 @@
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
-import type { Catalog, Project } from "../types";
+import type { Catalog, Item, Point, Project } from "../types";
 import { computeLines, computeTotals, formatCAD, findFinish } from "./pricing";
-import { bounds } from "./roomPresets";
-import { itemDimsLabel } from "./placement";
+import { bounds, edges } from "./roomPresets";
+import { itemDimsLabel, footprint } from "./placement";
+import { finishColor } from "./finishColors";
 
 type Mode = "client" | "internal";
 
@@ -19,9 +20,23 @@ export function exportProjectPdf(
   const pageW = doc.internal.pageSize.getWidth();
   const pageH = doc.internal.pageSize.getHeight();
 
-  drawTitleBlock(doc, project, mode, pageW, pricing);
+  // Page 1 — aerial plan
+  drawTitleBlock(doc, project, mode, pageW, pricing, "Floor Plan (aerial)");
   drawPlan(doc, project, pageW, pageH);
+  drawFootnote(doc, project, catalog, pricing, pageW, pageH);
+
+  // Page 2 — elevations (face views) for each wall
+  doc.addPage();
+  drawTitleBlock(doc, project, mode, pageW, pricing, "Elevations (face views)");
+  drawElevations(doc, project, pageW, pageH);
+  drawFootnote(doc, project, catalog, pricing, pageW, pageH);
+
+  // Page 3 — schedule + pricing
+  doc.addPage();
+  drawTitleBlock(doc, project, mode, pageW, pricing, pricing ? (mode === "client" ? "Client Quote" : "Internal Cost Sheet") : "Cabinet Schedule");
   drawSchedule(doc, project, catalog, mode, pageW, pricing);
+  drawFootnote(doc, project, catalog, pricing, pageW, pageH);
+
   doc.save(filename(project, mode, pricing));
 }
 
@@ -31,7 +46,7 @@ function filename(project: Project, mode: Mode, pricing: boolean): string {
   return `JMRC-${safe || "Untitled"}-${suffix}.pdf`;
 }
 
-function drawTitleBlock(doc: jsPDF, project: Project, mode: Mode, pageW: number, pricing: boolean): void {
+function drawTitleBlock(doc: jsPDF, project: Project, mode: Mode, pageW: number, pricing: boolean, pageLabel: string): void {
   // gradient bar approximation
   const stripeH = 36;
   doc.setFillColor(BRAND.indigo);
@@ -45,10 +60,9 @@ function drawTitleBlock(doc: jsPDF, project: Project, mode: Mode, pageW: number,
   doc.setFont("helvetica", "bold");
   doc.setFontSize(16);
   doc.text("JMRC — Cabinet Designer", 24, 24);
-  doc.setFontSize(10);
+  doc.setFontSize(11);
   doc.setFont("helvetica", "normal");
-  const headerLabel = !pricing ? "Cabinet Schedule" : mode === "client" ? "Client Quote" : "Internal Cost Sheet";
-  doc.text(headerLabel, pageW - 24, 24, {
+  doc.text(pageLabel, pageW - 24, 24, {
     align: "right",
   });
 
@@ -63,24 +77,34 @@ function drawTitleBlock(doc: jsPDF, project: Project, mode: Mode, pageW: number,
   doc.text(`Catalog: OPPEIN RTA 2025`, pageW - 24, y + 28, { align: "right" });
 }
 
+function fmtFt(inches: number): string {
+  const n = Math.round(inches);
+  const ft = Math.floor(n / 12);
+  const rem = n % 12;
+  return ft > 0 ? `${ft}'-${rem}"` : `${n}"`;
+}
+
 function drawPlan(doc: jsPDF, project: Project, pageW: number, pageH: number): void {
   const room = project.room;
   const b = bounds(room.points);
-  const planTop = 110;
-  const planBottom = pageH * 0.55;
-  const planLeft = 24;
-  const planRight = pageW - 24;
+  const planTop = 96;
+  const planBottom = pageH - 44;
+  const planLeft = 60;
+  const planRight = pageW - 60;
   const availW = planRight - planLeft;
   const availH = planBottom - planTop;
   const roomW = b.maxX - b.minX || 1;
   const roomH = b.maxY - b.minY || 1;
-  const scale = Math.min(availW / roomW, availH / roomH) * 0.9;
+  const scale = Math.min(availW / roomW, availH / roomH) * 0.86;
   const offsetX = planLeft + (availW - roomW * scale) / 2;
   const offsetY = planTop + (availH - roomH * scale) / 2;
   const px = (x: number) => offsetX + (x - b.minX) * scale;
   const py = (y: number) => offsetY + (y - b.minY) * scale;
 
-  // walls
+  // floor fill
+  doc.setFillColor("#fbfcfe");
+  const poly = room.points.map((p) => [px(p.x), py(p.y)] as [number, number]);
+  // walls + per-wall dimension labels
   doc.setDrawColor("#222");
   doc.setLineWidth(2);
   const pts = room.points;
@@ -88,43 +112,260 @@ function drawPlan(doc: jsPDF, project: Project, pageW: number, pageH: number): v
     const a = pts[i];
     const bp = pts[(i + 1) % pts.length];
     doc.line(px(a.x), py(a.y), px(bp.x), py(bp.y));
+    const len = Math.hypot(bp.x - a.x, bp.y - a.y);
+    const mx = (px(a.x) + px(bp.x)) / 2;
+    const my = (py(a.y) + py(bp.y)) / 2;
+    doc.setFontSize(8);
+    doc.setTextColor(BRAND.steel);
+    doc.text(fmtFt(len), mx, my - 3, { align: "center" });
   }
 
   // items
   for (const it of project.items) {
     if (it.scheduleOnly) continue;
+    const fp = footprint(it);
+    const w = fp.w * scale;
+    const d = fp.d * scale;
+    const x0 = px(it.x);
+    const y0 = py(it.y);
     if (it.kind === "window") {
       doc.setDrawColor(BRAND.steel);
-      doc.setLineWidth(1.2);
-      doc.rect(px(it.x), py(it.y), it.width * scale, it.depth * scale);
+      doc.setFillColor("#cfe6f1");
+      doc.setLineWidth(1);
+      doc.rect(x0, y0, w, d, "FD");
       continue;
     }
     if (it.kind === "door") {
       doc.setDrawColor("#444");
-      doc.setLineWidth(1.2);
-      doc.rect(px(it.x), py(it.y), it.width * scale, it.depth * scale);
+      doc.setLineWidth(1);
+      doc.rect(x0, y0, w, d);
       continue;
     }
     const isWall = (it.mountZ ?? 0) > 0;
-    doc.setDrawColor(isWall ? "#888" : "#222");
+    doc.setDrawColor("#1f2532");
     doc.setLineWidth(isWall ? 0.6 : 1);
     if (isWall) doc.setLineDashPattern([3, 2], 0);
     else doc.setLineDashPattern([], 0);
-    const w = (it.rotation === 90 || it.rotation === 270 ? it.depth : it.width) * scale;
-    const d = (it.rotation === 90 || it.rotation === 270 ? it.width : it.depth) * scale;
-    doc.rect(px(it.x), py(it.y), w, d);
-    doc.setFontSize(7);
-    doc.setTextColor("#333");
-    doc.text(it.sku ?? "", px(it.x) + 2, py(it.y) + 8);
+    doc.setFillColor(isWall ? "#f3f0ea" : "#ece7dd");
+    doc.rect(x0, y0, w, d, "FD");
+    doc.setLineDashPattern([], 0);
+    if (w > 16) {
+      doc.setFontSize(6.5);
+      doc.setTextColor("#1f2532");
+      doc.text(it.sku ?? it.label ?? "", x0 + w / 2, y0 + d / 2 - 1, { align: "center" });
+      doc.setFontSize(5.5);
+      doc.setTextColor("#555");
+      doc.text(`${Math.round(it.width)}"`, x0 + w / 2, y0 + d / 2 + 6, { align: "center" });
+    }
   }
   doc.setLineDashPattern([], 0);
 
   // overall dimensions
-  doc.setFontSize(9);
-  doc.setTextColor("#555");
-  doc.text(`${Math.round(roomW)}" × ${Math.round(roomH)}"`, (planLeft + planRight) / 2, planBottom + 14, {
+  doc.setFontSize(10);
+  doc.setTextColor("#222");
+  doc.setFont("helvetica", "bold");
+  doc.text(`Overall: ${fmtFt(roomW)} W × ${fmtFt(roomH)} D`, (planLeft + planRight) / 2, planBottom + 24, {
     align: "center",
   });
+  doc.setFont("helvetica", "normal");
+  if (poly.length === 0) return; // keep poly referenced
+}
+
+function centroid(points: Point[]): Point {
+  const s = points.reduce((a, p) => ({ x: a.x + p.x, y: a.y + p.y }), { x: 0, y: 0 });
+  return { x: s.x / points.length, y: s.y / points.length };
+}
+
+type ElevItem = { item: Item; alongMin: number; alongMax: number; bottom: number; top: number; perpMin: number };
+
+function projectWall(project: Project, wallIndex: number): { len: number; items: ElevItem[] } {
+  const pts = project.room.points;
+  const ee = edges(pts);
+  const wall = ee[wallIndex];
+  const a = wall.a;
+  const b = wall.b;
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  const len = Math.hypot(dx, dy) || 1;
+  const tx = dx / len;
+  const ty = dy / len;
+  let nx = -ty;
+  let ny = tx;
+  const c = centroid(pts);
+  if ((c.x - a.x) * nx + (c.y - a.y) * ny < 0) {
+    nx = -nx;
+    ny = -ny;
+  }
+  const out: ElevItem[] = [];
+  for (const it of project.items) {
+    if (it.scheduleOnly) continue;
+    const fp = footprint(it);
+    const corners: [number, number][] = [
+      [it.x, it.y],
+      [it.x + fp.w, it.y],
+      [it.x + fp.w, it.y + fp.d],
+      [it.x, it.y + fp.d],
+    ];
+    let alongMin = Infinity;
+    let alongMax = -Infinity;
+    let perpMin = Infinity;
+    for (const [qx, qy] of corners) {
+      const rx = qx - a.x;
+      const ry = qy - a.y;
+      const along = rx * tx + ry * ty;
+      const perp = rx * nx + ry * ny;
+      alongMin = Math.min(alongMin, along);
+      alongMax = Math.max(alongMax, along);
+      perpMin = Math.min(perpMin, perp);
+    }
+    if (perpMin > 30 || perpMin < -3) continue;
+    if (alongMax < -2 || alongMin > len + 2) continue;
+    const bottom = it.mountZ ?? 0;
+    out.push({ item: it, alongMin, alongMax, perpMin, bottom, top: bottom + it.height });
+  }
+  out.sort((p, q) => p.perpMin - q.perpMin || p.bottom - q.bottom);
+  return { len, items: out };
+}
+
+function drawElevations(doc: jsPDF, project: Project, pageW: number, pageH: number): void {
+  const finishHex = finishColor(project.settings.finishCode);
+  const wallH = project.settings.wallHeight;
+  const ee = edges(project.room.points);
+  // only walls that have items on them
+  const walls = ee
+    .map((_, i) => ({ i, ...projectWall(project, i) }))
+    .filter((w) => w.items.length > 0);
+
+  const top = 92;
+  const left = 40;
+  const right = pageW - 40;
+  const bottom = pageH - 44;
+  if (walls.length === 0) {
+    doc.setFontSize(11);
+    doc.setTextColor("#888");
+    doc.text("No cabinets placed yet.", pageW / 2, (top + bottom) / 2, { align: "center" });
+    return;
+  }
+  // grid of cells: 1 column if 1-2 walls, else 2 columns
+  const cols = walls.length <= 2 ? 1 : 2;
+  const rows = Math.ceil(walls.length / cols);
+  const gapX = 24;
+  const gapY = 30;
+  const cellW = (right - left - gapX * (cols - 1)) / cols;
+  const cellH = (bottom - top - gapY * (rows - 1)) / rows;
+
+  walls.forEach((w, idx) => {
+    const col = idx % cols;
+    const row = Math.floor(idx / cols);
+    const cx = left + col * (cellW + gapX);
+    const cy = top + row * (cellH + gapY);
+    drawOneElevation(doc, w.i + 1, w.len, w.items, wallH, finishHex, project, cx, cy, cellW, cellH);
+  });
+}
+
+function drawOneElevation(
+  doc: jsPDF,
+  wallNum: number,
+  len: number,
+  items: ElevItem[],
+  wallH: number,
+  finishHex: string,
+  project: Project,
+  cellX: number,
+  cellY: number,
+  cellW: number,
+  cellH: number,
+): void {
+  // label
+  doc.setFontSize(9);
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(BRAND.indigo);
+  doc.text(`Wall ${wallNum} — ${fmtFt(len)} wide`, cellX, cellY + 8);
+  doc.setFont("helvetica", "normal");
+
+  const drawTop = cellY + 16;
+  const drawH = cellH - 16;
+  const scale = Math.min(cellW / len, drawH / wallH) * 0.92;
+  const ox = cellX + (cellW - len * scale) / 2;
+  const oy = drawTop + (drawH - wallH * scale) / 2;
+  const X = (along: number) => ox + along * scale;
+  const Y = (z: number) => oy + (wallH - z) * scale;
+
+  // wall background + floor
+  doc.setDrawColor("#9aa6b8");
+  doc.setLineWidth(0.5);
+  doc.setFillColor("#eef1f6");
+  doc.rect(ox, oy, len * scale, wallH * scale, "FD");
+  // reference lines
+  doc.setDrawColor(BRAND.steel);
+  doc.setLineWidth(0.4);
+  doc.setLineDashPattern([2, 1.5], 0);
+  doc.line(ox, Y(project.settings.counterHeight), ox + len * scale, Y(project.settings.counterHeight));
+  doc.line(ox, Y(project.settings.wallCabinetAFF), ox + len * scale, Y(project.settings.wallCabinetAFF));
+  doc.setLineDashPattern([], 0);
+  doc.setFontSize(5.5);
+  doc.setTextColor(BRAND.steel);
+  doc.text(`Counter ${project.settings.counterHeight}"`, ox + 1, Y(project.settings.counterHeight) - 1);
+  doc.text(`Uppers ${project.settings.wallCabinetAFF}" AFF`, ox + 1, Y(project.settings.wallCabinetAFF) - 1);
+  // floor
+  doc.setDrawColor("#1f2532");
+  doc.setLineWidth(1);
+  doc.line(ox - 3, Y(0), ox + len * scale + 3, Y(0));
+
+  for (const e of items) {
+    const it = e.item;
+    const x = X(e.alongMin);
+    const w = (e.alongMax - e.alongMin) * scale;
+    const y = Y(e.top);
+    const h = (e.top - e.bottom) * scale;
+    const isOpening = it.kind === "window" || it.kind === "door";
+    const isAppliance = it.kind === "appliance";
+    if (isOpening) {
+      doc.setFillColor(it.kind === "window" ? "#cfe6f1" : "#ffffff");
+      doc.setDrawColor(BRAND.steel);
+    } else if (isAppliance) {
+      doc.setFillColor("#cfd6e0");
+      doc.setDrawColor("#5a6478");
+    } else {
+      doc.setFillColor(finishHex);
+      doc.setDrawColor("#1f2532");
+    }
+    doc.setLineWidth(0.5);
+    doc.rect(x, y, w, h, "FD");
+    // shaker frame hint
+    if (!isOpening && !isAppliance && w > 10 && h > 10) {
+      doc.setDrawColor("#00000030");
+      doc.setLineWidth(0.3);
+      doc.rect(x + 2, y + 2, w - 4, h - 4);
+    }
+    if (w > 14) {
+      doc.setFontSize(5.5);
+      doc.setTextColor("#1f2532");
+      doc.text(it.sku ?? it.label ?? (it.kind === "window" ? "WIN" : it.kind === "door" ? "DR" : ""), x + w / 2, y + Math.min(h / 2, 9), { align: "center", baseline: "middle" });
+      doc.setFontSize(4.8);
+      doc.setTextColor("#555");
+      doc.text(`${Math.round(it.width)}"w x ${Math.round(it.height)}"h`, x + w / 2, y + Math.min(h / 2, 9) + 6, { align: "center" });
+    }
+  }
+}
+
+function drawFootnote(doc: jsPDF, project: Project, catalog: Catalog, pricing: boolean, pageW: number, pageH: number): void {
+  const finish = findFinish(catalog, project.settings.finishCode);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7);
+  doc.setTextColor("#666");
+  const y = pageH - 26;
+  doc.text(
+    `Project: ${project.meta.name}  ·  Client: ${project.meta.client || "—"}  ·  ${project.meta.address || ""}  ·  ${project.meta.date}  ·  Job #${project.meta.jobNumber || "—"}`,
+    24,
+    y,
+  );
+  doc.text(
+    `Finish: ${finish?.name ?? project.settings.finishCode} · Box: ${project.settings.boxMaterial === "PLY" ? "Plywood" : "Particle Board"}. Dimensions nominal; verify field measurements before ordering.${pricing ? ` Pricing per OPPEIN ${catalog._meta.pricing_year ?? 2025} list.` : ""}`,
+    24,
+    y + 10,
+    { maxWidth: pageW - 48 },
+  );
 }
 
 function drawSchedule(
@@ -141,13 +382,7 @@ function drawSchedule(
     project.settings.finishCode,
     project.settings.boxMaterial,
   );
-  const totals = computeTotals(
-    lines,
-    catalog,
-    project.settings.markup,
-    project.settings.hstRate,
-  );
-  const finish = findFinish(catalog, project.settings.finishCode);
+  const totals = computeTotals(lines, catalog, project.settings);
 
   const headStyles = { fillColor: BRAND.indigo, textColor: "#ffffff", fontStyle: "bold" as const };
 
@@ -241,13 +476,17 @@ function drawSchedule(
     yy += 12;
   };
   if (pricing && mode === "internal") {
-    line("Subtotal (list)", formatCAD(totals.subtotalList));
+    line("Subtotal (MSRP/list)", formatCAD(totals.subtotalList));
     line(
       `Dealer discount (${Math.round(catalog._meta.dealer_discount * 100)}%)`,
       `- ${formatCAD(totals.dealerDiscount)}`,
     );
     line("JMRC cost", formatCAD(totals.jmrcCost), true);
-    line(`Markup (${totals.markup.toFixed(2)}×)`, formatCAD(totals.clientSubtotal));
+    line("Client price", formatCAD(totals.clientSubtotal));
+    line(
+      `Margin ${totals.achievedMarginPct.toFixed(1)}% · Disc off MSRP ${totals.achievedDiscountPct.toFixed(1)}%`,
+      "",
+    );
     line(`HST (${Math.round(totals.hstRate * 100)}%)`, formatCAD(totals.hst));
     line("Client total", formatCAD(totals.clientTotal), true);
   } else if (pricing) {
@@ -255,17 +494,4 @@ function drawSchedule(
     line(`HST (${Math.round(totals.hstRate * 100)}%)`, formatCAD(totals.hst));
     line("Total (CAD)", formatCAD(totals.clientTotal), true);
   }
-
-  doc.setFont("helvetica", "italic");
-  doc.setFontSize(7);
-  doc.setTextColor("#666");
-  const pricingNote = pricing
-    ? ` Pricing per OPPEIN ${catalog._meta.pricing_year ?? 2025} dealer list.`
-    : "";
-  doc.text(
-    `Finish: ${finish?.name ?? project.settings.finishCode}${pricing ? ` (${finish?.tierName ?? ""})` : ""} · Box: ${project.settings.boxMaterial === "PLY" ? "Plywood" : "Particle Board"}. Dimensions nominal; verify field measurements before ordering.${pricingNote}`,
-    24,
-    doc.internal.pageSize.getHeight() - 14,
-    { maxWidth: pageW - 48 },
-  );
 }
