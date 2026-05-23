@@ -17,6 +17,7 @@ import {
 } from "../utils/placement";
 import { snapToNearestWall } from "../utils/snapping";
 import { findOverlappingIds } from "../utils/overlaps";
+import { finishColor } from "../utils/finishColors";
 
 const SNAP_IN = 3;
 
@@ -630,13 +631,17 @@ function ItemNode({
   }
 
   const isAppliance = item.kind === "appliance";
+  const isPanelPiece = item.kind === "panel" || item.kind === "filler";
+  const doorHex = finishColor(settings.finishCode);
   const fill = overlap
     ? "#fde8e6"
     : isAppliance
       ? "#e6ecf3"
-      : isWall
-        ? "#f7f4ec"
-        : "#f1ece1";
+      : isPanelPiece
+        ? doorHex // panels/fillers are finished surfaces -> finish colour
+        : isWall
+          ? "#f7f5f0"
+          : "#f6f4ef";
   const stroke = overlap
     ? "#c0392b"
     : selected
@@ -751,9 +756,9 @@ function ItemNode({
           ⚠ overlap
         </text>
       )}
-      {/* Door face hint at front: a thin band */}
-      {!isWall && (
-        <rect x={0} y={h - 0.7} width={w} height={0.7} fill="#d4cab3" />
+      {/* Door face hint at front: a thin band in the finish colour */}
+      {!isPanelPiece && (
+        <rect x={0} y={h - 1.2} width={w} height={1.2} fill={doorHex} stroke="#00000022" strokeWidth={0.1} />
       )}
       {(() => {
         // Offset labels vertically by mount type so an upper over a base

@@ -429,6 +429,32 @@ input, select, textarea { font-family: inherit; font-size: 13px; }
 .plan-scroll { flex: 1; overflow: auto; background: #fff; }
 .plan-svg { display: block; user-select: none; }
 
+/* ===== Front elevation ===== */
+.elev-wrap { display: flex; flex-direction: column; flex: 1; min-width: 0; min-height: 0; }
+.elev-toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--line);
+  background: #fbfcfe;
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+.wall-flip { display: inline-flex; align-items: center; gap: 8px; }
+.wall-flip button {
+  background: #fff; border: 1px solid var(--line); border-radius: 4px;
+  width: 26px; height: 24px; display: inline-flex; align-items: center; justify-content: center;
+  color: var(--text);
+}
+.wall-flip button:hover { background: var(--line-soft); border-color: var(--steel); }
+.wall-flip span { font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
+.elev-hint { font-style: italic; }
+.elev-canvas {
+  flex: 1; min-height: 0; overflow: hidden;
+  background: #ffffff;
+  display: flex; align-items: center; justify-content: center;
+}
+.elev-canvas svg { display: block; }
+
 /* ===== 3D ===== */
 .three-wrap { flex: 1; min-width: 0; min-height: 0; background: #eef1f7; position: relative; }
 .three-wrap canvas { display: block; }

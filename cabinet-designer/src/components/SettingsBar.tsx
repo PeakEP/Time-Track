@@ -8,6 +8,7 @@ import {
   Square,
   Layout,
   LayoutPanelLeft,
+  PanelTop,
   Box,
   ChevronDown,
   Settings as SettingsIcon,
@@ -231,10 +232,13 @@ export function SettingsBar() {
         </button>
 
         <div className="view-toggle">
-          <button className={view === "plan" ? "active" : ""} onClick={() => setView("plan")} title="2D plan only">
-            <Layout size={14}/> 2D
+          <button className={view === "plan" ? "active" : ""} onClick={() => setView("plan")} title="2D plan (top-down)">
+            <Layout size={14}/> Plan
           </button>
-          <button className={view === "split" ? "active" : ""} onClick={() => setView("split")} title="Split 2D + 3D">
+          <button className={view === "front" ? "active" : ""} onClick={() => setView("front")} title="2D front elevation">
+            <PanelTop size={14}/> Front
+          </button>
+          <button className={view === "split" ? "active" : ""} onClick={() => setView("split")} title="Split plan + 3D">
             <LayoutPanelLeft size={14}/> Split
           </button>
           <button className={view === "3d" ? "active" : ""} onClick={() => setView("3d")} title="3D only">

@@ -6,6 +6,7 @@ import { SchedulePanel, ScheduleRail } from "./components/SchedulePanel";
 import { SettingsBar } from "./components/SettingsBar";
 import { Inspector } from "./components/Inspector";
 import { Welcome } from "./components/Welcome";
+import { Elevation } from "./components/Elevation";
 
 // 3D scene is large (three.js + r3f). Lazy-load so first paint is fast.
 const LazyScene3D = lazy(() =>
@@ -126,6 +127,7 @@ export default function App() {
         />
         <section className="canvas-area">
           {view === "plan" && <Plan2D />}
+          {view === "front" && <Elevation />}
           {view === "3d" && <ThreePane />}
           {view === "split" && <SplitView />}
           <Inspector />

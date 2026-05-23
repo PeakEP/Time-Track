@@ -3,7 +3,7 @@ import type { Catalog, Item, Project, Rotation } from "./types";
 import { rectangleRoom } from "./utils/roomPresets";
 import { makeId } from "./utils/placement";
 
-export type ViewMode = "split" | "plan" | "3d";
+export type ViewMode = "split" | "plan" | "3d" | "front";
 
 type GhostState = { product: import("./types").Product; mountZ: number } | null;
 
@@ -43,6 +43,7 @@ type State = {
   past: Project[];
   future: Project[];
   vertexEdit: boolean;
+  frontWall: number;
   // setters
   setCatalog: (c: Catalog) => void;
   setCatalogError: (e: string) => void;
@@ -65,6 +66,7 @@ type State = {
   setGhost: (g: GhostState) => void;
   setZoom: (px: number) => void;
   setVertexEdit: (on: boolean) => void;
+  setFrontWall: (n: number) => void;
   undo: () => void;
   redo: () => void;
   canUndo: () => boolean;
@@ -117,6 +119,7 @@ export const useStore = create<State>((set, get) => ({
   past: [],
   future: [],
   vertexEdit: false,
+  frontWall: 0,
 
   setCatalog: (c) => set({ catalog: c }),
   setCatalogError: (e) => set({ catalogError: e }),
@@ -238,6 +241,7 @@ export const useStore = create<State>((set, get) => ({
   setGhost: (g) => set({ ghost: g }),
   setZoom: (px) => set({ pxPerInch: Math.max(1.5, Math.min(24, px)) }),
   setVertexEdit: (on) => set({ vertexEdit: on }),
+  setFrontWall: (n) => set({ frontWall: n }),
 
   undo: () =>
     set((s) => {

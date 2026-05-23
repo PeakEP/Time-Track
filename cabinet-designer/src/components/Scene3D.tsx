@@ -394,9 +394,10 @@ function CabinetMesh({
   const cy = mountZ + h / 2;
   const cz = item.y + d / 2;
   const isAppliance = item.kind === "appliance";
-  // body (carcass/sides) noticeably darker than the door so the front reads,
-  // and both clearly differ from the wall colour.
-  const bodyColor = isAppliance ? "#aab2c0" : darken(finishHex, 0.16);
+  const isPanelPiece = item.kind === "panel" || item.kind === "filler";
+  // OPPEIN carcasses are white; the door/panel/filler shows the finish colour.
+  const WHITE_BOX = "#f4f3ef";
+  const bodyColor = isAppliance ? "#aab2c0" : WHITE_BOX;
   const doorColor = isAppliance ? "#20242e" : finishHex;
   const panelColor = isAppliance ? "#2b2f3a" : darken(finishHex, 0.07);
 
@@ -421,6 +422,24 @@ function CabinetMesh({
         doorColor={doorColor}
         dragProps={dragProps}
       />
+    );
+  }
+  if (isPanelPiece) {
+    // a finished panel/filler is the finish colour through-and-through
+    return (
+      <group position={[cx, cy, cz]} {...dragProps}>
+        <mesh>
+          <boxGeometry args={[w, h, d]} />
+          <meshStandardMaterial color={finishHex} roughness={0.45} />
+          <Edges threshold={15} color="#3a4150" />
+        </mesh>
+        {selected && (
+          <mesh>
+            <boxGeometry args={[w + 1, h + 1, d + 1]} />
+            <meshBasicMaterial color="#2C327C" wireframe />
+          </mesh>
+        )}
+      </group>
     );
   }
   return (
