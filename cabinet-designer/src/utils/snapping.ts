@@ -4,6 +4,58 @@ import { footprint } from "./placement";
 
 const WALL_SNAP_TOLERANCE_IN = 8;
 
+export type Rect = { x: number; y: number; w: number; d: number };
+
+/**
+ * "Auto-attach": snap the dragged rect so its edges line up flush with a
+ * nearby object's edges (side-by-side, stacked, or face-aligned). X and Y are
+ * resolved independently; each only snaps when a neighbour is within threshold.
+ */
+export function snapToAdjacent(
+  a: Rect,
+  others: Rect[],
+  threshold = 3,
+): { x: number; y: number } {
+  const aT = a.y;
+  const aB = a.y + a.d;
+  const aL = a.x;
+  const aR = a.x + a.w;
+  let bestX = a.x;
+  let dX = threshold + 0.001;
+  let bestY = a.y;
+  let dY = threshold + 0.001;
+  for (const b of others) {
+    const bL = b.x;
+    const bR = b.x + b.w;
+    const bT = b.y;
+    const bB = b.y + b.d;
+    // consider X alignment when the two share a vertical run (side-by-side)
+    // or their back edges are close (uppers over bases)
+    if ((aT < bB && aB > bT) || Math.min(Math.abs(aT - bT), Math.abs(aB - bB)) <= threshold) {
+      for (const cx of [bL - a.w, bR, bL, bR - a.w]) {
+        const diff = Math.abs(cx - a.x);
+        if (diff < dX) {
+          dX = diff;
+          bestX = cx;
+        }
+      }
+    }
+    if ((aL < bR && aR > bL) || Math.min(Math.abs(aL - bL), Math.abs(aR - bR)) <= threshold) {
+      for (const cy of [bT - a.d, bB, bT, bB - a.d]) {
+        const diff = Math.abs(cy - a.y);
+        if (diff < dY) {
+          dY = diff;
+          bestY = cy;
+        }
+      }
+    }
+  }
+  return {
+    x: dX <= threshold ? bestX : a.x,
+    y: dY <= threshold ? bestY : a.y,
+  };
+}
+
 export type WallSnap = {
   x: number;
   y: number;

@@ -15,11 +15,12 @@ import {
   isWallDiagonal,
   diagonalPoints,
 } from "../utils/placement";
-import { snapToNearestWall } from "../utils/snapping";
+import { snapToNearestWall, snapToAdjacent } from "../utils/snapping";
 import { findOverlappingIds } from "../utils/overlaps";
 import { finishColor } from "../utils/finishColors";
 
 const SNAP_IN = 3;
+const ATTACH_IN = 8; // auto-attach when an edge is within this of a neighbour
 
 export function Plan2D() {
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -112,31 +113,49 @@ export function Plan2D() {
     setCursor(pos);
     if (dragging) {
       const item = items.find((i) => i.id === dragging.id);
-      // panels/fillers move on a fine 1/4" grid so they can seat flush
-      const grid = item && (item.kind === "panel" || item.kind === "filler") ? 0.25 : SNAP_IN;
+      if (!item) return;
+      const free = e.altKey; // hold Alt to move freely (no snapping)
+      // fine grid for panels/fillers and for any Alt-drag; coarse for cabinets
+      const grid = free || item.kind === "panel" || item.kind === "filler" ? 0.25 : SNAP_IN;
       let newX = snap(pos.x - dragging.offsetX, grid);
       let newY = snap(pos.y - dragging.offsetY, grid);
-      const snapsToWall =
-        item && !item.scheduleOnly && item.kind !== "panel" && item.kind !== "filler";
+      let rotation = item.rotation;
+      const snapsToWall = !free && !item.scheduleOnly && item.kind !== "panel" && item.kind !== "filler";
       if (snapsToWall) {
         const wallSnap = snapToNearestWall(room, {
           x: newX,
           y: newY,
-          width: item!.width,
-          depth: item!.depth,
+          width: item.width,
+          depth: item.depth,
         });
         if (wallSnap) {
-          newX = snap(wallSnap.x, SNAP_IN);
-          newY = snap(wallSnap.y, SNAP_IN);
-          updateItem(
-            dragging.id,
-            { x: newX, y: newY, rotation: wallSnap.rotation },
-            { snapshot: false },
-          );
-          return;
+          newX = wallSnap.x;
+          newY = wallSnap.y;
+          rotation = wallSnap.rotation;
         }
       }
-      updateItem(dragging.id, { x: newX, y: newY }, { snapshot: false });
+      // auto-attach: snap edges flush to nearby objects (unless Alt held)
+      if (!free) {
+        const fw = rotation === 90 || rotation === 270 ? item.depth : item.width;
+        const fd = rotation === 90 || rotation === 270 ? item.width : item.depth;
+        const others = items
+          .filter(
+            (o) =>
+              o.id !== item.id &&
+              !o.scheduleOnly &&
+              o.kind !== "window" &&
+              o.kind !== "door",
+          )
+          .map((o) => {
+            const ofw = o.rotation === 90 || o.rotation === 270 ? o.depth : o.width;
+            const ofd = o.rotation === 90 || o.rotation === 270 ? o.width : o.depth;
+            return { x: o.x, y: o.y, w: ofw, d: ofd };
+          });
+        const adj = snapToAdjacent({ x: newX, y: newY, w: fw, d: fd }, others, ATTACH_IN);
+        newX = adj.x;
+        newY = adj.y;
+      }
+      updateItem(dragging.id, { x: newX, y: newY, rotation }, { snapshot: false });
     }
   }
 
@@ -183,6 +202,21 @@ export function Plan2D() {
         y = snap(ws.y, SNAP_IN);
         rotation = ws.rotation;
       }
+    }
+    // auto-attach flush to nearby objects
+    if (!e.altKey) {
+      const fw = rotation === 90 || rotation === 270 ? d : w;
+      const fd = rotation === 90 || rotation === 270 ? w : d;
+      const others = items
+        .filter((o) => !o.scheduleOnly && o.kind !== "window" && o.kind !== "door")
+        .map((o) => {
+          const ofw = o.rotation === 90 || o.rotation === 270 ? o.depth : o.width;
+          const ofd = o.rotation === 90 || o.rotation === 270 ? o.width : o.depth;
+          return { x: o.x, y: o.y, w: ofw, d: ofd };
+        });
+      const adj = snapToAdjacent({ x, y, w: fw, d: fd }, others, ATTACH_IN);
+      x = adj.x;
+      y = adj.y;
     }
     const item: Item = {
       id: makeId(),
