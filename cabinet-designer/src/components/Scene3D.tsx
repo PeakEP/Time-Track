@@ -6,6 +6,7 @@ import { useStore } from "../store";
 import type { Item, Point } from "../types";
 import { bounds, edges } from "../utils/roomPresets";
 import { darken, finishColor } from "../utils/finishColors";
+import { generateCountertops } from "../utils/snapping";
 
 // World units = inches. Convert to feet for camera distances feels too large; keep inches.
 export function Scene3D() {
@@ -23,6 +24,10 @@ export function Scene3D() {
   const cameraTarget: [number, number, number] = [cx, settings.wallHeight / 3, cy];
 
   const finishHex = finishColor(settings.finishCode);
+  const counters = useMemo(
+    () => generateCountertops(items, settings.counterHeight),
+    [items, settings.counterHeight],
+  );
 
   return (
     <div className="three-wrap">
@@ -60,6 +65,16 @@ export function Scene3D() {
             onSelect={() => select(it.id)}
             finishHex={finishHex}
           />
+        ))}
+
+        {counters.map((c, i) => (
+          <mesh
+            key={`ct-${i}`}
+            position={[c.x + c.width / 2, c.topZ + c.height / 2, c.y + c.depth / 2]}
+          >
+            <boxGeometry args={[c.width, c.height, c.depth]} />
+            <meshStandardMaterial color="#2a2a30" roughness={0.35} metalness={0.05} />
+          </mesh>
         ))}
 
         <OrbitControls
@@ -239,8 +254,9 @@ function CabinetMesh({
   const cx = item.x + w / 2;
   const cy = mountZ + h / 2;
   const cz = item.y + d / 2;
-  const bodyColor = darken(finishHex, 0.04);
-  const doorColor = finishHex;
+  const isAppliance = item.kind === "appliance";
+  const bodyColor = isAppliance ? "#cfd6e0" : darken(finishHex, 0.04);
+  const doorColor = isAppliance ? "#1c1f28" : finishHex;
   return (
     <group
       position={[cx, cy, cz]}
@@ -251,12 +267,12 @@ function CabinetMesh({
     >
       <mesh>
         <boxGeometry args={[w, h, d]} />
-        <meshStandardMaterial color={bodyColor} roughness={0.6} />
+        <meshStandardMaterial color={bodyColor} roughness={isAppliance ? 0.3 : 0.6} metalness={isAppliance ? 0.4 : 0} />
       </mesh>
       {/* front face / door plane */}
       <mesh position={[0, 0, d / 2 - 0.05]}>
         <boxGeometry args={[w - 0.5, h - 0.5, 0.5]} />
-        <meshStandardMaterial color={doorColor} roughness={0.4} />
+        <meshStandardMaterial color={doorColor} roughness={isAppliance ? 0.25 : 0.4} metalness={isAppliance ? 0.5 : 0} />
       </mesh>
       {selected && (
         <mesh>

@@ -3,6 +3,7 @@ import { useStore } from "../store";
 import type { Item, Point } from "../types";
 import { bounds, edges } from "../utils/roomPresets";
 import { isScheduleOnly, isWallMounted, makeId, snap } from "../utils/placement";
+import { snapToNearestWall } from "../utils/snapping";
 
 const SNAP_IN = 3;
 
@@ -76,8 +77,23 @@ export function Plan2D() {
     if (!pos) return;
     setCursor(pos);
     if (dragging) {
-      const newX = snap(pos.x - dragging.offsetX, SNAP_IN);
-      const newY = snap(pos.y - dragging.offsetY, SNAP_IN);
+      let newX = snap(pos.x - dragging.offsetX, SNAP_IN);
+      let newY = snap(pos.y - dragging.offsetY, SNAP_IN);
+      const item = items.find((i) => i.id === dragging.id);
+      if (item && !item.scheduleOnly) {
+        const wallSnap = snapToNearestWall(room, {
+          x: newX,
+          y: newY,
+          width: item.width,
+          depth: item.depth,
+        });
+        if (wallSnap) {
+          newX = snap(wallSnap.x, SNAP_IN);
+          newY = snap(wallSnap.y, SNAP_IN);
+          updateItem(dragging.id, { x: newX, y: newY, rotation: wallSnap.rotation });
+          return;
+        }
+      }
       updateItem(dragging.id, { x: newX, y: newY });
     }
   }
@@ -103,15 +119,22 @@ export function Plan2D() {
     if (isScheduleOnly(sku)) return; // ignore; user should use Add-to-schedule
     const w = sku.width_in ?? 24;
     const d = sku.depth_in ?? 24;
-    const x = snap(pos.x - w / 2, SNAP_IN);
-    const y = snap(pos.y - d / 2, SNAP_IN);
+    let x = snap(pos.x - w / 2, SNAP_IN);
+    let y = snap(pos.y - d / 2, SNAP_IN);
+    let rotation: Item["rotation"] = 0;
+    const ws = snapToNearestWall(room, { x, y, width: w, depth: d });
+    if (ws) {
+      x = snap(ws.x, SNAP_IN);
+      y = snap(ws.y, SNAP_IN);
+      rotation = ws.rotation;
+    }
     const item: Item = {
       id: makeId(),
       kind: "cabinet",
       sku: sku.sku,
       x,
       y,
-      rotation: 0,
+      rotation,
       width: w,
       depth: d,
       height: sku.height_in ?? 34.5,
@@ -319,8 +342,9 @@ function ItemNode({
     );
   }
 
-  const fill = isWall ? "#f7f4ec" : "#f1ece1";
-  const stroke = selected ? "#2C327C" : isWall ? "#9aa4b6" : "#1f2532";
+  const isAppliance = item.kind === "appliance";
+  const fill = isAppliance ? "#e6ecf3" : isWall ? "#f7f4ec" : "#f1ece1";
+  const stroke = selected ? "#2C327C" : isAppliance ? "#5a6478" : isWall ? "#9aa4b6" : "#1f2532";
   return (
     <g
       transform={`translate(${item.x} ${item.y})`}
@@ -342,10 +366,10 @@ function ItemNode({
         <rect x={0} y={h - 0.7} width={w} height={0.7} fill="#d4cab3" />
       )}
       <text x={w / 2} y={h / 2 - 0.5} textAnchor="middle" fontSize={2.5} fill="#1f2532" fontFamily="Inter" fontWeight={600}>
-        {item.sku ?? ""}
+        {item.sku ?? item.label ?? ""}
       </text>
       <text x={w / 2} y={h / 2 + 2.5} textAnchor="middle" fontSize={2} fill="#4a5364" fontFamily="Inter">
-        {Math.round(item.width)}" {isWall ? "(wall)" : ""}
+        {Math.round(item.width)}" {isAppliance ? "(appl.)" : isWall ? "(wall)" : ""}
       </text>
       {selected && (
         <>

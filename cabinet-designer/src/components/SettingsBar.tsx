@@ -19,6 +19,8 @@ import { openProject, saveProject, exportScheduleCsv } from "../utils/persistenc
 import { exportProjectPdf } from "../utils/pdf";
 import { computeLines, formatCAD } from "../utils/pricing";
 import { makeId } from "../utils/placement";
+import { APPLIANCES } from "../data/appliances";
+import type { AppliancePreset } from "../data/appliances";
 
 export function SettingsBar() {
   const project = useStore((s) => s.project);
@@ -48,6 +50,21 @@ export function SettingsBar() {
     if (!catalog) return;
     exportProjectPdf(project, catalog, mode);
   }
+  function addAppliance(a: AppliancePreset) {
+    addItem({
+      id: makeId(),
+      kind: "appliance",
+      x: 12,
+      y: 12,
+      rotation: 0,
+      width: a.width,
+      depth: a.depth,
+      height: a.height,
+      mountZ: a.mountZ,
+      label: a.label,
+    });
+  }
+
   function onExportCsv() {
     if (!catalog) return;
     const lines = computeLines(
@@ -141,6 +158,18 @@ export function SettingsBar() {
           <button onClick={() => { setShowDoorDlg(true); setOpenMenu(null); }}>
             <DoorClosed size={14}/> Door…
           </button>
+          <hr />
+          {APPLIANCES.map((a) => (
+            <button
+              key={a.id}
+              onClick={() => {
+                addAppliance(a);
+                setOpenMenu(null);
+              }}
+            >
+              <Box size={14}/> {a.label}
+            </button>
+          ))}
         </Menu>
 
         <button className="icon-btn" onClick={() => setShowSettingsDlg(true)} title="Project settings">
