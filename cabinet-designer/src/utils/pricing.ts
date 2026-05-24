@@ -54,7 +54,7 @@ export function computeLines(
 ): LineCost[] {
   const tier = getTierForFinish(catalog, finishCode);
   return items
-    .filter((i) => i.kind !== "window" && i.kind !== "door")
+    .filter((i) => i.kind !== "window" && i.kind !== "door" && i.kind !== "appliance")
     .map((item) => {
       const product = findProduct(catalog, item.sku);
       const unit = unitListPrice(product, tier, boxMaterial);
