@@ -246,20 +246,19 @@ function drawElevations(doc: jsPDF, project: Project, pageW: number, pageH: numb
     doc.text("No cabinets placed yet.", pageW / 2, (top + bottom) / 2, { align: "center" });
     return;
   }
-  // grid of cells: 1 column if 1-2 walls, else 2 columns
-  const cols = walls.length <= 2 ? 1 : 2;
-  const rows = Math.ceil(walls.length / cols);
-  const gapX = 24;
-  const gapY = 30;
-  const cellW = (right - left - gapX * (cols - 1)) / cols;
-  const cellH = (bottom - top - gapY * (rows - 1)) / rows;
+  // one wall per full-width band so labels stay readable; up to 3 bands/page
+  const perPage = 3;
+  const fullW = right - left;
+  const bandH = (bottom - top) / Math.min(walls.length, perPage);
 
   walls.forEach((w, idx) => {
-    const col = idx % cols;
-    const row = Math.floor(idx / cols);
-    const cx = left + col * (cellW + gapX);
-    const cy = top + row * (cellH + gapY);
-    drawOneElevation(doc, w.i + 1, w.len, w.items, wallH, finishHex, project, cx, cy, cellW, cellH);
+    if (idx > 0 && idx % perPage === 0) {
+      doc.addPage();
+      drawTitleBlock(doc, project, "internal", pageW, true, "Elevations (face views, cont.)");
+    }
+    const slot = idx % perPage;
+    const cy = top + slot * bandH;
+    drawOneElevation(doc, w.i + 1, w.len, w.items, wallH, finishHex, project, left, cy, fullW, bandH);
   });
 }
 
@@ -283,9 +282,9 @@ function drawOneElevation(
   doc.text(`Wall ${wallNum} — ${fmtFt(len)} wide`, cellX, cellY + 8);
   doc.setFont("helvetica", "normal");
 
-  const drawTop = cellY + 16;
-  const drawH = cellH - 16;
-  const scale = Math.min(cellW / len, drawH / wallH) * 0.92;
+  const drawTop = cellY + 14;
+  const drawH = cellH - 20;
+  const scale = Math.min(cellW / len, drawH / wallH) * 0.96;
   const ox = cellX + (cellW - len * scale) / 2;
   const oy = drawTop + (drawH - wallH * scale) / 2;
   const X = (along: number) => ox + along * scale;
@@ -338,14 +337,27 @@ function drawOneElevation(
       doc.setLineWidth(0.3);
       doc.rect(x + 2, y + 2, w - 4, h - 4);
     }
-    if (w > 14) {
-      doc.setFontSize(5.5);
+    // label: SKU centred, rotated vertically when the box is narrow so it
+    // never overlaps a neighbour; width called out below the box
+    const label = it.sku ?? it.label ?? (it.kind === "window" ? "WIN" : it.kind === "door" ? "DR" : "");
+    if (label && h > 10) {
       doc.setTextColor("#1f2532");
-      doc.text(it.sku ?? it.label ?? (it.kind === "window" ? "WIN" : it.kind === "door" ? "DR" : ""), x + w / 2, y + Math.min(h / 2, 9), { align: "center", baseline: "middle" });
-      doc.setFontSize(4.8);
-      doc.setTextColor("#555");
-      doc.text(`${Math.round(it.width)}"w x ${Math.round(it.height)}"h`, x + w / 2, y + Math.min(h / 2, 9) + 6, { align: "center" });
+      const horizFits = w > label.length * 4.2;
+      if (horizFits) {
+        doc.setFontSize(7);
+        doc.text(label, x + w / 2, y + h / 2, { align: "center", baseline: "middle" });
+      } else if (h > label.length * 4.2) {
+        doc.setFontSize(6.5);
+        doc.text(label, x + w / 2, y + h / 2, { align: "center", baseline: "middle", angle: 90 });
+      } else {
+        doc.setFontSize(5);
+        doc.text(label, x + w / 2, y + h / 2, { align: "center", baseline: "middle" });
+      }
     }
+    // width dimension just under the box
+    doc.setFontSize(6);
+    doc.setTextColor(BRAND.steel);
+    doc.text(`${Math.round(it.width)}"`, x + w / 2, Y(0) + 7, { align: "center" });
   }
 }
 
