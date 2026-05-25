@@ -285,6 +285,10 @@ let autosaveTimer: ReturnType<typeof setTimeout> | null = null;
 export function attachAutosave(): () => void {
   // Initial restore is handled separately via restoreDraft(); this only persists.
   const unsub = useStore.subscribe((s) => {
+    // Never overwrite a saved draft with the pristine empty default — otherwise
+    // an in-progress kitchen gets clobbered on reload before "Restore" is clicked
+    // (e.g. when the catalog finishing loading triggers this subscription).
+    if (s.project.items.length === 0 && s.project.meta.name === "Untitled Kitchen") return;
     if (autosaveTimer) clearTimeout(autosaveTimer);
     autosaveTimer = setTimeout(() => {
       try {

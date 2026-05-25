@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { useStore, loadCatalog, attachAutosave, restoreDraft, clearDraft } from "./store";
+import type { Project } from "./types";
 import { CatalogPalette } from "./components/CatalogPalette";
 import { Plan2D } from "./components/Plan2D";
 import { SchedulePanel, ScheduleRail } from "./components/SchedulePanel";
@@ -40,7 +41,7 @@ export default function App() {
   useEffect(() => {
     writeWidth("jmrc.cabinet.scheduleW", scheduleWidth);
   }, [scheduleWidth]);
-  const [draftPrompt, setDraftPrompt] = useState<{ name: string } | null>(null);
+  const [draftPrompt, setDraftPrompt] = useState<{ name: string; project: Project } | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -54,7 +55,8 @@ export default function App() {
     // restore draft prompt
     const draft = restoreDraft();
     if (draft && (draft.items.length > 0 || draft.meta.name !== "Untitled Kitchen")) {
-      setDraftPrompt({ name: draft.meta.name });
+      // capture the draft now so a later autosave can't change what we restore
+      setDraftPrompt({ name: draft.meta.name, project: draft });
     }
     // start autosave only after initial paint to avoid persisting the default project
     const unsub = attachAutosave();
@@ -85,8 +87,7 @@ export default function App() {
   }, [undo, redo]);
 
   function acceptDraft() {
-    const draft = restoreDraft();
-    if (draft) setProject(draft);
+    if (draftPrompt) setProject(draftPrompt.project);
     setDraftPrompt(null);
   }
   function discardDraft() {

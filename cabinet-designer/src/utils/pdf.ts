@@ -303,10 +303,14 @@ function drawOneElevation(
         doc.text(label, x + w / 2, y + h / 2, { align: "center", baseline: "middle" });
       }
     }
-    // width dimension just under the box
-    doc.setFontSize(6);
-    doc.setTextColor(BRAND.steel);
-    doc.text(`${Math.round(it.width)}"`, x + w / 2, Y(0) + 7, { align: "center" });
+    // width dimension just under each box (at its own bottom, so upper and
+    // base dimensions don't pile up on the same floor line); skip very narrow
+    // pieces to avoid clutter
+    if (w > 9) {
+      doc.setFontSize(6);
+      doc.setTextColor(BRAND.steel);
+      doc.text(`${Math.round(it.width)}"`, x + w / 2, Y(e.bottom) + 6, { align: "center" });
+    }
   }
 }
 
