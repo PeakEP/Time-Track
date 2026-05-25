@@ -1,10 +1,11 @@
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
-import type { Catalog, Item, Point, Project } from "../types";
+import type { Catalog, Project } from "../types";
 import { computeLines, computeTotals, formatCAD, findFinish } from "./pricing";
 import { bounds, edges } from "./roomPresets";
 import { itemDimsLabel, footprint } from "./placement";
 import { finishColor } from "./finishColors";
+import { assignItemsToWalls, type ElevBox } from "./elevation";
 
 type Mode = "client" | "internal";
 
@@ -171,69 +172,17 @@ function drawPlan(doc: jsPDF, project: Project, pageW: number, pageH: number): v
   if (poly.length === 0) return; // keep poly referenced
 }
 
-function centroid(points: Point[]): Point {
-  const s = points.reduce((a, p) => ({ x: a.x + p.x, y: a.y + p.y }), { x: 0, y: 0 });
-  return { x: s.x / points.length, y: s.y / points.length };
-}
-
-type ElevItem = { item: Item; alongMin: number; alongMax: number; bottom: number; top: number; perpMin: number };
-
-function projectWall(project: Project, wallIndex: number): { len: number; items: ElevItem[] } {
-  const pts = project.room.points;
-  const ee = edges(pts);
-  const wall = ee[wallIndex];
-  const a = wall.a;
-  const b = wall.b;
-  const dx = b.x - a.x;
-  const dy = b.y - a.y;
-  const len = Math.hypot(dx, dy) || 1;
-  const tx = dx / len;
-  const ty = dy / len;
-  let nx = -ty;
-  let ny = tx;
-  const c = centroid(pts);
-  if ((c.x - a.x) * nx + (c.y - a.y) * ny < 0) {
-    nx = -nx;
-    ny = -ny;
-  }
-  const out: ElevItem[] = [];
-  for (const it of project.items) {
-    if (it.scheduleOnly) continue;
-    const fp = footprint(it);
-    const corners: [number, number][] = [
-      [it.x, it.y],
-      [it.x + fp.w, it.y],
-      [it.x + fp.w, it.y + fp.d],
-      [it.x, it.y + fp.d],
-    ];
-    let alongMin = Infinity;
-    let alongMax = -Infinity;
-    let perpMin = Infinity;
-    for (const [qx, qy] of corners) {
-      const rx = qx - a.x;
-      const ry = qy - a.y;
-      const along = rx * tx + ry * ty;
-      const perp = rx * nx + ry * ny;
-      alongMin = Math.min(alongMin, along);
-      alongMax = Math.max(alongMax, along);
-      perpMin = Math.min(perpMin, perp);
-    }
-    if (perpMin > 30 || perpMin < -3) continue;
-    if (alongMax < -2 || alongMin > len + 2) continue;
-    const bottom = it.mountZ ?? 0;
-    out.push({ item: it, alongMin, alongMax, perpMin, bottom, top: bottom + it.height });
-  }
-  out.sort((p, q) => p.perpMin - q.perpMin || p.bottom - q.bottom);
-  return { len, items: out };
-}
-
 function drawElevations(doc: jsPDF, project: Project, pageW: number, pageH: number): void {
   const finishHex = finishColor(project.settings.finishCode);
   const wallH = project.settings.wallHeight;
   const ee = edges(project.room.points);
+  const byWall = assignItemsToWalls(project.items, project.room.points);
   // only walls that have items on them
   const walls = ee
-    .map((_, i) => ({ i, ...projectWall(project, i) }))
+    .map((e) => {
+      const len = Math.hypot(e.b.x - e.a.x, e.b.y - e.a.y) || 1;
+      return { i: e.index, len, items: byWall.get(e.index) ?? [] };
+    })
     .filter((w) => w.items.length > 0);
 
   const top = 92;
@@ -266,7 +215,7 @@ function drawOneElevation(
   doc: jsPDF,
   wallNum: number,
   len: number,
-  items: ElevItem[],
+  items: ElevBox[],
   wallH: number,
   finishHex: string,
   project: Project,

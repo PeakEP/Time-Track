@@ -1,26 +1,11 @@
 import { useMemo, useRef, useState, useEffect, useLayoutEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useStore } from "../store";
-import type { Item, Point } from "../types";
 import { edges } from "../utils/roomPresets";
-import { footprint } from "../utils/placement";
 import { finishColor } from "../utils/finishColors";
+import { assignItemsToWalls, type ElevBox } from "../utils/elevation";
 
-const NEAR_WALL_IN = 30; // an item counts as "on" a wall if within this of it
-
-function centroid(points: Point[]): Point {
-  const s = points.reduce((a, p) => ({ x: a.x + p.x, y: a.y + p.y }), { x: 0, y: 0 });
-  return { x: s.x / points.length, y: s.y / points.length };
-}
-
-type Proj = {
-  item: Item;
-  alongMin: number;
-  alongMax: number;
-  perpMin: number;
-  bottom: number;
-  top: number;
-};
+type Proj = ElevBox;
 
 export function Elevation() {
   const room = useStore((s) => s.project.room);
@@ -76,52 +61,10 @@ export function Elevation() {
   }, [selectedId, axis, updateItem]);
 
   const { len, projected } = useMemo(() => {
-    const a = wall.a;
-    const b = wall.b;
-    const dx = b.x - a.x;
-    const dy = b.y - a.y;
-    const length = Math.hypot(dx, dy) || 1;
-    const tx = dx / length;
-    const ty = dy / length;
-    let nx = -ty;
-    let ny = tx;
-    const c = centroid(room.points);
-    if ((c.x - a.x) * nx + (c.y - a.y) * ny < 0) {
-      nx = -nx;
-      ny = -ny;
-    }
-    const out: Proj[] = [];
-    for (const it of items) {
-      if (it.scheduleOnly) continue;
-      const fp = footprint(it);
-      const corners: [number, number][] = [
-        [it.x, it.y],
-        [it.x + fp.w, it.y],
-        [it.x + fp.w, it.y + fp.d],
-        [it.x, it.y + fp.d],
-      ];
-      let alongMin = Infinity;
-      let alongMax = -Infinity;
-      let perpMin = Infinity;
-      for (const [px, py] of corners) {
-        const rx = px - a.x;
-        const ry = py - a.y;
-        const along = rx * tx + ry * ty;
-        const perp = rx * nx + ry * ny;
-        alongMin = Math.min(alongMin, along);
-        alongMax = Math.max(alongMax, along);
-        perpMin = Math.min(perpMin, perp);
-      }
-      // must be close to this wall, on the interior side, and overlap its run
-      if (perpMin > NEAR_WALL_IN || perpMin < -3) continue;
-      if (alongMax < -2 || alongMin > length + 2) continue;
-      const bottom = it.mountZ ?? 0;
-      out.push({ item: it, alongMin, alongMax, perpMin, bottom, top: bottom + it.height });
-    }
-    // draw far-from-wall (uppers behind) first, near last; and base before wall
-    out.sort((p, q) => p.perpMin - q.perpMin || p.bottom - q.bottom);
-    return { len: length, projected: out };
-  }, [wall, room.points, items]);
+    const length = Math.hypot(wall.b.x - wall.a.x, wall.b.y - wall.a.y) || 1;
+    const byWall = assignItemsToWalls(items, room.points);
+    return { len: length, projected: byWall.get(wallIndex) ?? [] };
+  }, [wall, wallIndex, room.points, items]);
 
   return (
     <div className="elev-wrap">
