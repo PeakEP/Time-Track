@@ -1,26 +1,44 @@
-# Netlify configuration for JMRC CRM & Time Tracker
+# Netlify configuration for JMRC apps
+# - Time Track CRM (static single-HTML) lives at the site root
+# - Cabinet Designer (Vite + React) builds into /cabinet-designer/
 
 [build]
-  # This is a static site - no build needed
-  publish = "."
-  command = "echo 'No build required - static HTML app'"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+  publish = "_site"
+  command = "bash ./scripts/netlify-build.sh"
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
+
+# Cabinet Designer SPA fallback — all sub-paths serve its index
+[[redirects]]
+  from = "/cabinet-designer/*"
+  to = "/cabinet-designer/index.html"
+  status = 200
+
+# Legacy Time Track aliases
+[[redirects]]
+  from = "/home"
+  to = "/index.html"
+  status = 301
+
+[[redirects]]
+  from = "/track"
+  to = "/index.html"
+  status = 301
+
+[[redirects]]
+  from = "/crm"
+  to = "/index.html"
+  status = 301
 
 # Production context
 [context.production]
-  command = "echo 'Deploying production'"
+  command = "bash ./scripts/netlify-build.sh"
 
 # Deploy Preview context
 [context.deploy-preview]
-  command = "echo 'Deploying preview'"
+  command = "bash ./scripts/netlify-build.sh"
 
 # Branch deploy context
 [context.branch-deploy]
-  command = "echo 'Deploying branch'"
+  command = "bash ./scripts/netlify-build.sh"
