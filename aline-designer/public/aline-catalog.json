@@ -1,0 +1,6919 @@
+{
+  "_meta": {
+    "source": "ALINE Cabinet Ordering System (HTML export, 2025)",
+    "pricing_year": 2025,
+    "currency": "CAD",
+    "price_type": "dealer list price (pre-discount), box + door combined",
+    "dealer_discount": 0.66,
+    "box_types": {
+      "PB": "Particle Board",
+      "PLY": "Plywood"
+    },
+    "notes": "Prices are ALINE dealer LIST per cabinet (box + door for the chosen style). Robins Interiors & Designs dealer cost = list * (1 - 0.66). null = combo not offered (e.g. glass-door SKUs are doubleshaker/shaker/veneer only)."
+  },
+  "tiers": {
+    "melamine": "Melamine",
+    "highgloss": "High Gloss",
+    "matte": "Matte",
+    "shaker": "Shaker",
+    "veneer": "Veneer",
+    "doubleshaker": "Double Shaker"
+  },
+  "finishes": [
+    {
+      "code": "MEL",
+      "name": "Standard Melamine",
+      "tier": "melamine",
+      "tierName": "Melamine"
+    },
+    {
+      "code": "HGW",
+      "name": "High Gloss White",
+      "tier": "highgloss",
+      "tierName": "High Gloss"
+    },
+    {
+      "code": "HGLG",
+      "name": "High Gloss Light Grey",
+      "tier": "highgloss",
+      "tierName": "High Gloss"
+    },
+    {
+      "code": "HGG",
+      "name": "High Gloss Grey",
+      "tier": "highgloss",
+      "tierName": "High Gloss"
+    },
+    {
+      "code": "MG",
+      "name": "Matte Grey",
+      "tier": "matte",
+      "tierName": "Matte"
+    },
+    {
+      "code": "MW",
+      "name": "Matte White",
+      "tier": "matte",
+      "tierName": "Matte"
+    },
+    {
+      "code": "SW",
+      "name": "Shaker White",
+      "tier": "shaker",
+      "tierName": "Shaker"
+    },
+    {
+      "code": "GR",
+      "name": "Shaker Grey",
+      "tier": "shaker",
+      "tierName": "Shaker"
+    },
+    {
+      "code": "SSW",
+      "name": "Slim Shaker White",
+      "tier": "shaker",
+      "tierName": "Shaker"
+    },
+    {
+      "code": "SSG",
+      "name": "Slim Shaker Green",
+      "tier": "shaker",
+      "tierName": "Shaker"
+    },
+    {
+      "code": "SMC",
+      "name": "Shaker Maple Caramel",
+      "tier": "shaker",
+      "tierName": "Shaker"
+    },
+    {
+      "code": "WG",
+      "name": "Wood Grey (Bois Gris)",
+      "tier": "shaker",
+      "tierName": "Shaker"
+    },
+    {
+      "code": "WO",
+      "name": "White Oak (Chêne Blanc)",
+      "tier": "shaker",
+      "tierName": "Shaker"
+    },
+    {
+      "code": "NW",
+      "name": "Natural Wood (Bois Naturel)",
+      "tier": "shaker",
+      "tierName": "Shaker"
+    },
+    {
+      "code": "SSV",
+      "name": "Slim Shaker Veneer",
+      "tier": "veneer",
+      "tierName": "Veneer"
+    },
+    {
+      "code": "BL",
+      "name": "Blue",
+      "tier": "doubleshaker",
+      "tierName": "Double Shaker"
+    },
+    {
+      "code": "DSW",
+      "name": "White",
+      "tier": "doubleshaker",
+      "tierName": "Double Shaker"
+    }
+  ],
+  "products": [
+    {
+      "sku": "B12",
+      "desc": "Base Cabinet - 1DOR, 1DRW, 1S",
+      "cat": "Base",
+      "dims": "12\"W x 24\"D x 34.5\"H",
+      "width_in": 12,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 319.35,
+        "highgloss": 354.96,
+        "matte": 358.62,
+        "shaker": 367.06,
+        "veneer": 394.91,
+        "doubleshaker": 384.01
+      },
+      "ply": {
+        "melamine": 399.99,
+        "highgloss": 435.6,
+        "matte": 439.26,
+        "shaker": 447.7,
+        "veneer": 475.55,
+        "doubleshaker": 464.65
+      }
+    },
+    {
+      "sku": "B15",
+      "desc": "Base Cabinet - 1DOR, 1DRW, 1S",
+      "cat": "Base",
+      "dims": "15\"W x 24\"D x 34.5\"H",
+      "width_in": 15,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 342.35,
+        "highgloss": 387,
+        "matte": 391.48,
+        "shaker": 402.16,
+        "veneer": 437.02,
+        "doubleshaker": 423.29
+      },
+      "ply": {
+        "melamine": 431.13,
+        "highgloss": 475.78,
+        "matte": 480.26,
+        "shaker": 490.94,
+        "veneer": 525.8,
+        "doubleshaker": 512.07
+      }
+    },
+    {
+      "sku": "B18",
+      "desc": "Base Cabinet - 1DOR, 1DRW, 1S",
+      "cat": "Base",
+      "dims": "18\"W x 24\"D x 34.5\"H",
+      "width_in": 18,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 371.77,
+        "highgloss": 425.38,
+        "matte": 430.83,
+        "shaker": 443.6,
+        "veneer": 485.48,
+        "doubleshaker": 469.06
+      },
+      "ply": {
+        "melamine": 468.76,
+        "highgloss": 522.37,
+        "matte": 527.82,
+        "shaker": 540.59,
+        "veneer": 582.47,
+        "doubleshaker": 566.05
+      }
+    },
+    {
+      "sku": "B21",
+      "desc": "Base Cabinet - 1DOR, 1DRW, 1S",
+      "cat": "Base",
+      "dims": "21\"W x 24\"D x 34.5\"H",
+      "width_in": 21,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 394.76,
+        "highgloss": 457.26,
+        "matte": 463.6,
+        "shaker": 478.54,
+        "veneer": 527.44,
+        "doubleshaker": 508.25
+      },
+      "ply": {
+        "melamine": 499.97,
+        "highgloss": 562.47,
+        "matte": 568.81,
+        "shaker": 583.75,
+        "veneer": 632.65,
+        "doubleshaker": 613.46
+      }
+    },
+    {
+      "sku": "B24",
+      "desc": "Base Cabinet - 2DOR, 1DRW, 1S",
+      "cat": "Base",
+      "dims": "24\"W x 24\"D x 34.5\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 433.07,
+        "highgloss": 504.38,
+        "matte": 511.69,
+        "shaker": 528.64,
+        "veneer": 584.42,
+        "doubleshaker": 562.62
+      },
+      "ply": {
+        "melamine": 546.56,
+        "highgloss": 617.87,
+        "matte": 625.18,
+        "shaker": 642.13,
+        "veneer": 697.91,
+        "doubleshaker": 676.11
+      }
+    },
+    {
+      "sku": "B27",
+      "desc": "Base Cabinet - 2DOR, 1DRW, 1S",
+      "cat": "Base",
+      "dims": "27\"W x 24\"D x 34.5\"H",
+      "width_in": 27,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 461.59,
+        "highgloss": 541.86,
+        "matte": 550.07,
+        "shaker": 569.18,
+        "veneer": 631.98,
+        "doubleshaker": 607.34
+      },
+      "ply": {
+        "melamine": 583.3,
+        "highgloss": 663.57,
+        "matte": 671.78,
+        "shaker": 690.89,
+        "veneer": 753.69,
+        "doubleshaker": 729.05
+      }
+    },
+    {
+      "sku": "B30",
+      "desc": "Base Cabinet - 2DOR, 1DRW, 1S",
+      "cat": "Base",
+      "dims": "30\"W x 24\"D x 34.5\"H",
+      "width_in": 30,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 489.74,
+        "highgloss": 579.04,
+        "matte": 588.08,
+        "shaker": 609.36,
+        "veneer": 679.09,
+        "doubleshaker": 651.77
+      },
+      "ply": {
+        "melamine": 619.58,
+        "highgloss": 708.88,
+        "matte": 717.92,
+        "shaker": 739.2,
+        "veneer": 808.93,
+        "doubleshaker": 781.61
+      }
+    },
+    {
+      "sku": "B33",
+      "desc": "Base Cabinet - 2DOR, 1DRW, 1S",
+      "cat": "Base",
+      "dims": "33\"W x 24\"D x 34.5\"H",
+      "width_in": 33,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 517.81,
+        "highgloss": 616.07,
+        "matte": 626.08,
+        "shaker": 649.45,
+        "veneer": 726.2,
+        "doubleshaker": 696.19
+      },
+      "ply": {
+        "melamine": 655.95,
+        "highgloss": 754.21,
+        "matte": 764.22,
+        "shaker": 787.59,
+        "veneer": 864.34,
+        "doubleshaker": 834.33
+      }
+    },
+    {
+      "sku": "B36",
+      "desc": "Base Cabinet - 2DOR, 1DRW, 1S",
+      "cat": "Base",
+      "dims": "36\"W x 24\"D x 34.5\"H",
+      "width_in": 36,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 545.96,
+        "highgloss": 653.11,
+        "matte": 664.09,
+        "shaker": 689.55,
+        "veneer": 773.32,
+        "doubleshaker": 740.54
+      },
+      "ply": {
+        "melamine": 692.23,
+        "highgloss": 799.38,
+        "matte": 810.36,
+        "shaker": 835.82,
+        "veneer": 919.59,
+        "doubleshaker": 886.81
+      }
+    },
+    {
+      "sku": "B42",
+      "desc": "Base Cabinet - 2DOR, 2DRW, 1S",
+      "cat": "Base",
+      "dims": "42\"W x 24\"D x 34.5\"H",
+      "width_in": 42,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 716.72,
+        "highgloss": 841.86,
+        "matte": 854.63,
+        "shaker": 884.42,
+        "veneer": 982.24,
+        "doubleshaker": 944.01
+      },
+      "ply": {
+        "melamine": 885.77,
+        "highgloss": 1010.91,
+        "matte": 1023.68,
+        "shaker": 1053.47,
+        "veneer": 1151.29,
+        "doubleshaker": 1113.06
+      }
+    },
+    {
+      "sku": "2DB24",
+      "desc": "2-Drawer Base",
+      "cat": "2 Drawer",
+      "dims": "24\"W x 24\"D x 34.5\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 710.53,
+        "highgloss": 781.84,
+        "matte": 789.15,
+        "shaker": 807.3,
+        "veneer": 863.52,
+        "doubleshaker": 841.5
+      },
+      "ply": {
+        "melamine": 797.14,
+        "highgloss": 868.45,
+        "matte": 875.76,
+        "shaker": 893.91,
+        "veneer": 950.13,
+        "doubleshaker": 928.11
+      }
+    },
+    {
+      "sku": "2DB27",
+      "desc": "2-Drawer Base",
+      "cat": "2 Drawer",
+      "dims": "27\"W x 24\"D x 34.5\"H",
+      "width_in": 27,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 757.12,
+        "highgloss": 838.05,
+        "matte": 846.36,
+        "shaker": 865.46,
+        "veneer": 928.71,
+        "doubleshaker": 905.76
+      },
+      "ply": {
+        "melamine": 894.13,
+        "highgloss": 975.06,
+        "matte": 983.37,
+        "shaker": 1002.47,
+        "veneer": 1065.72,
+        "doubleshaker": 1042.77
+      }
+    },
+    {
+      "sku": "2DB30",
+      "desc": "2-Drawer Base",
+      "cat": "2 Drawer",
+      "dims": "30\"W x 24\"D x 34.5\"H",
+      "width_in": 30,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 802.81,
+        "highgloss": 892.71,
+        "matte": 901.82,
+        "shaker": 923.25,
+        "veneer": 993.51,
+        "doubleshaker": 966.03
+      },
+      "ply": {
+        "melamine": 901,
+        "highgloss": 990.9,
+        "matte": 1000.01,
+        "shaker": 1021.44,
+        "veneer": 1091.7,
+        "doubleshaker": 1064.22
+      }
+    },
+    {
+      "sku": "2DB36",
+      "desc": "2-Drawer Base",
+      "cat": "2 Drawer",
+      "dims": "36\"W x 24\"D x 34.5\"H",
+      "width_in": 36,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 894.29,
+        "highgloss": 1002.18,
+        "matte": 1013.15,
+        "shaker": 1038.84,
+        "veneer": 1123.21,
+        "doubleshaker": 1090.14
+      },
+      "ply": {
+        "melamine": 1004.05,
+        "highgloss": 1111.94,
+        "matte": 1122.91,
+        "shaker": 1148.6,
+        "veneer": 1232.97,
+        "doubleshaker": 1199.9
+      }
+    },
+    {
+      "sku": "3DB12",
+      "desc": "3-Drawer Base",
+      "cat": "3 Drawer",
+      "dims": "12\"W x 24\"D x 34.5\"H",
+      "width_in": 12,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 604.57,
+        "highgloss": 640.04,
+        "matte": 643.62,
+        "shaker": 652.14,
+        "veneer": 679.91,
+        "doubleshaker": 669.01
+      },
+      "ply": {
+        "melamine": 660.87,
+        "highgloss": 696.34,
+        "matte": 699.92,
+        "shaker": 708.44,
+        "veneer": 736.21,
+        "doubleshaker": 725.31
+      }
+    },
+    {
+      "sku": "3DB15",
+      "desc": "3-Drawer Base",
+      "cat": "3 Drawer",
+      "dims": "15\"W x 24\"D x 34.5\"H",
+      "width_in": 15,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 643.93,
+        "highgloss": 688.35,
+        "matte": 692.91,
+        "shaker": 703.44,
+        "veneer": 738.16,
+        "doubleshaker": 724.57
+      },
+      "ply": {
+        "melamine": 706.42,
+        "highgloss": 750.84,
+        "matte": 755.4,
+        "shaker": 765.93,
+        "veneer": 800.65,
+        "doubleshaker": 787.06
+      }
+    },
+    {
+      "sku": "3DB18",
+      "desc": "3-Drawer Base",
+      "cat": "3 Drawer",
+      "dims": "18\"W x 24\"D x 34.5\"H",
+      "width_in": 18,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 686.34,
+        "highgloss": 739.65,
+        "matte": 745.1,
+        "shaker": 757.79,
+        "veneer": 799.46,
+        "doubleshaker": 783.18
+      },
+      "ply": {
+        "melamine": 755.03,
+        "highgloss": 808.34,
+        "matte": 813.79,
+        "shaker": 826.48,
+        "veneer": 868.15,
+        "doubleshaker": 851.87
+      }
+    },
+    {
+      "sku": "3DB21",
+      "desc": "3-Drawer Base",
+      "cat": "3 Drawer",
+      "dims": "21\"W x 24\"D x 34.5\"H",
+      "width_in": 21,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 725.76,
+        "highgloss": 788.03,
+        "matte": 794.38,
+        "shaker": 809.23,
+        "veneer": 857.92,
+        "doubleshaker": 838.8
+      },
+      "ply": {
+        "melamine": 800.73,
+        "highgloss": 863,
+        "matte": 869.35,
+        "shaker": 884.2,
+        "veneer": 932.89,
+        "doubleshaker": 913.77
+      }
+    },
+    {
+      "sku": "3DB24",
+      "desc": "3-Drawer Base",
+      "cat": "3 Drawer",
+      "dims": "24\"W x 24\"D x 34.5\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 771.53,
+        "highgloss": 842.84,
+        "matte": 850.15,
+        "shaker": 867.1,
+        "veneer": 922.88,
+        "doubleshaker": 901.08
+      },
+      "ply": {
+        "melamine": 852.84,
+        "highgloss": 924.15,
+        "matte": 931.46,
+        "shaker": 948.41,
+        "veneer": 1004.19,
+        "doubleshaker": 982.39
+      }
+    },
+    {
+      "sku": "3DB27",
+      "desc": "3-Drawer Base",
+      "cat": "3 Drawer",
+      "dims": "27\"W x 24\"D x 34.5\"H",
+      "width_in": 27,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 817.82,
+        "highgloss": 897.94,
+        "matte": 906.08,
+        "shaker": 925.12,
+        "veneer": 987.76,
+        "doubleshaker": 963.27
+      },
+      "ply": {
+        "melamine": 904.51,
+        "highgloss": 984.63,
+        "matte": 992.77,
+        "shaker": 1011.81,
+        "veneer": 1074.45,
+        "doubleshaker": 1049.96
+      }
+    },
+    {
+      "sku": "3DB30",
+      "desc": "3-Drawer Base",
+      "cat": "3 Drawer",
+      "dims": "30\"W x 24\"D x 34.5\"H",
+      "width_in": 30,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 863.66,
+        "highgloss": 952.89,
+        "matte": 961.93,
+        "shaker": 983.21,
+        "veneer": 1052.94,
+        "doubleshaker": 1025.62
+      },
+      "ply": {
+        "melamine": 957.37,
+        "highgloss": 1046.6,
+        "matte": 1055.64,
+        "shaker": 1076.92,
+        "veneer": 1146.65,
+        "doubleshaker": 1119.33
+      }
+    },
+    {
+      "sku": "3DB33",
+      "desc": "3-Drawer Base",
+      "cat": "3 Drawer",
+      "dims": "33\"W x 24\"D x 34.5\"H",
+      "width_in": 33,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 909.51,
+        "highgloss": 1007.63,
+        "matte": 1017.59,
+        "shaker": 1041,
+        "veneer": 1117.72,
+        "doubleshaker": 1087.67
+      },
+      "ply": {
+        "melamine": 1009.45,
+        "highgloss": 1107.57,
+        "matte": 1117.53,
+        "shaker": 1140.94,
+        "veneer": 1217.66,
+        "doubleshaker": 1187.61
+      }
+    },
+    {
+      "sku": "3DB36",
+      "desc": "3-Drawer Base",
+      "cat": "3 Drawer",
+      "dims": "36\"W x 24\"D x 34.5\"H",
+      "width_in": 36,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 955.36,
+        "highgloss": 1062.36,
+        "matte": 1073.26,
+        "shaker": 1098.8,
+        "veneer": 1182.5,
+        "doubleshaker": 1149.72
+      },
+      "ply": {
+        "melamine": 1061.53,
+        "highgloss": 1168.53,
+        "matte": 1179.43,
+        "shaker": 1204.97,
+        "veneer": 1288.67,
+        "doubleshaker": 1255.89
+      }
+    },
+    {
+      "sku": "BBC36",
+      "desc": "Blind Base Corner (36-39\" range)",
+      "cat": "Corner",
+      "dims": "33\"W x 24\"D x 34.5\"H",
+      "width_in": 33,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 305.01,
+        "highgloss": 367.88,
+        "matte": 374.3,
+        "shaker": 389.01,
+        "veneer": 438.07,
+        "doubleshaker": 419.25
+      },
+      "ply": {
+        "melamine": 447.03,
+        "highgloss": 509.9,
+        "matte": 516.32,
+        "shaker": 531.03,
+        "veneer": 580.09,
+        "doubleshaker": 561.27
+      }
+    },
+    {
+      "sku": "BBC39",
+      "desc": "Blind Base Corner (39-42\" range)",
+      "cat": "Corner",
+      "dims": "36\"W x 24\"D x 34.5\"H",
+      "width_in": 36,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 318.38,
+        "highgloss": 381.17,
+        "matte": 387.6,
+        "shaker": 402.53,
+        "veneer": 451.59,
+        "doubleshaker": 432.4
+      },
+      "ply": {
+        "melamine": 468.09,
+        "highgloss": 530.88,
+        "matte": 537.31,
+        "shaker": 552.24,
+        "veneer": 601.3,
+        "doubleshaker": 582.11
+      }
+    },
+    {
+      "sku": "BBC45",
+      "desc": "Blind Base Corner (45-48\" range)",
+      "cat": "Corner",
+      "dims": "42\"W x 24\"D x 34.5\"H",
+      "width_in": 42,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 352.5,
+        "highgloss": 424.33,
+        "matte": 431.65,
+        "shaker": 448.74,
+        "veneer": 504.89,
+        "doubleshaker": 482.94
+      },
+      "ply": {
+        "melamine": 517.81,
+        "highgloss": 589.64,
+        "matte": 596.96,
+        "shaker": 614.05,
+        "veneer": 670.2,
+        "doubleshaker": 648.25
+      }
+    },
+    {
+      "sku": "ERB33",
+      "desc": "Easy Reach Base (w/ Lazy Susan option)",
+      "cat": "Corner",
+      "dims": "33\"W x 24\"D x 34.5\"H",
+      "width_in": 33,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 816.11,
+        "highgloss": 866.06,
+        "matte": 871.14,
+        "shaker": 883.08,
+        "veneer": 922.14,
+        "doubleshaker": 906.83
+      },
+      "ply": {
+        "melamine": 1062.96,
+        "highgloss": 1112.91,
+        "matte": 1117.99,
+        "shaker": 1129.93,
+        "veneer": 1168.99,
+        "doubleshaker": 1153.68
+      }
+    },
+    {
+      "sku": "ERB36",
+      "desc": "Easy Reach Base (w/ Lazy Susan option)",
+      "cat": "Corner",
+      "dims": "36\"W x 24\"D x 34.5\"H",
+      "width_in": 36,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 860.84,
+        "highgloss": 931.92,
+        "matte": 939.16,
+        "shaker": 956.04,
+        "veneer": 1011.59,
+        "doubleshaker": 989.94
+      },
+      "ply": {
+        "melamine": 1130.76,
+        "highgloss": 1201.84,
+        "matte": 1209.08,
+        "shaker": 1225.96,
+        "veneer": 1281.51,
+        "doubleshaker": 1259.86
+      }
+    },
+    {
+      "sku": "SB24",
+      "desc": "Sink Base - 1 False DRW",
+      "cat": "Sink Base",
+      "dims": "24\"W x 21\"D x 34.5\"H",
+      "width_in": 24,
+      "depth_in": 21,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 259.1,
+        "highgloss": 330.7,
+        "matte": 337.95,
+        "shaker": 354.89,
+        "veneer": 410.6,
+        "doubleshaker": 388.79
+      },
+      "ply": {
+        "melamine": 361.24,
+        "highgloss": 432.84,
+        "matte": 440.09,
+        "shaker": 457.03,
+        "veneer": 512.74,
+        "doubleshaker": 490.93
+      }
+    },
+    {
+      "sku": "SB27",
+      "desc": "Sink Base - 1 False DRW",
+      "cat": "Sink Base",
+      "dims": "27\"W x 24\"D x 34.5\"H",
+      "width_in": 27,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 277.61,
+        "highgloss": 358.25,
+        "matte": 366.31,
+        "shaker": 385.57,
+        "veneer": 448.37,
+        "doubleshaker": 423.73
+      },
+      "ply": {
+        "melamine": 385.73,
+        "highgloss": 466.37,
+        "matte": 474.43,
+        "shaker": 493.69,
+        "veneer": 556.49,
+        "doubleshaker": 531.85
+      }
+    },
+    {
+      "sku": "SB30",
+      "desc": "Sink Base - 1 False DRW",
+      "cat": "Sink Base",
+      "dims": "30\"W x 24\"D x 34.5\"H",
+      "width_in": 30,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 296.58,
+        "highgloss": 385.88,
+        "matte": 394.92,
+        "shaker": 416.2,
+        "veneer": 485.93,
+        "doubleshaker": 458.61
+      },
+      "ply": {
+        "melamine": 410.29,
+        "highgloss": 499.59,
+        "matte": 508.63,
+        "shaker": 529.91,
+        "veneer": 599.64,
+        "doubleshaker": 572.32
+      }
+    },
+    {
+      "sku": "SB33",
+      "desc": "Sink Base - 1 False DRW",
+      "cat": "Sink Base",
+      "dims": "33\"W x 24\"D x 34.5\"H",
+      "width_in": 33,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 315.17,
+        "highgloss": 413.43,
+        "matte": 423.44,
+        "shaker": 446.81,
+        "veneer": 523.56,
+        "doubleshaker": 493.55
+      },
+      "ply": {
+        "melamine": 434.49,
+        "highgloss": 532.75,
+        "matte": 542.76,
+        "shaker": 566.13,
+        "veneer": 642.88,
+        "doubleshaker": 612.87
+      }
+    },
+    {
+      "sku": "SB36",
+      "desc": "Sink Base - 1 False DRW",
+      "cat": "Sink Base",
+      "dims": "36\"W x 24\"D x 34.5\"H",
+      "width_in": 36,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 333.76,
+        "highgloss": 440.91,
+        "matte": 451.89,
+        "shaker": 477.35,
+        "veneer": 561.12,
+        "doubleshaker": 528.34
+      },
+      "ply": {
+        "melamine": 458.67,
+        "highgloss": 565.82,
+        "matte": 576.8,
+        "shaker": 602.26,
+        "veneer": 686.03,
+        "doubleshaker": 653.25
+      }
+    },
+    {
+      "sku": "SB42",
+      "desc": "Sink Base - 2 False DRW",
+      "cat": "Sink Base",
+      "dims": "42\"W x 24\"D x 34.5\"H",
+      "width_in": 42,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 370.49,
+        "highgloss": 496.16,
+        "matte": 508.93,
+        "shaker": 538.94,
+        "veneer": 636.83,
+        "doubleshaker": 598.53
+      },
+      "ply": {
+        "melamine": 506.68,
+        "highgloss": 632.35,
+        "matte": 645.12,
+        "shaker": 675.13,
+        "veneer": 773.02,
+        "doubleshaker": 734.72
+      }
+    },
+    {
+      "sku": "CSB36",
+      "desc": "Corner Sink Base",
+      "cat": "Sink Base",
+      "dims": "36\"W x 24\"D x 34.5\"H",
+      "width_in": 36,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 426.87,
+        "highgloss": 475.4,
+        "matte": 480.33,
+        "shaker": 491.91,
+        "veneer": 529.69,
+        "doubleshaker": 514.9
+      },
+      "ply": {
+        "melamine": 696.34,
+        "highgloss": 744.87,
+        "matte": 749.8,
+        "shaker": 761.38,
+        "veneer": 799.16,
+        "doubleshaker": 784.37
+      }
+    },
+    {
+      "sku": "BFH06",
+      "desc": "Full-Door Cabinet - 1DOR",
+      "cat": "Full Height",
+      "dims": "6\"W x 24\"D x 34.5\"H",
+      "width_in": 6,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 156.58,
+        "highgloss": 174.28,
+        "matte": 176.07,
+        "shaker": 180.25,
+        "veneer": 194.09,
+        "doubleshaker": 188.76
+      },
+      "ply": {
+        "melamine": 226.09,
+        "highgloss": 243.79,
+        "matte": 245.58,
+        "shaker": 249.76,
+        "veneer": 263.6,
+        "doubleshaker": 258.27
+      }
+    },
+    {
+      "sku": "BFH09",
+      "desc": "Full-Door Cabinet - 1DOR",
+      "cat": "Full Height",
+      "dims": "9\"W x 24\"D x 34.5\"H",
+      "width_in": 9,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 174.27,
+        "highgloss": 200.92,
+        "matte": 203.69,
+        "shaker": 209.96,
+        "veneer": 230.79,
+        "doubleshaker": 222.73
+      },
+      "ply": {
+        "melamine": 254.24,
+        "highgloss": 280.89,
+        "matte": 283.66,
+        "shaker": 289.93,
+        "veneer": 310.76,
+        "doubleshaker": 302.7
+      }
+    },
+    {
+      "sku": "BFH12",
+      "desc": "Full-Door Cabinet - 1DOR",
+      "cat": "Full Height",
+      "dims": "12\"W x 24\"D x 34.5\"H",
+      "width_in": 12,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 191.82,
+        "highgloss": 227.43,
+        "matte": 231.09,
+        "shaker": 239.53,
+        "veneer": 267.38,
+        "doubleshaker": 256.48
+      },
+      "ply": {
+        "melamine": 279.33,
+        "highgloss": 314.94,
+        "matte": 318.6,
+        "shaker": 327.04,
+        "veneer": 354.89,
+        "doubleshaker": 343.99
+      }
+    },
+    {
+      "sku": "BFH15",
+      "desc": "Full-Door Cabinet - 1DOR",
+      "cat": "Full Height",
+      "dims": "15\"W x 24\"D x 34.5\"H",
+      "width_in": 15,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 211.83,
+        "highgloss": 256.48,
+        "matte": 260.96,
+        "shaker": 271.64,
+        "veneer": 306.5,
+        "doubleshaker": 292.77
+      },
+      "ply": {
+        "melamine": 303.37,
+        "highgloss": 348.02,
+        "matte": 352.5,
+        "shaker": 363.18,
+        "veneer": 398.04,
+        "doubleshaker": 384.31
+      }
+    },
+    {
+      "sku": "BFH18",
+      "desc": "Full-Door Cabinet - 1DOR (w/ rollout tray option)",
+      "cat": "Full Height",
+      "dims": "18\"W x 24\"D x 34.5\"H",
+      "width_in": 18,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 228.18,
+        "highgloss": 281.79,
+        "matte": 287.24,
+        "shaker": 300.01,
+        "veneer": 341.89,
+        "doubleshaker": 325.47
+      },
+      "ply": {
+        "melamine": 331.08,
+        "highgloss": 384.69,
+        "matte": 390.14,
+        "shaker": 402.91,
+        "veneer": 444.79,
+        "doubleshaker": 428.37
+      }
+    },
+    {
+      "sku": "BFH21",
+      "desc": "Full-Door Cabinet - 1DOR (w/ rollout tray option)",
+      "cat": "Full Height",
+      "dims": "21\"W x 24\"D x 34.5\"H",
+      "width_in": 21,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 244.68,
+        "highgloss": 307.18,
+        "matte": 313.52,
+        "shaker": 328.46,
+        "veneer": 377.36,
+        "doubleshaker": 358.17
+      },
+      "ply": {
+        "melamine": 355.26,
+        "highgloss": 417.76,
+        "matte": 424.1,
+        "shaker": 439.04,
+        "veneer": 487.94,
+        "doubleshaker": 468.75
+      }
+    },
+    {
+      "sku": "BFH24S",
+      "desc": "Full-Door Cabinet - 1DOR (w/ rollout tray option)",
+      "cat": "Full Height",
+      "dims": "24\"W x 24\"D x 34.5\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 276.34,
+        "highgloss": 347.65,
+        "matte": 354.96,
+        "shaker": 371.91,
+        "veneer": 427.69,
+        "doubleshaker": 405.89
+      },
+      "ply": {
+        "melamine": 379.46,
+        "highgloss": 450.77,
+        "matte": 458.08,
+        "shaker": 475.03,
+        "veneer": 530.81,
+        "doubleshaker": 509.01
+      }
+    },
+    {
+      "sku": "BFH24",
+      "desc": "Full-Door Cabinet - 2DOR (w/ rollout tray option)",
+      "cat": "Full Height",
+      "dims": "24\"W x 24\"D x 34.5\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 276.34,
+        "highgloss": 347.65,
+        "matte": 354.96,
+        "shaker": 371.91,
+        "veneer": 427.69,
+        "doubleshaker": 405.89
+      },
+      "ply": {
+        "melamine": 379.46,
+        "highgloss": 450.77,
+        "matte": 458.08,
+        "shaker": 475.03,
+        "veneer": 530.81,
+        "doubleshaker": 509.01
+      }
+    },
+    {
+      "sku": "BFH27",
+      "desc": "Full-Door Cabinet - 2DOR (w/ rollout tray option)",
+      "cat": "Full Height",
+      "dims": "27\"W x 24\"D x 34.5\"H",
+      "width_in": 27,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 297.32,
+        "highgloss": 377.59,
+        "matte": 385.8,
+        "shaker": 404.91,
+        "veneer": 467.71,
+        "doubleshaker": 443.07
+      },
+      "ply": {
+        "melamine": 408.13,
+        "highgloss": 488.4,
+        "matte": 496.61,
+        "shaker": 515.72,
+        "veneer": 578.52,
+        "doubleshaker": 553.88
+      }
+    },
+    {
+      "sku": "BFH30",
+      "desc": "Full-Door Cabinet - 2DOR (w/ rollout tray option)",
+      "cat": "Full Height",
+      "dims": "30\"W x 24\"D x 34.5\"H",
+      "width_in": 30,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 318.01,
+        "highgloss": 407.31,
+        "matte": 416.35,
+        "shaker": 437.63,
+        "veneer": 507.36,
+        "doubleshaker": 480.04
+      },
+      "ply": {
+        "melamine": 436.58,
+        "highgloss": 525.88,
+        "matte": 534.92,
+        "shaker": 556.2,
+        "veneer": 625.93,
+        "doubleshaker": 598.61
+      }
+    },
+    {
+      "sku": "BFH33",
+      "desc": "Full-Door Cabinet - 2DOR (w/ rollout tray option)",
+      "cat": "Full Height",
+      "dims": "33\"W x 24\"D x 34.5\"H",
+      "width_in": 33,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 338.69,
+        "highgloss": 436.95,
+        "matte": 446.96,
+        "shaker": 470.33,
+        "veneer": 547.08,
+        "doubleshaker": 517.07
+      },
+      "ply": {
+        "melamine": 464.95,
+        "highgloss": 563.21,
+        "matte": 573.22,
+        "shaker": 596.59,
+        "veneer": 673.34,
+        "doubleshaker": 643.33
+      }
+    },
+    {
+      "sku": "BFH36",
+      "desc": "Full-Door Cabinet - 2DOR (w/ rollout tray option)",
+      "cat": "Full Height",
+      "dims": "36\"W x 24\"D x 34.5\"H",
+      "width_in": 36,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 359.52,
+        "highgloss": 466.67,
+        "matte": 477.65,
+        "shaker": 503.11,
+        "veneer": 586.88,
+        "doubleshaker": 554.1
+      },
+      "ply": {
+        "melamine": 493.47,
+        "highgloss": 600.62,
+        "matte": 611.6,
+        "shaker": 637.06,
+        "veneer": 720.83,
+        "doubleshaker": 688.05
+      }
+    },
+    {
+      "sku": "SPB09",
+      "desc": "Spice Pull Base Cabinet",
+      "cat": "Specialty",
+      "dims": "9\"W x 24\"D x 34.5\"H",
+      "width_in": 9,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 380.43,
+        "highgloss": 407.08,
+        "matte": 409.85,
+        "shaker": 416.12,
+        "veneer": 436.95,
+        "doubleshaker": 428.89
+      },
+      "ply": {
+        "melamine": 454.35,
+        "highgloss": 481,
+        "matte": 483.77,
+        "shaker": 490.04,
+        "veneer": 510.87,
+        "doubleshaker": 502.81
+      }
+    },
+    {
+      "sku": "SPB12",
+      "desc": "Spice Pull Base Cabinet",
+      "cat": "Specialty",
+      "dims": "12\"W x 24\"D x 34.5\"H",
+      "width_in": 12,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 450.62,
+        "highgloss": 486.38,
+        "matte": 489.97,
+        "shaker": 498.48,
+        "veneer": 526.4,
+        "doubleshaker": 515.5
+      },
+      "ply": {
+        "melamine": 529.91,
+        "highgloss": 565.67,
+        "matte": 569.26,
+        "shaker": 577.77,
+        "veneer": 605.69,
+        "doubleshaker": 594.79
+      }
+    },
+    {
+      "sku": "BWB18",
+      "desc": "Base Waste Basket",
+      "cat": "Specialty",
+      "dims": "18\"W x 24\"D x 34.5\"H",
+      "width_in": 18,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 550.97,
+        "highgloss": 604.58,
+        "matte": 610.03,
+        "shaker": 622.8,
+        "veneer": 664.68,
+        "doubleshaker": 648.26
+      },
+      "ply": {
+        "melamine": 634.6,
+        "highgloss": 688.21,
+        "matte": 693.66,
+        "shaker": 706.43,
+        "veneer": 748.31,
+        "doubleshaker": 731.89
+      }
+    },
+    {
+      "sku": "MB24",
+      "desc": "Microwave Base Cabinet - 1DRW",
+      "cat": "Specialty",
+      "dims": "24\"W x 24\"D x 34.5\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 429.11,
+        "highgloss": 457.34,
+        "matte": 460.17,
+        "shaker": 466.89,
+        "veneer": 488.92,
+        "doubleshaker": 480.26
+      },
+      "ply": {
+        "melamine": 538.57,
+        "highgloss": 566.8,
+        "matte": 569.63,
+        "shaker": 576.35,
+        "veneer": 598.38,
+        "doubleshaker": 589.72
+      }
+    },
+    {
+      "sku": "MB30",
+      "desc": "Microwave Base Cabinet - 1DRW",
+      "cat": "Specialty",
+      "dims": "30\"W x 24\"D x 34.5\"H",
+      "width_in": 30,
+      "depth_in": 24,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 485.7,
+        "highgloss": 520.95,
+        "matte": 524.61,
+        "shaker": 532.89,
+        "veneer": 560.45,
+        "doubleshaker": 549.77
+      },
+      "ply": {
+        "melamine": 611.29,
+        "highgloss": 646.54,
+        "matte": 650.2,
+        "shaker": 658.48,
+        "veneer": 686.04,
+        "doubleshaker": 675.36
+      }
+    },
+    {
+      "sku": "W1212",
+      "desc": "Wall Cabinet - 1DOR",
+      "cat": "Wall Short",
+      "dims": "12\"W x 12\"D x 12\"H",
+      "width_in": 12,
+      "depth_in": 12,
+      "height_in": 12,
+      "pb": null,
+      "ply": {
+        "melamine": 96.32,
+        "highgloss": 110.58,
+        "matte": 112.07,
+        "shaker": 115.51,
+        "veneer": 126.71,
+        "doubleshaker": 122.45
+      }
+    },
+    {
+      "sku": "W1512",
+      "desc": "Wall Cabinet - 1DOR",
+      "cat": "Wall Short",
+      "dims": "15\"W x 12\"D x 12\"H",
+      "width_in": 15,
+      "depth_in": 12,
+      "height_in": 12,
+      "pb": null,
+      "ply": {
+        "melamine": 109.16,
+        "highgloss": 127,
+        "matte": 128.87,
+        "shaker": 133.2,
+        "veneer": 147.16,
+        "doubleshaker": 141.86
+      }
+    },
+    {
+      "sku": "W1812",
+      "desc": "Wall Cabinet - 1DOR",
+      "cat": "Wall Short",
+      "dims": "18\"W x 12\"D x 12\"H",
+      "width_in": 18,
+      "depth_in": 12,
+      "height_in": 12,
+      "pb": {
+        "melamine": 89.3,
+        "highgloss": 110.73,
+        "matte": 112.97,
+        "shaker": 118.19,
+        "veneer": 134.99,
+        "doubleshaker": 128.65
+      },
+      "ply": {
+        "melamine": 121.93,
+        "highgloss": 143.36,
+        "matte": 145.6,
+        "shaker": 150.82,
+        "veneer": 167.62,
+        "doubleshaker": 161.28
+      }
+    },
+    {
+      "sku": "W0930",
+      "desc": "Wall Cabinet - 1DOR, 2S",
+      "cat": "Wall 30",
+      "dims": "9\"W x 12\"D x 30\"H",
+      "width_in": 9,
+      "depth_in": 12,
+      "height_in": 30,
+      "pb": {
+        "melamine": 117,
+        "highgloss": 143.96,
+        "matte": 146.72,
+        "shaker": 153.07,
+        "veneer": 174.12,
+        "doubleshaker": 165.91
+      },
+      "ply": {
+        "melamine": 158.89,
+        "highgloss": 185.85,
+        "matte": 188.61,
+        "shaker": 194.96,
+        "veneer": 216.01,
+        "doubleshaker": 207.8
+      }
+    },
+    {
+      "sku": "W1230",
+      "desc": "Wall Cabinet - 1DOR, 2S",
+      "cat": "Wall 30",
+      "dims": "12\"W x 12\"D x 30\"H",
+      "width_in": 12,
+      "depth_in": 12,
+      "height_in": 30,
+      "pb": {
+        "melamine": 131.86,
+        "highgloss": 167.85,
+        "matte": 171.58,
+        "shaker": 180.09,
+        "veneer": 208.24,
+        "doubleshaker": 197.26
+      },
+      "ply": {
+        "melamine": 180.02,
+        "highgloss": 216.01,
+        "matte": 219.74,
+        "shaker": 228.25,
+        "veneer": 256.4,
+        "doubleshaker": 245.42
+      }
+    },
+    {
+      "sku": "W1530",
+      "desc": "Wall Cabinet - 1DOR, 2S",
+      "cat": "Wall 30",
+      "dims": "15\"W x 12\"D x 30\"H",
+      "width_in": 15,
+      "depth_in": 12,
+      "height_in": 30,
+      "pb": {
+        "melamine": 150.6,
+        "highgloss": 195.7,
+        "matte": 200.25,
+        "shaker": 211.01,
+        "veneer": 246.25,
+        "doubleshaker": 232.44
+      },
+      "ply": {
+        "melamine": 204.96,
+        "highgloss": 250.06,
+        "matte": 254.61,
+        "shaker": 265.37,
+        "veneer": 300.61,
+        "doubleshaker": 286.8
+      }
+    },
+    {
+      "sku": "W2430",
+      "desc": "Wall Cabinet - 2DOR, 2S",
+      "cat": "Wall 30",
+      "dims": "24\"W x 12\"D x 30\"H",
+      "width_in": 24,
+      "depth_in": 12,
+      "height_in": 30,
+      "pb": {
+        "melamine": 218.84,
+        "highgloss": 290.9,
+        "matte": 298.21,
+        "shaker": 315.31,
+        "veneer": 371.61,
+        "doubleshaker": 349.58
+      },
+      "ply": {
+        "melamine": 292.02,
+        "highgloss": 364.08,
+        "matte": 371.39,
+        "shaker": 388.49,
+        "veneer": 444.79,
+        "doubleshaker": 422.76
+      }
+    },
+    {
+      "sku": "W3030",
+      "desc": "Wall Cabinet - 2DOR, 2S",
+      "cat": "Wall 30",
+      "dims": "30\"W x 12\"D x 30\"H",
+      "width_in": 30,
+      "depth_in": 12,
+      "height_in": 30,
+      "pb": {
+        "melamine": 255.66,
+        "highgloss": 345.78,
+        "matte": 355.04,
+        "shaker": 376.4,
+        "veneer": 446.81,
+        "doubleshaker": 419.33
+      },
+      "ply": {
+        "melamine": 341.3,
+        "highgloss": 431.42,
+        "matte": 440.68,
+        "shaker": 462.04,
+        "veneer": 532.45,
+        "doubleshaker": 504.97
+      }
+    },
+    {
+      "sku": "W1236",
+      "desc": "Wall Cabinet - 1DOR, 2S",
+      "cat": "Wall 36",
+      "dims": "12\"W x 12\"D x 36\"H",
+      "width_in": 12,
+      "depth_in": 12,
+      "height_in": 36,
+      "pb": {
+        "melamine": 151.27,
+        "highgloss": 194.5,
+        "matte": 198.91,
+        "shaker": 209.21,
+        "veneer": 243.04,
+        "doubleshaker": 229.75
+      },
+      "ply": {
+        "melamine": 206.3,
+        "highgloss": 249.53,
+        "matte": 253.94,
+        "shaker": 264.24,
+        "veneer": 298.07,
+        "doubleshaker": 284.78
+      }
+    },
+    {
+      "sku": "W1536",
+      "desc": "Wall Cabinet - 1DOR, 2S",
+      "cat": "Wall 36",
+      "dims": "15\"W x 12\"D x 36\"H",
+      "width_in": 15,
+      "depth_in": 12,
+      "height_in": 36,
+      "pb": {
+        "melamine": 172.92,
+        "highgloss": 226.98,
+        "matte": 232.51,
+        "shaker": 245.35,
+        "veneer": 287.61,
+        "doubleshaker": 271.11
+      },
+      "ply": {
+        "melamine": 234.6,
+        "highgloss": 288.66,
+        "matte": 294.19,
+        "shaker": 307.03,
+        "veneer": 349.29,
+        "doubleshaker": 332.79
+      }
+    },
+    {
+      "sku": "W1536GD",
+      "desc": "Wall Cabinet Glass Door - 1DOR, 2S",
+      "cat": "Wall 36",
+      "dims": "15\"W x 12\"D x 36\"H",
+      "width_in": 15,
+      "depth_in": 12,
+      "height_in": 36,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 326.52,
+        "veneer": 368.71,
+        "doubleshaker": 352.28
+      }
+    },
+    {
+      "sku": "W1836",
+      "desc": "Wall Cabinet - 1DOR, 2S",
+      "cat": "Wall 36",
+      "dims": "18\"W x 12\"D x 36\"H",
+      "width_in": 18,
+      "depth_in": 12,
+      "height_in": 36,
+      "pb": {
+        "melamine": 194.58,
+        "highgloss": 259.54,
+        "matte": 266.11,
+        "shaker": 281.56,
+        "veneer": 332.34,
+        "doubleshaker": 312.55
+      },
+      "ply": {
+        "melamine": 263.05,
+        "highgloss": 328.01,
+        "matte": 334.58,
+        "shaker": 350.03,
+        "veneer": 400.81,
+        "doubleshaker": 381.02
+      }
+    },
+    {
+      "sku": "W1836GD",
+      "desc": "Wall Cabinet Glass Door - 1DOR, 2S",
+      "cat": "Wall 36",
+      "dims": "18\"W x 12\"D x 36\"H",
+      "width_in": 18,
+      "depth_in": 12,
+      "height_in": 36,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 374.9,
+        "veneer": 425.45,
+        "doubleshaker": 405.81
+      }
+    },
+    {
+      "sku": "W2136",
+      "desc": "Wall Cabinet - 1DOR, 2S",
+      "cat": "Wall 36",
+      "dims": "21\"W x 12\"D x 36\"H",
+      "width_in": 21,
+      "depth_in": 12,
+      "height_in": 36,
+      "pb": {
+        "melamine": 216.24,
+        "highgloss": 292.1,
+        "matte": 299.86,
+        "shaker": 317.93,
+        "veneer": 377.22,
+        "doubleshaker": 353.92
+      },
+      "ply": {
+        "melamine": 291.35,
+        "highgloss": 367.21,
+        "matte": 374.97,
+        "shaker": 393.04,
+        "veneer": 452.33,
+        "doubleshaker": 429.03
+      }
+    },
+    {
+      "sku": "W2436",
+      "desc": "Wall Cabinet - 2DOR, 2S",
+      "cat": "Wall 36",
+      "dims": "24\"W x 12\"D x 36\"H",
+      "width_in": 24,
+      "depth_in": 12,
+      "height_in": 36,
+      "pb": {
+        "melamine": 249.38,
+        "highgloss": 335.85,
+        "matte": 344.66,
+        "shaker": 365.27,
+        "veneer": 432.84,
+        "doubleshaker": 406.33
+      },
+      "ply": {
+        "melamine": 331.29,
+        "highgloss": 417.76,
+        "matte": 426.57,
+        "shaker": 447.18,
+        "veneer": 514.75,
+        "doubleshaker": 488.24
+      }
+    },
+    {
+      "sku": "W2436GD",
+      "desc": "Wall Glass Door Cabinet - 2DOR, 2S",
+      "cat": "Wall 36",
+      "dims": "24\"W x 12\"D x 36\"H",
+      "width_in": 24,
+      "depth_in": 12,
+      "height_in": 36,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 475.48,
+        "veneer": 542.75,
+        "doubleshaker": 516.54
+      }
+    },
+    {
+      "sku": "W2736",
+      "desc": "Wall Cabinet - 2DOR, 2S",
+      "cat": "Wall 36",
+      "dims": "27\"W x 12\"D x 36\"H",
+      "width_in": 27,
+      "depth_in": 12,
+      "height_in": 36,
+      "pb": {
+        "melamine": 270.67,
+        "highgloss": 368.03,
+        "matte": 377.89,
+        "shaker": 401.03,
+        "veneer": 477.12,
+        "doubleshaker": 447.4
+      },
+      "ply": {
+        "melamine": 359.3,
+        "highgloss": 456.66,
+        "matte": 466.52,
+        "shaker": 489.66,
+        "veneer": 565.75,
+        "doubleshaker": 536.03
+      }
+    },
+    {
+      "sku": "W3036",
+      "desc": "Wall Cabinet - 2DOR, 2S",
+      "cat": "Wall 36",
+      "dims": "30\"W x 12\"D x 36\"H",
+      "width_in": 30,
+      "depth_in": 12,
+      "height_in": 36,
+      "pb": {
+        "melamine": 292.02,
+        "highgloss": 400.14,
+        "matte": 411.19,
+        "shaker": 436.95,
+        "veneer": 521.54,
+        "doubleshaker": 488.39
+      },
+      "ply": {
+        "melamine": 387.3,
+        "highgloss": 495.42,
+        "matte": 506.47,
+        "shaker": 532.23,
+        "veneer": 616.82,
+        "doubleshaker": 583.67
+      }
+    },
+    {
+      "sku": "W3036GD",
+      "desc": "Wall Cabinet Glass Door - 2DOR, 2S",
+      "cat": "Wall 36",
+      "dims": "30\"W x 12\"D x 36\"H",
+      "width_in": 30,
+      "depth_in": 12,
+      "height_in": 36,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 571.28,
+        "veneer": 655.43,
+        "doubleshaker": 622.72
+      }
+    },
+    {
+      "sku": "W3336",
+      "desc": "Wall Cabinet - 2DOR, 2S",
+      "cat": "Wall 36",
+      "dims": "33\"W x 12\"D x 36\"H",
+      "width_in": 33,
+      "depth_in": 12,
+      "height_in": 36,
+      "pb": {
+        "melamine": 313.3,
+        "highgloss": 432.32,
+        "matte": 444.49,
+        "shaker": 472.79,
+        "veneer": 565.82,
+        "doubleshaker": 529.46
+      },
+      "ply": {
+        "melamine": 415.29,
+        "highgloss": 534.31,
+        "matte": 546.48,
+        "shaker": 574.78,
+        "veneer": 667.81,
+        "doubleshaker": 631.45
+      }
+    },
+    {
+      "sku": "W3636",
+      "desc": "Wall Cabinet - 2DOR, 2S",
+      "cat": "Wall 36",
+      "dims": "36\"W x 12\"D x 36\"H",
+      "width_in": 36,
+      "depth_in": 12,
+      "height_in": 36,
+      "pb": {
+        "melamine": 334.58,
+        "highgloss": 464.57,
+        "matte": 477.79,
+        "shaker": 508.7,
+        "veneer": 610.25,
+        "doubleshaker": 570.53
+      },
+      "ply": {
+        "melamine": 443.22,
+        "highgloss": 573.21,
+        "matte": 586.43,
+        "shaker": 617.34,
+        "veneer": 718.89,
+        "doubleshaker": 679.17
+      }
+    },
+    {
+      "sku": "W1212GD",
+      "desc": "Wall Cabinet Glass Door - 1DOR",
+      "cat": "Wall Short",
+      "dims": "12\"W x 12\"D x 12\"H",
+      "width_in": 12,
+      "depth_in": 12,
+      "height_in": 12,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 119.01,
+        "veneer": 130.21,
+        "doubleshaker": 125.88
+      }
+    },
+    {
+      "sku": "W1512GD",
+      "desc": "Wall Cabinet Glass Door - 1DOR",
+      "cat": "Wall Short",
+      "dims": "15\"W x 12\"D x 12\"H",
+      "width_in": 15,
+      "depth_in": 12,
+      "height_in": 12,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 138.05,
+        "veneer": 152.02,
+        "doubleshaker": 146.64
+      }
+    },
+    {
+      "sku": "W1812GD",
+      "desc": "Wall Cabinet Glass Door - 1DOR",
+      "cat": "Wall Short",
+      "dims": "18\"W x 12\"D x 12\"H",
+      "width_in": 18,
+      "depth_in": 12,
+      "height_in": 12,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 124.46,
+        "veneer": 141.19,
+        "doubleshaker": 134.69
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 157.09,
+        "veneer": 173.82,
+        "doubleshaker": 167.32
+      }
+    },
+    {
+      "sku": "W2112",
+      "desc": "Wall Cabinet - 1DOR",
+      "cat": "Wall Short",
+      "dims": "21\"W x 12\"D x 12\"H",
+      "width_in": 21,
+      "depth_in": 12,
+      "height_in": 12,
+      "pb": null,
+      "ply": {
+        "melamine": 134.77,
+        "highgloss": 159.78,
+        "matte": 162.4,
+        "shaker": 168.52,
+        "veneer": 188.16,
+        "doubleshaker": 180.69
+      }
+    },
+    {
+      "sku": "W2112GD",
+      "desc": "Wall Cabinet Glass Door - 1DOR",
+      "cat": "Wall Short",
+      "dims": "21\"W x 12\"D x 12\"H",
+      "width_in": 21,
+      "depth_in": 12,
+      "height_in": 12,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 176.06,
+        "veneer": 195.62,
+        "doubleshaker": 188.01
+      }
+    },
+    {
+      "sku": "W2412",
+      "desc": "Wall Cabinet - 2DOR",
+      "cat": "Wall Short",
+      "dims": "24\"W x 12\"D x 12\"H",
+      "width_in": 24,
+      "depth_in": 12,
+      "height_in": 12,
+      "pb": {
+        "melamine": 124.1,
+        "highgloss": 152.84,
+        "matte": 155.76,
+        "shaker": 162.55,
+        "veneer": 184.95,
+        "doubleshaker": 176.14
+      },
+      "ply": {
+        "melamine": 161.06,
+        "highgloss": 189.8,
+        "matte": 192.72,
+        "shaker": 199.51,
+        "veneer": 221.91,
+        "doubleshaker": 213.1
+      }
+    },
+    {
+      "sku": "W2412GD",
+      "desc": "Wall Cabinet Glass Door - 2DOR",
+      "cat": "Wall Short",
+      "dims": "24\"W x 12\"D x 12\"H",
+      "width_in": 24,
+      "depth_in": 12,
+      "height_in": 12,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 169.64,
+        "veneer": 191.97,
+        "doubleshaker": 183.31
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 206.75,
+        "veneer": 229.08,
+        "doubleshaker": 220.42
+      }
+    },
+    {
+      "sku": "W2712",
+      "desc": "Wall Cabinet - 2DOR",
+      "cat": "Wall Short",
+      "dims": "27\"W x 12\"D x 12\"H",
+      "width_in": 27,
+      "depth_in": 12,
+      "height_in": 12,
+      "pb": null,
+      "ply": {
+        "melamine": 173.9,
+        "highgloss": 205.93,
+        "matte": 209.37,
+        "shaker": 217.21,
+        "veneer": 242.37,
+        "doubleshaker": 232.81
+      }
+    },
+    {
+      "sku": "W2712GD",
+      "desc": "Wall Cabinet Glass Door - 2DOR",
+      "cat": "Wall Short",
+      "dims": "27\"W x 12\"D x 12\"H",
+      "width_in": 27,
+      "depth_in": 12,
+      "height_in": 12,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 225.64,
+        "veneer": 250.73,
+        "doubleshaker": 240.95
+      }
+    },
+    {
+      "sku": "W3012",
+      "desc": "Wall Cabinet - 2DOR",
+      "cat": "Wall Short",
+      "dims": "30\"W x 12\"D x 12\"H",
+      "width_in": 30,
+      "depth_in": 12,
+      "height_in": 12,
+      "pb": {
+        "melamine": 142.31,
+        "highgloss": 178.15,
+        "matte": 181.81,
+        "shaker": 190.32,
+        "veneer": 218.32,
+        "doubleshaker": 207.42
+      },
+      "ply": {
+        "melamine": 186.74,
+        "highgloss": 222.58,
+        "matte": 226.24,
+        "shaker": 234.75,
+        "veneer": 262.75,
+        "doubleshaker": 251.85
+      }
+    },
+    {
+      "sku": "W3012GD",
+      "desc": "Wall Cabinet Glass Door - 2DOR",
+      "cat": "Wall Short",
+      "dims": "30\"W x 12\"D x 12\"H",
+      "width_in": 30,
+      "depth_in": 12,
+      "height_in": 12,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 244.46,
+        "veneer": 273.88,
+        "doubleshaker": 261.56
+      }
+    },
+    {
+      "sku": "W3312",
+      "desc": "Wall Cabinet - 2DOR",
+      "cat": "Wall Short",
+      "dims": "33\"W x 12\"D x 12\"H",
+      "width_in": 33,
+      "depth_in": 12,
+      "height_in": 12,
+      "pb": {
+        "melamine": 151.34,
+        "highgloss": 190.77,
+        "matte": 194.8,
+        "shaker": 204.21,
+        "veneer": 235.05,
+        "doubleshaker": 223.02
+      },
+      "ply": {
+        "melamine": 199.43,
+        "highgloss": 238.86,
+        "matte": 242.89,
+        "shaker": 252.3,
+        "veneer": 283.14,
+        "doubleshaker": 271.11
+      }
+    },
+    {
+      "sku": "W3312GD",
+      "desc": "Wall Cabinet Glass Door - 2DOR",
+      "cat": "Wall Short",
+      "dims": "33\"W x 12\"D x 12\"H",
+      "width_in": 33,
+      "depth_in": 12,
+      "height_in": 12,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 263.35,
+        "veneer": 294.04,
+        "doubleshaker": 282.17
+      }
+    },
+    {
+      "sku": "W3612",
+      "desc": "Wall Cabinet - 2DOR",
+      "cat": "Wall Short",
+      "dims": "36\"W x 12\"D x 12\"H",
+      "width_in": 36,
+      "depth_in": 12,
+      "height_in": 12,
+      "pb": {
+        "melamine": 160.39,
+        "highgloss": 203.47,
+        "matte": 207.8,
+        "shaker": 218.03,
+        "veneer": 251.7,
+        "doubleshaker": 238.56
+      },
+      "ply": {
+        "melamine": 212.13,
+        "highgloss": 255.21,
+        "matte": 259.54,
+        "shaker": 269.77,
+        "veneer": 303.44,
+        "doubleshaker": 290.3
+      }
+    },
+    {
+      "sku": "W3612GD",
+      "desc": "Wall Cabinet Glass Door - 2DOR",
+      "cat": "Wall Short",
+      "dims": "36\"W x 12\"D x 12\"H",
+      "width_in": 36,
+      "depth_in": 12,
+      "height_in": 12,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 282.09,
+        "veneer": 315.62,
+        "doubleshaker": 302.63
+      }
+    },
+    {
+      "sku": "W3015",
+      "desc": "Wall Cabinet - 2DOR",
+      "cat": "Wall Short",
+      "dims": "30\"W x 12\"D x 15\"H",
+      "width_in": 30,
+      "depth_in": 12,
+      "height_in": 15,
+      "pb": {
+        "melamine": 157.47,
+        "highgloss": 202.35,
+        "matte": 206.9,
+        "shaker": 217.65,
+        "veneer": 252.75,
+        "doubleshaker": 239.01
+      },
+      "ply": {
+        "melamine": 204.96,
+        "highgloss": 249.84,
+        "matte": 254.39,
+        "shaker": 265.14,
+        "veneer": 300.24,
+        "doubleshaker": 286.5
+      }
+    },
+    {
+      "sku": "W3315",
+      "desc": "Wall Cabinet - 2DOR",
+      "cat": "Wall Short",
+      "dims": "33\"W x 12\"D x 15\"H",
+      "width_in": 33,
+      "depth_in": 12,
+      "height_in": 15,
+      "pb": {
+        "melamine": 167.78,
+        "highgloss": 217.14,
+        "matte": 222.21,
+        "shaker": 234.01,
+        "veneer": 272.69,
+        "doubleshaker": 257.46
+      },
+      "ply": {
+        "melamine": 218.92,
+        "highgloss": 268.28,
+        "matte": 273.35,
+        "shaker": 285.15,
+        "veneer": 323.83,
+        "doubleshaker": 308.6
+      }
+    },
+    {
+      "sku": "W3615",
+      "desc": "Wall Cabinet - 2DOR",
+      "cat": "Wall Short",
+      "dims": "36\"W x 12\"D x 15\"H",
+      "width_in": 36,
+      "depth_in": 12,
+      "height_in": 15,
+      "pb": {
+        "melamine": 177.94,
+        "highgloss": 231.84,
+        "matte": 237.37,
+        "shaker": 250.21,
+        "veneer": 292.4,
+        "doubleshaker": 275.82
+      },
+      "ply": {
+        "melamine": 232.82,
+        "highgloss": 286.72,
+        "matte": 292.25,
+        "shaker": 305.09,
+        "veneer": 347.28,
+        "doubleshaker": 330.7
+      }
+    },
+    {
+      "sku": "W2418",
+      "desc": "Wall Cabinet - 2DOR",
+      "cat": "Wall Short",
+      "dims": "24\"W x 12\"D x 18\"H",
+      "width_in": 24,
+      "depth_in": 12,
+      "height_in": 18,
+      "pb": {
+        "melamine": 147.39,
+        "highgloss": 190.63,
+        "matte": 194.96,
+        "shaker": 205.26,
+        "veneer": 238.93,
+        "doubleshaker": 225.79
+      },
+      "ply": {
+        "melamine": 190.55,
+        "highgloss": 233.79,
+        "matte": 238.12,
+        "shaker": 248.42,
+        "veneer": 282.09,
+        "doubleshaker": 268.95
+      }
+    },
+    {
+      "sku": "W3018",
+      "desc": "Wall Cabinet - 2DOR",
+      "cat": "Wall Short",
+      "dims": "30\"W x 12\"D x 18\"H",
+      "width_in": 30,
+      "depth_in": 12,
+      "height_in": 18,
+      "pb": {
+        "melamine": 170.1,
+        "highgloss": 224,
+        "matte": 229.53,
+        "shaker": 242.37,
+        "veneer": 284.56,
+        "doubleshaker": 267.98
+      },
+      "ply": {
+        "melamine": 220.64,
+        "highgloss": 274.54,
+        "matte": 280.07,
+        "shaker": 292.91,
+        "veneer": 335.1,
+        "doubleshaker": 318.52
+      }
+    },
+    {
+      "sku": "W3018GD",
+      "desc": "Wall Cabinet Glass Door - 2DOR",
+      "cat": "Wall Short",
+      "dims": "30\"W x 12\"D x 18\"H",
+      "width_in": 30,
+      "depth_in": 12,
+      "height_in": 18,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 309.87,
+        "veneer": 351.83,
+        "doubleshaker": 335.48
+      }
+    },
+    {
+      "sku": "W3318",
+      "desc": "Wall Cabinet - 2DOR",
+      "cat": "Wall Short",
+      "dims": "33\"W x 12\"D x 18\"H",
+      "width_in": 33,
+      "depth_in": 12,
+      "height_in": 18,
+      "pb": {
+        "melamine": 181.29,
+        "highgloss": 240.65,
+        "matte": 246.69,
+        "shaker": 260.81,
+        "veneer": 307.17,
+        "doubleshaker": 288.96
+      },
+      "ply": {
+        "melamine": 235.58,
+        "highgloss": 294.94,
+        "matte": 300.98,
+        "shaker": 315.1,
+        "veneer": 361.46,
+        "doubleshaker": 343.25
+      }
+    },
+    {
+      "sku": "W3618",
+      "desc": "Wall Cabinet - 2DOR",
+      "cat": "Wall Short",
+      "dims": "36\"W x 12\"D x 18\"H",
+      "width_in": 36,
+      "depth_in": 12,
+      "height_in": 18,
+      "pb": {
+        "melamine": 192.49,
+        "highgloss": 257.23,
+        "matte": 263.87,
+        "shaker": 279.26,
+        "veneer": 329.88,
+        "doubleshaker": 310.09
+      },
+      "ply": {
+        "melamine": 250.43,
+        "highgloss": 315.17,
+        "matte": 321.81,
+        "shaker": 337.2,
+        "veneer": 387.82,
+        "doubleshaker": 368.03
+      }
+    },
+    {
+      "sku": "W2424",
+      "desc": "Wall Cabinet - 2DOR, 1S",
+      "cat": "Wall 24",
+      "dims": "24\"W x 12\"D x 24\"H",
+      "width_in": 24,
+      "depth_in": 12,
+      "height_in": 24,
+      "pb": {
+        "melamine": 183,
+        "highgloss": 240.8,
+        "matte": 246.62,
+        "shaker": 260.36,
+        "veneer": 305.31,
+        "doubleshaker": 287.76
+      },
+      "ply": {
+        "melamine": 241.02,
+        "highgloss": 298.82,
+        "matte": 304.64,
+        "shaker": 318.38,
+        "veneer": 363.33,
+        "doubleshaker": 345.78
+      }
+    },
+    {
+      "sku": "W3024",
+      "desc": "Wall Cabinet - 2DOR, 1S",
+      "cat": "Wall 24",
+      "dims": "30\"W x 12\"D x 24\"H",
+      "width_in": 30,
+      "depth_in": 12,
+      "height_in": 24,
+      "pb": {
+        "melamine": 213.03,
+        "highgloss": 285.08,
+        "matte": 292.47,
+        "shaker": 309.57,
+        "veneer": 365.8,
+        "doubleshaker": 343.92
+      },
+      "ply": {
+        "melamine": 281.05,
+        "highgloss": 353.1,
+        "matte": 360.49,
+        "shaker": 377.59,
+        "veneer": 433.82,
+        "doubleshaker": 411.94
+      }
+    },
+    {
+      "sku": "W3324",
+      "desc": "Wall Cabinet - 2DOR, 1S",
+      "cat": "Wall 24",
+      "dims": "33\"W x 12\"D x 24\"H",
+      "width_in": 33,
+      "depth_in": 12,
+      "height_in": 24,
+      "pb": {
+        "melamine": 227.8,
+        "highgloss": 307.1,
+        "matte": 315.24,
+        "shaker": 334.13,
+        "veneer": 396.18,
+        "doubleshaker": 371.84
+      },
+      "ply": {
+        "melamine": 300.83,
+        "highgloss": 380.13,
+        "matte": 388.27,
+        "shaker": 407.16,
+        "veneer": 469.21,
+        "doubleshaker": 444.87
+      }
+    },
+    {
+      "sku": "W3624",
+      "desc": "Wall Cabinet - 2DOR, 1S",
+      "cat": "Wall 24",
+      "dims": "36\"W x 12\"D x 24\"H",
+      "width_in": 36,
+      "depth_in": 12,
+      "height_in": 24,
+      "pb": {
+        "melamine": 242.66,
+        "highgloss": 329.28,
+        "matte": 338.09,
+        "shaker": 358.62,
+        "veneer": 426.27,
+        "doubleshaker": 399.84
+      },
+      "ply": {
+        "melamine": 320.69,
+        "highgloss": 407.31,
+        "matte": 416.12,
+        "shaker": 436.65,
+        "veneer": 504.3,
+        "doubleshaker": 477.87
+      }
+    },
+    {
+      "sku": "W1530GD",
+      "desc": "Wall Cabinet Glass Door - 1DOR, 2S",
+      "cat": "Wall 30",
+      "dims": "15\"W x 12\"D x 30\"H",
+      "width_in": 15,
+      "depth_in": 12,
+      "height_in": 30,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 281.2,
+        "veneer": 316.29,
+        "doubleshaker": 302.62
+      }
+    },
+    {
+      "sku": "W1830",
+      "desc": "Wall Cabinet - 1DOR, 2S",
+      "cat": "Wall 30",
+      "dims": "18\"W x 12\"D x 30\"H",
+      "width_in": 18,
+      "depth_in": 12,
+      "height_in": 30,
+      "pb": {
+        "melamine": 169.34,
+        "highgloss": 223.48,
+        "matte": 229,
+        "shaker": 241.92,
+        "veneer": 284.26,
+        "doubleshaker": 267.61
+      },
+      "ply": {
+        "melamine": 229.89,
+        "highgloss": 284.03,
+        "matte": 289.55,
+        "shaker": 302.47,
+        "veneer": 344.81,
+        "doubleshaker": 328.16
+      }
+    },
+    {
+      "sku": "W1830GD",
+      "desc": "Wall Cabinet Glass Door - 1DOR, 2S",
+      "cat": "Wall 30",
+      "dims": "18\"W x 12\"D x 30\"H",
+      "width_in": 18,
+      "depth_in": 12,
+      "height_in": 30,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 322.63,
+        "veneer": 364.74,
+        "doubleshaker": 348.32
+      }
+    },
+    {
+      "sku": "W2130",
+      "desc": "Wall Cabinet - 1DOR, 2S",
+      "cat": "Wall 30",
+      "dims": "21\"W x 12\"D x 30\"H",
+      "width_in": 21,
+      "depth_in": 12,
+      "height_in": 30,
+      "pb": {
+        "melamine": 188.09,
+        "highgloss": 251.26,
+        "matte": 257.75,
+        "shaker": 272.76,
+        "veneer": 322.12,
+        "doubleshaker": 302.85
+      },
+      "ply": {
+        "melamine": 254.91,
+        "highgloss": 318.08,
+        "matte": 324.57,
+        "shaker": 339.58,
+        "veneer": 388.94,
+        "doubleshaker": 369.67
+      }
+    },
+    {
+      "sku": "W2430S",
+      "desc": "Wall Cabinet - 1DOR, 2S",
+      "cat": "Wall 30",
+      "dims": "24\"W x 12\"D x 30\"H",
+      "width_in": 24,
+      "depth_in": 12,
+      "height_in": 30,
+      "pb": {
+        "melamine": 218.84,
+        "highgloss": 290.9,
+        "matte": 298.21,
+        "shaker": 315.31,
+        "veneer": 371.61,
+        "doubleshaker": 349.58
+      },
+      "ply": {
+        "melamine": 292.02,
+        "highgloss": 364.08,
+        "matte": 371.39,
+        "shaker": 388.49,
+        "veneer": 444.79,
+        "doubleshaker": 422.76
+      }
+    },
+    {
+      "sku": "W2430GD",
+      "desc": "Wall Cabinet Glass Door - 2DOR, 2S",
+      "cat": "Wall 30",
+      "dims": "24\"W x 12\"D x 30\"H",
+      "width_in": 24,
+      "depth_in": 12,
+      "height_in": 30,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 411.56,
+        "veneer": 467.56,
+        "doubleshaker": 445.76
+      }
+    },
+    {
+      "sku": "W2730",
+      "desc": "Wall Cabinet - 2DOR, 2S",
+      "cat": "Wall 30",
+      "dims": "27\"W x 12\"D x 30\"H",
+      "width_in": 27,
+      "depth_in": 12,
+      "height_in": 30,
+      "pb": {
+        "melamine": 237.29,
+        "highgloss": 318.38,
+        "matte": 326.66,
+        "shaker": 345.93,
+        "veneer": 409.32,
+        "doubleshaker": 384.53
+      },
+      "ply": {
+        "melamine": 316.66,
+        "highgloss": 397.75,
+        "matte": 406.03,
+        "shaker": 425.3,
+        "veneer": 488.69,
+        "doubleshaker": 463.9
+      }
+    },
+    {
+      "sku": "W3030GD",
+      "desc": "Wall Cabinet Glass Door - 2DOR, 2S",
+      "cat": "Wall 30",
+      "dims": "30\"W x 12\"D x 30\"H",
+      "width_in": 30,
+      "depth_in": 12,
+      "height_in": 30,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 493.77,
+        "veneer": 563.96,
+        "doubleshaker": 536.63
+      }
+    },
+    {
+      "sku": "W3330",
+      "desc": "Wall Cabinet - 2DOR, 2S",
+      "cat": "Wall 30",
+      "dims": "33\"W x 12\"D x 30\"H",
+      "width_in": 33,
+      "depth_in": 12,
+      "height_in": 30,
+      "pb": {
+        "melamine": 274.11,
+        "highgloss": 373.34,
+        "matte": 383.42,
+        "shaker": 407.01,
+        "veneer": 484.52,
+        "doubleshaker": 454.28
+      },
+      "ply": {
+        "melamine": 365.95,
+        "highgloss": 465.18,
+        "matte": 475.26,
+        "shaker": 498.85,
+        "veneer": 576.36,
+        "doubleshaker": 546.12
+      }
+    },
+    {
+      "sku": "W3630",
+      "desc": "Wall Cabinet - 2DOR, 2S",
+      "cat": "Wall 30",
+      "dims": "36\"W x 12\"D x 30\"H",
+      "width_in": 36,
+      "depth_in": 12,
+      "height_in": 30,
+      "pb": {
+        "melamine": 292.54,
+        "highgloss": 400.74,
+        "matte": 411.79,
+        "shaker": 437.55,
+        "veneer": 522.14,
+        "doubleshaker": 489.07
+      },
+      "ply": {
+        "melamine": 390.65,
+        "highgloss": 498.85,
+        "matte": 509.9,
+        "shaker": 535.66,
+        "veneer": 620.25,
+        "doubleshaker": 587.18
+      }
+    },
+    {
+      "sku": "W0936",
+      "desc": "Wall Cabinet - 1DOR, 2S",
+      "cat": "Wall 36",
+      "dims": "9\"W x 12\"D x 36\"H",
+      "width_in": 9,
+      "depth_in": 12,
+      "height_in": 36,
+      "pb": {
+        "melamine": 134.1,
+        "highgloss": 166.5,
+        "matte": 169.79,
+        "shaker": 177.48,
+        "veneer": 202.79,
+        "doubleshaker": 192.86
+      },
+      "ply": {
+        "melamine": 182.41,
+        "highgloss": 214.81,
+        "matte": 218.1,
+        "shaker": 225.79,
+        "veneer": 251.1,
+        "doubleshaker": 241.17
+      }
+    },
+    {
+      "sku": "W0942",
+      "desc": "Wall Cabinet - 1DOR, 3S",
+      "cat": "Wall 42",
+      "dims": "9\"W x 12\"D x 42\"H",
+      "width_in": 9,
+      "depth_in": 12,
+      "height_in": 42,
+      "pb": {
+        "melamine": 160.38,
+        "highgloss": 198.16,
+        "matte": 202.04,
+        "shaker": 211,
+        "veneer": 240.5,
+        "doubleshaker": 228.92
+      },
+      "ply": {
+        "melamine": 217.43,
+        "highgloss": 255.21,
+        "matte": 259.09,
+        "shaker": 268.05,
+        "veneer": 297.55,
+        "doubleshaker": 285.97
+      }
+    },
+    {
+      "sku": "W1242",
+      "desc": "Wall Cabinet - 1DOR, 3S",
+      "cat": "Wall 42",
+      "dims": "12\"W x 12\"D x 42\"H",
+      "width_in": 12,
+      "depth_in": 12,
+      "height_in": 42,
+      "pb": {
+        "melamine": 180.54,
+        "highgloss": 231.02,
+        "matte": 236.17,
+        "shaker": 248.12,
+        "veneer": 287.54,
+        "doubleshaker": 272.16
+      },
+      "ply": {
+        "melamine": 245.5,
+        "highgloss": 295.98,
+        "matte": 301.13,
+        "shaker": 313.08,
+        "veneer": 352.5,
+        "doubleshaker": 337.12
+      }
+    },
+    {
+      "sku": "W1542",
+      "desc": "Wall Cabinet - 1DOR, 3S",
+      "cat": "Wall 42",
+      "dims": "15\"W x 12\"D x 42\"H",
+      "width_in": 15,
+      "depth_in": 12,
+      "height_in": 42,
+      "pb": {
+        "melamine": 205.86,
+        "highgloss": 269.03,
+        "matte": 275.52,
+        "shaker": 290.53,
+        "veneer": 339.89,
+        "doubleshaker": 320.62
+      },
+      "ply": {
+        "melamine": 278.81,
+        "highgloss": 341.98,
+        "matte": 348.47,
+        "shaker": 363.48,
+        "veneer": 412.84,
+        "doubleshaker": 393.57
+      }
+    },
+    {
+      "sku": "W1542GD",
+      "desc": "Wall Cabinet Glass Door - 1DOR, 3S",
+      "cat": "Wall 42",
+      "dims": "15\"W x 12\"D x 42\"H",
+      "width_in": 15,
+      "depth_in": 12,
+      "height_in": 42,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 386.7,
+        "veneer": 435.83,
+        "doubleshaker": 416.64
+      }
+    },
+    {
+      "sku": "W1842",
+      "desc": "Wall Cabinet - 1DOR, 3S",
+      "cat": "Wall 42",
+      "dims": "18\"W x 12\"D x 42\"H",
+      "width_in": 18,
+      "depth_in": 12,
+      "height_in": 42,
+      "pb": {
+        "melamine": 231.17,
+        "highgloss": 307.03,
+        "matte": 314.8,
+        "shaker": 332.79,
+        "veneer": 392.08,
+        "doubleshaker": 368.93
+      },
+      "ply": {
+        "melamine": 312.11,
+        "highgloss": 387.97,
+        "matte": 395.74,
+        "shaker": 413.73,
+        "veneer": 473.02,
+        "doubleshaker": 449.87
+      }
+    },
+    {
+      "sku": "W1842GD",
+      "desc": "Wall Cabinet Glass Door - 1DOR, 3S",
+      "cat": "Wall 42",
+      "dims": "18\"W x 12\"D x 42\"H",
+      "width_in": 18,
+      "depth_in": 12,
+      "height_in": 42,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 443.3,
+        "veneer": 502.36,
+        "doubleshaker": 479.36
+      }
+    },
+    {
+      "sku": "W2142",
+      "desc": "Wall Cabinet - 1DOR, 3S",
+      "cat": "Wall 42",
+      "dims": "21\"W x 12\"D x 42\"H",
+      "width_in": 21,
+      "depth_in": 12,
+      "height_in": 42,
+      "pb": {
+        "melamine": 256.48,
+        "highgloss": 345.03,
+        "matte": 354.14,
+        "shaker": 375.2,
+        "veneer": 444.41,
+        "doubleshaker": 417.31
+      },
+      "ply": {
+        "melamine": 345.34,
+        "highgloss": 433.89,
+        "matte": 443,
+        "shaker": 464.06,
+        "veneer": 533.27,
+        "doubleshaker": 506.17
+      }
+    },
+    {
+      "sku": "W2442",
+      "desc": "Wall Cabinet - 2DOR, 3S",
+      "cat": "Wall 42",
+      "dims": "24\"W x 12\"D x 42\"H",
+      "width_in": 24,
+      "depth_in": 12,
+      "height_in": 42,
+      "pb": {
+        "melamine": 300.38,
+        "highgloss": 401.33,
+        "matte": 411.63,
+        "shaker": 435.68,
+        "veneer": 514.6,
+        "doubleshaker": 483.69
+      },
+      "ply": {
+        "melamine": 397.3,
+        "highgloss": 498.25,
+        "matte": 508.55,
+        "shaker": 532.6,
+        "veneer": 611.52,
+        "doubleshaker": 580.61
+      }
+    },
+    {
+      "sku": "W2442GD",
+      "desc": "Wall Glass Door Cabinet - 2DOR, 3S",
+      "cat": "Wall 42",
+      "dims": "24\"W x 12\"D x 42\"H",
+      "width_in": 24,
+      "depth_in": 12,
+      "height_in": 42,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 566.27,
+        "veneer": 644.82,
+        "doubleshaker": 614.28
+      }
+    },
+    {
+      "sku": "W2742",
+      "desc": "Wall Cabinet - 2DOR, 3S",
+      "cat": "Wall 42",
+      "dims": "27\"W x 12\"D x 42\"H",
+      "width_in": 27,
+      "depth_in": 12,
+      "height_in": 42,
+      "pb": {
+        "melamine": 325.25,
+        "highgloss": 438.89,
+        "matte": 450.47,
+        "shaker": 477.5,
+        "veneer": 566.35,
+        "doubleshaker": 531.63
+      },
+      "ply": {
+        "melamine": 430.23,
+        "highgloss": 543.87,
+        "matte": 555.45,
+        "shaker": 582.48,
+        "veneer": 671.33,
+        "doubleshaker": 636.61
+      }
+    },
+    {
+      "sku": "W3042",
+      "desc": "Wall Cabinet - 2DOR, 3S",
+      "cat": "Wall 42",
+      "dims": "30\"W x 12\"D x 42\"H",
+      "width_in": 30,
+      "depth_in": 12,
+      "height_in": 42,
+      "pb": {
+        "melamine": 350.18,
+        "highgloss": 476.52,
+        "matte": 489.36,
+        "shaker": 519.45,
+        "veneer": 618.24,
+        "doubleshaker": 579.56
+      },
+      "ply": {
+        "melamine": 463.08,
+        "highgloss": 589.42,
+        "matte": 602.26,
+        "shaker": 632.35,
+        "veneer": 731.14,
+        "doubleshaker": 692.46
+      }
+    },
+    {
+      "sku": "W3042GD",
+      "desc": "Wall Cabinet Glass Door - 2DOR, 2S",
+      "cat": "Wall 42",
+      "dims": "30\"W x 12\"D x 42\"H",
+      "width_in": 30,
+      "depth_in": 12,
+      "height_in": 42,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 678.64,
+        "veneer": 777.06,
+        "doubleshaker": 738.83
+      }
+    },
+    {
+      "sku": "W3342",
+      "desc": "Wall Cabinet - 2DOR, 3S",
+      "cat": "Wall 42",
+      "dims": "33\"W x 12\"D x 42\"H",
+      "width_in": 33,
+      "depth_in": 12,
+      "height_in": 42,
+      "pb": {
+        "melamine": 375.05,
+        "highgloss": 514.08,
+        "matte": 528.26,
+        "shaker": 561.34,
+        "veneer": 670.06,
+        "doubleshaker": 627.57
+      },
+      "ply": {
+        "melamine": 495.94,
+        "highgloss": 634.97,
+        "matte": 649.15,
+        "shaker": 682.23,
+        "veneer": 790.95,
+        "doubleshaker": 748.46
+      }
+    },
+    {
+      "sku": "W3642",
+      "desc": "Wall Cabinet - 2DOR, 3S",
+      "cat": "Wall 42",
+      "dims": "36\"W x 12\"D x 42\"H",
+      "width_in": 36,
+      "depth_in": 12,
+      "height_in": 42,
+      "pb": {
+        "melamine": 399.99,
+        "highgloss": 551.71,
+        "matte": 567.17,
+        "shaker": 603.31,
+        "veneer": 721.95,
+        "doubleshaker": 675.51
+      },
+      "ply": {
+        "melamine": 528.79,
+        "highgloss": 680.51,
+        "matte": 695.97,
+        "shaker": 732.11,
+        "veneer": 850.75,
+        "doubleshaker": 804.31
+      }
+    },
+    {
+      "sku": "W301224",
+      "desc": "Wall Refrigerator Cabinet - 2DOR",
+      "cat": "Wall Fridge",
+      "dims": "30\"W x 24\"D x 12\"H",
+      "width_in": 30,
+      "depth_in": 24,
+      "height_in": 12,
+      "pb": {
+        "melamine": 191.67,
+        "highgloss": 227.51,
+        "matte": 231.17,
+        "shaker": 239.68,
+        "veneer": 267.68,
+        "doubleshaker": 256.78
+      },
+      "ply": {
+        "melamine": 271.41,
+        "highgloss": 307.25,
+        "matte": 310.91,
+        "shaker": 319.42,
+        "veneer": 347.42,
+        "doubleshaker": 336.52
+      }
+    },
+    {
+      "sku": "W331224",
+      "desc": "Wall Refrigerator Cabinet - 2DOR",
+      "cat": "Wall Fridge",
+      "dims": "33\"W x 24\"D x 12\"H",
+      "width_in": 33,
+      "depth_in": 24,
+      "height_in": 12,
+      "pb": {
+        "melamine": 204.28,
+        "highgloss": 243.71,
+        "matte": 247.74,
+        "shaker": 257.15,
+        "veneer": 287.99,
+        "doubleshaker": 275.96
+      },
+      "ply": {
+        "melamine": 290.3,
+        "highgloss": 329.73,
+        "matte": 333.76,
+        "shaker": 343.17,
+        "veneer": 374.01,
+        "doubleshaker": 361.98
+      }
+    },
+    {
+      "sku": "W361224",
+      "desc": "Wall Refrigerator Cabinet - 2DOR",
+      "cat": "Wall Fridge",
+      "dims": "36\"W x 24\"D x 12\"H",
+      "width_in": 36,
+      "depth_in": 24,
+      "height_in": 12,
+      "pb": {
+        "melamine": 216.98,
+        "highgloss": 260.06,
+        "matte": 264.39,
+        "shaker": 274.62,
+        "veneer": 308.29,
+        "doubleshaker": 295.15
+      },
+      "ply": {
+        "melamine": 309.27,
+        "highgloss": 352.35,
+        "matte": 356.68,
+        "shaker": 366.91,
+        "veneer": 400.58,
+        "doubleshaker": 387.44
+      }
+    },
+    {
+      "sku": "W301524",
+      "desc": "Wall Refrigerator Cabinet - 2DOR",
+      "cat": "Wall Fridge",
+      "dims": "30\"W x 24\"D x 15\"H",
+      "width_in": 30,
+      "depth_in": 24,
+      "height_in": 15,
+      "pb": {
+        "melamine": 205.48,
+        "highgloss": 250.36,
+        "matte": 254.91,
+        "shaker": 265.66,
+        "veneer": 300.76,
+        "doubleshaker": 287.02
+      },
+      "ply": {
+        "melamine": 290.9,
+        "highgloss": 335.78,
+        "matte": 340.33,
+        "shaker": 351.08,
+        "veneer": 386.18,
+        "doubleshaker": 372.44
+      }
+    },
+    {
+      "sku": "W331524",
+      "desc": "Wall Refrigerator Cabinet - 2DOR",
+      "cat": "Wall Fridge",
+      "dims": "33\"W x 24\"D x 15\"H",
+      "width_in": 33,
+      "depth_in": 24,
+      "height_in": 15,
+      "pb": {
+        "melamine": 219.07,
+        "highgloss": 268.43,
+        "matte": 273.5,
+        "shaker": 285.3,
+        "veneer": 323.98,
+        "doubleshaker": 308.75
+      },
+      "ply": {
+        "melamine": 310.84,
+        "highgloss": 360.2,
+        "matte": 365.27,
+        "shaker": 377.07,
+        "veneer": 415.75,
+        "doubleshaker": 400.52
+      }
+    },
+    {
+      "sku": "W361524",
+      "desc": "Wall Refrigerator Cabinet - 2DOR",
+      "cat": "Wall Fridge",
+      "dims": "36\"W x 24\"D x 15\"H",
+      "width_in": 36,
+      "depth_in": 24,
+      "height_in": 15,
+      "pb": {
+        "melamine": 232.59,
+        "highgloss": 286.49,
+        "matte": 292.02,
+        "shaker": 304.86,
+        "veneer": 347.05,
+        "doubleshaker": 330.47
+      },
+      "ply": {
+        "melamine": 330.63,
+        "highgloss": 384.53,
+        "matte": 390.06,
+        "shaker": 402.9,
+        "veneer": 445.09,
+        "doubleshaker": 428.51
+      }
+    },
+    {
+      "sku": "W301824",
+      "desc": "Wall Refrigerator Cabinet - 2DOR",
+      "cat": "Wall Fridge",
+      "dims": "30\"W x 24\"D x 18\"H",
+      "width_in": 30,
+      "depth_in": 24,
+      "height_in": 18,
+      "pb": {
+        "melamine": 222.66,
+        "highgloss": 276.56,
+        "matte": 282.09,
+        "shaker": 294.93,
+        "veneer": 337.12,
+        "doubleshaker": 320.54
+      },
+      "ply": {
+        "melamine": 313.83,
+        "highgloss": 367.73,
+        "matte": 373.26,
+        "shaker": 386.1,
+        "veneer": 428.29,
+        "doubleshaker": 411.71
+      }
+    },
+    {
+      "sku": "W331824",
+      "desc": "Wall Refrigerator Cabinet - 2DOR",
+      "cat": "Wall Fridge",
+      "dims": "33\"W x 24\"D x 18\"H",
+      "width_in": 33,
+      "depth_in": 24,
+      "height_in": 18,
+      "pb": {
+        "melamine": 237.37,
+        "highgloss": 296.73,
+        "matte": 302.77,
+        "shaker": 316.89,
+        "veneer": 363.25,
+        "doubleshaker": 345.04
+      },
+      "ply": {
+        "melamine": 334.88,
+        "highgloss": 394.24,
+        "matte": 400.28,
+        "shaker": 414.4,
+        "veneer": 460.76,
+        "doubleshaker": 442.55
+      }
+    },
+    {
+      "sku": "W361824",
+      "desc": "Wall Refrigerator Cabinet - 2DOR",
+      "cat": "Wall Fridge",
+      "dims": "36\"W x 24\"D x 18\"H",
+      "width_in": 36,
+      "depth_in": 24,
+      "height_in": 18,
+      "pb": {
+        "melamine": 251.92,
+        "highgloss": 316.66,
+        "matte": 323.3,
+        "shaker": 338.69,
+        "veneer": 389.31,
+        "doubleshaker": 369.52
+      },
+      "ply": {
+        "melamine": 355.78,
+        "highgloss": 420.52,
+        "matte": 427.16,
+        "shaker": 442.55,
+        "veneer": 493.17,
+        "doubleshaker": 473.38
+      }
+    },
+    {
+      "sku": "W302424",
+      "desc": "Wall Refrigerator Cabinet - 2DOR, 1S",
+      "cat": "Wall Fridge",
+      "dims": "30\"W x 24\"D x 24\"H",
+      "width_in": 30,
+      "depth_in": 24,
+      "height_in": 24,
+      "pb": {
+        "melamine": 284.26,
+        "highgloss": 356.31,
+        "matte": 363.7,
+        "shaker": 380.8,
+        "veneer": 437.18,
+        "doubleshaker": 415.15
+      },
+      "ply": {
+        "melamine": 410.3,
+        "highgloss": 482.35,
+        "matte": 489.74,
+        "shaker": 506.84,
+        "veneer": 563.22,
+        "doubleshaker": 541.19
+      }
+    },
+    {
+      "sku": "W332424",
+      "desc": "Wall Refrigerator Cabinet - 2DOR, 1S",
+      "cat": "Wall Fridge",
+      "dims": "33\"W x 24\"D x 24\"H",
+      "width_in": 33,
+      "depth_in": 24,
+      "height_in": 24,
+      "pb": {
+        "melamine": 303.74,
+        "highgloss": 383.04,
+        "matte": 391.18,
+        "shaker": 410.07,
+        "veneer": 472.12,
+        "doubleshaker": 447.78
+      },
+      "ply": {
+        "melamine": 438.59,
+        "highgloss": 517.89,
+        "matte": 526.03,
+        "shaker": 544.92,
+        "veneer": 606.97,
+        "doubleshaker": 582.63
+      }
+    },
+    {
+      "sku": "W362424",
+      "desc": "Wall Refrigerator Cabinet - 2DOR, 1S",
+      "cat": "Wall Fridge",
+      "dims": "36\"W x 24\"D x 24\"H",
+      "width_in": 36,
+      "depth_in": 24,
+      "height_in": 24,
+      "pb": {
+        "melamine": 323.3,
+        "highgloss": 409.92,
+        "matte": 418.73,
+        "shaker": 439.26,
+        "veneer": 506.91,
+        "doubleshaker": 480.48
+      },
+      "ply": {
+        "melamine": 467.11,
+        "highgloss": 553.73,
+        "matte": 562.54,
+        "shaker": 583.07,
+        "veneer": 650.72,
+        "doubleshaker": 624.29
+      }
+    },
+    {
+      "sku": "WBC2730",
+      "desc": "Wall Blind Corner - 1DOR, 2S",
+      "cat": "Wall Corner",
+      "dims": "27\"W x 12\"D x 30\"H",
+      "width_in": 27,
+      "depth_in": 12,
+      "height_in": 30,
+      "pb": {
+        "melamine": 225.72,
+        "highgloss": 307.33,
+        "matte": 315.62,
+        "shaker": 335.03,
+        "veneer": 398.8,
+        "doubleshaker": 373.86
+      },
+      "ply": {
+        "melamine": 305.09,
+        "highgloss": 386.7,
+        "matte": 394.99,
+        "shaker": 414.4,
+        "veneer": 478.17,
+        "doubleshaker": 453.23
+      }
+    },
+    {
+      "sku": "WBC2736",
+      "desc": "Wall Blind Corner - 1DOR, 2S",
+      "cat": "Wall Corner",
+      "dims": "27\"W x 12\"D x 36\"H",
+      "width_in": 27,
+      "depth_in": 12,
+      "height_in": 36,
+      "pb": {
+        "melamine": 259.24,
+        "highgloss": 357.13,
+        "matte": 367.06,
+        "shaker": 390.36,
+        "veneer": 466.89,
+        "doubleshaker": 436.95
+      },
+      "ply": {
+        "melamine": 347.79,
+        "highgloss": 445.68,
+        "matte": 455.61,
+        "shaker": 478.91,
+        "veneer": 555.44,
+        "doubleshaker": 525.5
+      }
+    },
+    {
+      "sku": "WBC2742",
+      "desc": "Wall Blind Corner - 1DOR, 2S",
+      "cat": "Wall Corner",
+      "dims": "27\"W x 12\"D x 42\"H",
+      "width_in": 27,
+      "depth_in": 12,
+      "height_in": 42,
+      "pb": {
+        "melamine": 307.25,
+        "highgloss": 421.49,
+        "matte": 433.14,
+        "shaker": 460.32,
+        "veneer": 549.62,
+        "doubleshaker": 514.75
+      },
+      "ply": {
+        "melamine": 412.16,
+        "highgloss": 526.4,
+        "matte": 538.05,
+        "shaker": 565.23,
+        "veneer": 654.53,
+        "doubleshaker": 619.66
+      }
+    },
+    {
+      "sku": "WBC3030",
+      "desc": "Wall Blind Corner - 1DOR, 2S",
+      "cat": "Wall Corner",
+      "dims": "30\"W x 12\"D x 30\"H",
+      "width_in": 30,
+      "depth_in": 12,
+      "height_in": 30,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 365.57,
+        "veneer": 436.43,
+        "doubleshaker": 408.65
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 451.21,
+        "veneer": 522.07,
+        "doubleshaker": 494.29
+      }
+    },
+    {
+      "sku": "WBC3036",
+      "desc": "Wall Blind Corner - 1DOR, 2S",
+      "cat": "Wall Corner",
+      "dims": "30\"W x 12\"D x 36\"H",
+      "width_in": 30,
+      "depth_in": 12,
+      "height_in": 36,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 426.2,
+        "veneer": 511.25,
+        "doubleshaker": 477.95
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 521.47,
+        "veneer": 606.52,
+        "doubleshaker": 573.22
+      }
+    },
+    {
+      "sku": "WBC3042",
+      "desc": "Wall Blind Corner - 1DOR, 2S",
+      "cat": "Wall Corner",
+      "dims": "30\"W x 12\"D x 42\"H",
+      "width_in": 30,
+      "depth_in": 12,
+      "height_in": 42,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 502.21,
+        "veneer": 601.44,
+        "doubleshaker": 562.77
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 615.03,
+        "veneer": 714.26,
+        "doubleshaker": 675.59
+      }
+    },
+    {
+      "sku": "DCW2412GD",
+      "desc": "Wall Diagonal Corner Glass Door - 1DOR",
+      "cat": "Wall Corner",
+      "dims": "24\"W x 24\"D x 12\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 12,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 251.33,
+        "veneer": 266.56,
+        "doubleshaker": 260.52
+      }
+    },
+    {
+      "sku": "DCW2430",
+      "desc": "Wall Diagonal Corner - 1DOR, 2S",
+      "cat": "Wall Corner",
+      "dims": "24\"W x 24\"D x 30\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 30,
+      "pb": {
+        "melamine": 292.62,
+        "highgloss": 341.37,
+        "matte": 346.38,
+        "shaker": 358.03,
+        "veneer": 396.25,
+        "doubleshaker": 381.17
+      },
+      "ply": {
+        "melamine": 454.13,
+        "highgloss": 502.88,
+        "matte": 507.89,
+        "shaker": 519.54,
+        "veneer": 557.76,
+        "doubleshaker": 542.68
+      }
+    },
+    {
+      "sku": "DCW2430GD",
+      "desc": "Wall Diagonal Corner Glass Door - 1DOR, 2S",
+      "cat": "Wall Corner",
+      "dims": "24\"W x 24\"D x 30\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 30,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 537.23,
+        "veneer": 575.45,
+        "doubleshaker": 560.37
+      }
+    },
+    {
+      "sku": "DCW2436",
+      "desc": "Wall Diagonal Corner - 1DOR, 2S",
+      "cat": "Wall Corner",
+      "dims": "24\"W x 24\"D x 36\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 36,
+      "pb": {
+        "melamine": 316.73,
+        "highgloss": 375.27,
+        "matte": 381.25,
+        "shaker": 395.36,
+        "veneer": 441.2,
+        "doubleshaker": 423.13
+      },
+      "ply": {
+        "melamine": 494.66,
+        "highgloss": 553.2,
+        "matte": 559.18,
+        "shaker": 573.29,
+        "veneer": 619.13,
+        "doubleshaker": 601.06
+      }
+    },
+    {
+      "sku": "DCW2436GD",
+      "desc": "Wall Diagonal Corner Glass Door - 1DOR, 2S",
+      "cat": "Wall Corner",
+      "dims": "24\"W x 24\"D x 36\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 36,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 595.02,
+        "veneer": 640.86,
+        "doubleshaker": 622.79
+      }
+    },
+    {
+      "sku": "DCW2442",
+      "desc": "Wall Diagonal Corner - 1DOR, 3S",
+      "cat": "Wall Corner",
+      "dims": "24\"W x 24\"D x 42\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 42,
+      "pb": {
+        "melamine": 377.3,
+        "highgloss": 445.69,
+        "matte": 452.71,
+        "shaker": 469.14,
+        "veneer": 522.67,
+        "doubleshaker": 501.54
+      },
+      "ply": {
+        "melamine": 591.89,
+        "highgloss": 660.28,
+        "matte": 667.3,
+        "shaker": 683.73,
+        "veneer": 737.26,
+        "doubleshaker": 716.13
+      }
+    },
+    {
+      "sku": "DCW2442GD",
+      "desc": "Wall Diagonal Corner Glass Door - 1DOR, 3S",
+      "cat": "Wall Corner",
+      "dims": "24\"W x 24\"D x 42\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 42,
+      "pb": null,
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 709.56,
+        "veneer": 763.09,
+        "doubleshaker": 741.96
+      }
+    },
+    {
+      "sku": "WER2430",
+      "desc": "Wall Easy Reach Corner - 2DOR, 2S",
+      "cat": "Wall Corner",
+      "dims": "24\"W x 24\"D x 30\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 30,
+      "pb": {
+        "melamine": 347.87,
+        "highgloss": 419.4,
+        "matte": 426.72,
+        "shaker": 443.74,
+        "veneer": 499.67,
+        "doubleshaker": 477.79
+      },
+      "ply": {
+        "melamine": 501.83,
+        "highgloss": 573.36,
+        "matte": 580.68,
+        "shaker": 597.7,
+        "veneer": 653.63,
+        "doubleshaker": 631.75
+      }
+    },
+    {
+      "sku": "WER2436",
+      "desc": "Wall Easy Reach Corner - 2DOR, 2S",
+      "cat": "Wall Corner",
+      "dims": "24\"W x 24\"D x 36\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 36,
+      "pb": {
+        "melamine": 367.89,
+        "highgloss": 453.75,
+        "matte": 462.56,
+        "shaker": 482.95,
+        "veneer": 550.07,
+        "doubleshaker": 523.79
+      },
+      "ply": {
+        "melamine": 545.82,
+        "highgloss": 631.68,
+        "matte": 640.49,
+        "shaker": 660.88,
+        "veneer": 728,
+        "doubleshaker": 701.72
+      }
+    },
+    {
+      "sku": "WER2442",
+      "desc": "Wall Easy Reach Corner - 2DOR, 3S",
+      "cat": "Wall Corner",
+      "dims": "24\"W x 24\"D x 42\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 42,
+      "pb": {
+        "melamine": 447.1,
+        "highgloss": 547.38,
+        "matte": 557.61,
+        "shaker": 581.43,
+        "veneer": 659.83,
+        "doubleshaker": 629.14
+      },
+      "ply": {
+        "melamine": 661.77,
+        "highgloss": 762.05,
+        "matte": 772.28,
+        "shaker": 796.1,
+        "veneer": 874.5,
+        "doubleshaker": 843.81
+      }
+    },
+    {
+      "sku": "WRC2430",
+      "desc": "Wine Rack Cabinet Box",
+      "cat": "Wall Specialty",
+      "dims": "24\"W x 12\"D x 30\"H",
+      "width_in": 24,
+      "depth_in": 12,
+      "height_in": 30,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 349.57,
+        "veneer": 349.57,
+        "doubleshaker": 361.45
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 410.42,
+        "veneer": 410.42,
+        "doubleshaker": 422.3
+      }
+    },
+    {
+      "sku": "WRC3015",
+      "desc": "Wine Rack Cabinet Box",
+      "cat": "Wall Specialty",
+      "dims": "30\"W x 12\"D x 15\"H",
+      "width_in": 30,
+      "depth_in": 12,
+      "height_in": 15,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 249.99,
+        "veneer": 249.99,
+        "doubleshaker": 257.98
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 303.08,
+        "veneer": 303.08,
+        "doubleshaker": 311.07
+      }
+    },
+    {
+      "sku": "U188424",
+      "desc": "Wall Pantry - 4DOR, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "18\"W x 24\"D x 84\"H",
+      "width_in": 18,
+      "depth_in": 24,
+      "height_in": 84,
+      "pb": {
+        "melamine": 566.8,
+        "highgloss": 710.46,
+        "matte": 725.02,
+        "shaker": 759.21,
+        "veneer": 871.51,
+        "doubleshaker": 827.53
+      },
+      "ply": {
+        "melamine": 852.1,
+        "highgloss": 995.76,
+        "matte": 1010.32,
+        "shaker": 1044.51,
+        "veneer": 1156.81,
+        "doubleshaker": 1112.83
+      }
+    },
+    {
+      "sku": "U189024",
+      "desc": "Wall Pantry - 4DOR, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "18\"W x 24\"D x 90\"H",
+      "width_in": 18,
+      "depth_in": 24,
+      "height_in": 90,
+      "pb": {
+        "melamine": 593.75,
+        "highgloss": 748.23,
+        "matte": 763.99,
+        "shaker": 800.72,
+        "veneer": 921.46,
+        "doubleshaker": 874.19
+      },
+      "ply": {
+        "melamine": 890.48,
+        "highgloss": 1044.96,
+        "matte": 1060.72,
+        "shaker": 1097.45,
+        "veneer": 1218.19,
+        "doubleshaker": 1170.92
+      }
+    },
+    {
+      "sku": "U189624",
+      "desc": "Wall Pantry - 4DOR, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "18\"W x 24\"D x 96\"H",
+      "width_in": 18,
+      "depth_in": 24,
+      "height_in": 96,
+      "pb": {
+        "melamine": 643.78,
+        "highgloss": 809.09,
+        "matte": 825.97,
+        "shaker": 865.24,
+        "veneer": 994.49,
+        "doubleshaker": 943.94
+      },
+      "ply": {
+        "melamine": 966.34,
+        "highgloss": 1131.65,
+        "matte": 1148.53,
+        "shaker": 1187.8,
+        "veneer": 1317.05,
+        "doubleshaker": 1266.5
+      }
+    },
+    {
+      "sku": "U248424",
+      "desc": "Wall Pantry - 4DOR Shaker/2DOR Slab, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "24\"W x 24\"D x 84\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 84,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 960.51,
+        "veneer": 1109.92,
+        "doubleshaker": 1051.38
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 1294.5,
+        "veneer": 1443.91,
+        "doubleshaker": 1385.37
+      }
+    },
+    {
+      "sku": "U249024",
+      "desc": "Wall Pantry - 4DOR Shaker/2DOR Slab, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "24\"W x 24\"D x 90\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 90,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 1010.76,
+        "veneer": 1171.37,
+        "doubleshaker": 1108.58
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 1356.24,
+        "veneer": 1516.85,
+        "doubleshaker": 1454.06
+      }
+    },
+    {
+      "sku": "U249624",
+      "desc": "Wall Pantry - 4DOR Shaker/2DOR Slab, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "24\"W x 24\"D x 96\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 96,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 1096.55,
+        "veneer": 1268.43,
+        "doubleshaker": 1201.23
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 1473.47,
+        "veneer": 1645.35,
+        "doubleshaker": 1578.15
+      }
+    },
+    {
+      "sku": "U248424F",
+      "desc": "Wall Pantry - 2DOR Flat, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "24\"W x 24\"D x 84\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 84,
+      "pb": {
+        "melamine": 681.64,
+        "highgloss": 872.71,
+        "matte": 893.91,
+        "shaker": null,
+        "veneer": null,
+        "doubleshaker": null
+      },
+      "ply": {
+        "melamine": 1000.31,
+        "highgloss": 1191.38,
+        "matte": 1212.58,
+        "shaker": null,
+        "veneer": null,
+        "doubleshaker": null
+      }
+    },
+    {
+      "sku": "U249024F",
+      "desc": "Wall Pantry - 2DOR Flat, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "24\"W x 24\"D x 90\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 90,
+      "pb": {
+        "melamine": 712.55,
+        "highgloss": 918.03,
+        "matte": 940.88,
+        "shaker": null,
+        "veneer": null,
+        "doubleshaker": null
+      },
+      "ply": {
+        "melamine": 1042.8,
+        "highgloss": 1248.28,
+        "matte": 1271.13,
+        "shaker": null,
+        "veneer": null,
+        "doubleshaker": null
+      }
+    },
+    {
+      "sku": "U249624F",
+      "desc": "Wall Pantry - 2DOR Flat, 6S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "24\"W x 24\"D x 96\"H",
+      "width_in": 24,
+      "depth_in": 24,
+      "height_in": 96,
+      "pb": {
+        "melamine": 771.38,
+        "highgloss": 991.27,
+        "matte": 1015.76,
+        "shaker": null,
+        "veneer": null,
+        "doubleshaker": null
+      },
+      "ply": {
+        "melamine": 1133.07,
+        "highgloss": 1352.96,
+        "matte": 1377.45,
+        "shaker": null,
+        "veneer": null,
+        "doubleshaker": null
+      }
+    },
+    {
+      "sku": "U308424",
+      "desc": "Wall Pantry - 4DOR, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "30\"W x 24\"D x 84\"H",
+      "width_in": 30,
+      "depth_in": 24,
+      "height_in": 84,
+      "pb": null,
+      "ply": {
+        "melamine": 1200.42,
+        "highgloss": 1439.58,
+        "matte": 1463.92,
+        "shaker": 1520.89,
+        "veneer": 1707.86,
+        "doubleshaker": 1634.68
+      }
+    },
+    {
+      "sku": "U309024",
+      "desc": "Wall Pantry - 4DOR, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "30\"W x 24\"D x 90\"H",
+      "width_in": 30,
+      "depth_in": 24,
+      "height_in": 90,
+      "pb": null,
+      "ply": {
+        "melamine": 1247.97,
+        "highgloss": 1505.2,
+        "matte": 1531.48,
+        "shaker": 1592.64,
+        "veneer": 1793.71,
+        "doubleshaker": 1715.01
+      }
+    },
+    {
+      "sku": "U309624",
+      "desc": "Wall Pantry - 4DOR, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "30\"W x 24\"D x 96\"H",
+      "width_in": 30,
+      "depth_in": 24,
+      "height_in": 96,
+      "pb": null,
+      "ply": {
+        "melamine": 1361.25,
+        "highgloss": 1636.47,
+        "matte": 1664.55,
+        "shaker": 1730.03,
+        "veneer": 1945.22,
+        "doubleshaker": 1861.07
+      }
+    },
+    {
+      "sku": "U188415",
+      "desc": "Wall Pantry - 2DOR, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "18\"W x 15\"D x 84\"H",
+      "width_in": 18,
+      "depth_in": 15,
+      "height_in": 84,
+      "pb": {
+        "melamine": 446.88,
+        "highgloss": 590.54,
+        "matte": 605.1,
+        "shaker": 639.29,
+        "veneer": 751.59,
+        "doubleshaker": 707.61
+      },
+      "ply": {
+        "melamine": 635.04,
+        "highgloss": 778.7,
+        "matte": 793.26,
+        "shaker": 827.45,
+        "veneer": 939.75,
+        "doubleshaker": 895.77
+      }
+    },
+    {
+      "sku": "U189015",
+      "desc": "Wall Pantry - 2DOR, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "18\"W x 15\"D x 90\"H",
+      "width_in": 18,
+      "depth_in": 15,
+      "height_in": 90,
+      "pb": {
+        "melamine": 468.76,
+        "highgloss": 623.24,
+        "matte": 639,
+        "shaker": 675.73,
+        "veneer": 796.47,
+        "doubleshaker": 749.2
+      },
+      "ply": {
+        "melamine": 664.31,
+        "highgloss": 818.79,
+        "matte": 834.55,
+        "shaker": 871.28,
+        "veneer": 992.02,
+        "doubleshaker": 944.75
+      }
+    },
+    {
+      "sku": "U189615",
+      "desc": "Wall Pantry - 2DOR, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "18\"W x 15\"D x 96\"H",
+      "width_in": 18,
+      "depth_in": 15,
+      "height_in": 96,
+      "pb": {
+        "melamine": 508.33,
+        "highgloss": 673.64,
+        "matte": 690.52,
+        "shaker": 729.79,
+        "veneer": 859.04,
+        "doubleshaker": 808.49
+      },
+      "ply": {
+        "melamine": 720.01,
+        "highgloss": 885.32,
+        "matte": 902.2,
+        "shaker": 941.47,
+        "veneer": 1070.72,
+        "doubleshaker": 1020.17
+      }
+    },
+    {
+      "sku": "U308415",
+      "desc": "Wall Pantry - 4DOR, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "30\"W x 15\"D x 84\"H",
+      "width_in": 30,
+      "depth_in": 15,
+      "height_in": 84,
+      "pb": null,
+      "ply": {
+        "melamine": 930.42,
+        "highgloss": 1169.58,
+        "matte": 1193.92,
+        "shaker": 1250.89,
+        "veneer": 1437.86,
+        "doubleshaker": 1364.68
+      }
+    },
+    {
+      "sku": "U309015",
+      "desc": "Wall Pantry - 4DOR, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "30\"W x 15\"D x 90\"H",
+      "width_in": 30,
+      "depth_in": 15,
+      "height_in": 90,
+      "pb": null,
+      "ply": {
+        "melamine": 969.54,
+        "highgloss": 1226.77,
+        "matte": 1253.05,
+        "shaker": 1314.21,
+        "veneer": 1515.28,
+        "doubleshaker": 1436.58
+      }
+    },
+    {
+      "sku": "U309615",
+      "desc": "Wall Pantry - 4DOR, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "30\"W x 15\"D x 96\"H",
+      "width_in": 30,
+      "depth_in": 15,
+      "height_in": 96,
+      "pb": null,
+      "ply": {
+        "melamine": 1055.41,
+        "highgloss": 1330.63,
+        "matte": 1358.71,
+        "shaker": 1424.19,
+        "veneer": 1639.38,
+        "doubleshaker": 1555.23
+      }
+    },
+    {
+      "sku": "U188418",
+      "desc": "Wall Pantry - 2DOR, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "18\"W x 18\"D x 84\"H",
+      "width_in": 18,
+      "depth_in": 18,
+      "height_in": 84,
+      "pb": {
+        "melamine": 479.14,
+        "highgloss": 622.8,
+        "matte": 637.36,
+        "shaker": 671.55,
+        "veneer": 783.85,
+        "doubleshaker": 739.87
+      },
+      "ply": {
+        "melamine": 701.87,
+        "highgloss": 845.53,
+        "matte": 860.09,
+        "shaker": 894.28,
+        "veneer": 1006.58,
+        "doubleshaker": 962.6
+      }
+    },
+    {
+      "sku": "U189018",
+      "desc": "Wall Pantry - 2DOR, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "18\"W x 18\"D x 90\"H",
+      "width_in": 18,
+      "depth_in": 18,
+      "height_in": 90,
+      "pb": {
+        "melamine": 502.36,
+        "highgloss": 656.84,
+        "matte": 672.6,
+        "shaker": 709.33,
+        "veneer": 830.07,
+        "doubleshaker": 782.8
+      },
+      "ply": {
+        "melamine": 733.75,
+        "highgloss": 888.23,
+        "matte": 903.99,
+        "shaker": 940.72,
+        "veneer": 1061.46,
+        "doubleshaker": 1014.19
+      }
+    },
+    {
+      "sku": "U189618",
+      "desc": "Wall Pantry - 2DOR, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "18\"W x 18\"D x 96\"H",
+      "width_in": 18,
+      "depth_in": 18,
+      "height_in": 96,
+      "pb": {
+        "melamine": 544.99,
+        "highgloss": 710.3,
+        "matte": 727.18,
+        "shaker": 766.45,
+        "veneer": 895.7,
+        "doubleshaker": 845.15
+      },
+      "ply": {
+        "melamine": 795.87,
+        "highgloss": 961.18,
+        "matte": 978.06,
+        "shaker": 1017.33,
+        "veneer": 1146.58,
+        "doubleshaker": 1096.03
+      }
+    },
+    {
+      "sku": "U308418",
+      "desc": "Wall Pantry - 2DOR, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "30\"W x 18\"D x 84\"H",
+      "width_in": 30,
+      "depth_in": 18,
+      "height_in": 84,
+      "pb": null,
+      "ply": {
+        "melamine": 1028.08,
+        "highgloss": 1267.24,
+        "matte": 1291.58,
+        "shaker": 1348.55,
+        "veneer": 1535.52,
+        "doubleshaker": 1462.34
+      }
+    },
+    {
+      "sku": "U309018",
+      "desc": "Wall Pantry - 2DOR, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "30\"W x 18\"D x 90\"H",
+      "width_in": 30,
+      "depth_in": 18,
+      "height_in": 90,
+      "pb": null,
+      "ply": {
+        "melamine": 1070.49,
+        "highgloss": 1327.72,
+        "matte": 1354,
+        "shaker": 1415.16,
+        "veneer": 1616.23,
+        "doubleshaker": 1537.53
+      }
+    },
+    {
+      "sku": "U309618",
+      "desc": "Wall Pantry - 2DOR, 5S (w/ rollout tray option)",
+      "cat": "Pantry",
+      "dims": "30\"W x 18\"D x 96\"H",
+      "width_in": 30,
+      "depth_in": 18,
+      "height_in": 96,
+      "pb": null,
+      "ply": {
+        "melamine": 1166.07,
+        "highgloss": 1441.29,
+        "matte": 1469.37,
+        "shaker": 1534.85,
+        "veneer": 1750.04,
+        "doubleshaker": 1665.89
+      }
+    },
+    {
+      "sku": "O308424",
+      "desc": "Oven Cabinet - 2DOR, 3DRW (for double ovens - remove 2 drawers)",
+      "cat": "Oven",
+      "dims": "30\"W x 24\"D x 84\"H",
+      "width_in": 30,
+      "depth_in": 24,
+      "height_in": 84,
+      "pb": {
+        "melamine": 1179.14,
+        "highgloss": 1323.24,
+        "matte": 1337.88,
+        "shaker": 1372.15,
+        "veneer": 1484.75,
+        "doubleshaker": 1440.69
+      },
+      "ply": {
+        "melamine": 1441.97,
+        "highgloss": 1586.07,
+        "matte": 1600.71,
+        "shaker": 1634.98,
+        "veneer": 1747.58,
+        "doubleshaker": 1703.52
+      }
+    },
+    {
+      "sku": "O309024",
+      "desc": "Oven Cabinet - 2DOR, 3DRW (for double ovens - remove 2 drawers)",
+      "cat": "Oven",
+      "dims": "30\"W x 24\"D x 90\"H",
+      "width_in": 30,
+      "depth_in": 24,
+      "height_in": 90,
+      "pb": {
+        "melamine": 1240.51,
+        "highgloss": 1402.76,
+        "matte": 1419.26,
+        "shaker": 1457.86,
+        "veneer": 1584.65,
+        "doubleshaker": 1535.07
+      },
+      "ply": {
+        "melamine": 1540.08,
+        "highgloss": 1702.33,
+        "matte": 1718.83,
+        "shaker": 1757.43,
+        "veneer": 1884.22,
+        "doubleshaker": 1834.64
+      }
+    },
+    {
+      "sku": "O309624",
+      "desc": "Oven Cabinet - 2DOR, 3DRW (for double ovens - remove 2 drawers)",
+      "cat": "Oven",
+      "dims": "30\"W x 24\"D x 96\"H",
+      "width_in": 30,
+      "depth_in": 24,
+      "height_in": 96,
+      "pb": {
+        "melamine": 1301.74,
+        "highgloss": 1481.98,
+        "matte": 1500.35,
+        "shaker": 1543.21,
+        "veneer": 1684.11,
+        "doubleshaker": 1629
+      },
+      "ply": {
+        "melamine": 1637.97,
+        "highgloss": 1818.21,
+        "matte": 1836.58,
+        "shaker": 1879.44,
+        "veneer": 2020.34,
+        "doubleshaker": 1965.23
+      }
+    },
+    {
+      "sku": "3VDB12",
+      "desc": "Vanity Drawer Base - 3DRW",
+      "cat": "Vanity",
+      "dims": "12\"W x 21\"D x 34.5\"H",
+      "width_in": 12,
+      "depth_in": 21,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 557.68,
+        "highgloss": 593.15,
+        "matte": 596.73,
+        "shaker": 605.25,
+        "veneer": 633.02,
+        "doubleshaker": 622.12
+      },
+      "ply": {
+        "melamine": 605.54,
+        "highgloss": 641.01,
+        "matte": 644.59,
+        "shaker": 653.11,
+        "veneer": 680.88,
+        "doubleshaker": 669.98
+      }
+    },
+    {
+      "sku": "3VDB15",
+      "desc": "Vanity Drawer Base - 3DRW",
+      "cat": "Vanity",
+      "dims": "15\"W x 21\"D x 34.5\"H",
+      "width_in": 15,
+      "depth_in": 21,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 595.84,
+        "highgloss": 640.26,
+        "matte": 644.82,
+        "shaker": 655.35,
+        "veneer": 690.07,
+        "doubleshaker": 676.48
+      },
+      "ply": {
+        "melamine": 649.6,
+        "highgloss": 694.02,
+        "matte": 698.58,
+        "shaker": 709.11,
+        "veneer": 743.83,
+        "doubleshaker": 730.24
+      }
+    },
+    {
+      "sku": "3VDB18",
+      "desc": "Vanity Drawer Base - 3DRW",
+      "cat": "Vanity",
+      "dims": "18\"W x 21\"D x 34.5\"H",
+      "width_in": 18,
+      "depth_in": 21,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 639.6,
+        "highgloss": 692.91,
+        "matte": 698.36,
+        "shaker": 711.05,
+        "veneer": 752.72,
+        "doubleshaker": 736.44
+      },
+      "ply": {
+        "melamine": 699.26,
+        "highgloss": 752.57,
+        "matte": 758.02,
+        "shaker": 770.71,
+        "veneer": 812.38,
+        "doubleshaker": 796.1
+      }
+    },
+    {
+      "sku": "V3021TDL",
+      "desc": "Vanity Sink Base - 2 Left DRW, 1 False DRW, 1DOR",
+      "cat": "Vanity",
+      "dims": "30\"W x 21\"D x 34.5\"H",
+      "width_in": 30,
+      "depth_in": 21,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 584.94,
+        "highgloss": 674.69,
+        "matte": 683.88,
+        "shaker": 705.16,
+        "veneer": 775.27,
+        "doubleshaker": 747.94
+      },
+      "ply": {
+        "melamine": 689.25,
+        "highgloss": 779,
+        "matte": 788.19,
+        "shaker": 809.47,
+        "veneer": 879.58,
+        "doubleshaker": 852.25
+      }
+    },
+    {
+      "sku": "V3021TDR",
+      "desc": "Vanity Sink Base - 2 Right DRW, 1 False DRW, 1DOR",
+      "cat": "Vanity",
+      "dims": "30\"W x 21\"D x 34.5\"H",
+      "width_in": 30,
+      "depth_in": 21,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 584.94,
+        "highgloss": 674.69,
+        "matte": 683.88,
+        "shaker": 705.16,
+        "veneer": 775.27,
+        "doubleshaker": 747.94
+      },
+      "ply": {
+        "melamine": 689.25,
+        "highgloss": 779,
+        "matte": 788.19,
+        "shaker": 809.47,
+        "veneer": 879.58,
+        "doubleshaker": 852.25
+      }
+    },
+    {
+      "sku": "V3621DL",
+      "desc": "Vanity Sink Base - 3 Left DRW, 1 False DRW, 2DOR",
+      "cat": "Vanity",
+      "dims": "36\"W x 21\"D x 34.5\"H",
+      "width_in": 36,
+      "depth_in": 21,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 636.83,
+        "highgloss": 743.75,
+        "matte": 754.65,
+        "shaker": 779.59,
+        "veneer": 862.99,
+        "doubleshaker": 830.96
+      },
+      "ply": {
+        "melamine": 888.76,
+        "highgloss": 995.68,
+        "matte": 1006.58,
+        "shaker": 1031.52,
+        "veneer": 1114.92,
+        "doubleshaker": 1082.89
+      }
+    },
+    {
+      "sku": "V3621DR",
+      "desc": "Vanity Sink Base - 3 Right DRW, 1 False DRW, 2DOR",
+      "cat": "Vanity",
+      "dims": "36\"W x 21\"D x 34.5\"H",
+      "width_in": 36,
+      "depth_in": 21,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 636.83,
+        "highgloss": 743.75,
+        "matte": 754.65,
+        "shaker": 779.59,
+        "veneer": 862.99,
+        "doubleshaker": 830.96
+      },
+      "ply": {
+        "melamine": 888.76,
+        "highgloss": 995.68,
+        "matte": 1006.58,
+        "shaker": 1031.52,
+        "veneer": 1114.92,
+        "doubleshaker": 1082.89
+      }
+    },
+    {
+      "sku": "V3621TDL",
+      "desc": "Vanity Sink Base - 2 Left DRW, 1 False DRW, 2DOR",
+      "cat": "Vanity",
+      "dims": "36\"W x 21\"D x 34.5\"H",
+      "width_in": 36,
+      "depth_in": 21,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 636.83,
+        "highgloss": 743.75,
+        "matte": 754.65,
+        "shaker": 779.59,
+        "veneer": 862.99,
+        "doubleshaker": 830.96
+      },
+      "ply": {
+        "melamine": 751.15,
+        "highgloss": 858.07,
+        "matte": 868.97,
+        "shaker": 893.91,
+        "veneer": 977.31,
+        "doubleshaker": 945.28
+      }
+    },
+    {
+      "sku": "V3621TDR",
+      "desc": "Vanity Sink Base - 2 Right DRW, 1 False DRW, 2DOR",
+      "cat": "Vanity",
+      "dims": "36\"W x 21\"D x 34.5\"H",
+      "width_in": 36,
+      "depth_in": 21,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 636.83,
+        "highgloss": 743.75,
+        "matte": 754.65,
+        "shaker": 779.59,
+        "veneer": 862.99,
+        "doubleshaker": 830.96
+      },
+      "ply": {
+        "melamine": 751.15,
+        "highgloss": 858.07,
+        "matte": 868.97,
+        "shaker": 893.91,
+        "veneer": 977.31,
+        "doubleshaker": 945.28
+      }
+    },
+    {
+      "sku": "V4221DL",
+      "desc": "Vanity Sink Base - 3 Left DRW, 1 False DRW, 2DOR",
+      "cat": "Vanity",
+      "dims": "42\"W x 21\"D x 34.5\"H",
+      "width_in": 42,
+      "depth_in": 21,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 674.24,
+        "highgloss": 799.31,
+        "matte": 812,
+        "shaker": 842.02,
+        "veneer": 939.83,
+        "doubleshaker": 901.45
+      },
+      "ply": {
+        "melamine": 942.52,
+        "highgloss": 1067.59,
+        "matte": 1080.28,
+        "shaker": 1110.3,
+        "veneer": 1208.11,
+        "doubleshaker": 1169.73
+      }
+    },
+    {
+      "sku": "V4221DR",
+      "desc": "Vanity Sink Base - 3 Right DRW, 1 False DRW, 2DOR",
+      "cat": "Vanity",
+      "dims": "42\"W x 21\"D x 34.5\"H",
+      "width_in": 42,
+      "depth_in": 21,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 674.24,
+        "highgloss": 799.31,
+        "matte": 812,
+        "shaker": 842.02,
+        "veneer": 939.83,
+        "doubleshaker": 901.45
+      },
+      "ply": {
+        "melamine": 942.52,
+        "highgloss": 1067.59,
+        "matte": 1080.28,
+        "shaker": 1110.3,
+        "veneer": 1208.11,
+        "doubleshaker": 1169.73
+      }
+    },
+    {
+      "sku": "V4221TDL",
+      "desc": "Vanity Sink Base - 2 Left DRW, 1 False DRW, 2DOR",
+      "cat": "Vanity",
+      "dims": "42\"W x 21\"D x 34.5\"H",
+      "width_in": 42,
+      "depth_in": 21,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 674.24,
+        "highgloss": 799.31,
+        "matte": 812,
+        "shaker": 842.02,
+        "veneer": 939.83,
+        "doubleshaker": 901.45
+      },
+      "ply": {
+        "melamine": 797.89,
+        "highgloss": 922.96,
+        "matte": 935.65,
+        "shaker": 965.67,
+        "veneer": 1063.48,
+        "doubleshaker": 1025.1
+      }
+    },
+    {
+      "sku": "V4221TDR",
+      "desc": "Vanity Sink Base - 2 Right DRW, 1 False DRW, 2DOR",
+      "cat": "Vanity",
+      "dims": "42\"W x 21\"D x 34.5\"H",
+      "width_in": 42,
+      "depth_in": 21,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 674.24,
+        "highgloss": 799.31,
+        "matte": 812,
+        "shaker": 842.02,
+        "veneer": 939.83,
+        "doubleshaker": 901.45
+      },
+      "ply": {
+        "melamine": 797.89,
+        "highgloss": 922.96,
+        "matte": 935.65,
+        "shaker": 965.67,
+        "veneer": 1063.48,
+        "doubleshaker": 1025.1
+      }
+    },
+    {
+      "sku": "VS24",
+      "desc": "Vanity Sink Base - 1 False DRW, 2DOR",
+      "cat": "Vanity",
+      "dims": "24\"W x 21\"D x 34.5\"H",
+      "width_in": 24,
+      "depth_in": 21,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 249.76,
+        "highgloss": 321.07,
+        "matte": 328.38,
+        "shaker": 345.33,
+        "veneer": 401.11,
+        "doubleshaker": 379.31
+      },
+      "ply": {
+        "melamine": 342.64,
+        "highgloss": 413.95,
+        "matte": 421.26,
+        "shaker": 438.21,
+        "veneer": 493.99,
+        "doubleshaker": 472.19
+      }
+    },
+    {
+      "sku": "VS27",
+      "desc": "Vanity Sink Base - 1 False DRW, 2DOR",
+      "cat": "Vanity",
+      "dims": "27\"W x 21\"D x 34.5\"H",
+      "width_in": 27,
+      "depth_in": 21,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 268.05,
+        "highgloss": 348.32,
+        "matte": 356.53,
+        "shaker": 375.64,
+        "veneer": 438.44,
+        "doubleshaker": 413.8
+      },
+      "ply": {
+        "melamine": 366.17,
+        "highgloss": 446.44,
+        "matte": 454.65,
+        "shaker": 473.76,
+        "veneer": 536.56,
+        "doubleshaker": 511.92
+      }
+    },
+    {
+      "sku": "VS30",
+      "desc": "Vanity Sink Base - 1 False DRW, 2DOR",
+      "cat": "Vanity",
+      "dims": "30\"W x 21\"D x 34.5\"H",
+      "width_in": 30,
+      "depth_in": 21,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 286.35,
+        "highgloss": 375.65,
+        "matte": 384.69,
+        "shaker": 405.97,
+        "veneer": 475.7,
+        "doubleshaker": 448.38
+      },
+      "ply": {
+        "melamine": 389.76,
+        "highgloss": 479.06,
+        "matte": 488.1,
+        "shaker": 509.38,
+        "veneer": 579.11,
+        "doubleshaker": 551.79
+      }
+    },
+    {
+      "sku": "VS33",
+      "desc": "Vanity Sink Base - 1 False DRW, 2DOR",
+      "cat": "Vanity",
+      "dims": "33\"W x 21\"D x 34.5\"H",
+      "width_in": 33,
+      "depth_in": 21,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 304.57,
+        "highgloss": 402.83,
+        "matte": 412.84,
+        "shaker": 436.21,
+        "veneer": 512.96,
+        "doubleshaker": 482.95
+      },
+      "ply": {
+        "melamine": 412.98,
+        "highgloss": 511.24,
+        "matte": 521.25,
+        "shaker": 544.62,
+        "veneer": 621.37,
+        "doubleshaker": 591.36
+      }
+    },
+    {
+      "sku": "VS36",
+      "desc": "Vanity Sink Base - 1 False DRW, 2DOR",
+      "cat": "Vanity",
+      "dims": "36\"W x 21\"D x 34.5\"H",
+      "width_in": 36,
+      "depth_in": 21,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 322.93,
+        "highgloss": 430.08,
+        "matte": 441.06,
+        "shaker": 466.52,
+        "veneer": 550.29,
+        "doubleshaker": 517.51
+      },
+      "ply": {
+        "melamine": 436.95,
+        "highgloss": 544.1,
+        "matte": 555.08,
+        "shaker": 580.54,
+        "veneer": 664.31,
+        "doubleshaker": 631.53
+      }
+    },
+    {
+      "sku": "VSD42",
+      "desc": "Vanity Sink Drawer Base - 2DRW, 2DOR, 1 False DRW",
+      "cat": "Vanity",
+      "dims": "42\"W x 21\"D x 34.5\"H",
+      "width_in": 42,
+      "depth_in": 21,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 617.64,
+        "highgloss": 742.71,
+        "matte": 755.4,
+        "shaker": 785.42,
+        "veneer": 883.23,
+        "doubleshaker": 844.55
+      },
+      "ply": {
+        "melamine": 797.89,
+        "highgloss": 922.96,
+        "matte": 935.65,
+        "shaker": 965.67,
+        "veneer": 1063.48,
+        "doubleshaker": 1024.8
+      }
+    },
+    {
+      "sku": "VSD48",
+      "desc": "Vanity Sink Drawer Base - 2DRW, 2DOR, 1 False DRW",
+      "cat": "Vanity",
+      "dims": "48\"W x 21\"D x 34.5\"H",
+      "width_in": 48,
+      "depth_in": 21,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 684.69,
+        "highgloss": 827.45,
+        "matte": 842.01,
+        "shaker": 876.28,
+        "veneer": 988.06,
+        "doubleshaker": 944.01
+      },
+      "ply": {
+        "melamine": 821.03,
+        "highgloss": 963.79,
+        "matte": 978.35,
+        "shaker": 1012.62,
+        "veneer": 1124.4,
+        "doubleshaker": 1080.35
+      }
+    },
+    {
+      "sku": "VKD24",
+      "desc": "Knee Drawer",
+      "cat": "Vanity",
+      "dims": "24\"W x 21\"D x 6.625\"H",
+      "width_in": 24,
+      "depth_in": 21,
+      "height_in": 6.625,
+      "pb": {
+        "melamine": 244.76,
+        "highgloss": 259.24,
+        "matte": 260.73,
+        "shaker": 264.17,
+        "veneer": 275.52,
+        "doubleshaker": 271.11
+      },
+      "ply": {
+        "melamine": 244.76,
+        "highgloss": 259.24,
+        "matte": 260.73,
+        "shaker": 264.17,
+        "veneer": 275.52,
+        "doubleshaker": 271.11
+      }
+    },
+    {
+      "sku": "VKD30",
+      "desc": "Knee Drawer",
+      "cat": "Vanity",
+      "dims": "30\"W x 21\"D x 6.625\"H",
+      "width_in": 30,
+      "depth_in": 21,
+      "height_in": 6.625,
+      "pb": {
+        "melamine": 276.12,
+        "highgloss": 294.26,
+        "matte": 296.13,
+        "shaker": 300.46,
+        "veneer": 314.65,
+        "doubleshaker": 309.05
+      },
+      "ply": {
+        "melamine": 276.12,
+        "highgloss": 294.26,
+        "matte": 296.13,
+        "shaker": 300.46,
+        "veneer": 314.65,
+        "doubleshaker": 309.05
+      }
+    },
+    {
+      "sku": "VKD36",
+      "desc": "Knee Drawer",
+      "cat": "Vanity",
+      "dims": "36\"W x 21\"D x 6.625\"H",
+      "width_in": 36,
+      "depth_in": 21,
+      "height_in": 6.625,
+      "pb": {
+        "melamine": 307.48,
+        "highgloss": 329.28,
+        "matte": 331.52,
+        "shaker": 336.75,
+        "veneer": 353.77,
+        "doubleshaker": 347.05
+      },
+      "ply": {
+        "melamine": 307.48,
+        "highgloss": 329.28,
+        "matte": 331.52,
+        "shaker": 336.75,
+        "veneer": 353.77,
+        "doubleshaker": 347.05
+      }
+    },
+    {
+      "sku": "FS24",
+      "desc": "Floating Shelf",
+      "cat": "Accessories",
+      "dims": "24\"W x 12.75\"D x 2\"H",
+      "width_in": 24,
+      "depth_in": 12.75,
+      "height_in": 2,
+      "pb": {
+        "melamine": 86.09,
+        "highgloss": 140.15,
+        "matte": 145.38,
+        "shaker": 123.42,
+        "veneer": 172.79,
+        "doubleshaker": 129.62
+      },
+      "ply": {
+        "melamine": 86.09,
+        "highgloss": 140.15,
+        "matte": 145.38,
+        "shaker": 123.42,
+        "veneer": 172.79,
+        "doubleshaker": 129.62
+      }
+    },
+    {
+      "sku": "FS30",
+      "desc": "Floating Shelf",
+      "cat": "Accessories",
+      "dims": "30\"W x 12.75\"D x 2\"H",
+      "width_in": 30,
+      "depth_in": 12.75,
+      "height_in": 2,
+      "pb": {
+        "melamine": 105.95,
+        "highgloss": 173.6,
+        "matte": 180.1,
+        "shaker": 144.41,
+        "veneer": 202.17,
+        "doubleshaker": 151.65
+      },
+      "ply": {
+        "melamine": 105.95,
+        "highgloss": 173.6,
+        "matte": 180.1,
+        "shaker": 144.41,
+        "veneer": 202.17,
+        "doubleshaker": 151.65
+      }
+    },
+    {
+      "sku": "FS60",
+      "desc": "Floating Shelf",
+      "cat": "Accessories",
+      "dims": "60\"W x 12.75\"D x 2\"H",
+      "width_in": 60,
+      "depth_in": 12.75,
+      "height_in": 2,
+      "pb": {
+        "melamine": 211.9,
+        "highgloss": 347.2,
+        "matte": 360.19,
+        "shaker": 288.81,
+        "veneer": 404.33,
+        "doubleshaker": 303.3
+      },
+      "ply": {
+        "melamine": 211.9,
+        "highgloss": 347.2,
+        "matte": 360.19,
+        "shaker": 288.81,
+        "veneer": 404.33,
+        "doubleshaker": 303.3
+      }
+    },
+    {
+      "sku": "SGH30",
+      "desc": "Stem Wine Glass Holder",
+      "cat": "Accessories",
+      "dims": "30\"W x 12\"D x 1.5\"H",
+      "width_in": 30,
+      "depth_in": 12,
+      "height_in": 1.5,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 120.14,
+        "veneer": null,
+        "doubleshaker": 126.11
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 120.14,
+        "veneer": null,
+        "doubleshaker": 126.11
+      }
+    },
+    {
+      "sku": "VDEP21",
+      "desc": "Vanity Decorative End Panel",
+      "cat": "Panels",
+      "dims": "21.875\"W x 0.75\"D x 34.5\"H",
+      "width_in": 21.875,
+      "depth_in": 0.75,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 135.15,
+        "veneer": 168.37,
+        "doubleshaker": 141.94
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 135.15,
+        "veneer": 168.37,
+        "doubleshaker": 141.94
+      }
+    },
+    {
+      "sku": "BDEP24",
+      "desc": "Base Decorative End Panel",
+      "cat": "Panels",
+      "dims": "24.625\"W x 0.75\"D x 34.5\"H",
+      "width_in": 24.625,
+      "depth_in": 0.75,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 150.75,
+        "veneer": 187.86,
+        "doubleshaker": 158.22
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 150.75,
+        "veneer": 187.86,
+        "doubleshaker": 158.22
+      }
+    },
+    {
+      "sku": "BDEP26",
+      "desc": "Base Decorative End Panel",
+      "cat": "Panels",
+      "dims": "25.625\"W x 0.75\"D x 34.5\"H",
+      "width_in": 25.625,
+      "depth_in": 0.75,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 159.8,
+        "veneer": 199.13,
+        "doubleshaker": 159.8
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 159.8,
+        "veneer": 199.13,
+        "doubleshaker": 159.8
+      }
+    },
+    {
+      "sku": "TDEP2484",
+      "desc": "Tall Decorative Door Panel",
+      "cat": "Panels",
+      "dims": "24.5\"W x 0.75\"D x 84\"H",
+      "width_in": 24.5,
+      "depth_in": 0.75,
+      "height_in": 84,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 367.88,
+        "veneer": 458.53,
+        "doubleshaker": 386.25
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 367.88,
+        "veneer": 458.53,
+        "doubleshaker": 386.25
+      }
+    },
+    {
+      "sku": "TDEP2490",
+      "desc": "Tall Decorative Door Panel",
+      "cat": "Panels",
+      "dims": "24.5\"W x 0.75\"D x 90\"H",
+      "width_in": 24.5,
+      "depth_in": 0.75,
+      "height_in": 90,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 390.66,
+        "veneer": 486.83,
+        "doubleshaker": 410.14
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 390.66,
+        "veneer": 486.83,
+        "doubleshaker": 410.14
+      }
+    },
+    {
+      "sku": "TDEP2496",
+      "desc": "Tall Decorative Door Panel",
+      "cat": "Panels",
+      "dims": "24.5\"W x 0.75\"D x 96\"H",
+      "width_in": 24.5,
+      "depth_in": 0.75,
+      "height_in": 96,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 413.35,
+        "veneer": 515.2,
+        "doubleshaker": 434.11
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 413.35,
+        "veneer": 515.2,
+        "doubleshaker": 434.11
+      }
+    },
+    {
+      "sku": "WDEP30",
+      "desc": "Wall Decorative Door Panel",
+      "cat": "Panels",
+      "dims": "12.75\"W x 0.75\"D x 30\"H",
+      "width_in": 12.75,
+      "depth_in": 0.75,
+      "height_in": 30,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 85.34,
+        "veneer": 106.33,
+        "doubleshaker": 89.53
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 85.34,
+        "veneer": 106.33,
+        "doubleshaker": 89.53
+      }
+    },
+    {
+      "sku": "WDEP36",
+      "desc": "Wall Decorative Door Panel",
+      "cat": "Panels",
+      "dims": "12.75\"W x 0.75\"D x 36\"H",
+      "width_in": 12.75,
+      "depth_in": 0.75,
+      "height_in": 36,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 100.35,
+        "veneer": 125.07,
+        "doubleshaker": 105.35
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 100.35,
+        "veneer": 125.07,
+        "doubleshaker": 105.35
+      }
+    },
+    {
+      "sku": "WDEP42",
+      "desc": "Wall Decorative Door Panel",
+      "cat": "Panels",
+      "dims": "12.75\"W x 0.75\"D x 42\"H",
+      "width_in": 12.75,
+      "depth_in": 0.75,
+      "height_in": 42,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 115.51,
+        "veneer": 143.96,
+        "doubleshaker": 121.26
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 115.51,
+        "veneer": 143.96,
+        "doubleshaker": 121.26
+      }
+    },
+    {
+      "sku": "WDEP54",
+      "desc": "Wall Decorative Door Panel",
+      "cat": "Panels",
+      "dims": "12.75\"W x 0.75\"D x 54\"H",
+      "width_in": 12.75,
+      "depth_in": 0.75,
+      "height_in": 54,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 148.51,
+        "veneer": 185.1,
+        "doubleshaker": 155.9
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 148.51,
+        "veneer": 185.1,
+        "doubleshaker": 155.9
+      }
+    },
+    {
+      "sku": "SD",
+      "desc": "Sample Door - Shaker 11x15, Slab 7.5x5.5",
+      "cat": "Panels",
+      "dims": "Various",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "melamine": 11.8,
+        "highgloss": 27.33,
+        "matte": 28.82,
+        "shaker": 43.31,
+        "veneer": 59.36,
+        "doubleshaker": 45.47
+      },
+      "ply": {
+        "melamine": 11.8,
+        "highgloss": 27.33,
+        "matte": 28.82,
+        "shaker": 43.31,
+        "veneer": 59.36,
+        "doubleshaker": 45.47
+      }
+    },
+    {
+      "sku": "DWR3",
+      "desc": "Dishwasher Return Panel w/ 3W Filler",
+      "cat": "Panels",
+      "dims": "24\"W x 0.75\"D x 34.5\"H",
+      "width_in": 24,
+      "depth_in": 0.75,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 80.49,
+        "highgloss": 168.82,
+        "matte": 177.93,
+        "shaker": 120.06,
+        "veneer": 168.09,
+        "doubleshaker": 126.04
+      },
+      "ply": {
+        "melamine": 80.49,
+        "highgloss": 168.82,
+        "matte": 177.93,
+        "shaker": 120.06,
+        "veneer": 168.09,
+        "doubleshaker": 126.04
+      }
+    },
+    {
+      "sku": "FPV4296",
+      "desc": "Finished Plywood Panel",
+      "cat": "Panels",
+      "dims": "96\"W x 0.25\"D x 42\"H",
+      "width_in": 96,
+      "depth_in": 0.25,
+      "height_in": 42,
+      "pb": {
+        "melamine": 136.57,
+        "highgloss": 379.09,
+        "matte": 408.42,
+        "shaker": 287.39,
+        "veneer": 365.76,
+        "doubleshaker": 295.53
+      },
+      "ply": {
+        "melamine": 136.57,
+        "highgloss": 379.09,
+        "matte": 408.42,
+        "shaker": 287.39,
+        "veneer": 365.76,
+        "doubleshaker": 295.53
+      }
+    },
+    {
+      "sku": "PNL2496",
+      "desc": "Tall Panel - for fridge/Pantry sides",
+      "cat": "Panels",
+      "dims": "24.75\"W x 0.75\"D x 96\"H",
+      "width_in": 24.75,
+      "depth_in": 0.75,
+      "height_in": 96,
+      "pb": {
+        "melamine": 179.5,
+        "highgloss": 371.67,
+        "matte": 392.48,
+        "shaker": 252.22,
+        "veneer": 321.02,
+        "doubleshaker": 264.77
+      },
+      "ply": {
+        "melamine": 179.5,
+        "highgloss": 371.67,
+        "matte": 392.48,
+        "shaker": 252.22,
+        "veneer": 321.02,
+        "doubleshaker": 264.77
+      }
+    },
+    {
+      "sku": "PNL2696",
+      "desc": "Tall Panel - for fridge/Pantry sides",
+      "cat": "Panels",
+      "dims": "26\"W x 0.75\"D x 96\"H",
+      "width_in": 26,
+      "depth_in": 0.75,
+      "height_in": 96,
+      "pb": {
+        "melamine": 187.19,
+        "highgloss": 388.46,
+        "matte": 410.36,
+        "shaker": 272.38,
+        "veneer": 346.7,
+        "doubleshaker": 285.97
+      },
+      "ply": {
+        "melamine": 187.19,
+        "highgloss": 388.46,
+        "matte": 410.36,
+        "shaker": 272.38,
+        "veneer": 346.7,
+        "doubleshaker": 285.97
+      }
+    },
+    {
+      "sku": "PNL3796",
+      "desc": "Island Panel",
+      "cat": "Panels",
+      "dims": "37.5\"W x 0.75\"D x 96\"H",
+      "width_in": 37.5,
+      "depth_in": 0.75,
+      "height_in": 96,
+      "pb": {
+        "melamine": 259.77,
+        "highgloss": 547.62,
+        "matte": 579.19,
+        "shaker": 398.05,
+        "veneer": 506.57,
+        "doubleshaker": 417.91
+      },
+      "ply": {
+        "melamine": 259.77,
+        "highgloss": 547.62,
+        "matte": 579.19,
+        "shaker": 398.05,
+        "veneer": 506.57,
+        "doubleshaker": 417.91
+      }
+    },
+    {
+      "sku": "PNL4896",
+      "desc": "Painted Finished/Edge Finished Panel",
+      "cat": "Panels",
+      "dims": "47\"W x 0.75\"D x 96\"H",
+      "width_in": 47,
+      "depth_in": 0.75,
+      "height_in": 96,
+      "pb": {
+        "melamine": 325.7,
+        "highgloss": 625.37,
+        "matte": 660.96,
+        "shaker": 405.51,
+        "veneer": 516.08,
+        "doubleshaker": 425.75
+      },
+      "ply": {
+        "melamine": 325.7,
+        "highgloss": 625.37,
+        "matte": 660.96,
+        "shaker": 405.51,
+        "veneer": 516.08,
+        "doubleshaker": 425.75
+      }
+    },
+    {
+      "sku": "VEP21",
+      "desc": "Vanity End Panel",
+      "cat": "Panels",
+      "dims": "21.875\"W x 0.75\"D x 34.5\"H",
+      "width_in": 21.875,
+      "depth_in": 0.75,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 58.39,
+        "highgloss": 136.04,
+        "matte": 141.49,
+        "shaker": 149.41,
+        "veneer": 191.15,
+        "doubleshaker": 156.8
+      },
+      "ply": {
+        "melamine": 58.39,
+        "highgloss": 136.04,
+        "matte": 141.49,
+        "shaker": 149.41,
+        "veneer": 191.15,
+        "doubleshaker": 156.8
+      }
+    },
+    {
+      "sku": "BEP24",
+      "desc": "Base End Panel",
+      "cat": "Panels",
+      "dims": "24.625\"W x 0.75\"D x 34.5\"H",
+      "width_in": 24.625,
+      "depth_in": 0.75,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 64.89,
+        "highgloss": 151.27,
+        "matte": 157.47,
+        "shaker": 167.18,
+        "veneer": 214.37,
+        "doubleshaker": 175.54
+      },
+      "ply": {
+        "melamine": 64.89,
+        "highgloss": 151.27,
+        "matte": 157.47,
+        "shaker": 167.18,
+        "veneer": 214.37,
+        "doubleshaker": 175.54
+      }
+    },
+    {
+      "sku": "BEP26",
+      "desc": "Base End Panel",
+      "cat": "Panels",
+      "dims": "25.5\"W x 0.75\"D x 34.5\"H",
+      "width_in": 25.5,
+      "depth_in": 0.75,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 68.77,
+        "highgloss": 160.38,
+        "matte": 166.95,
+        "shaker": 177.63,
+        "veneer": 228.11,
+        "doubleshaker": 186.52
+      },
+      "ply": {
+        "melamine": 68.77,
+        "highgloss": 160.38,
+        "matte": 166.95,
+        "shaker": 177.63,
+        "veneer": 228.11,
+        "doubleshaker": 186.52
+      }
+    },
+    {
+      "sku": "BEP38",
+      "desc": "Base End Panel",
+      "cat": "Panels",
+      "dims": "37.5\"W x 0.75\"D x 34.5\"H",
+      "width_in": 37.5,
+      "depth_in": 0.75,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": 100.2,
+        "highgloss": 234.23,
+        "matte": 244.16,
+        "shaker": 261.18,
+        "veneer": 331.89,
+        "doubleshaker": 274.18
+      },
+      "ply": {
+        "melamine": 100.2,
+        "highgloss": 234.23,
+        "matte": 244.16,
+        "shaker": 261.18,
+        "veneer": 331.89,
+        "doubleshaker": 274.18
+      }
+    },
+    {
+      "sku": "WEP30",
+      "desc": "Wall End Panel",
+      "cat": "Panels",
+      "dims": "12.75\"W x 0.75\"D x 30\"H",
+      "width_in": 12.75,
+      "depth_in": 0.75,
+      "height_in": 30,
+      "pb": {
+        "melamine": 32.18,
+        "highgloss": 74.44,
+        "matte": 77.21,
+        "shaker": 78.47,
+        "veneer": 98.78,
+        "doubleshaker": 82.36
+      },
+      "ply": {
+        "melamine": 32.18,
+        "highgloss": 74.44,
+        "matte": 77.21,
+        "shaker": 78.47,
+        "veneer": 98.78,
+        "doubleshaker": 82.36
+      }
+    },
+    {
+      "sku": "WEP36",
+      "desc": "Wall End Panel",
+      "cat": "Panels",
+      "dims": "12.75\"W x 0.75\"D x 36\"H",
+      "width_in": 12.75,
+      "depth_in": 0.75,
+      "height_in": 36,
+      "pb": {
+        "melamine": 37.86,
+        "highgloss": 87.81,
+        "matte": 91.09,
+        "shaker": 93.03,
+        "veneer": 117.6,
+        "doubleshaker": 97.74
+      },
+      "ply": {
+        "melamine": 37.86,
+        "highgloss": 87.81,
+        "matte": 91.09,
+        "shaker": 93.03,
+        "veneer": 117.6,
+        "doubleshaker": 97.74
+      }
+    },
+    {
+      "sku": "WEP42",
+      "desc": "Wall End Panel",
+      "cat": "Panels",
+      "dims": "12.75\"W x 0.75\"D x 42\"H",
+      "width_in": 12.75,
+      "depth_in": 0.75,
+      "height_in": 42,
+      "pb": {
+        "melamine": 43.61,
+        "highgloss": 101.32,
+        "matte": 105.21,
+        "shaker": 107.74,
+        "veneer": 136.57,
+        "doubleshaker": 113.12
+      },
+      "ply": {
+        "melamine": 43.61,
+        "highgloss": 101.32,
+        "matte": 105.21,
+        "shaker": 107.74,
+        "veneer": 136.57,
+        "doubleshaker": 113.12
+      }
+    },
+    {
+      "sku": "WEP54",
+      "desc": "Wall End Panel",
+      "cat": "Panels",
+      "dims": "12.75\"W x 0.75\"D x 54\"H",
+      "width_in": 12.75,
+      "depth_in": 0.75,
+      "height_in": 54,
+      "pb": {
+        "melamine": 55.03,
+        "highgloss": 128.2,
+        "matte": 133.21,
+        "shaker": 137.09,
+        "veneer": 174.35,
+        "doubleshaker": 143.96
+      },
+      "ply": {
+        "melamine": 55.03,
+        "highgloss": 128.2,
+        "matte": 133.21,
+        "shaker": 137.09,
+        "veneer": 174.35,
+        "doubleshaker": 143.96
+      }
+    },
+    {
+      "sku": "F1.596",
+      "desc": "Tall Filler",
+      "cat": "Fillers",
+      "dims": "1.5\"W x 0.75\"D x 96\"H",
+      "width_in": 1.5,
+      "depth_in": 0.75,
+      "height_in": 96,
+      "pb": {
+        "melamine": 17.77,
+        "highgloss": 46.03,
+        "matte": 47.71,
+        "shaker": 46.97,
+        "veneer": 46.97,
+        "doubleshaker": 49.35
+      },
+      "ply": {
+        "melamine": 17.77,
+        "highgloss": 46.03,
+        "matte": 47.71,
+        "shaker": 46.97,
+        "veneer": 46.97,
+        "doubleshaker": 49.35
+      }
+    },
+    {
+      "sku": "F342",
+      "desc": "Wall Filler",
+      "cat": "Fillers",
+      "dims": "3\"W x 0.75\"D x 42\"H",
+      "width_in": 3,
+      "depth_in": 0.75,
+      "height_in": 42,
+      "pb": {
+        "melamine": 15.98,
+        "highgloss": 40.88,
+        "matte": 42.34,
+        "shaker": 33,
+        "veneer": 33,
+        "doubleshaker": 34.65
+      },
+      "ply": {
+        "melamine": 15.98,
+        "highgloss": 40.88,
+        "matte": 42.34,
+        "shaker": 33,
+        "veneer": 33,
+        "doubleshaker": 34.65
+      }
+    },
+    {
+      "sku": "F396",
+      "desc": "Tall Filler",
+      "cat": "Fillers",
+      "dims": "3\"W x 0.75\"D x 96\"H",
+      "width_in": 3,
+      "depth_in": 0.75,
+      "height_in": 96,
+      "pb": {
+        "melamine": 35.54,
+        "highgloss": 92.06,
+        "matte": 95.42,
+        "shaker": 93.86,
+        "veneer": 93.86,
+        "doubleshaker": 98.63
+      },
+      "ply": {
+        "melamine": 35.54,
+        "highgloss": 92.06,
+        "matte": 95.42,
+        "shaker": 93.86,
+        "veneer": 93.86,
+        "doubleshaker": 98.63
+      }
+    },
+    {
+      "sku": "F642",
+      "desc": "Wall Filler",
+      "cat": "Fillers",
+      "dims": "6\"W x 0.75\"D x 42\"H",
+      "width_in": 6,
+      "depth_in": 0.75,
+      "height_in": 42,
+      "pb": {
+        "melamine": 23.82,
+        "highgloss": 71.23,
+        "matte": 74.26,
+        "shaker": 69.66,
+        "veneer": 69.66,
+        "doubleshaker": 73.17
+      },
+      "ply": {
+        "melamine": 23.82,
+        "highgloss": 71.23,
+        "matte": 74.26,
+        "shaker": 69.66,
+        "veneer": 69.66,
+        "doubleshaker": 73.17
+      }
+    },
+    {
+      "sku": "F696",
+      "desc": "Tall Filler",
+      "cat": "Fillers",
+      "dims": "6\"W x 0.75\"D x 96\"H",
+      "width_in": 6,
+      "depth_in": 0.75,
+      "height_in": 96,
+      "pb": {
+        "melamine": 56.07,
+        "highgloss": 165.42,
+        "matte": 172.37,
+        "shaker": 179.13,
+        "veneer": 179.13,
+        "doubleshaker": 188.09
+      },
+      "ply": {
+        "melamine": 56.07,
+        "highgloss": 165.42,
+        "matte": 172.37,
+        "shaker": 179.13,
+        "veneer": 179.13,
+        "doubleshaker": 188.09
+      }
+    },
+    {
+      "sku": "ACM8",
+      "desc": "Angle Crown Moulding",
+      "cat": "Moulding",
+      "dims": "96\"W x 0.5\"D x 2.5\"H",
+      "width_in": 96,
+      "depth_in": 0.5,
+      "height_in": 2.5,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 111.78,
+        "veneer": 111.78,
+        "doubleshaker": 117.38
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 111.78,
+        "veneer": 111.78,
+        "doubleshaker": 117.38
+      }
+    },
+    {
+      "sku": "ALRM",
+      "desc": "Angle Light Trail Moulding",
+      "cat": "Moulding",
+      "dims": "96\"W x 2.5\"D x 2\"H",
+      "width_in": 96,
+      "depth_in": 2.5,
+      "height_in": 2,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 137.69,
+        "veneer": null,
+        "doubleshaker": 144.63
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 137.69,
+        "veneer": null,
+        "doubleshaker": 144.63
+      }
+    },
+    {
+      "sku": "BAM",
+      "desc": "Batten Moulding",
+      "cat": "Moulding",
+      "dims": "96\"W x 0.25\"D x 0.75\"H",
+      "width_in": 96,
+      "depth_in": 0.25,
+      "height_in": 0.75,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 25.61,
+        "veneer": 25.61,
+        "doubleshaker": 26.81
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 25.61,
+        "veneer": 25.61,
+        "doubleshaker": 26.81
+      }
+    },
+    {
+      "sku": "BCM8(DCM)",
+      "desc": "Decorative Crown Moulding",
+      "cat": "Moulding",
+      "dims": "96\"W x 0.6875\"D x 4.375\"H",
+      "width_in": 96,
+      "depth_in": 0.6875,
+      "height_in": 4.375,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 209.22,
+        "veneer": null,
+        "doubleshaker": 219.59
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 209.22,
+        "veneer": null,
+        "doubleshaker": 219.59
+      }
+    },
+    {
+      "sku": "CM8",
+      "desc": "Crown Moulding",
+      "cat": "Moulding",
+      "dims": "96\"W x 0.625\"D x 2.75\"H",
+      "width_in": 96,
+      "depth_in": 0.625,
+      "height_in": 2.75,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 120.81,
+        "veneer": null,
+        "doubleshaker": 126.86
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 120.81,
+        "veneer": null,
+        "doubleshaker": 126.86
+      }
+    },
+    {
+      "sku": "COV",
+      "desc": "Cove Crown Moulding",
+      "cat": "Moulding",
+      "dims": "96\"W x 0.75\"D x 5\"H",
+      "width_in": 96,
+      "depth_in": 0.75,
+      "height_in": 5,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 189.88,
+        "veneer": 189.88,
+        "doubleshaker": 199.29
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 189.88,
+        "veneer": 189.88,
+        "doubleshaker": 199.29
+      }
+    },
+    {
+      "sku": "LRM8",
+      "desc": "Light Rail Moulding",
+      "cat": "Moulding",
+      "dims": "96\"W x 2.25\"D x 1.5625\"H",
+      "width_in": 96,
+      "depth_in": 2.25,
+      "height_in": 1.5625,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 140.37,
+        "veneer": null,
+        "doubleshaker": 147.39
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 140.37,
+        "veneer": null,
+        "doubleshaker": 147.39
+      }
+    },
+    {
+      "sku": "OCM8",
+      "desc": "Outside Corner Moulding",
+      "cat": "Moulding",
+      "dims": "96\"W x 1.25\"D x 1.25\"H",
+      "width_in": 96,
+      "depth_in": 1.25,
+      "height_in": 1.25,
+      "pb": {
+        "melamine": 37.56,
+        "highgloss": 37.56,
+        "matte": 37.56,
+        "shaker": 46.22,
+        "veneer": 46.22,
+        "doubleshaker": 48.53
+      },
+      "ply": {
+        "melamine": 37.56,
+        "highgloss": 37.56,
+        "matte": 37.56,
+        "shaker": 46.22,
+        "veneer": 46.22,
+        "doubleshaker": 48.53
+      }
+    },
+    {
+      "sku": "RCM4S(LCM)",
+      "desc": "Inset Crown Moulding",
+      "cat": "Moulding",
+      "dims": "96\"W x 0.875\"D x 4.1875\"H",
+      "width_in": 96,
+      "depth_in": 0.875,
+      "height_in": 4.1875,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 208.69,
+        "veneer": null,
+        "doubleshaker": 219.15
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 208.69,
+        "veneer": null,
+        "doubleshaker": 219.15
+      }
+    },
+    {
+      "sku": "SHM",
+      "desc": "Shoe Moulding",
+      "cat": "Moulding",
+      "dims": "96\"W x 0.625\"D x 0.625\"H",
+      "width_in": 96,
+      "depth_in": 0.625,
+      "height_in": 0.625,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 35.39,
+        "veneer": 35.39,
+        "doubleshaker": 37.11
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 35.39,
+        "veneer": 35.39,
+        "doubleshaker": 37.11
+      }
+    },
+    {
+      "sku": "SM8(SCR)",
+      "desc": "Scribe Moulding",
+      "cat": "Moulding",
+      "dims": "96\"W x 0.25\"D x 0.75\"H",
+      "width_in": 96,
+      "depth_in": 0.25,
+      "height_in": 0.75,
+      "pb": {
+        "melamine": 31.51,
+        "highgloss": 31.51,
+        "matte": 31.51,
+        "shaker": 23.07,
+        "veneer": 23.07,
+        "doubleshaker": 24.19
+      },
+      "ply": {
+        "melamine": 31.51,
+        "highgloss": 31.51,
+        "matte": 31.51,
+        "shaker": 23.07,
+        "veneer": 23.07,
+        "doubleshaker": 24.19
+      }
+    },
+    {
+      "sku": "FBM",
+      "desc": "Furniture Base Moulding",
+      "cat": "Moulding",
+      "dims": "96\"W x 0.75\"D x 4.625\"H",
+      "width_in": 96,
+      "depth_in": 0.75,
+      "height_in": 4.625,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 206.23,
+        "veneer": null,
+        "doubleshaker": 216.53
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 206.23,
+        "veneer": null,
+        "doubleshaker": 216.53
+      }
+    },
+    {
+      "sku": "TKC",
+      "desc": "Toe Kick Plywood",
+      "cat": "Moulding",
+      "dims": "96\"W x 0.25\"D x 4.5\"H",
+      "width_in": 96,
+      "depth_in": 0.25,
+      "height_in": 4.5,
+      "pb": {
+        "melamine": 10.6,
+        "highgloss": 38.85,
+        "matte": 40.88,
+        "shaker": 30.09,
+        "veneer": 42.11,
+        "doubleshaker": 31.58
+      },
+      "ply": {
+        "melamine": 10.6,
+        "highgloss": 38.85,
+        "matte": 40.88,
+        "shaker": 30.09,
+        "veneer": 42.11,
+        "doubleshaker": 31.58
+      }
+    },
+    {
+      "sku": "LM",
+      "desc": "L-Shape Moulding",
+      "cat": "Moulding",
+      "dims": "96\"W x 1.5\"D x 1.5\"H",
+      "width_in": 96,
+      "depth_in": 1.5,
+      "height_in": 1.5,
+      "pb": {
+        "melamine": 44.8,
+        "highgloss": 67.2,
+        "matte": 67.2,
+        "shaker": 136.86,
+        "veneer": 136.86,
+        "doubleshaker": 143.73
+      },
+      "ply": {
+        "melamine": 44.8,
+        "highgloss": 67.2,
+        "matte": 67.2,
+        "shaker": 136.86,
+        "veneer": 136.86,
+        "doubleshaker": 143.73
+      }
+    },
+    {
+      "sku": "LM (RAISER)",
+      "desc": "L-Shape Moulding - Raiser",
+      "cat": "Moulding",
+      "dims": "96\"W x 4.5\"D x 2\"H",
+      "width_in": 96,
+      "depth_in": 4.5,
+      "height_in": 2,
+      "pb": {
+        "melamine": 119.77,
+        "highgloss": 179.65,
+        "matte": 179.65,
+        "shaker": 298.52,
+        "veneer": 298.52,
+        "doubleshaker": 306.95
+      },
+      "ply": {
+        "melamine": 119.77,
+        "highgloss": 179.65,
+        "matte": 179.65,
+        "shaker": 298.52,
+        "veneer": 298.52,
+        "doubleshaker": 306.95
+      }
+    },
+    {
+      "sku": "VA30",
+      "desc": "Arched Valance",
+      "cat": "Valance",
+      "dims": "30\"W x 0.75\"D x 6\"H",
+      "width_in": 30,
+      "depth_in": 0.75,
+      "height_in": 6,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 100.58,
+        "veneer": null,
+        "doubleshaker": 105.58
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 100.58,
+        "veneer": null,
+        "doubleshaker": 105.58
+      }
+    },
+    {
+      "sku": "VA36",
+      "desc": "Arched Valance",
+      "cat": "Valance",
+      "dims": "36\"W x 0.75\"D x 6\"H",
+      "width_in": 36,
+      "depth_in": 0.75,
+      "height_in": 6,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 119.91,
+        "veneer": null,
+        "doubleshaker": 125.89
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 119.91,
+        "veneer": null,
+        "doubleshaker": 125.89
+      }
+    },
+    {
+      "sku": "VA42",
+      "desc": "Arched Valance",
+      "cat": "Valance",
+      "dims": "42\"W x 0.75\"D x 6\"H",
+      "width_in": 42,
+      "depth_in": 0.75,
+      "height_in": 6,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 139.4,
+        "veneer": null,
+        "doubleshaker": 146.35
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 139.4,
+        "veneer": null,
+        "doubleshaker": 146.35
+      }
+    },
+    {
+      "sku": "VA48",
+      "desc": "Arched Valance",
+      "cat": "Valance",
+      "dims": "48\"W x 0.75\"D x 6\"H",
+      "width_in": 48,
+      "depth_in": 0.75,
+      "height_in": 6,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 158.74,
+        "veneer": null,
+        "doubleshaker": 166.66
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 158.74,
+        "veneer": null,
+        "doubleshaker": 166.66
+      }
+    },
+    {
+      "sku": "CB9",
+      "desc": "Corbel",
+      "cat": "Accessories",
+      "dims": "3\"W x 9\"D x 9\"H",
+      "width_in": 3,
+      "depth_in": 9,
+      "height_in": 9,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 60.7,
+        "veneer": null,
+        "doubleshaker": 63.77
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 60.7,
+        "veneer": null,
+        "doubleshaker": 63.77
+      }
+    },
+    {
+      "sku": "CBT",
+      "desc": "Corbel",
+      "cat": "Accessories",
+      "dims": "3.125\"W x 5.875\"D x 13\"H",
+      "width_in": 3.125,
+      "depth_in": 5.875,
+      "height_in": 13,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 155.61,
+        "veneer": null,
+        "doubleshaker": 163.37
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 155.61,
+        "veneer": null,
+        "doubleshaker": 163.37
+      }
+    },
+    {
+      "sku": "CLDL",
+      "desc": "Classic Decorative Leg",
+      "cat": "Accessories",
+      "dims": "3\"W x 3\"D x 34.5\"H",
+      "width_in": 3,
+      "depth_in": 3,
+      "height_in": 34.5,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 222.13,
+        "veneer": null,
+        "doubleshaker": 233.26
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 222.13,
+        "veneer": null,
+        "doubleshaker": 233.26
+      }
+    },
+    {
+      "sku": "M24",
+      "desc": "Wall Microwave",
+      "cat": "Accessories",
+      "dims": "22.5\"W x 18\"D x 0.75\"H",
+      "width_in": 22.5,
+      "depth_in": 18,
+      "height_in": 0.75,
+      "pb": {
+        "melamine": 39.05,
+        "highgloss": 80.27,
+        "matte": 84.52,
+        "shaker": 76.76,
+        "veneer": 107.46,
+        "doubleshaker": 88.41
+      },
+      "ply": {
+        "melamine": 39.05,
+        "highgloss": 80.27,
+        "matte": 84.52,
+        "shaker": 76.76,
+        "veneer": 107.46,
+        "doubleshaker": 88.41
+      }
+    },
+    {
+      "sku": "M30",
+      "desc": "Wall Microwave",
+      "cat": "Accessories",
+      "dims": "28.5\"W x 18\"D x 0.75\"H",
+      "width_in": 28.5,
+      "depth_in": 18,
+      "height_in": 0.75,
+      "pb": {
+        "melamine": 47.34,
+        "highgloss": 98.71,
+        "matte": 104.01,
+        "shaker": 94.75,
+        "veneer": 132.65,
+        "doubleshaker": 109.16
+      },
+      "ply": {
+        "melamine": 47.34,
+        "highgloss": 98.71,
+        "matte": 104.01,
+        "shaker": 94.75,
+        "veneer": 132.65,
+        "doubleshaker": 109.16
+      }
+    },
+    {
+      "sku": "LP24",
+      "desc": "Vanity Leg Panel",
+      "cat": "Hardware",
+      "dims": "0.75W x 4.5H x 24L",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 34.12,
+        "veneer": null,
+        "doubleshaker": 34.12
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 34.12,
+        "veneer": null,
+        "doubleshaker": 34.12
+      }
+    },
+    {
+      "sku": "LP27",
+      "desc": "Vanity Leg Panel",
+      "cat": "Hardware",
+      "dims": "0.75W x 4.5H x 27L",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 38.15,
+        "veneer": null,
+        "doubleshaker": 38.15
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 38.15,
+        "veneer": null,
+        "doubleshaker": 38.15
+      }
+    },
+    {
+      "sku": "LP30",
+      "desc": "Vanity Leg Panel",
+      "cat": "Hardware",
+      "dims": "0.75W x 4.5H x 30L",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 42.11,
+        "veneer": null,
+        "doubleshaker": 42.11
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 42.11,
+        "veneer": null,
+        "doubleshaker": 42.11
+      }
+    },
+    {
+      "sku": "LP36",
+      "desc": "Vanity Leg Panel",
+      "cat": "Hardware",
+      "dims": "0.75W x 4.5H x 36L",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 50.1,
+        "veneer": null,
+        "doubleshaker": 50.1
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 50.1,
+        "veneer": null,
+        "doubleshaker": 50.1
+      }
+    },
+    {
+      "sku": "LP42",
+      "desc": "Vanity Leg Panel",
+      "cat": "Hardware",
+      "dims": "0.75W x 4.5H x 42L",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 58.61,
+        "veneer": null,
+        "doubleshaker": 58.61
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 58.61,
+        "veneer": null,
+        "doubleshaker": 58.61
+      }
+    },
+    {
+      "sku": "LP48",
+      "desc": "Vanity Leg Panel",
+      "cat": "Hardware",
+      "dims": "0.75W x 4.5H x 48L",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 66.68,
+        "veneer": null,
+        "doubleshaker": 66.68
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 66.68,
+        "veneer": null,
+        "doubleshaker": 66.68
+      }
+    },
+    {
+      "sku": "LP60",
+      "desc": "Vanity Leg Panel",
+      "cat": "Hardware",
+      "dims": "0.75W x 4.5H x 60L",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 82.81,
+        "veneer": null,
+        "doubleshaker": 82.81
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 82.81,
+        "veneer": null,
+        "doubleshaker": 82.81
+      }
+    },
+    {
+      "sku": "LP72",
+      "desc": "Vanity Leg Panel",
+      "cat": "Hardware",
+      "dims": "0.75W x 4.5H x 72L",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 101.25,
+        "veneer": null,
+        "doubleshaker": 101.25
+      },
+      "ply": {
+        "melamine": null,
+        "highgloss": null,
+        "matte": null,
+        "shaker": 101.25,
+        "veneer": null,
+        "doubleshaker": 101.25
+      }
+    },
+    {
+      "sku": "RS18",
+      "desc": "Roll Out Tray - Fits B18/BFH18/18W Pantries",
+      "cat": "Hardware",
+      "dims": "18W",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "melamine": 105.73,
+        "highgloss": 105.73,
+        "matte": 105.73,
+        "shaker": 105.73,
+        "veneer": 105.73,
+        "doubleshaker": 105.73
+      },
+      "ply": {
+        "melamine": 105.73,
+        "highgloss": 105.73,
+        "matte": 105.73,
+        "shaker": 105.73,
+        "veneer": 105.73,
+        "doubleshaker": 105.73
+      }
+    },
+    {
+      "sku": "RS21",
+      "desc": "Roll Out Tray - Fits B21/BFH21/21W Pantries",
+      "cat": "Hardware",
+      "dims": "21W",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "melamine": 113.42,
+        "highgloss": 113.42,
+        "matte": 113.42,
+        "shaker": 113.42,
+        "veneer": 113.42,
+        "doubleshaker": 113.42
+      },
+      "ply": {
+        "melamine": 113.42,
+        "highgloss": 113.42,
+        "matte": 113.42,
+        "shaker": 113.42,
+        "veneer": 113.42,
+        "doubleshaker": 113.42
+      }
+    },
+    {
+      "sku": "RS24",
+      "desc": "Roll Out Tray - Fits B24/BFH24/24W Pantries",
+      "cat": "Hardware",
+      "dims": "24W",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "melamine": 121.18,
+        "highgloss": 121.18,
+        "matte": 121.18,
+        "shaker": 121.18,
+        "veneer": 121.18,
+        "doubleshaker": 121.18
+      },
+      "ply": {
+        "melamine": 121.18,
+        "highgloss": 121.18,
+        "matte": 121.18,
+        "shaker": 121.18,
+        "veneer": 121.18,
+        "doubleshaker": 121.18
+      }
+    },
+    {
+      "sku": "RS27",
+      "desc": "Roll Out Tray - Fits B27/BFH27/27W Pantries",
+      "cat": "Hardware",
+      "dims": "27W",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "melamine": 128.87,
+        "highgloss": 128.87,
+        "matte": 128.87,
+        "shaker": 128.87,
+        "veneer": 128.87,
+        "doubleshaker": 128.87
+      },
+      "ply": {
+        "melamine": 128.87,
+        "highgloss": 128.87,
+        "matte": 128.87,
+        "shaker": 128.87,
+        "veneer": 128.87,
+        "doubleshaker": 128.87
+      }
+    },
+    {
+      "sku": "RS30",
+      "desc": "Roll Out Tray - Fits B30/BFH30/30W Pantries",
+      "cat": "Hardware",
+      "dims": "30W",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "melamine": 136.57,
+        "highgloss": 136.57,
+        "matte": 136.57,
+        "shaker": 136.57,
+        "veneer": 136.57,
+        "doubleshaker": 136.57
+      },
+      "ply": {
+        "melamine": 136.57,
+        "highgloss": 136.57,
+        "matte": 136.57,
+        "shaker": 136.57,
+        "veneer": 136.57,
+        "doubleshaker": 136.57
+      }
+    },
+    {
+      "sku": "RS33",
+      "desc": "Roll Out Tray - Fits B33/BFH33/33W Pantries",
+      "cat": "Hardware",
+      "dims": "33W",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "melamine": 144.26,
+        "highgloss": 144.26,
+        "matte": 144.26,
+        "shaker": 144.26,
+        "veneer": 144.26,
+        "doubleshaker": 144.26
+      },
+      "ply": {
+        "melamine": 144.26,
+        "highgloss": 144.26,
+        "matte": 144.26,
+        "shaker": 144.26,
+        "veneer": 144.26,
+        "doubleshaker": 144.26
+      }
+    },
+    {
+      "sku": "RS36",
+      "desc": "Roll Out Tray - Fits B36/BFH36/36W Pantries",
+      "cat": "Hardware",
+      "dims": "36W",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "melamine": 151.95,
+        "highgloss": 151.95,
+        "matte": 151.95,
+        "shaker": 151.95,
+        "veneer": 151.95,
+        "doubleshaker": 151.95
+      },
+      "ply": {
+        "melamine": 151.95,
+        "highgloss": 151.95,
+        "matte": 151.95,
+        "shaker": 151.95,
+        "veneer": 151.95,
+        "doubleshaker": 151.95
+      }
+    },
+    {
+      "sku": "CHROMETRAY33",
+      "desc": "Chrome Tray for Corner Cabinet ERB33",
+      "cat": "Hardware",
+      "dims": "33W",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "melamine": 180.25,
+        "highgloss": 180.25,
+        "matte": 180.25,
+        "shaker": 180.25,
+        "veneer": 180.25,
+        "doubleshaker": 180.25
+      },
+      "ply": {
+        "melamine": 180.25,
+        "highgloss": 180.25,
+        "matte": 180.25,
+        "shaker": 180.25,
+        "veneer": 180.25,
+        "doubleshaker": 180.25
+      }
+    },
+    {
+      "sku": "CHROMETRAY36",
+      "desc": "Chrome Tray for Corner Cabinet ERB36",
+      "cat": "Hardware",
+      "dims": "36W",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "melamine": 198.46,
+        "highgloss": 198.46,
+        "matte": 198.46,
+        "shaker": 198.46,
+        "veneer": 198.46,
+        "doubleshaker": 198.46
+      },
+      "ply": {
+        "melamine": 198.46,
+        "highgloss": 198.46,
+        "matte": 198.46,
+        "shaker": 198.46,
+        "veneer": 198.46,
+        "doubleshaker": 198.46
+      }
+    },
+    {
+      "sku": "WOODTRAY",
+      "desc": "Wood Tray for Corner Cabinet ERB33/36",
+      "cat": "Hardware",
+      "dims": "33/36W",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "melamine": 162.4,
+        "highgloss": 162.4,
+        "matte": 162.4,
+        "shaker": 162.4,
+        "veneer": 162.4,
+        "doubleshaker": 162.4
+      },
+      "ply": {
+        "melamine": 162.4,
+        "highgloss": 162.4,
+        "matte": 162.4,
+        "shaker": 162.4,
+        "veneer": 162.4,
+        "doubleshaker": 162.4
+      }
+    },
+    {
+      "sku": "BWB18-AC-BIN",
+      "desc": "Waste Bins for Base Waste Basket BWB18",
+      "cat": "Hardware",
+      "dims": "18W",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "melamine": 40,
+        "highgloss": 40,
+        "matte": 40,
+        "shaker": 40,
+        "veneer": 40,
+        "doubleshaker": 40
+      },
+      "ply": {
+        "melamine": 40,
+        "highgloss": 40,
+        "matte": 40,
+        "shaker": 40,
+        "veneer": 40,
+        "doubleshaker": 40
+      }
+    }
+  ]
+}
