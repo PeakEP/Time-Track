@@ -9,10 +9,16 @@
 [build.environment]
   NODE_VERSION = "20"
 
-# Cabinet Designer SPA fallback — all sub-paths serve its index
+# Cabinet Designer (OPPEIN) SPA fallback
 [[redirects]]
   from = "/cabinet-designer/*"
   to = "/cabinet-designer/index.html"
+  status = 200
+
+# Aline Cabinet Designer SPA fallback
+[[redirects]]
+  from = "/aline-designer/*"
+  to = "/aline-designer/index.html"
   status = 200
 
 # Legacy Time Track aliases
