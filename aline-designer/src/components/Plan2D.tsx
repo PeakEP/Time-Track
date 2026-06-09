@@ -1,8 +1,9 @@
 import { useMemo, useRef, useState, useEffect, useLayoutEffect, useCallback } from "react";
-import { RotateCw } from "lucide-react";
+import { RotateCw, Camera } from "lucide-react";
 import { useStore } from "../store";
 import type { Item, Point } from "../types";
 import { bounds, edges, visibleWallSet } from "../utils/roomPresets";
+import { captureSvgToPng, buildCaptureFilename } from "../utils/capture";
 import {
   isScheduleOnly,
   makeId,
@@ -345,6 +346,19 @@ export function Plan2D() {
           title="Show measurements for the install team"
         >
           Blueprint {showDimensions ? "on" : "off"}
+        </button>
+        <button
+          className="fit-btn"
+          onClick={() => {
+            if (!svgRef.current) return;
+            captureSvgToPng(
+              svgRef.current,
+              buildCaptureFilename(useStore.getState().project.meta.name, "Plan"),
+            );
+          }}
+          title="Download the current plan view as a PNG"
+        >
+          <Camera size={13} /> Capture
         </button>
         <div className="cursor-readout">
           {cursor ? `${cursor.x.toFixed(1)}", ${cursor.y.toFixed(1)}"` : "scroll to zoom"}
