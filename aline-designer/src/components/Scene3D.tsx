@@ -3,13 +3,14 @@ import { OrbitControls, GizmoHelper, GizmoViewport, Grid, Edges } from "@react-t
 import { useMemo, useRef, useState } from "react";
 import type { ThreeEvent } from "@react-three/fiber";
 import * as THREE from "three";
-import { Eye, Box as BoxIcon, Square as SquareIcon } from "lucide-react";
+import { Eye, Box as BoxIcon, Square as SquareIcon, Camera } from "lucide-react";
 import { useStore } from "../store";
 import type { Item, Point } from "../types";
 import { bounds, edges, visibleWallSet } from "../utils/roomPresets";
 import { darken, finishColor } from "../utils/finishColors";
 import { generateCountertops } from "../utils/snapping";
 import { isCornerCabinet, isLazySusan, isWallDiagonal, diagonalPoints, snap } from "../utils/placement";
+import { captureCanvasToPng, buildCaptureFilename } from "../utils/capture";
 
 type OrbitRef = {
   object: THREE.Camera & { position: THREE.Vector3; up: THREE.Vector3; lookAt: (v: THREE.Vector3) => void };
@@ -91,6 +92,7 @@ export function Scene3D() {
     [items, settings.counterHeight],
   );
   const orbitRef = useRef<OrbitRef | null>(null);
+  const threeWrapRef = useRef<HTMLDivElement | null>(null);
 
   function setView(kind: "iso" | "top" | "front") {
     const c = orbitRef.current;
@@ -109,12 +111,12 @@ export function Scene3D() {
   }
 
   return (
-    <div className="three-wrap">
+    <div className="three-wrap" ref={threeWrapRef}>
       <Canvas
         shadows={false}
         camera={{ position: [cx + cameraDistance, cameraDistance * 0.7, cy + cameraDistance], fov: 40, near: 1, far: 5000 }}
         onPointerMissed={() => select(null)}
-        gl={{ antialias: true }}
+        gl={{ antialias: true, preserveDrawingBuffer: true }}
       >
         <color attach="background" args={["#eef1f7"]} />
         <hemisphereLight args={["#ffffff", "#b8bfd0", 0.8]} />
@@ -195,6 +197,19 @@ export function Scene3D() {
         </button>
         <button onClick={() => setView("front")} title="Front view">
           <Eye size={14} /> Front
+        </button>
+        <button
+          onClick={() => {
+            const canvas = threeWrapRef.current?.querySelector("canvas");
+            if (!canvas) return;
+            captureCanvasToPng(
+              canvas,
+              buildCaptureFilename(useStore.getState().project.meta.name, "3D"),
+            );
+          }}
+          title="Download the current 3D view as a PNG"
+        >
+          <Camera size={14} /> Capture
         </button>
       </div>
     </div>

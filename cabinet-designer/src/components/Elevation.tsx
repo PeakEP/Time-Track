@@ -1,9 +1,10 @@
 import { useMemo, useRef, useState, useEffect, useLayoutEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Camera } from "lucide-react";
 import { useStore } from "../store";
 import { edges } from "../utils/roomPresets";
 import { finishColor } from "../utils/finishColors";
 import { assignItemsToWalls, type ElevBox } from "../utils/elevation";
+import { captureSvgToPng, buildCaptureFilename } from "../utils/capture";
 
 type Proj = ElevBox;
 
@@ -18,6 +19,7 @@ export function Elevation() {
   const frontWall = useStore((s) => s.frontWall);
   const setFrontWall = useStore((s) => s.setFrontWall);
   const [zoom, setZoom] = useState(1);
+  const elevSvgRef = useRef<SVGSVGElement | null>(null);
 
   const ee = edges(room.points);
   const wallCount = ee.length;
@@ -86,9 +88,26 @@ export function Elevation() {
           <button onClick={() => setZoom((z) => Math.min(6, z * 1.2))} title="Zoom in">+</button>
           <button className="fit-btn" onClick={() => setZoom(1)} title="Fit to view">Fit</button>
         </div>
+        <button
+          className="fit-btn"
+          onClick={() => {
+            if (!elevSvgRef.current) return;
+            captureSvgToPng(
+              elevSvgRef.current,
+              buildCaptureFilename(
+                useStore.getState().project.meta.name,
+                `Wall${wallIndex + 1}`,
+              ),
+            );
+          }}
+          title="Download this wall elevation as a PNG"
+        >
+          <Camera size={13} /> Capture
+        </button>
         <div className="elev-hint">arrows nudge · ↑↓ height · scroll to zoom</div>
       </div>
       <ElevCanvas
+        svgRef={elevSvgRef}
         len={len}
         wallHeight={wallHeight}
         projected={projected}
@@ -106,6 +125,7 @@ export function Elevation() {
 }
 
 function ElevCanvas({
+  svgRef,
   len,
   wallHeight,
   projected,
@@ -118,6 +138,7 @@ function ElevCanvas({
   zoom,
   setZoom,
 }: {
+  svgRef: React.MutableRefObject<SVGSVGElement | null>;
   len: number;
   wallHeight: number;
   projected: Proj[];
@@ -165,7 +186,7 @@ function ElevCanvas({
 
   return (
     <div className="elev-canvas" ref={wrapRef} onClick={() => onSelect(null)}>
-      <svg width={svgW} height={svgH} viewBox={`0 0 ${viewW} ${viewH}`}>
+      <svg ref={svgRef} width={svgW} height={svgH} viewBox={`0 0 ${viewW} ${viewH}`}>
         <g transform={`translate(${pad} ${pad})`}>
           {/* wall background */}
           <rect x={0} y={0} width={len} height={wallHeight} fill="#eef1f6" stroke="#9aa6b8" strokeWidth={0.5} />
