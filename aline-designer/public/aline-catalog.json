@@ -4993,7 +4993,7 @@
     {
       "sku": "FS24",
       "desc": "Floating Shelf",
-      "cat": "Accessories",
+      "cat": "Open Shelf",
       "dims": "24\"W x 12.75\"D x 2\"H",
       "width_in": 24,
       "depth_in": 12.75,
@@ -5018,7 +5018,7 @@
     {
       "sku": "FS30",
       "desc": "Floating Shelf",
-      "cat": "Accessories",
+      "cat": "Open Shelf",
       "dims": "30\"W x 12.75\"D x 2\"H",
       "width_in": 30,
       "depth_in": 12.75,
@@ -5043,7 +5043,7 @@
     {
       "sku": "FS60",
       "desc": "Floating Shelf",
-      "cat": "Accessories",
+      "cat": "Open Shelf",
       "dims": "60\"W x 12.75\"D x 2\"H",
       "width_in": 60,
       "depth_in": 12.75,
@@ -5068,7 +5068,7 @@
     {
       "sku": "SGH30",
       "desc": "Stem Wine Glass Holder",
-      "cat": "Accessories",
+      "cat": "Open Shelf",
       "dims": "30\"W x 12\"D x 1.5\"H",
       "width_in": 30,
       "depth_in": 12,
@@ -6393,7 +6393,7 @@
     {
       "sku": "M24",
       "desc": "Wall Microwave",
-      "cat": "Accessories",
+      "cat": "Wall Specialty",
       "dims": "22.5\"W x 18\"D x 0.75\"H",
       "width_in": 22.5,
       "depth_in": 18,
@@ -6418,7 +6418,7 @@
     {
       "sku": "M30",
       "desc": "Wall Microwave",
-      "cat": "Accessories",
+      "cat": "Wall Specialty",
       "dims": "28.5\"W x 18\"D x 0.75\"H",
       "width_in": 28.5,
       "depth_in": 18,

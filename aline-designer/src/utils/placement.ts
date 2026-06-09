@@ -12,6 +12,7 @@ const WALL_CATEGORIES = new Set([
   "Wall Lift",
   "Wall Specialty",
   "Open",
+  "Open Shelf",
 ]);
 
 // These have no real footprint, so they only ever appear in the schedule.

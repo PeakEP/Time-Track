@@ -1,6 +1,7 @@
 import type { Item, ItemKind, Product } from "../types";
 
 const WALL_CATEGORIES = new Set([
+  "Wall 24",
   "Wall 30",
   "Wall 36",
   "Wall 42",
@@ -9,11 +10,19 @@ const WALL_CATEGORIES = new Set([
   "Wall Corner",
   "Wall Diagonal",
   "Wall Lift",
+  "Wall Specialty",
   "Open",
+  "Open Shelf",
 ]);
 
 // These have no real footprint, so they only ever appear in the schedule.
-const SCHEDULE_ONLY_CATEGORIES = new Set(["Accessories", "Hardware", "Glass"]);
+const SCHEDULE_ONLY_CATEGORIES = new Set([
+  "Accessories",
+  "Hardware",
+  "Glass",
+  "Moulding",
+  "Valance",
+]);
 
 const PANEL_THICKNESS = 0.75;
 
