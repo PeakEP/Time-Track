@@ -778,9 +778,9 @@
       "sku": "ERB33",
       "desc": "Easy Reach Base (w/ Lazy Susan option)",
       "cat": "Corner",
-      "dims": "33\"W x 24\"D x 34.5\"H",
+      "dims": "33\"W x 33\"D x 34.5\"H",
       "width_in": 33,
-      "depth_in": 24,
+      "depth_in": 33,
       "height_in": 34.5,
       "pb": {
         "melamine": 816.11,
@@ -803,9 +803,9 @@
       "sku": "ERB36",
       "desc": "Easy Reach Base (w/ Lazy Susan option)",
       "cat": "Corner",
-      "dims": "36\"W x 24\"D x 34.5\"H",
+      "dims": "36\"W x 36\"D x 34.5\"H",
       "width_in": 36,
-      "depth_in": 24,
+      "depth_in": 36,
       "height_in": 34.5,
       "pb": {
         "melamine": 860.84,
@@ -3534,7 +3534,7 @@
     {
       "sku": "DCW2412GD",
       "desc": "Wall Diagonal Corner Glass Door - 1DOR",
-      "cat": "Wall Corner",
+      "cat": "Wall Diagonal",
       "dims": "24\"W x 24\"D x 12\"H",
       "width_in": 24,
       "depth_in": 24,
@@ -3552,7 +3552,7 @@
     {
       "sku": "DCW2430",
       "desc": "Wall Diagonal Corner - 1DOR, 2S",
-      "cat": "Wall Corner",
+      "cat": "Wall Diagonal",
       "dims": "24\"W x 24\"D x 30\"H",
       "width_in": 24,
       "depth_in": 24,
@@ -3577,7 +3577,7 @@
     {
       "sku": "DCW2430GD",
       "desc": "Wall Diagonal Corner Glass Door - 1DOR, 2S",
-      "cat": "Wall Corner",
+      "cat": "Wall Diagonal",
       "dims": "24\"W x 24\"D x 30\"H",
       "width_in": 24,
       "depth_in": 24,
@@ -3595,7 +3595,7 @@
     {
       "sku": "DCW2436",
       "desc": "Wall Diagonal Corner - 1DOR, 2S",
-      "cat": "Wall Corner",
+      "cat": "Wall Diagonal",
       "dims": "24\"W x 24\"D x 36\"H",
       "width_in": 24,
       "depth_in": 24,
@@ -3620,7 +3620,7 @@
     {
       "sku": "DCW2436GD",
       "desc": "Wall Diagonal Corner Glass Door - 1DOR, 2S",
-      "cat": "Wall Corner",
+      "cat": "Wall Diagonal",
       "dims": "24\"W x 24\"D x 36\"H",
       "width_in": 24,
       "depth_in": 24,
@@ -3638,7 +3638,7 @@
     {
       "sku": "DCW2442",
       "desc": "Wall Diagonal Corner - 1DOR, 3S",
-      "cat": "Wall Corner",
+      "cat": "Wall Diagonal",
       "dims": "24\"W x 24\"D x 42\"H",
       "width_in": 24,
       "depth_in": 24,
@@ -3663,7 +3663,7 @@
     {
       "sku": "DCW2442GD",
       "desc": "Wall Diagonal Corner Glass Door - 1DOR, 3S",
-      "cat": "Wall Corner",
+      "cat": "Wall Diagonal",
       "dims": "24\"W x 24\"D x 42\"H",
       "width_in": 24,
       "depth_in": 24,
