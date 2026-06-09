@@ -130,6 +130,22 @@ export function Inspector() {
             />
           </Field>
         </div>
+        {!isOpening && (
+          <div className="inspector-row">
+            <Field label="Rotation">
+              <select
+                value={item.rotation}
+                onChange={(e) => patch({ rotation: +e.target.value as Rotation })}
+              >
+                <option value={0}>0° (back to top wall)</option>
+                <option value={90}>90° (back to left wall)</option>
+                <option value={180}>180° (back to bottom wall)</option>
+                <option value={270}>270° (back to right wall)</option>
+              </select>
+            </Field>
+            <span />
+          </div>
+        )}
         {isCabinet && (item.mountZ ?? 0) > 0 && (
           <div className="inspector-row">
             <Field label="Gap above counter (in)">
