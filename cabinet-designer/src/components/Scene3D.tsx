@@ -386,13 +386,20 @@ function CabinetMesh({
   const dragProps = useDragProps(item, onSelect, drag);
   if (item.scheduleOnly) return null;
   if (item.kind === "window" || item.kind === "door") return null;
-  const w = item.rotation === 90 || item.rotation === 270 ? item.depth : item.width;
-  const d = item.rotation === 90 || item.rotation === 270 ? item.width : item.depth;
+  // Plan footprint (post-rotation) for centering the mesh in world coords.
+  const fpW = item.rotation === 90 || item.rotation === 270 ? item.depth : item.width;
+  const fpD = item.rotation === 90 || item.rotation === 270 ? item.width : item.depth;
+  // Local box uses the item's intrinsic w/d; the group's Y-rotation orients it.
+  // Without this, an appliance's dark "front face" stayed on the same world side
+  // no matter how you rotated it — the box just resized, never spun.
+  const localW = item.width;
+  const localD = item.depth;
   const h = item.height;
   const mountZ = item.mountZ ?? 0;
-  const cx = item.x + w / 2;
+  const cx = item.x + fpW / 2;
   const cy = mountZ + h / 2;
-  const cz = item.y + d / 2;
+  const cz = item.y + fpD / 2;
+  const rad = (item.rotation * Math.PI) / 180;
   const isAppliance = item.kind === "appliance";
   const isPanelPiece = item.kind === "panel" || item.kind === "filler";
   // OPPEIN carcasses are white; the door/panel/filler shows the finish colour.
@@ -427,15 +434,15 @@ function CabinetMesh({
   if (isPanelPiece) {
     // a finished panel/filler is the finish colour through-and-through
     return (
-      <group position={[cx, cy, cz]} {...dragProps}>
+      <group position={[cx, cy, cz]} rotation={[0, -rad, 0]} {...dragProps}>
         <mesh>
-          <boxGeometry args={[w, h, d]} />
+          <boxGeometry args={[localW, h, localD]} />
           <meshStandardMaterial color={finishHex} roughness={0.45} />
           <Edges threshold={15} color="#3a4150" />
         </mesh>
         {selected && (
           <mesh>
-            <boxGeometry args={[w + 1, h + 1, d + 1]} />
+            <boxGeometry args={[localW + 1, h + 1, localD + 1]} />
             <meshBasicMaterial color="#2C327C" wireframe />
           </mesh>
         )}
@@ -453,32 +460,32 @@ function CabinetMesh({
   }));
 
   return (
-    <group position={[cx, cy, cz]} {...dragProps}>
+    <group position={[cx, cy, cz]} rotation={[0, -rad, 0]} {...dragProps}>
       {/* carcass (white box) */}
       <mesh>
-        <boxGeometry args={[w, h, d]} />
+        <boxGeometry args={[localW, h, localD]} />
         <meshStandardMaterial color={bodyColor} roughness={isAppliance ? 0.3 : 0.7} metalness={isAppliance ? 0.4 : 0} />
         <Edges threshold={15} color="#3a4150" />
       </mesh>
       {isAppliance ? (
-        <mesh position={[0, 0, d / 2 - 0.05]}>
-          <boxGeometry args={[w - 0.5, h - 0.5, 0.6]} />
+        <mesh position={[0, 0, localD / 2 - 0.05]}>
+          <boxGeometry args={[localW - 0.5, h - 0.5, 0.6]} />
           <meshStandardMaterial color={doorColor} roughness={0.25} metalness={0.5} />
           <Edges threshold={15} color="#3a4150" />
         </mesh>
       ) : (
         doors.map((dr, i) => (
-          <group key={i} position={[0, dr.y, d / 2]}>
+          <group key={i} position={[0, dr.y, localD / 2]}>
             {/* door slab, finish colour, proud of the carcass and inset (frame reveal) */}
             <mesh position={[0, 0, 0.25]}>
-              <boxGeometry args={[w - reveal * 2, dr.h, 0.8]} />
+              <boxGeometry args={[localW - reveal * 2, dr.h, 0.8]} />
               <meshStandardMaterial color={doorColor} roughness={0.45} />
               <Edges threshold={15} color="#3a4150" />
             </mesh>
             {/* recessed shaker centre panel (slightly darker + set back) */}
-            {w > 9 && dr.h > 8 && (
+            {localW > 9 && dr.h > 8 && (
               <mesh position={[0, 0, 0.15]}>
-                <boxGeometry args={[w - reveal * 2 - 5, dr.h - 5, 0.7]} />
+                <boxGeometry args={[localW - reveal * 2 - 5, dr.h - 5, 0.7]} />
                 <meshStandardMaterial color={darken(doorColor, 0.1)} roughness={0.55} />
                 <Edges threshold={15} color="#3a4150" />
               </mesh>
@@ -488,7 +495,7 @@ function CabinetMesh({
       )}
       {selected && (
         <mesh>
-          <boxGeometry args={[w + 1.2, h + 1.2, d + 1.2]} />
+          <boxGeometry args={[localW + 1.2, h + 1.2, localD + 1.2]} />
           <meshBasicMaterial color="#2C327C" wireframe />
         </mesh>
       )}

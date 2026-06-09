@@ -1,5 +1,6 @@
-// Built-in appliance presets — NOT priced (not OPPEIN product). Show as labelled
-// blocks for spatial layout so the plan reads correctly.
+// Built-in appliance presets — NOT priced (not a catalog product). Show as
+// labelled blocks for spatial layout so the plan reads correctly. Width / depth /
+// height are all editable in the Inspector after placement.
 
 export type AppliancePreset = {
   id: string;
@@ -35,6 +36,33 @@ export const APPLIANCES: AppliancePreset[] = [
     label: "Fridge 30\"",
     width: 30,
     depth: 30,
+    height: 70,
+    mountZ: 0,
+    color: "#cfd6e0",
+  },
+  {
+    id: "fridge-cd-36",
+    label: "Counter-Depth Fridge 36\"",
+    width: 36,
+    depth: 25,
+    height: 70,
+    mountZ: 0,
+    color: "#cfd6e0",
+  },
+  {
+    id: "fridge-cd-33",
+    label: "Counter-Depth Fridge 33\"",
+    width: 33,
+    depth: 25,
+    height: 70,
+    mountZ: 0,
+    color: "#cfd6e0",
+  },
+  {
+    id: "fridge-cd-30",
+    label: "Counter-Depth Fridge 30\"",
+    width: 30,
+    depth: 25,
     height: 70,
     mountZ: 0,
     color: "#cfd6e0",

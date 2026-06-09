@@ -176,14 +176,52 @@ export function Inspector() {
           </div>
         )}
         {isAppliance && (
-          <div className="inspector-row full">
-            <Field label="Label">
-              <input
-                value={item.label ?? ""}
-                onChange={(e) => patch({ label: e.target.value })}
-              />
-            </Field>
-          </div>
+          <>
+            <div className="inspector-row full">
+              <Field label="Label">
+                <input
+                  value={item.label ?? ""}
+                  onChange={(e) => patch({ label: e.target.value })}
+                />
+              </Field>
+            </div>
+            <div className="inspector-row">
+              <Field label="Width (in)">
+                <input
+                  type="number"
+                  step={0.125}
+                  value={Math.round(item.width * 1000) / 1000}
+                  onChange={(e) => patch({ width: +e.target.value })}
+                />
+              </Field>
+              <Field label="Depth (in)">
+                <input
+                  type="number"
+                  step={0.125}
+                  value={Math.round(item.depth * 1000) / 1000}
+                  onChange={(e) => patch({ depth: +e.target.value })}
+                />
+              </Field>
+            </div>
+            <div className="inspector-row">
+              <Field label="Height (in)">
+                <input
+                  type="number"
+                  step={0.125}
+                  value={Math.round(item.height * 1000) / 1000}
+                  onChange={(e) => patch({ height: +e.target.value })}
+                />
+              </Field>
+              <Field label="Mount Z (in)">
+                <input
+                  type="number"
+                  step={0.125}
+                  value={Math.round((item.mountZ ?? 0) * 1000) / 1000}
+                  onChange={(e) => patch({ mountZ: +e.target.value })}
+                />
+              </Field>
+            </div>
+          </>
         )}
         {isPanel && (
           <div className="inspector-row full">
