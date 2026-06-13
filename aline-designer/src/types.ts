@@ -62,6 +62,10 @@ export type Item = {
   swing?: "in" | "out";
   sillHeight?: number;
   label?: string;
+  // Per-item finish override for two-tone designs (e.g. green island in an
+  // otherwise white kitchen). When unset, falls back to settings.upperFinishCode
+  // for wall-mounted items, otherwise settings.finishCode.
+  finishCode?: string;
   // schedule-only items (panels/fillers/hardware) carry qty rather than geometry placement
   qty?: number;
   scheduleOnly?: boolean;
@@ -84,6 +88,10 @@ export type ProjectMeta = {
 
 export type ProjectSettings = {
   finishCode: string;
+  // Optional separate finish for wall-mounted items so two-tone designs
+  // (e.g. natural-wood uppers over green base) can be set once at the
+  // project level instead of per cabinet. Unset = uppers use finishCode.
+  upperFinishCode?: string;
   boxMaterial: BoxMaterial;
   wallHeight: number;
   wallCabinetAFF: number;

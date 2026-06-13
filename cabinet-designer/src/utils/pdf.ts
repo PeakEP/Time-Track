@@ -341,12 +341,7 @@ function drawSchedule(
   pageW: number,
   pricing: boolean,
 ): void {
-  const lines = computeLines(
-    project.items,
-    catalog,
-    project.settings.finishCode,
-    project.settings.boxMaterial,
-  );
+  const lines = computeLines(project.items, catalog, project.settings);
   const totals = computeTotals(lines, catalog, project.settings);
 
   const headStyles = { fillColor: BRAND.indigo, textColor: "#ffffff", fontStyle: "bold" as const };

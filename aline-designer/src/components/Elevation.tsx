@@ -5,6 +5,7 @@ import { edges } from "../utils/roomPresets";
 import { finishColor } from "../utils/finishColors";
 import { assignItemsToWalls, type ElevBox } from "../utils/elevation";
 import { captureSvgToPng, buildCaptureFilename } from "../utils/capture";
+import { effectiveFinishCode } from "../utils/pricing";
 
 type Proj = ElevBox;
 
@@ -26,7 +27,6 @@ export function Elevation() {
   const wallIndex = ((frontWall % wallCount) + wallCount) % wallCount;
   const wall = ee[wallIndex];
 
-  const doorHex = finishColor(settings.finishCode);
   const wallHeight = settings.wallHeight;
 
   // wall axis for nudging the selected item along the wall / vertically
@@ -111,7 +111,7 @@ export function Elevation() {
         len={len}
         wallHeight={wallHeight}
         projected={projected}
-        doorHex={doorHex}
+        settings={settings}
         counterHeight={settings.counterHeight}
         wallCabinetAFF={settings.wallCabinetAFF}
         selectedId={selectedId}
@@ -129,7 +129,7 @@ function ElevCanvas({
   len,
   wallHeight,
   projected,
-  doorHex,
+  settings,
   counterHeight,
   wallCabinetAFF,
   selectedId,
@@ -142,7 +142,7 @@ function ElevCanvas({
   len: number;
   wallHeight: number;
   projected: Proj[];
-  doorHex: string;
+  settings: import("../types").ProjectSettings;
   counterHeight: number;
   wallCabinetAFF: number;
   selectedId: string | null;
@@ -211,13 +211,16 @@ function ElevCanvas({
             const isOpening = it.kind === "window" || it.kind === "door";
             const selected = it.id === selectedId;
             const product = catalog && it.sku ? catalog.products.find((pr) => pr.sku === it.sku) : null;
+            // Per-item finish so two-tone designs colour each cabinet/panel against
+            // its own finish (e.g. green island bases under white uppers).
+            const itemDoorHex = finishColor(effectiveFinishCode(it, catalog, settings));
             const fill = isOpening
               ? it.kind === "window"
                 ? "#cfe6f1"
                 : "#ffffff"
               : isAppliance
                 ? "#cfd6e0"
-                : doorHex;
+                : itemDoorHex;
             return (
               <g
                 key={it.id}

@@ -36,12 +36,7 @@ export function SchedulePanel() {
 
   const lines = useMemo(() => {
     if (!catalog) return [];
-    return computeLines(
-      project.items,
-      catalog,
-      project.settings.finishCode,
-      project.settings.boxMaterial,
-    );
+    return computeLines(project.items, catalog, project.settings);
   }, [catalog, project.items, project.settings.finishCode, project.settings.boxMaterial]);
 
   const totals = useMemo(() => {

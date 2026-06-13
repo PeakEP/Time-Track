@@ -19,6 +19,7 @@ import {
 import { snapToNearestWall, snapToAdjacent } from "../utils/snapping";
 import { findOverlappingIds } from "../utils/overlaps";
 import { finishColor } from "../utils/finishColors";
+import { effectiveFinishCode } from "../utils/pricing";
 
 const SNAP_IN = 3;
 const ATTACH_IN = 8; // auto-attach when an edge is within this of a neighbour
@@ -719,7 +720,7 @@ function ItemNode({
 
   const isAppliance = item.kind === "appliance";
   const isPanelPiece = item.kind === "panel" || item.kind === "filler";
-  const doorHex = finishColor(settings.finishCode);
+  const doorHex = finishColor(effectiveFinishCode(item, catalog, settings));
   const fill = overlap
     ? "#fde8e6"
     : isAppliance

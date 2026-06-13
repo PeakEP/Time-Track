@@ -90,12 +90,7 @@ export function SettingsBar() {
 
   function onExportCsv() {
     if (!catalog) return;
-    const lines = computeLines(
-      project.items,
-      catalog,
-      project.settings.finishCode,
-      project.settings.boxMaterial,
-    );
+    const lines = computeLines(project.items, catalog, project.settings);
     const rows = lines.map((l, i) => {
       const base: Record<string, string | number> = {
         "#": i + 1,
@@ -425,11 +420,27 @@ function SettingsDialog({ onClose }: { onClose: () => void }) {
       </Field>
 
       <h4>Finish & box</h4>
-      <Field label="Finish">
+      <Field label="Finish (bases + default)">
         <select
           value={settings.finishCode}
           onChange={(e) => patchSettings({ finishCode: e.target.value })}
         >
+          {catalog?.finishes.map((f) => (
+            <option key={f.code} value={f.code}>
+              {f.code} — {f.name} ({f.tierName})
+            </option>
+          ))}
+        </select>
+      </Field>
+      <Field label="Upper finish (two-tone, optional)">
+        <select
+          value={settings.upperFinishCode ?? ""}
+          onChange={(e) =>
+            patchSettings({ upperFinishCode: e.target.value || undefined })
+          }
+          title="When set, every wall-mounted cabinet uses this finish instead of the project finish. Per-item overrides in the Inspector still win."
+        >
+          <option value="">(same as project finish)</option>
           {catalog?.finishes.map((f) => (
             <option key={f.code} value={f.code}>
               {f.code} — {f.name} ({f.tierName})

@@ -1,4 +1,28 @@
 import type { BoxMaterial, Catalog, Finish, Item, Product, ProjectSettings, TierKey } from "../types";
+import { isWallMounted } from "./placement";
+
+/**
+ * Resolve which finish code applies to a given item — used everywhere a
+ * cabinet's colour / price tier needs to be known. Honours, in order:
+ *   1. item-level override (set in the Inspector for two-tone accents),
+ *   2. project-level upper finish (for the classic base-vs-upper two-tone),
+ *   3. project-level primary finish.
+ *
+ * For items without an SKU (free appliances, openings) just returns the
+ * primary — they're not priced from the catalog anyway.
+ */
+export function effectiveFinishCode(
+  item: Item,
+  catalog: Catalog | null,
+  settings: { finishCode: string; upperFinishCode?: string },
+): string {
+  if (item.finishCode) return item.finishCode;
+  if (settings.upperFinishCode && catalog) {
+    const product = item.sku ? findProduct(catalog, item.sku) : null;
+    if (product && isWallMounted(product)) return settings.upperFinishCode;
+  }
+  return settings.finishCode;
+}
 
 export type LineCost = {
   item: Item;
@@ -51,15 +75,18 @@ export function unitListPrice(
 export function computeLines(
   items: Item[],
   catalog: Catalog,
-  finishCode: string,
-  boxMaterial: BoxMaterial,
+  settings: { finishCode: string; upperFinishCode?: string; boxMaterial: BoxMaterial },
 ): LineCost[] {
-  const tier = getTierForFinish(catalog, finishCode);
   return items
     .filter((i) => i.kind !== "window" && i.kind !== "door" && i.kind !== "appliance")
     .map((item) => {
       const product = findProduct(catalog, item.sku);
-      const unit = unitListPrice(product, tier, boxMaterial);
+      // Per-item tier so two-tone designs (item override or per-mount-class
+      // upper finish) price each cabinet against its OWN finish, not just the
+      // project default.
+      const finishForItem = effectiveFinishCode(item, catalog, settings);
+      const tier = getTierForFinish(catalog, finishForItem);
+      const unit = unitListPrice(product, tier, settings.boxMaterial);
       const qty = item.qty ?? 1;
       const available = unit !== null;
       return {
