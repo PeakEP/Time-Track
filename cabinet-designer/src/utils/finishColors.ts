@@ -1,20 +1,28 @@
 // Approximate display hex colors for OPPEIN finish codes (3D shading only).
 const FINISH_HEX: Record<string, string> = {
-  MPW: "#f8f8f7", // Pure White
+  // Essential
+  MPW: "#f8f8f7", // Flat Pure White
   MNW: "#c8a875", // Natural Wood
   MSO: "#6b4a2b", // Smoked Oak
+  // Essential Plus
   SPW: "#f5f6f6", // Shaker Pure White
-  KNW: "#d8c69b", // Edge White / light wood
+  // Trend
+  KKNW: "#d8c69b", // Skeleton Natural Wood
+  KNW: "#d8c69b", // legacy alias — old saved projects still resolve
+  // Premium Shaker
   WSS: "#f2f3f3", // White Shaker
   GSS: "#8c9298", // Gray Shaker
   BSS: "#274066", // Blue Shaker (navy)
-  PGW: "#c2c0ba", // Gray White
+  // Urban Select
   PMW: "#f7f8f8", // Matte White
+  PGW: "#f1f3f4", // Glossy White
+  // Signature Prestige
   PMA: "#b2a691", // Matte Ash
   PMB: "#1c1c1c", // Matte Black
-  PGG: "#7a7d80", // Gloss Gray
-  PMG: "#8d8c89", // Matte Gray
-  PGA: "#a89a82", // Gloss Ash
+  PMG: "#8d8c89", // Matte Grey
+  PGA: "#a89a82", // Glossy Ash
+  PGG: "#7a7d80", // Glossy Gray
+  // Elite
   SSW: "#f4f5f5", // Slim Shaker White
 };
 

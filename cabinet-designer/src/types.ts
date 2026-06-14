@@ -10,6 +10,10 @@ export type Finish = {
   name: string;
   tier: TierKey;
   tierName: string;
+  // Optional sub-grouping (e.g. "Urban Select", "Signature Prestige") for
+  // catalogs that split a tier into multiple display series. Falls back to
+  // tierName when absent.
+  series?: string;
 };
 
 export type Product = {
