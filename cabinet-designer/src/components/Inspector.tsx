@@ -15,6 +15,7 @@ export function Inspector() {
   const duplicateItem = useStore((s) => s.duplicateItem);
   const select = useStore((s) => s.select);
   const settings = useStore((s) => s.project.settings);
+  const catalog = useStore((s) => s.catalog);
   const [pos, setPos] = useState<{ left: number; top: number } | null>(null);
   const dragRef = useRef<{ dx: number; dy: number } | null>(null);
 
@@ -130,6 +131,25 @@ export function Inspector() {
             />
           </Field>
         </div>
+        {!isOpening && catalog && catalog.finishes.length > 1 && (
+          <div className="inspector-row">
+            <Field label="Finish (this item)">
+              <select
+                value={item.finishCode ?? ""}
+                onChange={(e) => patch({ finishCode: e.target.value || undefined })}
+                title="Override the project finish for this item only (two-tone designs)"
+              >
+                <option value="">(use project finish)</option>
+                {catalog.finishes.map((f) => (
+                  <option key={f.code} value={f.code}>
+                    {f.name} · {f.tierName} ({f.code})
+                  </option>
+                ))}
+              </select>
+            </Field>
+            <span />
+          </div>
+        )}
         {!isOpening && (
           <div className="inspector-row">
             <Field label="Rotation">

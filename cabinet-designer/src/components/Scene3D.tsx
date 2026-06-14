@@ -10,6 +10,7 @@ import { bounds, edges, visibleWallSet } from "../utils/roomPresets";
 import { darken, finishColor } from "../utils/finishColors";
 import { generateCountertops } from "../utils/snapping";
 import { isCornerCabinet, isLazySusan, isWallDiagonal, diagonalPoints, snap } from "../utils/placement";
+import { effectiveFinishCode } from "../utils/pricing";
 import { captureCanvasToPng, buildCaptureFilename } from "../utils/capture";
 
 type OrbitRef = {
@@ -86,7 +87,6 @@ export function Scene3D() {
   const cameraDistance = dim * 1.4 + 120;
   const cameraTarget: [number, number, number] = [cx, settings.wallHeight / 3, cy];
 
-  const finishHex = finishColor(settings.finishCode);
   const counters = useMemo(
     () => generateCountertops(items, settings.counterHeight),
     [items, settings.counterHeight],
@@ -147,13 +147,16 @@ export function Scene3D() {
 
         {items.map((it) => {
           const prod = catalog?.products.find((p) => p.sku === it.sku) ?? null;
+          // Per-item finish so two-tone designs (item override or per-mount-class
+          // upper finish) colour each cabinet against its OWN finish.
+          const itemFinish = finishColor(effectiveFinishCode(it, catalog, settings));
           return (
             <CabinetMesh
               key={it.id}
               item={it}
               selected={it.id === selectedId}
               onSelect={() => select(it.id)}
-              finishHex={finishHex}
+              finishHex={itemFinish}
               corner={isCornerCabinet(prod)}
               lazySusan={isLazySusan(prod)}
               diagonal={isWallDiagonal(prod)}
