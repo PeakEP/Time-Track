@@ -21,99 +21,115 @@
   "finishes": [
     {
       "code": "MPW",
-      "name": "Pure White",
+      "name": "Flat Pure White",
       "tier": "essential",
-      "tierName": "Essential"
+      "tierName": "Essential",
+      "series": "Essential"
     },
     {
       "code": "MNW",
       "name": "Natural Wood",
       "tier": "essential",
-      "tierName": "Essential"
+      "tierName": "Essential",
+      "series": "Essential"
     },
     {
       "code": "MSO",
       "name": "Smoked Oak",
       "tier": "essential",
-      "tierName": "Essential"
+      "tierName": "Essential",
+      "series": "Essential"
     },
     {
       "code": "SPW",
       "name": "Shaker Pure White",
       "tier": "plus",
-      "tierName": "Essential Plus"
+      "tierName": "Essential Plus",
+      "series": "Essential Plus"
     },
     {
-      "code": "KNW",
-      "name": "Edge White",
+      "code": "KKNW",
+      "name": "Skeleton Natural Wood",
       "tier": "trend",
-      "tierName": "Trend/Edge"
+      "tierName": "Trend/Edge",
+      "series": "Trend"
     },
     {
       "code": "WSS",
       "name": "White Shaker",
       "tier": "premium",
-      "tierName": "Premium"
+      "tierName": "Premium",
+      "series": "Premium Shaker"
     },
     {
       "code": "GSS",
       "name": "Gray Shaker",
       "tier": "premium",
-      "tierName": "Premium"
+      "tierName": "Premium",
+      "series": "Premium Shaker"
     },
     {
       "code": "BSS",
       "name": "Blue Shaker",
       "tier": "premium",
-      "tierName": "Premium"
-    },
-    {
-      "code": "PGW",
-      "name": "Gray White",
-      "tier": "premium",
-      "tierName": "Premium"
+      "tierName": "Premium",
+      "series": "Premium Shaker"
     },
     {
       "code": "PMW",
       "name": "Matte White",
       "tier": "premium",
-      "tierName": "Premium"
+      "tierName": "Premium",
+      "series": "Urban Select"
+    },
+    {
+      "code": "PGW",
+      "name": "Glossy White",
+      "tier": "premium",
+      "tierName": "Premium",
+      "series": "Urban Select"
     },
     {
       "code": "PMA",
       "name": "Matte Ash",
       "tier": "premium",
-      "tierName": "Premium"
+      "tierName": "Premium",
+      "series": "Signature Prestige"
     },
     {
       "code": "PMB",
       "name": "Matte Black",
       "tier": "premium",
-      "tierName": "Premium"
-    },
-    {
-      "code": "PGG",
-      "name": "Gloss Gray",
-      "tier": "premium",
-      "tierName": "Premium"
+      "tierName": "Premium",
+      "series": "Signature Prestige"
     },
     {
       "code": "PMG",
-      "name": "Matte Gray",
+      "name": "Matte Grey",
       "tier": "premium",
-      "tierName": "Premium"
+      "tierName": "Premium",
+      "series": "Signature Prestige"
     },
     {
       "code": "PGA",
-      "name": "Gloss Ash",
+      "name": "Glossy Ash",
       "tier": "premium",
-      "tierName": "Premium"
+      "tierName": "Premium",
+      "series": "Signature Prestige"
+    },
+    {
+      "code": "PGG",
+      "name": "Glossy Gray",
+      "tier": "premium",
+      "tierName": "Premium",
+      "series": "Signature Prestige"
     },
     {
       "code": "SSW",
       "name": "Slim Shaker White",
       "tier": "elite",
-      "tierName": "Elite"
+      "tierName": "Elite",
+      "series": "Elite"
     }
   ],
   "products": [

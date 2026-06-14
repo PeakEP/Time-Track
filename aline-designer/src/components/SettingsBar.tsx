@@ -24,6 +24,7 @@ import { openProject, saveProject, exportScheduleCsv } from "../utils/persistenc
 import { exportProjectPdf } from "../utils/pdf";
 import { computeLines, formatCAD } from "../utils/pricing";
 import { makeId, itemDimsLabel } from "../utils/placement";
+import { renderFinishOptions } from "../utils/finishOptions";
 import { APPLIANCES } from "../data/appliances";
 import type { AppliancePreset } from "../data/appliances";
 import type { Item } from "../types";
@@ -425,11 +426,7 @@ function SettingsDialog({ onClose }: { onClose: () => void }) {
           value={settings.finishCode}
           onChange={(e) => patchSettings({ finishCode: e.target.value })}
         >
-          {catalog?.finishes.map((f) => (
-            <option key={f.code} value={f.code}>
-              {f.code} — {f.name} ({f.tierName})
-            </option>
-          ))}
+          {renderFinishOptions(catalog?.finishes ?? [])}
         </select>
       </Field>
       <Field label="Upper finish (two-tone, optional)">
@@ -441,11 +438,7 @@ function SettingsDialog({ onClose }: { onClose: () => void }) {
           title="When set, every wall-mounted cabinet uses this finish instead of the project finish. Per-item overrides in the Inspector still win."
         >
           <option value="">(same as project finish)</option>
-          {catalog?.finishes.map((f) => (
-            <option key={f.code} value={f.code}>
-              {f.code} — {f.name} ({f.tierName})
-            </option>
-          ))}
+          {renderFinishOptions(catalog?.finishes ?? [])}
         </select>
       </Field>
       <Field label="Box material">

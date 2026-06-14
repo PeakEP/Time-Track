@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { RotateCw, Copy, Trash2, X, GripHorizontal } from "lucide-react";
 import { useStore } from "../store";
 import type { Item, Rotation } from "../types";
+import { renderFinishOptions } from "../utils/finishOptions";
 
 /**
  * Floating inspector for the selected item — draggable by its header,
@@ -140,11 +141,7 @@ export function Inspector() {
                 title="Override the project finish for this item only (two-tone designs)"
               >
                 <option value="">(use project finish)</option>
-                {catalog.finishes.map((f) => (
-                  <option key={f.code} value={f.code}>
-                    {f.name} · {f.tierName} ({f.code})
-                  </option>
-                ))}
+                {renderFinishOptions(catalog.finishes)}
               </select>
             </Field>
             <span />
