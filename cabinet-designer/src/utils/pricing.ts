@@ -31,6 +31,17 @@ export type LineCost = {
   qty: number;
   lineList: number;
   available: boolean;
+  // Finish actually used for this line — honours per-item override and the
+  // project's upper finish. CSV/PDF exports show this rather than the project
+  // default so two-tone designs read correctly.
+  finishCode: string;
+  // Box material actually priced. Usually settings.boxMaterial, but for SKUs
+  // the catalog only sells in one box (e.g. OPPEIN 2DB drawer bases are
+  // PLY-only) this falls back to the available box so the line still has a
+  // price instead of showing NA.
+  boxMaterial: BoxMaterial;
+  // True when the box above is a forced fallback (caller can flag the line).
+  boxFallback: boolean;
 };
 
 export type PricingTotals = {
@@ -72,6 +83,26 @@ export function unitListPrice(
   return product.pb?.[tier] ?? null;
 }
 
+/**
+ * Like unitListPrice but, when the requested box has no price for this tier
+ * (catalog convention: "null tier/box = not offered in that combo"), tries
+ * the other box and reports the swap. Used by computeLines so PLY-only SKUs
+ * like OPPEIN 2DBxx drawer bases still price when the project default box is
+ * PB — otherwise the schedule shows N/A for items the catalog actually sells.
+ */
+function unitListPriceWithFallback(
+  product: Product | null,
+  tier: TierKey,
+  requestedBox: BoxMaterial,
+): { unit: number | null; usedBox: BoxMaterial; fallback: boolean } {
+  const first = unitListPrice(product, tier, requestedBox);
+  if (first != null) return { unit: first, usedBox: requestedBox, fallback: false };
+  const other: BoxMaterial = requestedBox === "PLY" ? "PB" : "PLY";
+  const second = unitListPrice(product, tier, other);
+  if (second != null) return { unit: second, usedBox: other, fallback: true };
+  return { unit: null, usedBox: requestedBox, fallback: false };
+}
+
 export function computeLines(
   items: Item[],
   catalog: Catalog,
@@ -86,7 +117,11 @@ export function computeLines(
       // project default.
       const finishForItem = effectiveFinishCode(item, catalog, settings);
       const tier = getTierForFinish(catalog, finishForItem);
-      const unit = unitListPrice(product, tier, settings.boxMaterial);
+      const { unit, usedBox, fallback } = unitListPriceWithFallback(
+        product,
+        tier,
+        settings.boxMaterial,
+      );
       const qty = item.qty ?? 1;
       const available = unit !== null;
       return {
@@ -96,6 +131,9 @@ export function computeLines(
         qty,
         lineList: (unit ?? 0) * qty,
         available,
+        finishCode: finishForItem,
+        boxMaterial: usedBox,
+        boxFallback: fallback,
       };
     });
 }
