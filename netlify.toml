@@ -21,6 +21,12 @@
   to = "/aline-designer/index.html"
   status = 200
 
+# Finish Selections (Robins Interiors & Designs) SPA fallback
+[[redirects]]
+  from = "/selections/*"
+  to = "/selections/index.html"
+  status = 200
+
 # Legacy Time Track aliases
 [[redirects]]
   from = "/home"
