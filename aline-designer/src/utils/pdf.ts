@@ -60,7 +60,7 @@ function drawTitleBlock(doc: jsPDF, project: Project, mode: Mode, pageW: number,
   doc.setTextColor("#ffffff");
   doc.setFont("helvetica", "bold");
   doc.setFontSize(16);
-  doc.text("JMRC — Cabinet Designer", 24, 24);
+  doc.text("JMRC — Aline Cabinet Designer", 24, 24);
   doc.setFontSize(11);
   doc.setFont("helvetica", "normal");
   doc.text(pageLabel, pageW - 24, 24, {
@@ -316,6 +316,9 @@ function drawOneElevation(
 
 function drawFootnote(doc: jsPDF, project: Project, catalog: Catalog, pricing: boolean, pageW: number, pageH: number): void {
   const finish = findFinish(catalog, project.settings.finishCode);
+  const upperFinish = project.settings.upperFinishCode
+    ? findFinish(catalog, project.settings.upperFinishCode)
+    : null;
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7);
   doc.setTextColor("#666");
@@ -325,8 +328,11 @@ function drawFootnote(doc: jsPDF, project: Project, catalog: Catalog, pricing: b
     24,
     y,
   );
+  const finishLabel = upperFinish
+    ? `Finish: bases ${finish?.name ?? project.settings.finishCode} · uppers ${upperFinish.name ?? project.settings.upperFinishCode}`
+    : `Finish: ${finish?.name ?? project.settings.finishCode}`;
   doc.text(
-    `Finish: ${finish?.name ?? project.settings.finishCode} · Box: ${project.settings.boxMaterial === "PLY" ? "Plywood" : "Particle Board"}. Dimensions nominal; verify field measurements before ordering.${pricing ? ` Pricing per ALINE ${catalog._meta.pricing_year ?? 2025} list.` : ""}`,
+    `${finishLabel} · Box: ${project.settings.boxMaterial === "PLY" ? "Plywood" : "Particle Board"}. Dimensions nominal; verify field measurements before ordering. * = SKU is single-box only at the supplier.${pricing ? ` Pricing per ALINE ${catalog._meta.pricing_year ?? 2025} list.` : ""}`,
     24,
     y + 10,
     { maxWidth: pageW - 48 },
@@ -346,8 +352,9 @@ function drawSchedule(
 
   const headStyles = { fillColor: BRAND.indigo, textColor: "#ffffff", fontStyle: "bold" as const };
 
-  // number of columns depends on mode + whether pricing is shown
-  const colCount = !pricing ? 5 : mode === "internal" ? 8 : 6;
+  // number of columns depends on mode + whether pricing is shown.
+  // +1 for the new Finish column.
+  const colCount = !pricing ? 6 : mode === "internal" ? 9 : 7;
 
   type Row = (string | number)[];
   const grouped = new Map<string, typeof lines>();
@@ -361,9 +368,12 @@ function drawSchedule(
   let n = 0;
   for (const [cat, ls] of grouped) {
     body.push([{ content: cat, colSpan: colCount, styles: { fillColor: "#eef1f7", fontStyle: "bold" } } as unknown as string]);
+    // Dedup by SKU + finish + box so two-tone designs show separate rows for
+    // the same SKU in different finishes (rather than merging and hiding the
+    // override). Box is in the key for the same reason on PLY-only SKUs.
     const counts = new Map<string, { sample: typeof ls[number]; qty: number }>();
     for (const l of ls) {
-      const key = `${l.item.sku}|${l.unitListPrice ?? "x"}`;
+      const key = `${l.item.sku}|${l.finishCode}|${l.boxMaterial}|${l.unitListPrice ?? "x"}`;
       const existing = counts.get(key);
       if (existing) existing.qty += l.qty;
       else counts.set(key, { sample: l, qty: l.qty });
@@ -374,10 +384,14 @@ function drawSchedule(
       const lineList = unitList * qty;
       const lineCost = lineList * (1 - catalog._meta.dealer_discount);
       const lineClient = lineCost * project.settings.markup;
+      const finishCell = sample.boxFallback
+        ? `${sample.finishCode} · ${sample.boxMaterial}*`
+        : `${sample.finishCode} · ${sample.boxMaterial}`;
       const base = [
         n,
         sample.item.sku ?? "",
         sample.product?.desc ?? "",
+        finishCell,
         itemDimsLabel(sample.item, sample.product),
         qty,
       ];
@@ -392,25 +406,33 @@ function drawSchedule(
   }
 
   const head: Row[] = !pricing
-    ? [["#", "SKU", "Description", "Dims", "Qty"]]
+    ? [["#", "SKU", "Description", "Finish · Box", "Dims", "Qty"]]
     : mode === "internal"
-      ? [["#", "SKU", "Description", "Dims", "Qty", "Unit List", "Line List", "JMRC Cost"]]
-      : [["#", "SKU", "Description", "Dims", "Qty", "Line Price"]];
+      ? [["#", "SKU", "Description", "Finish · Box", "Dims", "Qty", "Unit List", "Line List", "JMRC Cost"]]
+      : [["#", "SKU", "Description", "Finish · Box", "Dims", "Qty", "Line Price"]];
 
+  // Column indices after adding Finish · Box at column 3:
+  //   0=#  1=SKU  2=Description  3=Finish·Box  4=Dims  5=Qty  6+ pricing cols
   const columnStyles: Record<number, { halign?: "right"; cellWidth?: number }> = !pricing
-    ? { 0: { cellWidth: 28 }, 4: { halign: "right", cellWidth: 40 } }
+    ? {
+        0: { cellWidth: 28 },
+        3: { cellWidth: 70 },
+        5: { halign: "right", cellWidth: 40 },
+      }
     : mode === "internal"
       ? {
           0: { cellWidth: 24 },
-          4: { halign: "right", cellWidth: 36 },
-          5: { halign: "right", cellWidth: 70 },
-          6: { halign: "right", cellWidth: 70 },
-          7: { halign: "right", cellWidth: 70 },
+          3: { cellWidth: 70 },
+          5: { halign: "right", cellWidth: 36 },
+          6: { halign: "right", cellWidth: 64 },
+          7: { halign: "right", cellWidth: 64 },
+          8: { halign: "right", cellWidth: 64 },
         }
       : {
           0: { cellWidth: 28 },
-          4: { halign: "right", cellWidth: 40 },
-          5: { halign: "right", cellWidth: 90 },
+          3: { cellWidth: 70 },
+          5: { halign: "right", cellWidth: 40 },
+          6: { halign: "right", cellWidth: 80 },
         };
 
   let tablePage = 0;

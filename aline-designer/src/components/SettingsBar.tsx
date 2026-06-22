@@ -93,6 +93,13 @@ export function SettingsBar() {
     if (!catalog) return;
     const lines = computeLines(project.items, catalog, project.settings);
     const rows = lines.map((l, i) => {
+      // Resolve the finish *name* (not just the code) so the CSV is
+      // human-readable; honours per-item overrides and the upper-finish.
+      const finishCode = l.finishCode;
+      const finishName = catalog.finishes.find((f) => f.code === finishCode)?.name ?? finishCode;
+      // Tag PLY-only SKUs (e.g. 2DB drawer bases) so a PB project still shows
+      // the box that was actually priced.
+      const boxLabel = l.boxFallback ? `${l.boxMaterial} (only option)` : l.boxMaterial;
       const base: Record<string, string | number> = {
         "#": i + 1,
         SKU: l.item.sku ?? "",
@@ -100,8 +107,8 @@ export function SettingsBar() {
         Category: l.product?.cat ?? "",
         Dims: itemDimsLabel(l.item, l.product),
         Qty: l.qty,
-        Finish: project.settings.finishCode,
-        Box: project.settings.boxMaterial,
+        Finish: `${finishName} (${finishCode})`,
+        Box: boxLabel,
       };
       if (!showPricing) return base;
       return {
