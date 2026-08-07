@@ -844,10 +844,20 @@ function ItemNode({
           ⚠ overlap
         </text>
       )}
-      {/* Door face hint at front: a thin band in the finish colour */}
-      {!isPanelPiece && (
-        <rect x={0} y={h - 1.2} width={w} height={1.2} fill={doorHex} stroke="#00000022" strokeWidth={0.1} />
-      )}
+      {/* Door face hint at the FRONT edge of the cabinet, i.e. the edge that
+          faces the room interior. Depends on rotation:
+            0   → back at top wall,    front = bottom edge
+            90  → back at left wall,   front = right edge
+            180 → back at bottom wall, front = top edge
+            270 → back at right wall,  front = left edge */}
+      {!isPanelPiece && (() => {
+        const bandT = 1.2;
+        let bx = 0, by = h - bandT, bw = w, bh = bandT;
+        if (item.rotation === 90) { bx = w - bandT; by = 0; bw = bandT; bh = h; }
+        else if (item.rotation === 180) { bx = 0; by = 0; bw = w; bh = bandT; }
+        else if (item.rotation === 270) { bx = 0; by = 0; bw = bandT; bh = h; }
+        return <rect x={bx} y={by} width={bw} height={bh} fill={doorHex} stroke="#00000022" strokeWidth={0.1} />;
+      })()}
       {(() => {
         // Offset labels vertically by mount type so an upper over a base
         // doesn't collide: wall labels sit near the wall (back), base near front.
@@ -869,16 +879,19 @@ function ItemNode({
               {label}
             </text>
             <text x={w / 2} y={labelY + 2.5} textAnchor="middle" fontSize={1.9} fill="#4a5364" fontFamily="Inter">
-              {Math.round(item.width)}"{isAppliance ? " appl" : isWall ? " up" : ""}
+              {Math.round(w)}"{isAppliance ? " appl" : isWall ? " up" : ""}
             </text>
           </g>
         );
       })()}
       {selected && (
         <>
-          {/* width dim */}
+          {/* Dim labels reflect the on-screen rectangle — w along the top,
+              h down the left — so a rotated cabinet reads correctly (a 24"D
+              × 12"W base rotated onto a side wall shows 12" along the wall
+              and 24" into the room, not the catalog width/depth). */}
           <text x={w / 2} y={-1.5} textAnchor="middle" fontSize={2.4} fill="#2C327C" fontFamily="Inter" fontWeight={600}>
-            {Math.round(item.width)}"
+            {Math.round(w)}"
           </text>
           <text
             x={-1.5}
@@ -889,7 +902,7 @@ function ItemNode({
             fontFamily="Inter"
             fontWeight={600}
           >
-            {Math.round(item.depth)}"
+            {Math.round(h)}"
           </text>
         </>
       )}
