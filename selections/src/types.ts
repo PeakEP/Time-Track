@@ -7,13 +7,20 @@
 // An option is either included in the base package or a priced upgrade.
 export type PricingMode = "included" | "upgrade";
 
+// How an option's price is metered. "sqft" items are multiplied by an entered
+// area; "each" items are multiplied by a count (default 1).
+export type PriceUnit = "sqft" | "each";
+
 export type FinishOption = {
   id: string;
   name: string;
   description?: string;
   pricing: PricingMode;
-  // Upgrade cost (or allowance) in dollars. 0 when included in the base price.
+  // UNIT price in dollars (per sq ft or per each, per the category/option unit).
+  // 0 when included in the base price.
   price: number;
+  // Optional per-option unit override; otherwise the category's unit applies.
+  unit?: PriceUnit;
   // Product photo path (resolved under BASE_URL). When absent, `swatch` drives
   // a generated placeholder so the demo renders without real photography.
   image?: string;
@@ -27,6 +34,8 @@ export type Category = {
   description?: string;
   // When true, more than one option may be chosen (e.g. optional add-ons).
   multi?: boolean;
+  // Default pricing unit for this category's options ("each" when omitted).
+  unit?: PriceUnit;
   options: FinishOption[];
 };
 
@@ -67,8 +76,10 @@ export type Project = {
   basePrice: number;
   // categoryId -> selected optionId(s)
   selections: Record<string, string[]>;
-  // optionId -> overridden upgrade price (designer mode)
+  // optionId -> overridden UNIT price (designer mode)
   overrides: Record<string, number>;
+  // optionId -> quantity (sq ft for "sqft" units, count for "each")
+  quantities: Record<string, number>;
   discount: Discount;
 };
 

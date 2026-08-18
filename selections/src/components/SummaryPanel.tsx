@@ -35,8 +35,16 @@ export function SummaryPanel() {
           {lines.length === 0 && <li className="muted">No selections yet.</li>}
           {lines.map((l) => (
             <li key={`${l.category.id}:${l.option.id}`}>
-              <span>{l.option.name}</span>
-              <span className="num">{l.price > 0 ? formatCAD(l.price) : "—"}</span>
+              <span className="line-name">
+                {l.option.name}
+                {l.option.pricing === "upgrade" && l.unit === "sqft" && (
+                  <em className="qty-note">{l.quantity > 0 ? ` · ${l.quantity} sf` : " · enter sf"}</em>
+                )}
+                {l.option.pricing === "upgrade" && l.unit === "each" && l.quantity !== 1 && (
+                  <em className="qty-note">{` · ×${l.quantity}`}</em>
+                )}
+              </span>
+              <span className="num">{l.lineTotal > 0 ? formatCAD(l.lineTotal) : "—"}</span>
             </li>
           ))}
         </ul>

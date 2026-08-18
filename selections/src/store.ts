@@ -36,6 +36,7 @@ export function defaultProject(basePrice = 0): Project {
     basePrice,
     selections: {},
     overrides: {},
+    quantities: {},
     discount: defaultDiscount(),
   };
 }
@@ -64,6 +65,7 @@ type State = {
   setBasePrice: (n: number) => void;
   toggleOption: (categoryId: string, optionId: string, multi: boolean) => void;
   setOverride: (optionId: string, price: number | null, opts?: { snapshot?: boolean }) => void;
+  setQuantity: (optionId: string, qty: number | null, opts?: { snapshot?: boolean }) => void;
   patchDiscount: (d: Partial<Discount>, opts?: { snapshot?: boolean }) => void;
   loadProject: (p: Project) => void;
   resetProject: () => void;
@@ -135,6 +137,18 @@ export const useStore = create<State>((set, get) => ({
       };
     }),
 
+  setQuantity: (optionId, qty, opts) =>
+    set((s) => {
+      const quantities = { ...s.project.quantities };
+      if (qty === null || Number.isNaN(qty)) delete quantities[optionId];
+      else quantities[optionId] = Math.max(0, qty);
+      return {
+        project: { ...s.project, quantities },
+        past: opts?.snapshot === false ? s.past : pushHistory(s),
+        future: opts?.snapshot === false ? s.future : [],
+      };
+    }),
+
   patchDiscount: (d, opts) =>
     set((s) => ({
       project: { ...s.project, discount: { ...s.project.discount, ...d } },
@@ -142,7 +156,13 @@ export const useStore = create<State>((set, get) => ({
       future: opts?.snapshot === false ? s.future : [],
     })),
 
-  loadProject: (p) => set({ project: p, past: [], future: [] }),
+  // Normalize older files that predate `quantities`/`overrides`.
+  loadProject: (p) =>
+    set({
+      project: { ...p, overrides: p.overrides ?? {}, quantities: p.quantities ?? {} },
+      past: [],
+      future: [],
+    }),
 
   resetProject: () =>
     set((s) => ({

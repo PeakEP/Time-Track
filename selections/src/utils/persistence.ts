@@ -116,13 +116,20 @@ function csvField(v: string): string {
 
 export function exportScheduleCsv(lines: LineCost[], filename: string): void {
   const rows = [
-    ["Category", "Selection", "Type", "Price"],
-    ...lines.map((l) => [
-      l.category.name,
-      l.option.name,
-      l.option.pricing === "included" ? "Included" : "Upgrade",
-      l.option.pricing === "included" ? "" : formatCAD(l.price),
-    ]),
+    ["Category", "Selection", "Type", "Qty", "Unit Price", "Amount"],
+    ...lines.map((l) => {
+      const included = l.option.pricing === "included";
+      const qty = included ? "" : l.unit === "sqft" ? `${l.quantity} sf` : `${l.quantity}`;
+      const unitP = included ? "" : `${formatCAD(l.unitPrice)}${l.unit === "sqft" ? "/sf" : ""}`;
+      return [
+        l.category.name,
+        l.option.name,
+        included ? "Included" : "Upgrade",
+        qty,
+        unitP,
+        included ? "" : formatCAD(l.lineTotal),
+      ];
+    }),
   ];
   const csv = rows.map((r) => r.map((c) => csvField(String(c))).join(",")).join("\n");
   const blob = new Blob([csv], { type: "text/csv" });

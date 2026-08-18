@@ -352,6 +352,42 @@ h3 {
   border-radius: 6px;
   font-variant-numeric: tabular-nums;
 }
+.unit-suffix {
+  color: var(--text-muted);
+}
+
+.qty-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line-soft);
+}
+.qty {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+.qty input {
+  width: 68px;
+  padding: 5px 7px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.line-total {
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--indigo);
+}
+.qty-note {
+  font-style: normal;
+  color: var(--text-muted);
+}
 
 /* ===== Summary (right) ===== */
 .summary {

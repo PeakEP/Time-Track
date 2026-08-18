@@ -194,7 +194,8 @@
           "price": 3.4,
           "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/c4a65f7cf2cad19b57a629ed2544de94d30c4a6c/original.jpeg"
         }
-      ]
+      ],
+      "unit": "sqft"
     },
     {
       "id": "laminate-tidalcore",
@@ -296,7 +297,8 @@
           "price": 3.99,
           "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/b3805f65f21a2dba5c42d2fe856f3e491ebf9378/original.jpeg"
         }
-      ]
+      ],
+      "unit": "sqft"
     },
     {
       "id": "engineered-hardwood",
@@ -310,7 +312,8 @@
           "price": 7.49,
           "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/caa5b81842e9da0b2dfc9dfd6d154fb465da759b/original.png"
         }
-      ]
+      ],
+      "unit": "sqft"
     },
     {
       "id": "quartz-countertops",
@@ -620,7 +623,8 @@
           "pricing": "upgrade",
           "price": 118.12
         }
-      ]
+      ],
+      "unit": "sqft"
     },
     {
       "id": "butcher-block",
@@ -634,7 +638,8 @@
           "price": 293.99,
           "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/86664f08373c19372602d9692660059c126c1d53/original.png"
         }
-      ]
+      ],
+      "unit": "each"
     },
     {
       "id": "grout-colours",
@@ -1009,7 +1014,8 @@
           "pricing": "upgrade",
           "price": 26.35
         }
-      ]
+      ],
+      "unit": "each"
     },
     {
       "id": "cabinet-hardware",
@@ -1359,7 +1365,8 @@
           "price": 7.62,
           "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/1b52859057c8e6f937903b7389190a2dfd724dc0/original.jpeg"
         }
-      ]
+      ],
+      "unit": "each"
     },
     {
       "id": "interior-paint",
@@ -1445,7 +1452,8 @@
           "price": 304.95,
           "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/7aea3b3021cfa6f43e1df7748087582dfde7a8ff/original.png"
         }
-      ]
+      ],
+      "unit": "each"
     }
   ]
 }

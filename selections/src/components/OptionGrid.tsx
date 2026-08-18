@@ -1,6 +1,12 @@
 import { Check } from "lucide-react";
 import { useStore } from "../store";
-import { formatCAD } from "../utils/pricing";
+import {
+  defaultQuantity,
+  formatCAD,
+  formatUnitPrice,
+  resolveUnit,
+  unitPrice,
+} from "../utils/pricing";
 import { optionImage } from "../utils/swatch";
 import type { Category, FinishOption } from "../types";
 
@@ -29,15 +35,22 @@ export function OptionGrid() {
   );
 }
 
-// One selectable finish. Handles selection, price badge, and designer override.
+// One selectable finish. Handles selection, unit-aware pricing, quantity, and
+// the designer price override.
 function OptionCard({ category, option }: { category: Category; option: FinishOption }) {
   const selected = useStore((s) => (s.project.selections[category.id] ?? []).includes(option.id));
   const override = useStore((s) => s.project.overrides[option.id]);
+  const quantity = useStore((s) => s.project.quantities[option.id]);
   const designer = useStore((s) => s.mode === "designer");
   const toggleOption = useStore((s) => s.toggleOption);
   const setOverride = useStore((s) => s.setOverride);
+  const setQuantity = useStore((s) => s.setQuantity);
 
+  const unit = resolveUnit(category, option);
   const price = override ?? option.price;
+  const isUpgrade = option.pricing === "upgrade";
+  const qty = quantity ?? defaultQuantity(unit);
+  const lineTotal = isUpgrade ? price * qty : 0;
 
   return (
     <div className={`card ${selected ? "selected" : ""}`}>
@@ -55,22 +68,45 @@ function OptionCard({ category, option }: { category: Category; option: FinishOp
         {option.pricing === "included" ? (
           <span className="tag tag-included">Included</span>
         ) : (
-          <span className="tag tag-upgrade">+{formatCAD(price)}</span>
+          <span className="tag tag-upgrade">
+            {unit === "sqft" ? formatUnitPrice(price, unit) : `+${formatCAD(price)}`}
+          </span>
         )}
       </button>
 
       <div className="card-body">
         <strong>{option.name}</strong>
         {option.description && <p>{option.description}</p>}
-        {designer && option.pricing === "upgrade" && (
+
+        {selected && isUpgrade && (
+          <div className="qty-row">
+            <label className="qty">
+              {unit === "sqft" ? "Area (sq ft)" : "Qty"}
+              <input
+                type="number"
+                min={0}
+                step={unit === "sqft" ? 1 : 1}
+                value={quantity ?? (unit === "sqft" ? "" : 1)}
+                placeholder={unit === "sqft" ? "0" : "1"}
+                onChange={(e) =>
+                  setQuantity(option.id, e.target.value === "" ? null : Number(e.target.value))
+                }
+              />
+            </label>
+            <span className="line-total num">{formatCAD(lineTotal)}</span>
+          </div>
+        )}
+
+        {designer && isUpgrade && (
           <label className="override">
-            Override $
+            Unit $
             <input
               type="number"
               min={0}
               value={price}
               onChange={(e) => setOverride(option.id, e.target.value === "" ? null : Number(e.target.value))}
             />
+            {unit === "sqft" && <span className="unit-suffix">/sf</span>}
           </label>
         )}
       </div>

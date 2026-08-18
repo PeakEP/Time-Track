@@ -92,25 +92,34 @@ export async function exportSelectionsPdf(args: ExportArgs): Promise<void> {
   // Pre-render thumbnails.
   const thumbs = await Promise.all(lines.map((l) => toPng(optionImage(l.option))));
 
+  const qtyLabel = (l: LineCost) =>
+    l.option.pricing === "included" ? "—" : l.unit === "sqft" ? `${l.quantity} sf` : `×${l.quantity}`;
+  const unitLabel = (l: LineCost) =>
+    l.option.pricing === "included"
+      ? "—"
+      : `${formatCAD(l.unitPrice)}${l.unit === "sqft" ? "/sf" : ""}`;
+
   const body = lines.map((l) => [
     "",
     l.category.name,
     l.option.name,
-    l.option.pricing === "included" ? "Included" : "Upgrade",
-    l.option.pricing === "included" ? "—" : formatCAD(l.price),
+    l.option.pricing === "included" ? "Included" : qtyLabel(l),
+    unitLabel(l),
+    l.option.pricing === "included" ? "Incl." : formatCAD(l.lineTotal),
   ]);
 
   autoTable(doc, {
     startY: y + 10,
-    head: [["", "Category", "Selection", "Type", "Price"]],
+    head: [["", "Category", "Selection", "Qty", "Unit", "Amount"]],
     body,
     styles: { fontSize: 9, cellPadding: 4, valign: "middle" },
     headStyles: { fillColor: BRAND.indigo, textColor: "#ffffff" },
     columnStyles: {
-      0: { cellWidth: 56, minCellHeight: 42 },
-      1: { cellWidth: 110 },
-      3: { cellWidth: 64 },
-      4: { cellWidth: 72, halign: "right" },
+      0: { cellWidth: 52, minCellHeight: 42 },
+      1: { cellWidth: 92 },
+      3: { cellWidth: 46, halign: "right" },
+      4: { cellWidth: 60, halign: "right" },
+      5: { cellWidth: 62, halign: "right" },
     },
     didDrawCell: (data) => {
       if (data.section === "body" && data.column.index === 0) {
