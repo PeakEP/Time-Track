@@ -3820,6 +3820,1452 @@
         }
       ],
       "unit": "each"
+    },
+    {
+      "id": "plumbing-kitchen-sink",
+      "name": "Kitchen Sink",
+      "unit": "each",
+      "options": [
+        {
+          "id": "plumbing-kitchen-sink-kitchen-sink-robins-satin-stainless-33",
+          "name": "Kitchen Sink, Robins, Satin Stainless, 33\"",
+          "description": "Handmade satin stainless steel, 33\" x 22\", Includes drainer head, rack, bottom grid",
+          "pricing": "upgrade",
+          "price": 379.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/193d373bde5e18520a1e37045c7669faafc97ce0/original.png"
+        },
+        {
+          "id": "plumbing-kitchen-sink-sink-grille-eldorado-chrome",
+          "name": "Sink Grille, Eldorado, Chrome",
+          "description": "Designed for Eldorado kitchen sink, Heat & corrosion resistant, Rubber feet",
+          "pricing": "upgrade",
+          "price": 49.9,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/3cb57ed4739163d9e9222f33d506cf6d5f4d9def/original.png"
+        },
+        {
+          "id": "plumbing-kitchen-sink-kitchen-sink-eldorado-black-stainless-double-bowl-33",
+          "name": "Kitchen Sink, Eldorado, Black Stainless Double Bowl, 33\"",
+          "description": "304 SS 18G black stainless, Top mount or undermount, Double bowl, 36\" min cabinet, 1 faucet hole, Off-center drain, 15° corner radius, Strainer 3-5/8\" & template incl.",
+          "pricing": "upgrade",
+          "price": 549.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/2b07628460c9c1da2f2759274e7590ff4bf90a89/original.jpeg"
+        },
+        {
+          "id": "plumbing-kitchen-sink-kitchen-sink-era-top-mount-single-bowl-nickel-chrome-20",
+          "name": "Kitchen Sink, Era, Top Mount Single Bowl, Nickel Chrome, 20\"",
+          "description": "Top mount, 304 SS 20G nickel chrome 18/8, Single bowl, 20\" x 20.5\", 21\" min cabinet, 1 faucet hole, Off-center drain, Strainer 3-5/8\" & template incl.",
+          "pricing": "upgrade",
+          "price": 135.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/c3bce0aa4c1174e20523d391dfeaaec5e6d471ad/original.jpeg"
+        },
+        {
+          "id": "plumbing-kitchen-sink-sink-strainer-basket-black",
+          "name": "Sink Strainer, Basket, Black",
+          "description": "304 stainless steel, Leak-proof lid, Removable basket, Standard kitchen drain",
+          "pricing": "upgrade",
+          "price": 49.95,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/91acd8ef7ae9ab77871cdc6c0853f2cee9e92817/original.jpeg"
+        },
+        {
+          "id": "plumbing-kitchen-sink-kitchen-sink-robins-black-stainless-33",
+          "name": "Kitchen Sink, Robins, Black Stainless, 33\"",
+          "description": "Handmade black stainless steel, 33\" x 22\", Includes drainer head, rack, bottom grid",
+          "pricing": "upgrade",
+          "price": 399.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/daee437f5e2d3bd7af0a68ad403cbebc05a1635f/original.png"
+        },
+        {
+          "id": "plumbing-kitchen-sink-kitchen-sink-eldorado-nickel-chrome-33",
+          "name": "Kitchen Sink, Eldorado, Nickel Chrome, 33\"",
+          "description": "304 SS 18G nickel chrome 18/8, Top mount or undermount, 36\" min cabinet, 1 faucet hole, Strainer 3-5/8\" & template incl.",
+          "pricing": "upgrade",
+          "price": 549.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/1df54d2f78825f925eae1044c6f45420b0fd17c1/original.png"
+        },
+        {
+          "id": "plumbing-kitchen-sink-kitchen-sink-emir-top-mount-double-bowl-black-granite-33",
+          "name": "Kitchen Sink, Emir, Top Mount Double Bowl, Black Granite, 33\"",
+          "description": "Top mount, Double bowl, 80% natural granite, Matte black, Strainer & template incl.",
+          "pricing": "upgrade",
+          "price": 549.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/249c13e1edddd73b05a021b71cd1ce0cf8192614/original.jpeg"
+        },
+        {
+          "id": "plumbing-kitchen-sink-kitchen-sink-emilio-undermount-32-x19-2-bowls",
+          "name": "Kitchen Sink, Emilio, Undermount, 32\"x19\", 2 Bowls",
+          "pricing": "upgrade",
+          "price": 569.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/d87611b35e5c6c3a6b6b23a70dc150b6c7f53167/original.png"
+        },
+        {
+          "id": "plumbing-kitchen-sink-sink-grate-15-x-13-silver-center-hole",
+          "name": "Sink Grate, 15\" x 13\", Silver, Center Hole",
+          "pricing": "upgrade",
+          "price": 45.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/4226e0fd976cc432e7a9ea24d03b68e05caed7d0/original.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "plumbing-kitchen-faucet",
+      "name": "Kitchen Faucet",
+      "unit": "each",
+      "options": [
+        {
+          "id": "plumbing-kitchen-faucet-reverse-osmosis-faucet-kes-stainless-steel-black",
+          "name": "Reverse Osmosis Faucet, KES, Stainless Steel, Black",
+          "description": "Stainless steel, Reverse osmosis, 1/4\" & 3/8\" tubing connectors incl., 4.2\" threaded shank, 2.1\" base",
+          "pricing": "upgrade",
+          "price": 51.04,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/53d48519ceeffd9ac6ac4af0fbf4c255740084a0/original.png"
+        },
+        {
+          "id": "plumbing-kitchen-faucet-reverse-osmosis-faucet-kingston-brass-concord-oil-rubbed-bronze",
+          "name": "Reverse Osmosis Faucet, Kingston Brass Concord, Oil Rubbed Bronze",
+          "description": "Reverse osmosis tap, Single-hole, Oil rubbed bronze",
+          "pricing": "upgrade",
+          "price": 147.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/371837f3f07714919a1f44450eff5a5f87406cd8/original.png"
+        },
+        {
+          "id": "plumbing-kitchen-faucet-kitchen-faucet-moochi-black-stainless-gunmetal",
+          "name": "Kitchen Faucet, Moochi, Black Stainless Gunmetal",
+          "description": "Single-hole, Single-handle, Ceramic cartridge, Dual-spray pull-out, Nylon hose, 360° handshower",
+          "pricing": "upgrade",
+          "price": 399.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/20c6528bde87b1e74f58431221807442e4b52d04/original.jpeg"
+        },
+        {
+          "id": "plumbing-kitchen-faucet-kitchen-faucet-mica-matte-black-agua",
+          "name": "Kitchen Faucet, Mica, Matte Black, Agua",
+          "description": "Single-hole, Single-handle, Ceramic cartridge, Dual-spray pull-out, Nylon hose",
+          "pricing": "upgrade",
+          "price": 279.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/3def80de661d19f773dce0e97763a4cd409b1f6c/original.png"
+        },
+        {
+          "id": "plumbing-kitchen-faucet-kitchen-faucet-delta-pull-down-matte-black",
+          "name": "Kitchen Faucet, Delta, Pull-Down, Matte Black",
+          "description": "Pull-down, Single-hole, Matte black",
+          "pricing": "upgrade",
+          "price": 279.99,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/ec2ec03cf9fd66d8e9d8e72372e07286771425bc/original.png"
+        },
+        {
+          "id": "plumbing-kitchen-faucet-kitchen-faucet-monroe-pull-out-dual-spray",
+          "name": "Kitchen Faucet, Monroe, Pull Out, Dual Spray",
+          "description": "Single-hole, Single-handle, Ceramic cartridge, Dual-spray pull-out, Nylon hose, 360° handshower",
+          "pricing": "upgrade",
+          "price": 349.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/bb50ed82296f6650e8ed2dfc6305a4b5cb0b340b/original.jpeg"
+        },
+        {
+          "id": "plumbing-kitchen-faucet-kitchen-faucet-martinez-matte-black-dual-spray-agua",
+          "name": "Kitchen Faucet, Martinez, Matte Black, Dual Spray, Agua",
+          "pricing": "upgrade",
+          "price": 260.99,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/90dba4489ff13abbdf22a199c2a298344cd9b1e2/original.png"
+        },
+        {
+          "id": "plumbing-kitchen-faucet-kitchen-faucet-brushed-brass-gold-chief-style-agua",
+          "name": "Kitchen Faucet, Brushed Brass (Gold) Chief Style, Agua",
+          "pricing": "upgrade",
+          "price": 335.99,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/cd2ce5f0feabf51ad29185063ad1296f388a499d/original.png"
+        },
+        {
+          "id": "plumbing-kitchen-faucet-kitchen-faucet-monroe-ii-pull-out-faucet-dual-spray",
+          "name": "Kitchen Faucet, Monroe-II, Pull Out Faucet, Dual Spray",
+          "pricing": "upgrade",
+          "price": 259.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/1e774dea68f2a4b68b65764d53001654aace7578/original.png"
+        }
+      ]
+    },
+    {
+      "id": "plumbing-bath-sink",
+      "name": "Bathroom Sink",
+      "unit": "each",
+      "options": [
+        {
+          "id": "plumbing-bath-sink-vanity-sink-deer-valley-undermount-21",
+          "name": "Vanity Sink, Deer Valley, Undermount, 21\"",
+          "description": "Undermount, Vitreous china, With overflow, Rectangular, 21\" x 15\"",
+          "pricing": "upgrade",
+          "price": 159.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/003535f54f75976571e0c514df0c2332c2902d93/original.png"
+        },
+        {
+          "id": "plumbing-bath-sink-vanity-sink-vessel-falcon-black-solid-surface-24x16x6",
+          "name": "Vanity Sink, Vessel, Falcon, Black Solid Surface, 24x16x6",
+          "description": "Solid surface vessel sink, Above-counter or wall-mount, No overflow, 23-1/2\" L x 15-3/4\" W",
+          "pricing": "upgrade",
+          "price": 499.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/1e15e588d520d05fbfe81fc50bb4a1144e7d29f8/original.jpeg"
+        },
+        {
+          "id": "plumbing-bath-sink-vanity-sink-undermount-rectangular-white-porcelain-20x15",
+          "name": "Vanity Sink, Undermount, Rectangular, White Porcelain, 20x15",
+          "description": "Undermount, White porcelain, 20-3/8\" x 15-1/8\" outside, 18-1/8\" x 13\" inside, 7-5/8\" depth, 1-11/16\" drain, 24\" min cabinet, Drain not included",
+          "pricing": "upgrade",
+          "price": 95.12,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/e9e3970f63ab5e9f4024335d533e7669ef5d335c/original.png"
+        }
+      ]
+    },
+    {
+      "id": "plumbing-bath-faucet",
+      "name": "Bathroom Faucet",
+      "unit": "each",
+      "options": [
+        {
+          "id": "plumbing-bath-faucet-vanity-faucet-rico-square-gold",
+          "name": "Vanity Faucet, Rico, Square, Gold",
+          "description": "Solid brass, Single-hole, Single-handle, Ceramic cartridge, Pressure regulating, Square",
+          "pricing": "upgrade",
+          "price": 209.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/16cc4800f1ae81b7b306a32006fb979f5820a3af/original.png"
+        },
+        {
+          "id": "plumbing-bath-faucet-vanity-faucet-arvo-single-hole-matte-black",
+          "name": "Vanity Faucet, Arvo, Single Hole, Matte Black",
+          "description": "Single-hole, Single-handle, Drain assembly included, Matte black",
+          "pricing": "upgrade",
+          "price": 189.99,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/3c2766f9a2e23124cb6b782a5f55ac75a2e02f71/original.png"
+        },
+        {
+          "id": "plumbing-bath-faucet-shower-arm-head-round-matte-black-viega",
+          "name": "Shower Arm & Head, Round, Matte Black, Viega",
+          "pricing": "upgrade",
+          "price": 0.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/f53a8d2771c21724550b3597034591d19212244b/original.png"
+        },
+        {
+          "id": "plumbing-bath-faucet-vanity-faucet-rico-square-matte-black",
+          "name": "Vanity Faucet, Rico, Square, Matte Black",
+          "description": "Solid brass, Single-hole, Single-handle, Ceramic cartridge, Pressure regulating, Square",
+          "pricing": "upgrade",
+          "price": 199.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/aa8617aa1605a6691221c29be6c15652a42e94f1/original.png"
+        },
+        {
+          "id": "plumbing-bath-faucet-vanity-faucet-rosi-chrome",
+          "name": "Vanity Faucet, Rosi, Chrome",
+          "description": "Solid brass, Single-hole, Single-handle, Ceramic cartridge, 3/8\" supply",
+          "pricing": "upgrade",
+          "price": 149.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/56cfff11482ceef2b4f62d44051933debce03b03/original.jpeg"
+        },
+        {
+          "id": "plumbing-bath-faucet-vanity-faucet-renato-matte-black",
+          "name": "Vanity Faucet, Renato, Matte Black",
+          "description": "Solid brass, Single-hole, Single-handle, Ceramic cartridge, Pressure regulating",
+          "pricing": "upgrade",
+          "price": 269.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/afd74b60dcc40beaa6673d2fda726d98d75a64b8/original.jpeg"
+        },
+        {
+          "id": "plumbing-bath-faucet-vanity-faucet-rosi-brushed-gold",
+          "name": "Vanity Faucet, Rosi, Brushed Gold",
+          "description": "Solid brass, Single-hole, Single-handle, Ceramic cartridge, 3/8\" supply",
+          "pricing": "upgrade",
+          "price": 199.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/431708a538d47b9a4ba71b0fd02bb5b1ab716127/original.png"
+        },
+        {
+          "id": "plumbing-bath-faucet-tub-shower-faucet-delta-matte-black",
+          "name": "Tub/Shower Faucet, Delta, Matte Black",
+          "description": "Single-handle trim kit, Touch-clean shower head, Valve not included, T14464-BL",
+          "pricing": "upgrade",
+          "price": 360.95,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/0bc7986ad9645c4aa62305091331ee03e8d3cd0e/original.png"
+        },
+        {
+          "id": "plumbing-bath-faucet-vanity-faucet-rosi-matte-black",
+          "name": "Vanity Faucet, Rosi, Matte Black",
+          "description": "Solid brass, Single-hole, Single-handle, Ceramic cartridge, 3/8\" supply",
+          "pricing": "upgrade",
+          "price": 179.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/27a4cfe42d3dbdea7b77c833587efd0366e29356/original.png"
+        },
+        {
+          "id": "plumbing-bath-faucet-vanity-faucet-romero-3-hole-brushed-brass",
+          "name": "Vanity Faucet, Romero, 3-Hole, Brushed Brass",
+          "description": "Solid brass, 3-hole, 2-handle, Ceramic cartridge, 3/8\" or 9/16\" compression",
+          "pricing": "upgrade",
+          "price": 289.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/6ac39eee2fe8c45db4c304beefebf48ab8596a7f/original.jpeg"
+        },
+        {
+          "id": "plumbing-bath-faucet-trim-kit-vanni-round-matte-black",
+          "name": "Trim Kit, Vanni, Round, Matte Black",
+          "description": "Trim kit, Round, Matte black",
+          "pricing": "upgrade",
+          "price": 103.1,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/8dc8b10835a91b3bb5d7753a2c8b6ffbc58fc3ca/original.png"
+        },
+        {
+          "id": "plumbing-bath-faucet-vanity-faucet-vessel-matte-black-riviera",
+          "name": "Vanity Faucet, Vessel, Matte Black, Riviera",
+          "description": "Solid brass, Single-hole, Single-handle, Ceramic cartridge, 3/8\" supply, Vessel style",
+          "pricing": "upgrade",
+          "price": 229.99,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/a5ac85f65feede51773a69653c9538984c86ca35/original.png"
+        },
+        {
+          "id": "plumbing-bath-faucet-vanity-faucet-rico-square-chrome",
+          "name": "Vanity Faucet, Rico, Square, Chrome",
+          "pricing": "upgrade",
+          "price": 143.65,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/58644d875c1ce29dff9112c8aec15a0532a800dc/original.png"
+        },
+        {
+          "id": "plumbing-bath-faucet-vanity-faucet-renata-vessel-brushed-brass-black-un-handle",
+          "name": "Vanity Faucet, Renata, Vessel, Brushed Brass (Black Un Handle)",
+          "pricing": "upgrade",
+          "price": 275.99,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/aac771fe318ea909490de2e38a152508deda53c9/original.png"
+        },
+        {
+          "id": "plumbing-bath-faucet-vanity-faucet-renato-brushed-nickel-renato-bn",
+          "name": "Vanity Faucet, Renato, Brushed Nickel (RENATO-BN)",
+          "pricing": "upgrade",
+          "price": 269.0,
+          "unit": "each"
+        }
+      ]
+    },
+    {
+      "id": "plumbing-toilet",
+      "name": "Toilet",
+      "unit": "each",
+      "options": [
+        {
+          "id": "plumbing-toilet-toilet-one-piece-thor-white",
+          "name": "Toilet, One Piece, Thor, White",
+          "description": "One-piece, 16-5/16\" height, 12\" rough-in, Soft-close seat, Chrome flush button, 3-1/4\" flush valve",
+          "pricing": "upgrade",
+          "price": 424.15,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/f5972d7fae6a7aad16fe2c27f90640c1ab0dca17/original.jpeg"
+        },
+        {
+          "id": "plumbing-toilet-toilet-one-piece-tyrone-white",
+          "name": "Toilet, One Piece, Tyrone, White",
+          "description": "One-piece, 16-1/2\" (420mm) height, 12\" rough-in, Soft-close seat, Chrome flush button, 3-1/4\" flush valve",
+          "pricing": "upgrade",
+          "price": 695.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/3d9bf7f26fad2fc3feaf99aa061d21879385792d/original.png"
+        }
+      ]
+    },
+    {
+      "id": "plumbing-tub-shower",
+      "name": "Showers & Tubs",
+      "unit": "each",
+      "options": [
+        {
+          "id": "plumbing-tub-shower-shower-base-aurelia-linear-drain-white-32x60",
+          "name": "Shower Base, Aurelia, Linear Drain, White, 32x60",
+          "description": "Polyurethane resin & marble powder, Off-center linear drain, Alcove or corner install, Tiling flanges incl., 32\" x 60\"",
+          "pricing": "upgrade",
+          "price": 699.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/4f2478957e211a9d9c2231e7187b13f7eb7f67f7/original.png"
+        },
+        {
+          "id": "plumbing-tub-shower-tub-screen-vigo-meridian-framed-fixed-matte-black-34x62",
+          "name": "Tub Screen, Vigo Meridian, Framed Fixed, Matte Black, 34x62",
+          "pricing": "upgrade",
+          "price": 0.0,
+          "unit": "each"
+        },
+        {
+          "id": "plumbing-tub-shower-bathtub-surround-kit-schluter-kerdi-complete",
+          "name": "Bathtub Surround Kit, Schluter Kerdi, Complete",
+          "description": "75 sqft kit, Includes Kerdi 7M membrane, Kerdi-Band strip, KERDI-SEAL-PS pipe seal 3/4\", KERDI-SEAL-MV mixing valve seal 4-1/2\", Kerdi-Fix sealant",
+          "pricing": "upgrade",
+          "price": 313.28,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/6abd85c9da908978dfceb675b9fc0ba22a3a7c4e/original.png"
+        },
+        {
+          "id": "plumbing-tub-shower-drain-cover-linear-shower-matte-black",
+          "name": "Drain Cover, Linear Shower, Matte Black",
+          "description": "Stainless steel, 21-5/8\" x 4-5/8\"",
+          "pricing": "upgrade",
+          "price": 45.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/79785a358fec9940862235bf1090577036f2a0e8/original.jpeg"
+        },
+        {
+          "id": "plumbing-tub-shower-shower-base-aurelia-linear-drain-black-32x60",
+          "name": "Shower Base, Aurelia, Linear Drain, Black, 32x60",
+          "description": "Polyurethane resin & marble powder, Off-center linear drain, Alcove or corner install, Tiling flanges incl., 32\" x 60\"",
+          "pricing": "upgrade",
+          "price": 699.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/7b3dbaf52d71225c22988e50b16667e2db066a34/original.png"
+        },
+        {
+          "id": "plumbing-tub-shower-bathtub-brio-alcove-left-drain-60x30",
+          "name": "Bathtub, Brio, Alcove, Left Drain, 60x30",
+          "description": "Acrylic w/ fiberglass, Left drain, Push-style drain, 60\" alcove, Laser-cut overflow, Adjustable legs",
+          "pricing": "upgrade",
+          "price": 895.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/595ab6d97d52ea0a165c82411b4a0049e150c312/original.png"
+        },
+        {
+          "id": "plumbing-tub-shower-bathtub-bayo-freestanding-60",
+          "name": "Bathtub, Bayo, Freestanding, 60\"",
+          "description": "Acrylic w/ fiberglass, Center drain, 280L (74 gal), 14\" immersion, Pop-up drain incl., Adjustable legs, 58-7/8\" x 29-5/16\" x 23-1/8\"",
+          "pricing": "upgrade",
+          "price": 1599.99,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/0c5f43d4afc58d808ad201fafd826a304900e984/original.jpeg"
+        },
+        {
+          "id": "plumbing-tub-shower-shower-base-aleka-linear-drain-white-32x60",
+          "name": "Shower Base, Aleka, Linear Drain, White, 32x60",
+          "description": "Acrylic w/ fiberglass, Linear drain, Alcove or corner install, Reversible, Tiling flanges incl., 32\" x 60\"",
+          "pricing": "upgrade",
+          "price": 525.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/4ccc932e473b7c15c3211cc6d41e7fd1b2bf85a9/original.jpeg"
+        },
+        {
+          "id": "plumbing-tub-shower-bathtub-brio-alcove-right-drain-60x30",
+          "name": "Bathtub, Brio, Alcove, Right Drain, 60x30",
+          "description": "Acrylic w/ fiberglass, Right drain, Push-style drain, 60\" alcove, Laser-cut overflow, Adjustable legs",
+          "pricing": "upgrade",
+          "price": 895.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/b7957d1aa9ef4e3464cef181aef699349373540c/original.png"
+        },
+        {
+          "id": "plumbing-tub-shower-shower-door-return-accessory-kit-32-black",
+          "name": "Shower Door Return Accessory Kit, 32\", Black",
+          "pricing": "upgrade",
+          "price": 100.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/6511274df11749dc34bb1bb98d34f6dc0f9a54fc/original.jpeg"
+        },
+        {
+          "id": "plumbing-tub-shower-shower-door-return-32-black",
+          "name": "Shower Door Return, 32\", Black",
+          "description": "Shower Door Return Accessory Kit, Black, 32\"",
+          "pricing": "upgrade",
+          "price": 100.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/a75d7a555e4e91a0eb9b2a2a5ff2e9e3342ed453/original.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "plumbing-shower-door",
+      "name": "Shower Doors",
+      "unit": "each",
+      "options": [
+        {
+          "id": "plumbing-shower-door-bath-panel-frameless-single-fixed-matte-black-20x58",
+          "name": "Bath Panel, Frameless, Single Fixed, Matte Black, 20x58",
+          "description": "Frameless, Single fixed, 20\" x 58.25\"",
+          "pricing": "upgrade",
+          "price": 295.92,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/5b346b5553df30a3855696ab67a78f0de03f5f06/original.png"
+        },
+        {
+          "id": "plumbing-shower-door-tub-screen-vigo-meridian-framed-fixed-matte-black-34x62",
+          "name": "Tub Screen, Vigo Meridian, Framed Fixed, Matte Black, 34x62",
+          "description": "Framed fixed, 3/8\" tempered glass, Matte black, 34\" W x 62\" H",
+          "pricing": "upgrade",
+          "price": 536.48,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/4f72587c47e88c8e04947982c3f52d491773706c/original.png"
+        },
+        {
+          "id": "plumbing-shower-door-shower-door-60-technoform-inspiration-frameless-clear-w-black-trim",
+          "name": "Shower Door, 60\", Technoform Inspiration, Frameless, Clear w/ Black Trim",
+          "pricing": "upgrade",
+          "price": 0.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/4a70f37f75cfc32063334300eacf0b7c61932121/original.png"
+        },
+        {
+          "id": "plumbing-shower-door-shower-door-60-matte-black-agua",
+          "name": "Shower Door, 60\", Matte Black, Agua",
+          "description": "8mm tempered glass, Stainless steel construction, Aquapel glass treatment, 60\" W x 78-3/4\" H",
+          "pricing": "upgrade",
+          "price": 1075.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/926b687212f350604ebe47e830a2798be0275476/original.jpeg"
+        },
+        {
+          "id": "plumbing-shower-door-shower-door-56-60-x-58-semi-frameless-double-sliding-clear",
+          "name": "Shower Door, 56\" - 60\" x 58, Semi-Frameless Double Sliding, Clear",
+          "description": "Semi-frameless double sliding, Clear glass, Mounting hardware, towel bar, 2 handles incl., 56\"-60\" W x 58\" H",
+          "pricing": "upgrade",
+          "price": 699.99,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/4adabbcd1115e4cd69187270889dfef9bcee4ace/original.png"
+        },
+        {
+          "id": "plumbing-shower-door-shower-door-60-gold",
+          "name": "Shower Door, 60\", Gold",
+          "pricing": "upgrade",
+          "price": 1075.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/9a32666553e4ea53b749d04d9ebed0b9d5efe48c/original.png"
+        },
+        {
+          "id": "plumbing-shower-door-shower-door-48-matte-black",
+          "name": "Shower Door, 48\", Matte Black",
+          "pricing": "upgrade",
+          "price": 1025.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/920bdabd4560a15dbfd1fb93abf078e68248a655/original.png"
+        },
+        {
+          "id": "plumbing-shower-door-shower-door-60-frameless-technoform-matte-black-trim-with-clear-glass",
+          "name": "Shower Door, 60\", Frameless, Technoform, Matte Black Trim with Clear Glass",
+          "description": "TECHNOFORM Inspiration Frameless Shower Door with Clear Glass & Black Trim - 60\"",
+          "pricing": "upgrade",
+          "price": 1079.99,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/a4a53b2b639d4f3100998594a640e7508e4233cf/original.png"
+        },
+        {
+          "id": "plumbing-shower-door-shower-door-48-w-matte-black-agua",
+          "name": "Shower Door, 48\"W, Matte Black, Agua",
+          "pricing": "upgrade",
+          "price": 1025.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/920bdabd4560a15dbfd1fb93abf078e68248a655/original.png"
+        }
+      ]
+    },
+    {
+      "id": "plumbing-shower-faucet",
+      "name": "Shower & Tub Faucets",
+      "unit": "each",
+      "options": [
+        {
+          "id": "plumbing-shower-faucet-tub-shower-faucet-nicoli-round-matte-black-delta",
+          "name": "Tub/Shower Faucet, Nicoli, Round, Matte Black, Delta",
+          "description": "Single-function trim kit, H2Okinetic shower head, Valve included, Matte black",
+          "pricing": "upgrade",
+          "price": 314.14,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/c2b7395fb2d5723417b2c53736f51f1a7a93154b/original.png"
+        },
+        {
+          "id": "plumbing-shower-faucet-tub-shower-faucet-raincan-square",
+          "name": "Tub/Shower Faucet, Raincan, Square",
+          "description": "Rain shower head with handheld spray, Square",
+          "pricing": "upgrade",
+          "price": 899.99,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/c7048dd8b39c947c5e4d35236dd47ebbf0290247/original.jpeg"
+        },
+        {
+          "id": "plumbing-shower-faucet-hand-shower-viviane-round-matte-black-on-rail",
+          "name": "Hand Shower, Viviane, Round, Matte Black, On Rail",
+          "description": "Round handshower with hose, 1.75 GPM at 60 PSI, Requires Violetta connecting elbow",
+          "pricing": "upgrade",
+          "price": 159.99,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/ec613eacb6cf4518d93512da28f73ad9c05530bf/original.png"
+        },
+        {
+          "id": "plumbing-shower-faucet-tub-shower-faucet-vienna-matte-black",
+          "name": "Tub/Shower Faucet, Vienna, Matte Black",
+          "description": "5-piece kit (Viega, Vanna, Violetta, Vanni, Viviane)",
+          "pricing": "upgrade",
+          "price": 749.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/c689ebe5ae1f256419aa6016a957b0e500a77814/original.png"
+        },
+        {
+          "id": "plumbing-shower-faucet-tub-shower-faucet-delta-arvo-single-function-matte-black",
+          "name": "Tub/Shower Faucet, Delta Arvo, Single Function, Matte Black",
+          "description": "Single-function trim kit, Shower head & valve incl., Matte black",
+          "pricing": "upgrade",
+          "price": 280.38,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/c5c2b6c56ab523e5c8d3d3e8407b5c21549728f4/original.jpeg"
+        },
+        {
+          "id": "plumbing-shower-faucet-shower-faucet-delta-arvo-4-spray-hand-held-matte-black",
+          "name": "Shower Faucet, Delta Arvo, 4-Spray Hand Held, Matte Black",
+          "description": "4-spray, Dual hand-held shower head with hose, Matte black, Valve included",
+          "pricing": "upgrade",
+          "price": 359.88,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/947a36118dbb8e2f0c2fe2eb6b63e6230724c841/original.png"
+        },
+        {
+          "id": "plumbing-shower-faucet-tub-shower-faucet-vitario-rain-shower-kit-matte-black",
+          "name": "Tub/Shower Faucet, Vitario, Rain Shower Kit, Matte Black",
+          "description": "Stainless steel, 8\" square shower head, 15\" arm, 24\" rail, Single-function rectangular hand shower w/ 59\" SS hose, Built as kit (valve & arm boxes separate), Requires Vanna 2-NPT, Vincent-2-BK, Verano-BK, Vione-BK",
+          "pricing": "upgrade",
+          "price": 649.0,
+          "unit": "each"
+        },
+        {
+          "id": "plumbing-shower-faucet-tub-shower-faucet-delta-modern-14-matte-black",
+          "name": "Tub/Shower Faucet, Delta Modern 14, Matte Black",
+          "description": "Single-handle trim kit, Touch-clean shower head, Matte black, T144339-BL",
+          "pricing": "upgrade",
+          "price": 479.99,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/817b2f94c56cc5ecc83a9ecfe4f3f2e0a5316dd2/original.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "lighting",
+      "name": "Lighting",
+      "unit": "each",
+      "options": [
+        {
+          "id": "lighting-chandelier-aged-brass-9-light-opal-glass",
+          "name": "Chandelier, Aged Brass, 9 Light, Opal Glass",
+          "description": "Chandelier — Dainolite, 9 x G9 25W (not incl.), Aged brass metal, Opal glass, Dimmable",
+          "pricing": "upgrade",
+          "price": 671.55,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/615aa7cb648c9ad2ecfb1a956a82d8e3252b4163/original.png"
+        },
+        {
+          "id": "lighting-chandelier-matte-black-6-light",
+          "name": "Chandelier, Matte Black, 6 Light",
+          "description": "Chandelier — Dainolite, 6 x E12 60W (not incl.), Matte black metal, Dimmable",
+          "pricing": "upgrade",
+          "price": 297.85,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/3796ab52074d16a364bcde3a21f442443741c6f4/original.png"
+        },
+        {
+          "id": "lighting-pendant-bysshe-black-with-dark-bronze-glass-1-light",
+          "name": "Pendant, Bysshe, Black with Dark Bronze Glass, 1 Light",
+          "description": "Pendant — Black base, Dark bronze glass shade",
+          "pricing": "upgrade",
+          "price": 342.05,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/bb26a49fa127a388e9d2c4abcf3afdcf164f224f/original.jpeg"
+        },
+        {
+          "id": "lighting-pendant-matte-black-1-light-clear-glass-ptl-101p",
+          "name": "Pendant, Matte Black, 1 Light, Clear Glass (PTL-101P)",
+          "description": "Pendant — Dainolite, 1 x E26 100W (not incl.), Matte black metal, Clear glass, Dimmable",
+          "pricing": "upgrade",
+          "price": 136.9,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/789bdc7bac2a468e24c3f45f21f828246c2e8caf/original.png"
+        },
+        {
+          "id": "lighting-pendant-black-with-glass-shade",
+          "name": "Pendant, Black with Glass Shade",
+          "description": "Pendant — Black metal, Glass shade, E26 max 60W (not incl.), Adjustable cord (max 59\"/5ft)",
+          "pricing": "upgrade",
+          "price": 149.99,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/31b0117155e4a666402573ebc7782872e2d0a834/original.jpeg"
+        },
+        {
+          "id": "lighting-pendant-matte-black-with-gold-accent-1-light",
+          "name": "Pendant, Matte Black with Gold Accent, 1 Light",
+          "description": "Pendant — Dainolite, 1 x E26 100W (not incl.), Black metal with gold accent, Dimmable",
+          "pricing": "upgrade",
+          "price": 209.05,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/b95b4577831609163759ffe847b6abced98ca384/original.png"
+        },
+        {
+          "id": "lighting-pendant-aged-brass-with-clear-spiral-glass-6-light",
+          "name": "Pendant, Aged Brass with Clear Spiral Glass, 6 Light",
+          "description": "Pendant — Dainolite, 6-light, Clear glass, Aged brass metal, 4.75\" canopy, Adjustable, Dimmable",
+          "pricing": "upgrade",
+          "price": 451.4,
+          "unit": "each"
+        },
+        {
+          "id": "lighting-pendant-matte-black-1-light-clear-glass-pmr-171p",
+          "name": "Pendant, Matte Black, 1 Light, Clear Glass (PMR-171P)",
+          "description": "Pendant — Dainolite, Black metal, Clear glass, 4.75\" canopy, Adjustable, Dimmable",
+          "pricing": "upgrade",
+          "price": 73.99,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/800770d0e8cea921fecda6ea71ce97d628064d31/original.jpeg"
+        },
+        {
+          "id": "lighting-pendant-matte-white-1-light-16",
+          "name": "Pendant, Matte White, 1 Light, 16\"",
+          "description": "Pendant — Dainolite, 1 x E26 100W (not incl.), Matte white metal, 16\" x 16\" x 8\", Dimmable",
+          "pricing": "upgrade",
+          "price": 172.05,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/9d8a9eac9e4a8b7dafc1e0b5203ca5c7a8e6db80/original.png"
+        },
+        {
+          "id": "lighting-pendant-matte-black-1-light",
+          "name": "Pendant, Matte Black, 1 Light",
+          "description": "Pendant — Dainolite, Matte black metal, Electroplated secondary finish, 4.75\" canopy, Adjustable",
+          "pricing": "upgrade",
+          "price": 201.81,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/c81c6f143cdb98bb81a18831f286bd91941b8145/original.png"
+        },
+        {
+          "id": "lighting-pendant-zeno-blackened-bronze-1-light",
+          "name": "Pendant, Zeno, Blackened Bronze, 1 Light",
+          "description": "Pendant",
+          "pricing": "upgrade",
+          "price": 149.99,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/3e2eb2a5efeb621fae1311b99bb414b238b8af39/original.png"
+        },
+        {
+          "id": "lighting-pendant-natural-seagrass-3-light",
+          "name": "Pendant, Natural Seagrass, 3 Light",
+          "description": "Pendant — Dainolite, 3 x E26 60W (not incl.), Natural seagrass, Dimmable",
+          "pricing": "upgrade",
+          "price": 397.75,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/8622923eac79fc0148d240f95725e56e1a937e97/original.png"
+        },
+        {
+          "id": "lighting-pendant-matte-black-with-white-glass-1-light",
+          "name": "Pendant, Matte Black with White Glass, 1 Light",
+          "description": "Pendant — Dainolite, 1 x E26 60W (not incl.), Black metal, White glass, Dimmable",
+          "pricing": "upgrade",
+          "price": 233.1,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/7d1012df5b395695e45ab08b2fc0c4f200d89673/original.png"
+        },
+        {
+          "id": "lighting-pendant-matte-black-1-light-16",
+          "name": "Pendant, Matte Black, 1 Light, 16\"",
+          "description": "Pendant — Dainolite, Matte black metal, 4.75\" canopy, 16\" diameter, 72\" drop (8\"-82\" range)",
+          "pricing": "upgrade",
+          "price": 173.9,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/20ec995bb918f9df13bd04ca257297235b5f5478/original.png"
+        },
+        {
+          "id": "lighting-pendant-aged-brass-1-light-clear-fluted-glass",
+          "name": "Pendant, Aged Brass, 1 Light, Clear Fluted Glass",
+          "description": "Pendant — Dainolite, 1 x E26 100W (not incl.), Aged brass metal, Clear fluted glass, Dimmable",
+          "pricing": "upgrade",
+          "price": 118.4,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/0633b2d4c5702727d43c93babec355d45c5f3b98/original.png"
+        },
+        {
+          "id": "lighting-pendant-matte-black-with-flax-shade-4-light-2-tier",
+          "name": "Pendant, Matte Black with Flax Shade, 4 Light, 2 Tier",
+          "description": "Pendant — Dainolite, 4 x E26 60W (not incl.), Matte black metal, Fabric flax shade, Dimmable",
+          "pricing": "upgrade",
+          "price": 284.9,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/e5247275d0a01badd54afac568567952f2b1fffb/original.png"
+        },
+        {
+          "id": "lighting-pendant-black-metal-3-clear-round-glass-shades-wall-f",
+          "name": "Pendant, Black Metal, 3 Clear Round Glass Shades (Wall-F)",
+          "description": "Pendant — Black metal, Glass shade, E26 max 60W (not incl.), Adjustable cord (max 59\"/5ft)",
+          "pricing": "upgrade",
+          "price": 149.99,
+          "unit": "each"
+        },
+        {
+          "id": "lighting-wall-sconce-matte-black-15w-wea-1818",
+          "name": "Wall Sconce, Matte Black, 15W (WEA-1818)",
+          "description": "Sconce — Dainolite, 15W bulb (not incl.), Matte black metal",
+          "pricing": "upgrade",
+          "price": 155.4,
+          "unit": "each"
+        },
+        {
+          "id": "lighting-wall-sconce-matte-black-with-clear-fluted-glass-10w",
+          "name": "Wall Sconce, Matte Black with Clear Fluted Glass, 10W",
+          "description": "Sconce — Dainolite, LED 10W (incl.), Matte black metal, Clear fluted glass, Dimmable",
+          "pricing": "upgrade",
+          "price": 125.8,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/ab30e4ca12e8d51fd5ebd45efc3db3263f7cd26c/original.png"
+        },
+        {
+          "id": "lighting-wall-sconce-matte-black-with-white-acrylic-12w",
+          "name": "Wall Sconce, Matte Black with White Acrylic, 12W",
+          "description": "Sconce — Dainolite, LED 12W (incl.), Matte black metal, White acrylic, Dimmable",
+          "pricing": "upgrade",
+          "price": 196.1,
+          "unit": "each"
+        },
+        {
+          "id": "lighting-wall-sconce-matte-black-with-white-shade-1-light",
+          "name": "Wall Sconce, Matte Black with White Shade, 1 Light",
+          "description": "Sconce — Dainolite, 1 x E12 60W B10 (not incl.), Matte black metal, White shade, 4.75\" x 7.25\" x 21.5\", Dimmable",
+          "pricing": "upgrade",
+          "price": 77.7,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/2089e0e50beac382625d5d07d3e98f8cbced939c/original.png"
+        },
+        {
+          "id": "lighting-wall-sconce-matte-black-23w-wea-2423",
+          "name": "Wall Sconce, Matte Black, 23W (WEA-2423)",
+          "description": "Sconce — Dainolite, LED 23W (incl.), Matte black metal, Dimmable",
+          "pricing": "upgrade",
+          "price": 168.35,
+          "unit": "each"
+        },
+        {
+          "id": "lighting-wall-sconce-matte-black-1-light",
+          "name": "Wall Sconce, Matte Black, 1 Light",
+          "description": "Sconce — Dainolite, 1 x E26 60W (not incl.), Matte black metal, Dimmable",
+          "pricing": "upgrade",
+          "price": 49.95,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/214bfd8ec39b0d4c2f5485b4e87721d6df812bd8/original.png"
+        },
+        {
+          "id": "lighting-wall-sconce-aged-brass-with-clear-hammered-glass-1-light",
+          "name": "Wall Sconce, Aged Brass with Clear Hammered Glass, 1 Light",
+          "description": "Sconce — Dainolite, 1 x G9 40W (not incl.), Aged brass metal, Clear hammered glass, Dimmable",
+          "pricing": "upgrade",
+          "price": 127.65,
+          "unit": "each"
+        },
+        {
+          "id": "lighting-outdoor-wall-sconce-emy-series-matte-black-1-light",
+          "name": "Outdoor Wall Sconce, EMY Series, Matte Black, 1 Light",
+          "description": "Sconce — Dainolite, LED 15W (incl.), Matte black metal, 4.75\" x 1.5\" x 4.75\", Dimmable",
+          "pricing": "upgrade",
+          "price": 227.55,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/4e72df3beece26fea1dc5490e1e20cfc96b16325/original.png"
+        },
+        {
+          "id": "lighting-wall-sconce-dimmable-1-light-21x19-5x12cm-hardwired",
+          "name": "Wall Sconce, Dimmable, 1-light (21x19, 5x12cm), Hardwired",
+          "description": "Sconce",
+          "pricing": "upgrade",
+          "price": 50.45,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/a305285a8ad5a3ac1fbec969c210cfd0f4af348b/original.jpeg"
+        },
+        {
+          "id": "lighting-vanity-light-matte-black-with-clear-fluted-glass-2-light",
+          "name": "Vanity Light, Matte Black with Clear Fluted Glass, 2 Light",
+          "description": "Vanity Light — Dainolite, Matte black base, Clear fluted glass, 4.75\" canopy, Dimmable",
+          "pricing": "upgrade",
+          "price": 124.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/93856a6393d70875a5b2699aed5bcb9ae524e395/original.png"
+        },
+        {
+          "id": "lighting-vanity-light-aged-brass-with-frost-acrylic-diffuser-1-light",
+          "name": "Vanity Light, Aged Brass with Frost Acrylic Diffuser, 1 Light",
+          "description": "Vanity Light — Dainolite, LED 18W (incl.), Aged brass metal, Frost acrylic diffuser, Dimmable",
+          "pricing": "upgrade",
+          "price": 231.25,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/e25dff10e958a4e6a2ef6ee9a80def53a05c0409/original.png"
+        },
+        {
+          "id": "lighting-vanity-light-abud-matte-black-bar-style-34",
+          "name": "Vanity Light, Abud, Matte Black, Bar Style, 34\"",
+          "description": "Vanity Light — Dimmable LED, Matte black, 34\" bar style",
+          "pricing": "upgrade",
+          "price": 199.99,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/0eced2bad601822fd48feb1efc7387012d0b0cf4/original.png"
+        },
+        {
+          "id": "lighting-vanity-light-polished-chrome-with-clear-ribbed-glass-3-light",
+          "name": "Vanity Light, Polished Chrome with Clear Ribbed Glass, 3 Light",
+          "description": "Vanity Light — Dainolite, 3 x E12 60W B10 (not incl.), Polished chrome metal, Clear ribbed glass, Dimmable",
+          "pricing": "upgrade",
+          "price": 144.3,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/defddf79e6a2e7b8040b428c69ac05585d6e2c09/original.png"
+        },
+        {
+          "id": "lighting-vanity-light-matte-black-with-frost-white-acrylic-diffuser-3-light",
+          "name": "Vanity Light, Matte Black with Frost White Acrylic Diffuser, 3 Light",
+          "description": "Vanity Light — Dainolite, Matte black metal, Frost white acrylic diffuser",
+          "pricing": "upgrade",
+          "price": 207.2,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/a96cda0380b3cfcf3acf3543752cbd7fd743a3c0/original.png"
+        },
+        {
+          "id": "lighting-vanity-light-aged-brass-with-opal-shade-3-light",
+          "name": "Vanity Light, Aged Brass with Opal Shade, 3 Light",
+          "description": "Vanity Light — Dainolite, 3 x E12 60W (not incl.), Aged brass metal, Opal shade, Dimmable",
+          "pricing": "upgrade",
+          "price": 153.55,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/2570c819af0a1c73c18f0b1ca9affe2c8ec7d693/original.png"
+        },
+        {
+          "id": "lighting-vanity-light-wynona-matte-black-3-light",
+          "name": "Vanity Light, Wynona, Matte Black, 3 Light",
+          "description": "Vanity Light",
+          "pricing": "upgrade",
+          "price": 122.56,
+          "unit": "each"
+        },
+        {
+          "id": "lighting-vanity-light-aged-brass-with-clear-fluted-glass-2-light",
+          "name": "Vanity Light, Aged Brass with Clear Fluted Glass, 2 Light",
+          "description": "Vanity Light — Dainolite, 2 x E26 60W T10-8.5 (not incl.), Aged brass metal, Clear fluted glass, Dimmable",
+          "pricing": "upgrade",
+          "price": 127.65,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/b96649ab1b5c1844987a9c3159679665fc5ab976/original.png"
+        },
+        {
+          "id": "lighting-vanity-light-matte-black-with-clear-glass-3-light",
+          "name": "Vanity Light, Matte Black with Clear Glass, 3 Light",
+          "description": "Vanity Light — Dainolite, Matte black base, Clear glass, 23\" x 7\" x 9.75\"",
+          "pricing": "upgrade",
+          "price": 169.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/56a28ed1516fd889c347c8906243bfefe3df28b3/original.png"
+        },
+        {
+          "id": "lighting-vanity-light-solid-matte-black-3-light",
+          "name": "Vanity Light, Solid Matte Black, 3 Light",
+          "description": "Vanity Light — Dainolite, Matte black metal, 21.5\" x 7\" x 8.5\"",
+          "pricing": "upgrade",
+          "price": 116.55,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/497731dcf0d9a4e25da0d5dd38fa6b3ded2f18bd/original.png"
+        },
+        {
+          "id": "lighting-vanity-light-matte-black-with-clear-hammered-glass-3-light",
+          "name": "Vanity Light, Matte Black with Clear Hammered Glass, 3 Light",
+          "description": "Vanity Light — Dainolite, 3 x E12 60W (not incl.), Matte black metal, Clear hammered glass, Dimmable",
+          "pricing": "upgrade",
+          "price": 135.05,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/93ae9083208ef96af204379baddf3bdd3a56cf72/original.png"
+        },
+        {
+          "id": "lighting-vanity-light-matte-black-with-white-glass-3-light-edishine",
+          "name": "Vanity Light, Matte Black with White Glass, 3 Light, Edishine",
+          "description": "Vanity Light — Matte black metal, White glass shades, Dimmable",
+          "pricing": "upgrade",
+          "price": 119.99,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/9f65d84d627e1bb61db12b0426172c8d25a004c8/original.png"
+        },
+        {
+          "id": "lighting-flush-mount-matte-black-8w-5",
+          "name": "Flush Mount, Matte Black, 8W, 5\"",
+          "description": "Flush Mount — Dainolite, LED 8W (incl.), Matte black plastic, Frosted, 5\" x 5\" x 0.75\", Dimmable",
+          "pricing": "upgrade",
+          "price": 24.51,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/2f624afab21dd3418f0bd1754c5c31c6461392ed/original.png"
+        },
+        {
+          "id": "lighting-flush-mount-matte-white-30w-16",
+          "name": "Flush Mount, Matte White, 30W, 16\"",
+          "description": "Flush Mount — Dainolite, LED 30W (incl.), Matte white plastic, Frosted, 16\" x 16\" x 1\", Dimmable",
+          "pricing": "upgrade",
+          "price": 94.35,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/c0fe0c022041313a23771492a03bb8bfb262e496/original.png"
+        },
+        {
+          "id": "lighting-flush-mount-matte-black-30w-16",
+          "name": "Flush Mount, Matte Black, 30W, 16\"",
+          "description": "Flush Mount — Dainolite, LED 30W (incl.), Matte black plastic, Frosted, 16\" x 16\" x 1\", Dimmable",
+          "pricing": "upgrade",
+          "price": 94.35,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/fd29a0da70d48fa226d89dfc4e08bff419766d11/original.png"
+        },
+        {
+          "id": "lighting-flush-mount-matte-white-20w-9",
+          "name": "Flush Mount, Matte White, 20W, 9\"",
+          "description": "Flush Mount — Dainolite, LED 20W (incl.), 3000K, Matte white, Frosted, 9\" x 9\" x 0.75\", Damp location, Dimmable",
+          "pricing": "upgrade",
+          "price": 42.55,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/f78811f6ae4290f459af88b060aa9b832d5e7172/original.jpeg"
+        },
+        {
+          "id": "lighting-flush-mount-9-round-20w-frosted-dainolite",
+          "name": "Flush Mount, 9\" Round, 20W, Frosted, Dainolite",
+          "description": "Flush Mount — 3000K Frosted, 9\" x 9\" x 0.75\", Damp location, Dimmable",
+          "pricing": "upgrade",
+          "price": 42.55,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/521ebefa76133778873b798829cfa5c76fa46cbb/original.jpeg"
+        },
+        {
+          "id": "lighting-flush-mount-matte-black-25w-12",
+          "name": "Flush Mount, Matte Black, 25W, 12\"",
+          "description": "Flush Mount — Dainolite, LED 25W (incl.), Matte black plastic, Frosted, 12\" x 12\" x 0.75\", Dimmable",
+          "pricing": "upgrade",
+          "price": 54.11,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/5b9fbb5305525a743398e2f12bc132548e2e999f/original.png"
+        },
+        {
+          "id": "lighting-flush-mount-matte-white-25w-12",
+          "name": "Flush Mount, Matte White, 25W, 12\"",
+          "description": "Flush Mount — Dainolite, LED 25W (incl.), Matte white plastic, Frosted, 12\" x 12\" x 0.75\"",
+          "pricing": "upgrade",
+          "price": 54.11,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/46efc7c751ffec2e2b95621396f9350f12fc39fe/original.jpeg"
+        },
+        {
+          "id": "lighting-flush-mount-matte-black-14w-7",
+          "name": "Flush Mount, Matte Black, 14W, 7\"",
+          "description": "Flush Mount — Dainolite, LED 14W (incl.), Matte black plastic, Frosted, 7\" x 7\" x 0.75\", Dimmable",
+          "pricing": "upgrade",
+          "price": 33.3,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/33e0cf7d4f1f7bc5bb9ee6fe0bf36da355db59c7/original.png"
+        },
+        {
+          "id": "lighting-semi-flush-mount-vintage-bronze-and-matte-black-4-light",
+          "name": "Semi-Flush Mount, Vintage Bronze and Matte Black, 4 Light",
+          "description": "Flush Mount — Dainolite, 4 x E12 60W (not incl.), Vintage bronze and electroplated black metal, 4.75\" canopy, Adjustable, 3\" drop (10\" max)",
+          "pricing": "upgrade",
+          "price": 358.9,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/34b89824956a27e35c1f7fb09a4dd4b11bfabd0e/original.png"
+        },
+        {
+          "id": "lighting-flush-mount-matte-white-8w-5",
+          "name": "Flush Mount, Matte White, 8W, 5\"",
+          "description": "Flush Mount — Dainolite, LED 8W (incl.), Matte white plastic, Frosted, 5\" x 5\" x 0.75\", Dimmable",
+          "pricing": "upgrade",
+          "price": 24.51,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/48d7333845e0dca7f3dc0d094485eccaec9d0c7e/original.png"
+        },
+        {
+          "id": "lighting-flush-mount-matte-white-14w-7",
+          "name": "Flush Mount, Matte White, 14W, 7\"",
+          "description": "Flush Mount — Dainolite, LED 14W (incl.), Matte white plastic, Frosted, 7\" x 7\" x 0.75\", Dimmable",
+          "pricing": "upgrade",
+          "price": 33.3,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/da1cde2df1ce1fc138ac7731381aa41df5fa899d/original.png"
+        }
+      ]
+    },
+    {
+      "id": "fans",
+      "name": "Ceiling Fans",
+      "unit": "each",
+      "options": [
+        {
+          "id": "fans-ceiling-fan-nicola-3-blade-matte-black-with-natural-oak-blades-52",
+          "name": "Ceiling Fan, Nicola, 3 Blade, Matte Black with Natural Oak Blades, 52\"",
+          "description": "Matte black housing, Natural oak wood blades, Integrated LED light kit, 5\" & 10\" downrods incl., Remote, 1/4/8-hour timer, Indoor/patio",
+          "pricing": "upgrade",
+          "price": 283.91,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/4446e1d3150fad551c64cd6bc81168bf5863298c/original.jpeg"
+        },
+        {
+          "id": "fans-ceiling-fan-avdie-4-blade-black-48-wall-f",
+          "name": "Ceiling Fan, Avdie, 4 Blade, Black, 48\" (WALL F)",
+          "description": "Black metal, Frosted white drum shade, 52W LED light kit, 3-speed DC motor, Timer, Remote",
+          "pricing": "upgrade",
+          "price": 169.99,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/c5f0dcbb38faa0047d389bf30cc75c06be9d3a56/original.png"
+        },
+        {
+          "id": "fans-ceiling-fan-kemp-3-blade-matte-black-with-brown-blades-52",
+          "name": "Ceiling Fan, Kemp, 3 Blade, Matte Black with Brown Blades, 52\"",
+          "description": "LED light kit incl., Remote control",
+          "pricing": "upgrade",
+          "price": 285.99,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/ba9ac6a1724ded469833a70a160279dec056b1da/original.png"
+        },
+        {
+          "id": "fans-ceiling-fan-bilon-3-blade-classic-wood-52",
+          "name": "Ceiling Fan, Bilon, 3 Blade, Classic Wood, 52\"",
+          "description": "Solid wood blades, Black base, Dimmable LED 3-tone (Cool White/Daylight/Warm), 3 fan speeds, Remote",
+          "pricing": "upgrade",
+          "price": 279.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/fbb713ccf02272ec76a9900b170da8268bdff685/original.png"
+        }
+      ]
+    },
+    {
+      "id": "mirrors",
+      "name": "Mirrors",
+      "unit": "each",
+      "options": [
+        {
+          "id": "mirrors-mirror-oval-frameless-24x36",
+          "name": "Mirror, Oval, Frameless, 24x36",
+          "description": "Frameless, Pre-installed back hooks, Screws included, 24\" x 36\"",
+          "pricing": "upgrade",
+          "price": 169.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/20f7729eccc9a474d1ed3e0ea9c61040391ff46b/original.png"
+        },
+        {
+          "id": "mirrors-mirror-oval-framed-matte-black-24x36",
+          "name": "Mirror, Oval, Framed, Matte Black, 24x36",
+          "description": "Aluminum alloy frame, Pre-installed back hooks, 24\" x 36\"",
+          "pricing": "upgrade",
+          "price": 219.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/67428ad41fbc967b57c02b62be45c0a6d0f3b10d/original.png"
+        },
+        {
+          "id": "mirrors-mirror-rectangle-bronze-frame-30x22",
+          "name": "Mirror, Rectangle, Bronze Frame, 30x22",
+          "description": "Tempered glass, Aluminum alloy frame, French cleat mount, 30\" x 22\"",
+          "pricing": "upgrade",
+          "price": 175.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/b3fc070b4d759c5f10c46b9b593e398e3876724a/original.png"
+        },
+        {
+          "id": "mirrors-mirror-oval-framed-black-destefano-essence",
+          "name": "Mirror, Oval, Framed Black, Destefano Essence",
+          "description": "Glass mirror, Metal frame, Closed corner, Horizontal/vertical mount",
+          "pricing": "upgrade",
+          "price": 194.62,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/1bef555ac79a59f520ff533b55e6888e4dc635e5/original.png"
+        },
+        {
+          "id": "mirrors-mirror-round-corners-framed-matte-black-20x30",
+          "name": "Mirror, Round Corners, Framed, Matte Black, 20x30",
+          "description": "Framed, Round corners, Matte black, 20\" x 30\"",
+          "pricing": "upgrade",
+          "price": 169.0,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/00d893e1eaaeec4a5a25a072a0e12e7f404570ca/original.png"
+        },
+        {
+          "id": "mirrors-mirror-vanity-aluminum-black-frame-36x48",
+          "name": "Mirror, Vanity, Aluminum Black Frame, 36x48",
+          "description": "Glass mirror, Aluminum black frame, Horizontal/vertical mount, 36\" x 48\"",
+          "pricing": "upgrade",
+          "price": 306.89,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/0bddd38956bdc12564dce197fe6ad922d3e6879b/original.png"
+        },
+        {
+          "id": "mirrors-mirror-framed-matte-black-24x36",
+          "name": "Mirror, Framed, Matte Black,  24x36",
+          "pricing": "upgrade",
+          "price": 101.98,
+          "unit": "each",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/53483c857e359e309f4f5b1bce2d435b54bb9e61/original.png"
+        }
+      ]
+    },
+    {
+      "id": "tile-porcelain",
+      "name": "Porcelain Tile",
+      "unit": "sqft",
+      "options": [
+        {
+          "id": "tile-porcelain-porcelain-tile-calacatta-matte-12-x-24",
+          "name": "Porcelain Tile, Calacatta, Matte, 12\" x 24\"",
+          "description": "Porcelain, 12\" x 24\" (31x61cm), Matte, Rectified",
+          "pricing": "upgrade",
+          "price": 8.35,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/da931bfc8dbe62b174b763bb4654ae160503ebb4/original.jpeg"
+        },
+        {
+          "id": "tile-porcelain-porcelain-tile-taj-mahal-bianco-matte-23-6-x-47-2",
+          "name": "Porcelain Tile, Taj Mahal, Bianco, Matte, 23.6\" x 47.2\"",
+          "description": "Porcelain, 23.6\" x 47.2\" (60x120cm), Matte, Rectified",
+          "pricing": "upgrade",
+          "price": 7.89,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/514547f27282ba32f36916bb68a9aee5e825409f/original.png"
+        },
+        {
+          "id": "tile-porcelain-porcelain-tile-sande-ivory-matte-12-x-24",
+          "name": "Porcelain Tile, Sande, Ivory, Matte, 12\" x 24\"",
+          "pricing": "upgrade",
+          "price": 6.33,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/b15f129e5722ef05a3e8903f757a62e40e4a2f31/original.jpeg"
+        },
+        {
+          "id": "tile-porcelain-porcelain-tile-genesis-antrax-matte-12-x-24",
+          "name": "Porcelain Tile, Genesis, Antrax, Matte, 12\" x 24\"",
+          "description": "Porcelain, 12\" x 24\" (30x60cm), Matte",
+          "pricing": "upgrade",
+          "price": 7.99,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/e6bf10890bc0b3eb02e83d816a1d8957bffd4779/original.png"
+        },
+        {
+          "id": "tile-porcelain-porcelain-tile-rhin-blanco-23-6-x-23-6",
+          "name": "Porcelain Tile, Rhin, Blanco, 23.6\" x 23.6\"",
+          "description": "Porcelain, 23.6\" x 23.6\" (60x60cm)",
+          "pricing": "upgrade",
+          "price": 10.86,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/cff1d0a6a9fef266191c91793a5a64d9dca7464a/original.jpeg"
+        },
+        {
+          "id": "tile-porcelain-porcelain-tile-aria-bianco-polished-12-x-24",
+          "name": "Porcelain Tile, Aria Bianco, Polished, 12\" x 24\"",
+          "description": "Porcelain, 12\" x 24\", Polished",
+          "pricing": "upgrade",
+          "price": 6.25,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/4b19fde69cb6530d8f2bcfc4cd7547cc03cc805a/original.jpeg"
+        },
+        {
+          "id": "tile-porcelain-porcelain-tile-brighton-gold-polished-12-x-24",
+          "name": "Porcelain Tile, Brighton, Gold, Polished, 12\" x 24\"",
+          "description": "Porcelain, 12\" x 24\", Polished",
+          "pricing": "upgrade",
+          "price": 5.66,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/ba8f509c04a36c61f6ca747681450ae185e2d199/original.jpeg"
+        },
+        {
+          "id": "tile-porcelain-porcelain-tile-brighton-grey-matte-12-x-24",
+          "name": "Porcelain Tile, Brighton, Grey, Matte, 12\" x 24\"",
+          "description": "Porcelain, 12\" x 24\", Matte",
+          "pricing": "upgrade",
+          "price": 6.35,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/0ddde08955d83f14e142f3aaff5c4fe27dad2670/original.jpeg"
+        },
+        {
+          "id": "tile-porcelain-porcelain-tile-wonder-shade-12-x-24",
+          "name": "Porcelain Tile, Wonder-Shade, 12\" x 24\"",
+          "description": "Porcelain, 12\" x 24\" (30cm), Grey with mild white veining",
+          "pricing": "upgrade",
+          "price": 7.33,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/ea16328572098cfdfc1a1c4a3ba1f30ba045e487/original.png"
+        },
+        {
+          "id": "tile-porcelain-porcelain-tile-rhin-blanco-23-6-x-47-2-16-sf-carton",
+          "name": "Porcelain Tile, Rhin, Blanco, 23.6\" x 47.2\" (16 sf / carton)",
+          "description": "Porcelain, 23.6\" x 47.2\" (60x120cm)",
+          "pricing": "upgrade",
+          "price": 14.76,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/cff1d0a6a9fef266191c91793a5a64d9dca7464a/original.jpeg"
+        },
+        {
+          "id": "tile-porcelain-porcelain-tile-atenea-beige-matte-12-x-24",
+          "name": "Porcelain Tile, Atenea, Beige, Matte, 12\" x 24\"",
+          "description": "Porcelain, 12\" x 24\" (30x60cm), Matte",
+          "pricing": "upgrade",
+          "price": 5.84,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/2d8a5e17b566165c37e2fc3712364912baa2e09d/original.jpeg"
+        },
+        {
+          "id": "tile-porcelain-porcelain-tile-aria-ice-polished-12-x-24",
+          "name": "Porcelain Tile, Aria Ice, Polished, 12\" x 24\"",
+          "description": "Porcelain, 12\" x 24\", Polished",
+          "pricing": "upgrade",
+          "price": 6.15,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/0cec1339bf831d88c7ed74fdfafe3677bc7276ed/original.jpeg"
+        },
+        {
+          "id": "tile-porcelain-porcelain-tile-focus-graphite-matte-12-x-24",
+          "name": "Porcelain Tile, Focus, Graphite, Matte, 12\" x 24\"",
+          "description": "Porcelain, 12\" x 24\", Matte",
+          "pricing": "upgrade",
+          "price": 6.55,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/105a3f8c1e99a7b4481238bafdcb6fdf08158733/original.jpeg"
+        },
+        {
+          "id": "tile-porcelain-porcelain-tile-pietra-calacatta-matte-12-x-24",
+          "name": "Porcelain Tile, Pietra Calacatta, Matte, 12\" x 24\"",
+          "description": "Porcelain, 12\" x 24\" (30x60cm), Matte",
+          "pricing": "upgrade",
+          "price": 6.35,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/638c6bde7c4cacce112dc7998815f838c5bc96a7/original.jpeg"
+        },
+        {
+          "id": "tile-porcelain-porcelain-tile-brighton-grey-polished-12-x-24",
+          "name": "Porcelain Tile, Brighton, Grey, Polished, 12\" x 24\"",
+          "description": "Porcelain, 12\" x 24\", Polished",
+          "pricing": "upgrade",
+          "price": 7.75,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/0ddde08955d83f14e142f3aaff5c4fe27dad2670/original.jpeg"
+        },
+        {
+          "id": "tile-porcelain-porcelain-tile-atenea-ivory-matte-12-x-24",
+          "name": "Porcelain Tile, Atenea, Ivory, Matte, 12\" x 24\"",
+          "description": "Porcelain, 12\" x 24\" (30x60cm), Matte",
+          "pricing": "upgrade",
+          "price": 5.84,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/23ecfe56dfd2f832f08122a3deea88b0f7d59ea7/original.jpeg"
+        },
+        {
+          "id": "tile-porcelain-porcelain-tile-white-vena-matte-12-x-24",
+          "name": "Porcelain Tile, White Vena, Matte, 12\" x 24\"",
+          "pricing": "upgrade",
+          "price": 7.95,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/33609730b1732ae13382bb0473671231516eb36c/original.jpeg"
+        },
+        {
+          "id": "tile-porcelain-porcelain-tile-rhin-beige-23-6-x-23-6",
+          "name": "Porcelain Tile, Rhin, Beige, 23.6\" x 23.6\"",
+          "description": "Porcelain, 23.6\" x 23.6\" (60x60cm)",
+          "pricing": "upgrade",
+          "price": 15.5,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/01afd4a1f7a4ddcbdeecc8adf21b022f83a18649/original.png"
+        },
+        {
+          "id": "tile-porcelain-porcelain-tile-brighton-gold-matte-12-x-24",
+          "name": "Porcelain Tile, Brighton, Gold, Matte, 12\" x 24\"",
+          "description": "Porcelain, 12\" x 24\", Matte",
+          "pricing": "upgrade",
+          "price": 6.55,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/ba8f509c04a36c61f6ca747681450ae185e2d199/original.jpeg"
+        },
+        {
+          "id": "tile-porcelain-porcelain-tile-slate-origin-matte-12-x-24-30x60",
+          "name": "Porcelain Tile, Slate Origin, Matte, 12\" x 24\" (30x60)",
+          "pricing": "upgrade",
+          "price": 5.99,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/7d77e707fac208187e88d42628edbc6b4897483e/original.png"
+        },
+        {
+          "id": "tile-porcelain-porcelain-tile-nexus-light-varmora-polished-30mm-x-60mm-sarana-tile",
+          "name": "Porcelain Tile, Nexus Light Varmora, Polished, 30mm x 60mm, Sarana Tile",
+          "pricing": "upgrade",
+          "price": 4.5,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/6487f0c14bd1f4a260b89e135cae5eec1456e0b4/original.png"
+        }
+      ]
+    },
+    {
+      "id": "tile-backsplash",
+      "name": "Backsplash Tile",
+      "unit": "sqft",
+      "options": [
+        {
+          "id": "tile-backsplash-backsplash-tile-2-x4-mosaic-aria-bianco-polished",
+          "name": "Backsplash Tile, 2\"x4\" Mosaic, Aria Bianco Polished",
+          "description": "Polished mosaic, 2\" x 4\" chip",
+          "pricing": "upgrade",
+          "price": 13.25,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/979f49cdd20d2f3bbc9b9250e88bd85b049c825f/original.jpeg"
+        },
+        {
+          "id": "tile-backsplash-backsplash-tile-4-x-12-white-ice-glossy-in-hampton-c-can",
+          "name": "Backsplash Tile, 4\" x 12\", White Ice, Glossy  (in Hampton C-Can)",
+          "description": "Ceramic wall tile, 4\" x 12\", Glossy",
+          "pricing": "upgrade",
+          "price": 3.99,
+          "unit": "sqft"
+        },
+        {
+          "id": "tile-backsplash-backsplash-tile-4-x-12-metro-white-glossy",
+          "name": "Backsplash Tile, 4\" x 12\", Metro White, Glossy",
+          "description": "Porcelain, 4\" x 12\", Glossy",
+          "pricing": "upgrade",
+          "price": 3.99,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/2083080a2244df4a697ec4b9369e07e73df7da72/original.jpeg"
+        },
+        {
+          "id": "tile-backsplash-backsplash-tile-3-x-12-wavy-white",
+          "name": "Backsplash Tile, 3\" x 12\", Wavy, White",
+          "description": "Wavy, White, 3\" x 12\"",
+          "pricing": "upgrade",
+          "price": 5.29,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/d0ab171e870459e822fe5d8e0ca01fd22accc098/original.png"
+        },
+        {
+          "id": "tile-backsplash-backsplash-tile-4-x-12-whisper-white-glazed-handcrafted",
+          "name": "Backsplash Tile, 4\" x 12\", Whisper White, Glazed Handcrafted",
+          "description": "Glazed handcrafted, 4\" x 12\"",
+          "pricing": "upgrade",
+          "price": 19.99,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/32a56ebd36da0f34680cbae580ad5c345e9b9d3e/original.jpeg"
+        },
+        {
+          "id": "tile-backsplash-backsplash-tile-3-x-6-metro-white-glossy-enigma-in-hampton-sea-can",
+          "name": "Backsplash Tile, 3\" x 6\", Metro White, Glossy, Enigma (IN HAMPTON SEA CAN)",
+          "description": "Porcelain",
+          "pricing": "upgrade",
+          "price": 4.28,
+          "unit": "sqft",
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/2083080a2244df4a697ec4b9369e07e73df7da72/original.jpeg"
+        }
+      ]
     }
   ]
 }
