@@ -1,4 +1,4 @@
-# Security headers for JMRC CRM & Time Tracker
+# Security headers for JMRC apps
 
 /*
   # Security headers
@@ -7,8 +7,8 @@
   X-XSS-Protection: 1; mode=block
   Referrer-Policy: strict-origin-when-cross-origin
 
-  # Content Security Policy (relaxed for inline styles/scripts in single HTML file)
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; font-src 'self' data:;
+  # Content Security Policy (inline styles/scripts + Google Fonts for the apps)
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' https: data:; font-src 'self' https://fonts.gstatic.com data:;
 
   # Cache control
   Cache-Control: public, max-age=3600

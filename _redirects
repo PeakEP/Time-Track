@@ -1,9 +1,7 @@
-# Redirects for JMRC CRM & Time Tracker
+# Redirects for JMRC apps
+# Root (/) serves the app-launcher landing page.
+# Subpath SPA fallbacks (/cabinet-designer/*, /aline-designer/*, /selections/*)
+# are handled in netlify.toml, which is evaluated first.
 
-# Redirect all routes to index.html for single-page app
+# Friendly fallback: unknown top-level paths land on the launcher.
 /*    /index.html   200
-
-# Redirect old paths (if any)
-/home    /index.html   200
-/track   /index.html   200
-/crm     /index.html   200
