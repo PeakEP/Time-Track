@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Build all JMRC apps into _site for Netlify deployment.
-# - Time Track CRM is a static single-HTML app at the site root.
+# - App-launcher landing page (static index.html) at the site root.
 # - Cabinet Designer (OPPEIN catalog) → /cabinet-designer/
 # - Aline Cabinet Designer (ALINE catalog) → /aline-designer/
 
@@ -13,7 +13,7 @@ echo "==> Cleaning ${OUT_DIR}"
 rm -rf "${OUT_DIR}"
 mkdir -p "${OUT_DIR}"
 
-echo "==> Copying Time Track static assets"
+echo "==> Copying landing page + static assets"
 cp "${ROOT_DIR}/index.html" "${OUT_DIR}/index.html"
 [[ -f "${ROOT_DIR}/_headers" ]] && cp "${ROOT_DIR}/_headers" "${OUT_DIR}/_headers"
 [[ -f "${ROOT_DIR}/_redirects" ]] && cp "${ROOT_DIR}/_redirects" "${OUT_DIR}/_redirects"

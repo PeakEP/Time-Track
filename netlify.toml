@@ -1,6 +1,7 @@
 # Netlify configuration for JMRC apps
-# - Time Track CRM (static single-HTML) lives at the site root
+# - App-launcher landing page (static) lives at the site root
 # - Cabinet Designer (Vite + React) builds into /cabinet-designer/
+# - Aline Cabinet Designer builds into /aline-designer/
 
 [build]
   publish = "_site"
@@ -20,22 +21,6 @@
   from = "/aline-designer/*"
   to = "/aline-designer/index.html"
   status = 200
-
-# Legacy Time Track aliases
-[[redirects]]
-  from = "/home"
-  to = "/index.html"
-  status = 301
-
-[[redirects]]
-  from = "/track"
-  to = "/index.html"
-  status = 301
-
-[[redirects]]
-  from = "/crm"
-  to = "/index.html"
-  status = 301
 
 # Production context
 [context.production]
