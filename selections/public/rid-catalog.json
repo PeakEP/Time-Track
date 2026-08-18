@@ -1018,6 +1018,2372 @@
       "unit": "each"
     },
     {
+      "id": "cab-mainbath",
+      "name": "Main Bath Vanity",
+      "description": "Cabinet colour — OPPEIN & Aline collections. Pricing TBD.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "cab-mainbath-opp-mpw",
+          "name": "Flat Pure White",
+          "description": "OPPEIN · Essential",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f8f8f7"
+        },
+        {
+          "id": "cab-mainbath-opp-mnw",
+          "name": "Natural Wood",
+          "description": "OPPEIN · Essential",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#c8a875"
+        },
+        {
+          "id": "cab-mainbath-opp-mso",
+          "name": "Smoked Oak",
+          "description": "OPPEIN · Essential",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#6b4a2b"
+        },
+        {
+          "id": "cab-mainbath-opp-spw",
+          "name": "Shaker Pure White",
+          "description": "OPPEIN · Essential Plus",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f5f6f6"
+        },
+        {
+          "id": "cab-mainbath-opp-kknw",
+          "name": "Skeleton Natural Wood",
+          "description": "OPPEIN · Trend",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#d8c69b"
+        },
+        {
+          "id": "cab-mainbath-opp-wss",
+          "name": "White Shaker",
+          "description": "OPPEIN · Premium Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f2f3f3"
+        },
+        {
+          "id": "cab-mainbath-opp-gss",
+          "name": "Gray Shaker",
+          "description": "OPPEIN · Premium Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8c9298"
+        },
+        {
+          "id": "cab-mainbath-opp-bss",
+          "name": "Blue Shaker",
+          "description": "OPPEIN · Premium Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#274066"
+        },
+        {
+          "id": "cab-mainbath-opp-pmw",
+          "name": "Matte White",
+          "description": "OPPEIN · Urban Select",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f7f8f8"
+        },
+        {
+          "id": "cab-mainbath-opp-pgw",
+          "name": "Glossy White",
+          "description": "OPPEIN · Urban Select",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f1f3f4"
+        },
+        {
+          "id": "cab-mainbath-opp-pma",
+          "name": "Matte Ash",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#b2a691"
+        },
+        {
+          "id": "cab-mainbath-opp-pmb",
+          "name": "Matte Black",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#1c1c1c"
+        },
+        {
+          "id": "cab-mainbath-opp-pmg",
+          "name": "Matte Grey",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8d8c89"
+        },
+        {
+          "id": "cab-mainbath-opp-pga",
+          "name": "Glossy Ash",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#a89a82"
+        },
+        {
+          "id": "cab-mainbath-opp-pgg",
+          "name": "Glossy Gray",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#7a7d80"
+        },
+        {
+          "id": "cab-mainbath-opp-ssw",
+          "name": "Slim Shaker White",
+          "description": "OPPEIN · Elite",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f4f5f5"
+        },
+        {
+          "id": "cab-mainbath-aln-mel",
+          "name": "Standard Melamine",
+          "description": "Aline · Melamine",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#e9e6df"
+        },
+        {
+          "id": "cab-mainbath-aln-hgw",
+          "name": "High Gloss White",
+          "description": "Aline · High Gloss",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f7f8f8"
+        },
+        {
+          "id": "cab-mainbath-aln-hglg",
+          "name": "High Gloss Light Grey",
+          "description": "Aline · High Gloss",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#bcc0c3"
+        },
+        {
+          "id": "cab-mainbath-aln-hgg",
+          "name": "High Gloss Grey",
+          "description": "Aline · High Gloss",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#7e8389"
+        },
+        {
+          "id": "cab-mainbath-aln-mg",
+          "name": "Matte Grey",
+          "description": "Aline · Matte",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8a8f93"
+        },
+        {
+          "id": "cab-mainbath-aln-mw",
+          "name": "Matte White",
+          "description": "Aline · Matte",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f5f6f5"
+        },
+        {
+          "id": "cab-mainbath-aln-sw",
+          "name": "Shaker White",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f3f4f3"
+        },
+        {
+          "id": "cab-mainbath-aln-gr",
+          "name": "Shaker Grey",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8e9398"
+        },
+        {
+          "id": "cab-mainbath-aln-ssw",
+          "name": "Slim Shaker White",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f4f5f4"
+        },
+        {
+          "id": "cab-mainbath-aln-ssg",
+          "name": "Slim Shaker Green",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#6e7d5f"
+        },
+        {
+          "id": "cab-mainbath-aln-smc",
+          "name": "Shaker Maple Caramel",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#a87a4d"
+        },
+        {
+          "id": "cab-mainbath-aln-wg",
+          "name": "Wood Grey (Bois Gris)",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#9b9588"
+        },
+        {
+          "id": "cab-mainbath-aln-wo",
+          "name": "White Oak (Chêne Blanc)",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#d7c8a6"
+        },
+        {
+          "id": "cab-mainbath-aln-nw",
+          "name": "Natural Wood (Bois Naturel)",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#c8a875"
+        },
+        {
+          "id": "cab-mainbath-aln-ssv",
+          "name": "Slim Shaker Veneer",
+          "description": "Aline · Veneer",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#c8a875"
+        },
+        {
+          "id": "cab-mainbath-aln-bl",
+          "name": "Blue",
+          "description": "Aline · Double Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#274066"
+        },
+        {
+          "id": "cab-mainbath-aln-dsw",
+          "name": "White",
+          "description": "Aline · Double Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f2f3f3"
+        }
+      ]
+    },
+    {
+      "id": "cab-ensuite",
+      "name": "Ensuite Vanity",
+      "description": "Cabinet colour — OPPEIN & Aline collections. Pricing TBD.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "cab-ensuite-opp-mpw",
+          "name": "Flat Pure White",
+          "description": "OPPEIN · Essential",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f8f8f7"
+        },
+        {
+          "id": "cab-ensuite-opp-mnw",
+          "name": "Natural Wood",
+          "description": "OPPEIN · Essential",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#c8a875"
+        },
+        {
+          "id": "cab-ensuite-opp-mso",
+          "name": "Smoked Oak",
+          "description": "OPPEIN · Essential",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#6b4a2b"
+        },
+        {
+          "id": "cab-ensuite-opp-spw",
+          "name": "Shaker Pure White",
+          "description": "OPPEIN · Essential Plus",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f5f6f6"
+        },
+        {
+          "id": "cab-ensuite-opp-kknw",
+          "name": "Skeleton Natural Wood",
+          "description": "OPPEIN · Trend",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#d8c69b"
+        },
+        {
+          "id": "cab-ensuite-opp-wss",
+          "name": "White Shaker",
+          "description": "OPPEIN · Premium Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f2f3f3"
+        },
+        {
+          "id": "cab-ensuite-opp-gss",
+          "name": "Gray Shaker",
+          "description": "OPPEIN · Premium Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8c9298"
+        },
+        {
+          "id": "cab-ensuite-opp-bss",
+          "name": "Blue Shaker",
+          "description": "OPPEIN · Premium Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#274066"
+        },
+        {
+          "id": "cab-ensuite-opp-pmw",
+          "name": "Matte White",
+          "description": "OPPEIN · Urban Select",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f7f8f8"
+        },
+        {
+          "id": "cab-ensuite-opp-pgw",
+          "name": "Glossy White",
+          "description": "OPPEIN · Urban Select",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f1f3f4"
+        },
+        {
+          "id": "cab-ensuite-opp-pma",
+          "name": "Matte Ash",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#b2a691"
+        },
+        {
+          "id": "cab-ensuite-opp-pmb",
+          "name": "Matte Black",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#1c1c1c"
+        },
+        {
+          "id": "cab-ensuite-opp-pmg",
+          "name": "Matte Grey",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8d8c89"
+        },
+        {
+          "id": "cab-ensuite-opp-pga",
+          "name": "Glossy Ash",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#a89a82"
+        },
+        {
+          "id": "cab-ensuite-opp-pgg",
+          "name": "Glossy Gray",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#7a7d80"
+        },
+        {
+          "id": "cab-ensuite-opp-ssw",
+          "name": "Slim Shaker White",
+          "description": "OPPEIN · Elite",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f4f5f5"
+        },
+        {
+          "id": "cab-ensuite-aln-mel",
+          "name": "Standard Melamine",
+          "description": "Aline · Melamine",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#e9e6df"
+        },
+        {
+          "id": "cab-ensuite-aln-hgw",
+          "name": "High Gloss White",
+          "description": "Aline · High Gloss",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f7f8f8"
+        },
+        {
+          "id": "cab-ensuite-aln-hglg",
+          "name": "High Gloss Light Grey",
+          "description": "Aline · High Gloss",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#bcc0c3"
+        },
+        {
+          "id": "cab-ensuite-aln-hgg",
+          "name": "High Gloss Grey",
+          "description": "Aline · High Gloss",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#7e8389"
+        },
+        {
+          "id": "cab-ensuite-aln-mg",
+          "name": "Matte Grey",
+          "description": "Aline · Matte",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8a8f93"
+        },
+        {
+          "id": "cab-ensuite-aln-mw",
+          "name": "Matte White",
+          "description": "Aline · Matte",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f5f6f5"
+        },
+        {
+          "id": "cab-ensuite-aln-sw",
+          "name": "Shaker White",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f3f4f3"
+        },
+        {
+          "id": "cab-ensuite-aln-gr",
+          "name": "Shaker Grey",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8e9398"
+        },
+        {
+          "id": "cab-ensuite-aln-ssw",
+          "name": "Slim Shaker White",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f4f5f4"
+        },
+        {
+          "id": "cab-ensuite-aln-ssg",
+          "name": "Slim Shaker Green",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#6e7d5f"
+        },
+        {
+          "id": "cab-ensuite-aln-smc",
+          "name": "Shaker Maple Caramel",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#a87a4d"
+        },
+        {
+          "id": "cab-ensuite-aln-wg",
+          "name": "Wood Grey (Bois Gris)",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#9b9588"
+        },
+        {
+          "id": "cab-ensuite-aln-wo",
+          "name": "White Oak (Chêne Blanc)",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#d7c8a6"
+        },
+        {
+          "id": "cab-ensuite-aln-nw",
+          "name": "Natural Wood (Bois Naturel)",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#c8a875"
+        },
+        {
+          "id": "cab-ensuite-aln-ssv",
+          "name": "Slim Shaker Veneer",
+          "description": "Aline · Veneer",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#c8a875"
+        },
+        {
+          "id": "cab-ensuite-aln-bl",
+          "name": "Blue",
+          "description": "Aline · Double Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#274066"
+        },
+        {
+          "id": "cab-ensuite-aln-dsw",
+          "name": "White",
+          "description": "Aline · Double Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f2f3f3"
+        }
+      ]
+    },
+    {
+      "id": "cab-island",
+      "name": "Island Colour",
+      "description": "Cabinet colour — OPPEIN & Aline collections. Pricing TBD.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "cab-island-opp-mpw",
+          "name": "Flat Pure White",
+          "description": "OPPEIN · Essential",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f8f8f7"
+        },
+        {
+          "id": "cab-island-opp-mnw",
+          "name": "Natural Wood",
+          "description": "OPPEIN · Essential",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#c8a875"
+        },
+        {
+          "id": "cab-island-opp-mso",
+          "name": "Smoked Oak",
+          "description": "OPPEIN · Essential",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#6b4a2b"
+        },
+        {
+          "id": "cab-island-opp-spw",
+          "name": "Shaker Pure White",
+          "description": "OPPEIN · Essential Plus",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f5f6f6"
+        },
+        {
+          "id": "cab-island-opp-kknw",
+          "name": "Skeleton Natural Wood",
+          "description": "OPPEIN · Trend",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#d8c69b"
+        },
+        {
+          "id": "cab-island-opp-wss",
+          "name": "White Shaker",
+          "description": "OPPEIN · Premium Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f2f3f3"
+        },
+        {
+          "id": "cab-island-opp-gss",
+          "name": "Gray Shaker",
+          "description": "OPPEIN · Premium Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8c9298"
+        },
+        {
+          "id": "cab-island-opp-bss",
+          "name": "Blue Shaker",
+          "description": "OPPEIN · Premium Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#274066"
+        },
+        {
+          "id": "cab-island-opp-pmw",
+          "name": "Matte White",
+          "description": "OPPEIN · Urban Select",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f7f8f8"
+        },
+        {
+          "id": "cab-island-opp-pgw",
+          "name": "Glossy White",
+          "description": "OPPEIN · Urban Select",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f1f3f4"
+        },
+        {
+          "id": "cab-island-opp-pma",
+          "name": "Matte Ash",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#b2a691"
+        },
+        {
+          "id": "cab-island-opp-pmb",
+          "name": "Matte Black",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#1c1c1c"
+        },
+        {
+          "id": "cab-island-opp-pmg",
+          "name": "Matte Grey",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8d8c89"
+        },
+        {
+          "id": "cab-island-opp-pga",
+          "name": "Glossy Ash",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#a89a82"
+        },
+        {
+          "id": "cab-island-opp-pgg",
+          "name": "Glossy Gray",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#7a7d80"
+        },
+        {
+          "id": "cab-island-opp-ssw",
+          "name": "Slim Shaker White",
+          "description": "OPPEIN · Elite",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f4f5f5"
+        },
+        {
+          "id": "cab-island-aln-mel",
+          "name": "Standard Melamine",
+          "description": "Aline · Melamine",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#e9e6df"
+        },
+        {
+          "id": "cab-island-aln-hgw",
+          "name": "High Gloss White",
+          "description": "Aline · High Gloss",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f7f8f8"
+        },
+        {
+          "id": "cab-island-aln-hglg",
+          "name": "High Gloss Light Grey",
+          "description": "Aline · High Gloss",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#bcc0c3"
+        },
+        {
+          "id": "cab-island-aln-hgg",
+          "name": "High Gloss Grey",
+          "description": "Aline · High Gloss",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#7e8389"
+        },
+        {
+          "id": "cab-island-aln-mg",
+          "name": "Matte Grey",
+          "description": "Aline · Matte",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8a8f93"
+        },
+        {
+          "id": "cab-island-aln-mw",
+          "name": "Matte White",
+          "description": "Aline · Matte",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f5f6f5"
+        },
+        {
+          "id": "cab-island-aln-sw",
+          "name": "Shaker White",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f3f4f3"
+        },
+        {
+          "id": "cab-island-aln-gr",
+          "name": "Shaker Grey",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8e9398"
+        },
+        {
+          "id": "cab-island-aln-ssw",
+          "name": "Slim Shaker White",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f4f5f4"
+        },
+        {
+          "id": "cab-island-aln-ssg",
+          "name": "Slim Shaker Green",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#6e7d5f"
+        },
+        {
+          "id": "cab-island-aln-smc",
+          "name": "Shaker Maple Caramel",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#a87a4d"
+        },
+        {
+          "id": "cab-island-aln-wg",
+          "name": "Wood Grey (Bois Gris)",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#9b9588"
+        },
+        {
+          "id": "cab-island-aln-wo",
+          "name": "White Oak (Chêne Blanc)",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#d7c8a6"
+        },
+        {
+          "id": "cab-island-aln-nw",
+          "name": "Natural Wood (Bois Naturel)",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#c8a875"
+        },
+        {
+          "id": "cab-island-aln-ssv",
+          "name": "Slim Shaker Veneer",
+          "description": "Aline · Veneer",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#c8a875"
+        },
+        {
+          "id": "cab-island-aln-bl",
+          "name": "Blue",
+          "description": "Aline · Double Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#274066"
+        },
+        {
+          "id": "cab-island-aln-dsw",
+          "name": "White",
+          "description": "Aline · Double Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f2f3f3"
+        }
+      ]
+    },
+    {
+      "id": "cab-perimeter",
+      "name": "Perimeter / Base Colour",
+      "description": "Cabinet colour — OPPEIN & Aline collections. Pricing TBD.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "cab-perimeter-opp-mpw",
+          "name": "Flat Pure White",
+          "description": "OPPEIN · Essential",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f8f8f7"
+        },
+        {
+          "id": "cab-perimeter-opp-mnw",
+          "name": "Natural Wood",
+          "description": "OPPEIN · Essential",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#c8a875"
+        },
+        {
+          "id": "cab-perimeter-opp-mso",
+          "name": "Smoked Oak",
+          "description": "OPPEIN · Essential",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#6b4a2b"
+        },
+        {
+          "id": "cab-perimeter-opp-spw",
+          "name": "Shaker Pure White",
+          "description": "OPPEIN · Essential Plus",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f5f6f6"
+        },
+        {
+          "id": "cab-perimeter-opp-kknw",
+          "name": "Skeleton Natural Wood",
+          "description": "OPPEIN · Trend",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#d8c69b"
+        },
+        {
+          "id": "cab-perimeter-opp-wss",
+          "name": "White Shaker",
+          "description": "OPPEIN · Premium Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f2f3f3"
+        },
+        {
+          "id": "cab-perimeter-opp-gss",
+          "name": "Gray Shaker",
+          "description": "OPPEIN · Premium Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8c9298"
+        },
+        {
+          "id": "cab-perimeter-opp-bss",
+          "name": "Blue Shaker",
+          "description": "OPPEIN · Premium Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#274066"
+        },
+        {
+          "id": "cab-perimeter-opp-pmw",
+          "name": "Matte White",
+          "description": "OPPEIN · Urban Select",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f7f8f8"
+        },
+        {
+          "id": "cab-perimeter-opp-pgw",
+          "name": "Glossy White",
+          "description": "OPPEIN · Urban Select",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f1f3f4"
+        },
+        {
+          "id": "cab-perimeter-opp-pma",
+          "name": "Matte Ash",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#b2a691"
+        },
+        {
+          "id": "cab-perimeter-opp-pmb",
+          "name": "Matte Black",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#1c1c1c"
+        },
+        {
+          "id": "cab-perimeter-opp-pmg",
+          "name": "Matte Grey",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8d8c89"
+        },
+        {
+          "id": "cab-perimeter-opp-pga",
+          "name": "Glossy Ash",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#a89a82"
+        },
+        {
+          "id": "cab-perimeter-opp-pgg",
+          "name": "Glossy Gray",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#7a7d80"
+        },
+        {
+          "id": "cab-perimeter-opp-ssw",
+          "name": "Slim Shaker White",
+          "description": "OPPEIN · Elite",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f4f5f5"
+        },
+        {
+          "id": "cab-perimeter-aln-mel",
+          "name": "Standard Melamine",
+          "description": "Aline · Melamine",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#e9e6df"
+        },
+        {
+          "id": "cab-perimeter-aln-hgw",
+          "name": "High Gloss White",
+          "description": "Aline · High Gloss",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f7f8f8"
+        },
+        {
+          "id": "cab-perimeter-aln-hglg",
+          "name": "High Gloss Light Grey",
+          "description": "Aline · High Gloss",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#bcc0c3"
+        },
+        {
+          "id": "cab-perimeter-aln-hgg",
+          "name": "High Gloss Grey",
+          "description": "Aline · High Gloss",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#7e8389"
+        },
+        {
+          "id": "cab-perimeter-aln-mg",
+          "name": "Matte Grey",
+          "description": "Aline · Matte",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8a8f93"
+        },
+        {
+          "id": "cab-perimeter-aln-mw",
+          "name": "Matte White",
+          "description": "Aline · Matte",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f5f6f5"
+        },
+        {
+          "id": "cab-perimeter-aln-sw",
+          "name": "Shaker White",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f3f4f3"
+        },
+        {
+          "id": "cab-perimeter-aln-gr",
+          "name": "Shaker Grey",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8e9398"
+        },
+        {
+          "id": "cab-perimeter-aln-ssw",
+          "name": "Slim Shaker White",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f4f5f4"
+        },
+        {
+          "id": "cab-perimeter-aln-ssg",
+          "name": "Slim Shaker Green",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#6e7d5f"
+        },
+        {
+          "id": "cab-perimeter-aln-smc",
+          "name": "Shaker Maple Caramel",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#a87a4d"
+        },
+        {
+          "id": "cab-perimeter-aln-wg",
+          "name": "Wood Grey (Bois Gris)",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#9b9588"
+        },
+        {
+          "id": "cab-perimeter-aln-wo",
+          "name": "White Oak (Chêne Blanc)",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#d7c8a6"
+        },
+        {
+          "id": "cab-perimeter-aln-nw",
+          "name": "Natural Wood (Bois Naturel)",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#c8a875"
+        },
+        {
+          "id": "cab-perimeter-aln-ssv",
+          "name": "Slim Shaker Veneer",
+          "description": "Aline · Veneer",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#c8a875"
+        },
+        {
+          "id": "cab-perimeter-aln-bl",
+          "name": "Blue",
+          "description": "Aline · Double Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#274066"
+        },
+        {
+          "id": "cab-perimeter-aln-dsw",
+          "name": "White",
+          "description": "Aline · Double Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f2f3f3"
+        }
+      ]
+    },
+    {
+      "id": "cab-upper",
+      "name": "Upper Colour",
+      "description": "Cabinet colour — OPPEIN & Aline collections. Pricing TBD.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "cab-upper-opp-mpw",
+          "name": "Flat Pure White",
+          "description": "OPPEIN · Essential",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f8f8f7"
+        },
+        {
+          "id": "cab-upper-opp-mnw",
+          "name": "Natural Wood",
+          "description": "OPPEIN · Essential",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#c8a875"
+        },
+        {
+          "id": "cab-upper-opp-mso",
+          "name": "Smoked Oak",
+          "description": "OPPEIN · Essential",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#6b4a2b"
+        },
+        {
+          "id": "cab-upper-opp-spw",
+          "name": "Shaker Pure White",
+          "description": "OPPEIN · Essential Plus",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f5f6f6"
+        },
+        {
+          "id": "cab-upper-opp-kknw",
+          "name": "Skeleton Natural Wood",
+          "description": "OPPEIN · Trend",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#d8c69b"
+        },
+        {
+          "id": "cab-upper-opp-wss",
+          "name": "White Shaker",
+          "description": "OPPEIN · Premium Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f2f3f3"
+        },
+        {
+          "id": "cab-upper-opp-gss",
+          "name": "Gray Shaker",
+          "description": "OPPEIN · Premium Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8c9298"
+        },
+        {
+          "id": "cab-upper-opp-bss",
+          "name": "Blue Shaker",
+          "description": "OPPEIN · Premium Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#274066"
+        },
+        {
+          "id": "cab-upper-opp-pmw",
+          "name": "Matte White",
+          "description": "OPPEIN · Urban Select",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f7f8f8"
+        },
+        {
+          "id": "cab-upper-opp-pgw",
+          "name": "Glossy White",
+          "description": "OPPEIN · Urban Select",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f1f3f4"
+        },
+        {
+          "id": "cab-upper-opp-pma",
+          "name": "Matte Ash",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#b2a691"
+        },
+        {
+          "id": "cab-upper-opp-pmb",
+          "name": "Matte Black",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#1c1c1c"
+        },
+        {
+          "id": "cab-upper-opp-pmg",
+          "name": "Matte Grey",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8d8c89"
+        },
+        {
+          "id": "cab-upper-opp-pga",
+          "name": "Glossy Ash",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#a89a82"
+        },
+        {
+          "id": "cab-upper-opp-pgg",
+          "name": "Glossy Gray",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#7a7d80"
+        },
+        {
+          "id": "cab-upper-opp-ssw",
+          "name": "Slim Shaker White",
+          "description": "OPPEIN · Elite",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f4f5f5"
+        },
+        {
+          "id": "cab-upper-aln-mel",
+          "name": "Standard Melamine",
+          "description": "Aline · Melamine",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#e9e6df"
+        },
+        {
+          "id": "cab-upper-aln-hgw",
+          "name": "High Gloss White",
+          "description": "Aline · High Gloss",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f7f8f8"
+        },
+        {
+          "id": "cab-upper-aln-hglg",
+          "name": "High Gloss Light Grey",
+          "description": "Aline · High Gloss",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#bcc0c3"
+        },
+        {
+          "id": "cab-upper-aln-hgg",
+          "name": "High Gloss Grey",
+          "description": "Aline · High Gloss",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#7e8389"
+        },
+        {
+          "id": "cab-upper-aln-mg",
+          "name": "Matte Grey",
+          "description": "Aline · Matte",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8a8f93"
+        },
+        {
+          "id": "cab-upper-aln-mw",
+          "name": "Matte White",
+          "description": "Aline · Matte",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f5f6f5"
+        },
+        {
+          "id": "cab-upper-aln-sw",
+          "name": "Shaker White",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f3f4f3"
+        },
+        {
+          "id": "cab-upper-aln-gr",
+          "name": "Shaker Grey",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8e9398"
+        },
+        {
+          "id": "cab-upper-aln-ssw",
+          "name": "Slim Shaker White",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f4f5f4"
+        },
+        {
+          "id": "cab-upper-aln-ssg",
+          "name": "Slim Shaker Green",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#6e7d5f"
+        },
+        {
+          "id": "cab-upper-aln-smc",
+          "name": "Shaker Maple Caramel",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#a87a4d"
+        },
+        {
+          "id": "cab-upper-aln-wg",
+          "name": "Wood Grey (Bois Gris)",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#9b9588"
+        },
+        {
+          "id": "cab-upper-aln-wo",
+          "name": "White Oak (Chêne Blanc)",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#d7c8a6"
+        },
+        {
+          "id": "cab-upper-aln-nw",
+          "name": "Natural Wood (Bois Naturel)",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#c8a875"
+        },
+        {
+          "id": "cab-upper-aln-ssv",
+          "name": "Slim Shaker Veneer",
+          "description": "Aline · Veneer",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#c8a875"
+        },
+        {
+          "id": "cab-upper-aln-bl",
+          "name": "Blue",
+          "description": "Aline · Double Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#274066"
+        },
+        {
+          "id": "cab-upper-aln-dsw",
+          "name": "White",
+          "description": "Aline · Double Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f2f3f3"
+        }
+      ]
+    },
+    {
+      "id": "cab-pantry",
+      "name": "Pantry Colour",
+      "description": "Cabinet colour — OPPEIN & Aline collections. Pricing TBD.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "cab-pantry-opp-mpw",
+          "name": "Flat Pure White",
+          "description": "OPPEIN · Essential",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f8f8f7"
+        },
+        {
+          "id": "cab-pantry-opp-mnw",
+          "name": "Natural Wood",
+          "description": "OPPEIN · Essential",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#c8a875"
+        },
+        {
+          "id": "cab-pantry-opp-mso",
+          "name": "Smoked Oak",
+          "description": "OPPEIN · Essential",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#6b4a2b"
+        },
+        {
+          "id": "cab-pantry-opp-spw",
+          "name": "Shaker Pure White",
+          "description": "OPPEIN · Essential Plus",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f5f6f6"
+        },
+        {
+          "id": "cab-pantry-opp-kknw",
+          "name": "Skeleton Natural Wood",
+          "description": "OPPEIN · Trend",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#d8c69b"
+        },
+        {
+          "id": "cab-pantry-opp-wss",
+          "name": "White Shaker",
+          "description": "OPPEIN · Premium Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f2f3f3"
+        },
+        {
+          "id": "cab-pantry-opp-gss",
+          "name": "Gray Shaker",
+          "description": "OPPEIN · Premium Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8c9298"
+        },
+        {
+          "id": "cab-pantry-opp-bss",
+          "name": "Blue Shaker",
+          "description": "OPPEIN · Premium Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#274066"
+        },
+        {
+          "id": "cab-pantry-opp-pmw",
+          "name": "Matte White",
+          "description": "OPPEIN · Urban Select",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f7f8f8"
+        },
+        {
+          "id": "cab-pantry-opp-pgw",
+          "name": "Glossy White",
+          "description": "OPPEIN · Urban Select",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f1f3f4"
+        },
+        {
+          "id": "cab-pantry-opp-pma",
+          "name": "Matte Ash",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#b2a691"
+        },
+        {
+          "id": "cab-pantry-opp-pmb",
+          "name": "Matte Black",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#1c1c1c"
+        },
+        {
+          "id": "cab-pantry-opp-pmg",
+          "name": "Matte Grey",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8d8c89"
+        },
+        {
+          "id": "cab-pantry-opp-pga",
+          "name": "Glossy Ash",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#a89a82"
+        },
+        {
+          "id": "cab-pantry-opp-pgg",
+          "name": "Glossy Gray",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#7a7d80"
+        },
+        {
+          "id": "cab-pantry-opp-ssw",
+          "name": "Slim Shaker White",
+          "description": "OPPEIN · Elite",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f4f5f5"
+        },
+        {
+          "id": "cab-pantry-aln-mel",
+          "name": "Standard Melamine",
+          "description": "Aline · Melamine",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#e9e6df"
+        },
+        {
+          "id": "cab-pantry-aln-hgw",
+          "name": "High Gloss White",
+          "description": "Aline · High Gloss",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f7f8f8"
+        },
+        {
+          "id": "cab-pantry-aln-hglg",
+          "name": "High Gloss Light Grey",
+          "description": "Aline · High Gloss",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#bcc0c3"
+        },
+        {
+          "id": "cab-pantry-aln-hgg",
+          "name": "High Gloss Grey",
+          "description": "Aline · High Gloss",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#7e8389"
+        },
+        {
+          "id": "cab-pantry-aln-mg",
+          "name": "Matte Grey",
+          "description": "Aline · Matte",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8a8f93"
+        },
+        {
+          "id": "cab-pantry-aln-mw",
+          "name": "Matte White",
+          "description": "Aline · Matte",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f5f6f5"
+        },
+        {
+          "id": "cab-pantry-aln-sw",
+          "name": "Shaker White",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f3f4f3"
+        },
+        {
+          "id": "cab-pantry-aln-gr",
+          "name": "Shaker Grey",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8e9398"
+        },
+        {
+          "id": "cab-pantry-aln-ssw",
+          "name": "Slim Shaker White",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f4f5f4"
+        },
+        {
+          "id": "cab-pantry-aln-ssg",
+          "name": "Slim Shaker Green",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#6e7d5f"
+        },
+        {
+          "id": "cab-pantry-aln-smc",
+          "name": "Shaker Maple Caramel",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#a87a4d"
+        },
+        {
+          "id": "cab-pantry-aln-wg",
+          "name": "Wood Grey (Bois Gris)",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#9b9588"
+        },
+        {
+          "id": "cab-pantry-aln-wo",
+          "name": "White Oak (Chêne Blanc)",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#d7c8a6"
+        },
+        {
+          "id": "cab-pantry-aln-nw",
+          "name": "Natural Wood (Bois Naturel)",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#c8a875"
+        },
+        {
+          "id": "cab-pantry-aln-ssv",
+          "name": "Slim Shaker Veneer",
+          "description": "Aline · Veneer",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#c8a875"
+        },
+        {
+          "id": "cab-pantry-aln-bl",
+          "name": "Blue",
+          "description": "Aline · Double Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#274066"
+        },
+        {
+          "id": "cab-pantry-aln-dsw",
+          "name": "White",
+          "description": "Aline · Double Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f2f3f3"
+        }
+      ]
+    },
+    {
+      "id": "cab-laundry",
+      "name": "Laundry Colour",
+      "description": "Cabinet colour — OPPEIN & Aline collections. Pricing TBD.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "cab-laundry-opp-mpw",
+          "name": "Flat Pure White",
+          "description": "OPPEIN · Essential",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f8f8f7"
+        },
+        {
+          "id": "cab-laundry-opp-mnw",
+          "name": "Natural Wood",
+          "description": "OPPEIN · Essential",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#c8a875"
+        },
+        {
+          "id": "cab-laundry-opp-mso",
+          "name": "Smoked Oak",
+          "description": "OPPEIN · Essential",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#6b4a2b"
+        },
+        {
+          "id": "cab-laundry-opp-spw",
+          "name": "Shaker Pure White",
+          "description": "OPPEIN · Essential Plus",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f5f6f6"
+        },
+        {
+          "id": "cab-laundry-opp-kknw",
+          "name": "Skeleton Natural Wood",
+          "description": "OPPEIN · Trend",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#d8c69b"
+        },
+        {
+          "id": "cab-laundry-opp-wss",
+          "name": "White Shaker",
+          "description": "OPPEIN · Premium Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f2f3f3"
+        },
+        {
+          "id": "cab-laundry-opp-gss",
+          "name": "Gray Shaker",
+          "description": "OPPEIN · Premium Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8c9298"
+        },
+        {
+          "id": "cab-laundry-opp-bss",
+          "name": "Blue Shaker",
+          "description": "OPPEIN · Premium Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#274066"
+        },
+        {
+          "id": "cab-laundry-opp-pmw",
+          "name": "Matte White",
+          "description": "OPPEIN · Urban Select",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f7f8f8"
+        },
+        {
+          "id": "cab-laundry-opp-pgw",
+          "name": "Glossy White",
+          "description": "OPPEIN · Urban Select",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f1f3f4"
+        },
+        {
+          "id": "cab-laundry-opp-pma",
+          "name": "Matte Ash",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#b2a691"
+        },
+        {
+          "id": "cab-laundry-opp-pmb",
+          "name": "Matte Black",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#1c1c1c"
+        },
+        {
+          "id": "cab-laundry-opp-pmg",
+          "name": "Matte Grey",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8d8c89"
+        },
+        {
+          "id": "cab-laundry-opp-pga",
+          "name": "Glossy Ash",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#a89a82"
+        },
+        {
+          "id": "cab-laundry-opp-pgg",
+          "name": "Glossy Gray",
+          "description": "OPPEIN · Signature Prestige",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#7a7d80"
+        },
+        {
+          "id": "cab-laundry-opp-ssw",
+          "name": "Slim Shaker White",
+          "description": "OPPEIN · Elite",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f4f5f5"
+        },
+        {
+          "id": "cab-laundry-aln-mel",
+          "name": "Standard Melamine",
+          "description": "Aline · Melamine",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#e9e6df"
+        },
+        {
+          "id": "cab-laundry-aln-hgw",
+          "name": "High Gloss White",
+          "description": "Aline · High Gloss",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f7f8f8"
+        },
+        {
+          "id": "cab-laundry-aln-hglg",
+          "name": "High Gloss Light Grey",
+          "description": "Aline · High Gloss",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#bcc0c3"
+        },
+        {
+          "id": "cab-laundry-aln-hgg",
+          "name": "High Gloss Grey",
+          "description": "Aline · High Gloss",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#7e8389"
+        },
+        {
+          "id": "cab-laundry-aln-mg",
+          "name": "Matte Grey",
+          "description": "Aline · Matte",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8a8f93"
+        },
+        {
+          "id": "cab-laundry-aln-mw",
+          "name": "Matte White",
+          "description": "Aline · Matte",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f5f6f5"
+        },
+        {
+          "id": "cab-laundry-aln-sw",
+          "name": "Shaker White",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f3f4f3"
+        },
+        {
+          "id": "cab-laundry-aln-gr",
+          "name": "Shaker Grey",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#8e9398"
+        },
+        {
+          "id": "cab-laundry-aln-ssw",
+          "name": "Slim Shaker White",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f4f5f4"
+        },
+        {
+          "id": "cab-laundry-aln-ssg",
+          "name": "Slim Shaker Green",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#6e7d5f"
+        },
+        {
+          "id": "cab-laundry-aln-smc",
+          "name": "Shaker Maple Caramel",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#a87a4d"
+        },
+        {
+          "id": "cab-laundry-aln-wg",
+          "name": "Wood Grey (Bois Gris)",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#9b9588"
+        },
+        {
+          "id": "cab-laundry-aln-wo",
+          "name": "White Oak (Chêne Blanc)",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#d7c8a6"
+        },
+        {
+          "id": "cab-laundry-aln-nw",
+          "name": "Natural Wood (Bois Naturel)",
+          "description": "Aline · Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#c8a875"
+        },
+        {
+          "id": "cab-laundry-aln-ssv",
+          "name": "Slim Shaker Veneer",
+          "description": "Aline · Veneer",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#c8a875"
+        },
+        {
+          "id": "cab-laundry-aln-bl",
+          "name": "Blue",
+          "description": "Aline · Double Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#274066"
+        },
+        {
+          "id": "cab-laundry-aln-dsw",
+          "name": "White",
+          "description": "Aline · Double Shaker",
+          "pricing": "upgrade",
+          "price": 0,
+          "unit": "each",
+          "tbd": true,
+          "swatch": "#f2f3f3"
+        }
+      ]
+    },
+    {
       "id": "cabinet-hardware",
       "name": "Cabinet Hardware",
       "options": [

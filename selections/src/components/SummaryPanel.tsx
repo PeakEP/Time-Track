@@ -44,7 +44,9 @@ export function SummaryPanel() {
                   <em className="qty-note">{` · ×${l.quantity}`}</em>
                 )}
               </span>
-              <span className="num">{l.lineTotal > 0 ? formatCAD(l.lineTotal) : "—"}</span>
+              <span className="num">
+                {l.option.tbd ? "TBD" : l.lineTotal > 0 ? formatCAD(l.lineTotal) : "—"}
+              </span>
             </li>
           ))}
         </ul>

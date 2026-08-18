@@ -26,6 +26,8 @@ export type FinishOption = {
   image?: string;
   // Hex colour used to generate a placeholder swatch when `image` is missing.
   swatch?: string;
+  // Pricing not yet set (e.g. cabinet colours). Shows "Price TBD" and adds $0.
+  tbd?: boolean;
 };
 
 export type Category = {

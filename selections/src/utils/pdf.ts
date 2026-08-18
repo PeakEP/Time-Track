@@ -99,14 +99,17 @@ export async function exportSelectionsPdf(args: ExportArgs): Promise<void> {
       ? "—"
       : `${formatCAD(l.unitPrice)}${l.unit === "sqft" ? "/sf" : ""}`;
 
-  const body = lines.map((l) => [
-    "",
-    l.category.name,
-    l.option.name,
-    l.option.pricing === "included" ? "Included" : qtyLabel(l),
-    unitLabel(l),
-    l.option.pricing === "included" ? "Incl." : formatCAD(l.lineTotal),
-  ]);
+  const body = lines.map((l) => {
+    if (l.option.tbd) return ["", l.category.name, l.option.name, "—", "TBD", "TBD"];
+    return [
+      "",
+      l.category.name,
+      l.option.name,
+      l.option.pricing === "included" ? "Included" : qtyLabel(l),
+      unitLabel(l),
+      l.option.pricing === "included" ? "Incl." : formatCAD(l.lineTotal),
+    ];
+  });
 
   autoTable(doc, {
     startY: y + 10,

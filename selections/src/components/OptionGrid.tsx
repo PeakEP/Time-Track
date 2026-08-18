@@ -48,7 +48,8 @@ function OptionCard({ category, option }: { category: Category; option: FinishOp
 
   const unit = resolveUnit(category, option);
   const price = override ?? option.price;
-  const isUpgrade = option.pricing === "upgrade";
+  const tbd = !!option.tbd;
+  const isUpgrade = option.pricing === "upgrade" && !tbd;
   const qty = quantity ?? defaultQuantity(unit);
   const lineTotal = isUpgrade ? price * qty : 0;
 
@@ -67,6 +68,8 @@ function OptionCard({ category, option }: { category: Category; option: FinishOp
         )}
         {option.pricing === "included" ? (
           <span className="tag tag-included">Included</span>
+        ) : tbd ? (
+          <span className="tag tag-tbd">Price TBD</span>
         ) : (
           <span className="tag tag-upgrade">
             {unit === "sqft" ? formatUnitPrice(price, unit) : `+${formatCAD(price)}`}

@@ -326,6 +326,9 @@ h3 {
 .tag-upgrade {
   background: var(--indigo);
 }
+.tag-tbd {
+  background: var(--text-muted);
+}
 .card-body {
   padding: 11px 13px 13px;
 }
