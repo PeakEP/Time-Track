@@ -3,98 +3,1448 @@
     "currency": "CAD",
     "pricing_year": 2026,
     "base_price": 18500,
-    "notes": "DEMO catalog for Robins Interiors & Design. Replace categories/options with the real finish schedule. Each option is 'included' (in base_price) or 'upgrade' (with a price). Set an option's 'image' to a photo path in public/ (e.g. finishes/quartz-white.jpg); the 'swatch' hex is only a placeholder when no image is present."
+    "notes": "Imported from Square (Robins Interiors). Prices are Square unit prices in CAD. All options pricing='upgrade' pending included-vs-upgrade designation and base_price confirmation."
   },
   "categories": [
     {
-      "id": "flooring",
-      "name": "Flooring",
-      "description": "Main living areas. One selection for the standard package.",
+      "id": "spc-flooring",
+      "name": "SPC Flooring",
       "options": [
-        { "id": "floor-lvp", "name": "Luxury Vinyl Plank", "description": "Waterproof, wood-look. Standard package.", "pricing": "included", "price": 0, "swatch": "#b08b5e" },
-        { "id": "floor-carpet", "name": "Plush Carpet (Bedrooms)", "description": "Stain-resistant nylon.", "pricing": "included", "price": 0, "swatch": "#a9a097" },
-        { "id": "floor-hardwood", "name": "Engineered Hardwood", "description": "5\" white oak, matte finish.", "pricing": "upgrade", "price": 4200, "swatch": "#8a6240" },
-        { "id": "floor-tile", "name": "Porcelain Wood-Look Tile", "description": "Through-body porcelain plank.", "pricing": "upgrade", "price": 5600, "swatch": "#9c8a74" }
+        {
+          "id": "spc-coastland-bahama",
+          "name": "SPC Coastland, Bahama **",
+          "description": "7\" x 48\", 5mm + 1mm IXPE, 12mil wear, 5Gi click, Micro bevel",
+          "pricing": "upgrade",
+          "price": 2.29,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/c6bd29f84a132f2e301295b7e6af49b6b4d61dd2/original.jpeg"
+        },
+        {
+          "id": "spc-coastland-coastal-point",
+          "name": "SPC Coastland, Coastal Point **",
+          "description": "7\" x 48\", 5mm + 1mm IXPE, 12mil wear, 5Gi click, Micro bevel",
+          "pricing": "upgrade",
+          "price": 2.29,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/85855689b9c01883f6adba7002befedee62235f6/original.jpeg"
+        },
+        {
+          "id": "spc-coastland-pavillion",
+          "name": "SPC Coastland, Pavillion **",
+          "description": "7\" x 48\", 5mm + 1mm IXPE, 12mil wear, 5Gi click, Micro bevel",
+          "pricing": "upgrade",
+          "price": 2.29,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/062a9326faa60684510de0da76f45ef746363c50/original.jpeg"
+        },
+        {
+          "id": "spc-coastland-sandcastle",
+          "name": "SPC Coastland, Sandcastle **",
+          "description": "7\" x 48\", 5mm + 1mm IXPE, 12mil wear, 5Gi click, Micro bevel",
+          "pricing": "upgrade",
+          "price": 2.29,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/5c738f9dd0e9340becb80d8d330767f5b9ac8b0c/original.jpeg"
+        },
+        {
+          "id": "spc-coastland-stormy-sky",
+          "name": "SPC Coastland, Stormy Sky **",
+          "description": "7\" x 48\", 5mm + 1mm IXPE, 12mil wear, 5Gi click, Micro bevel",
+          "pricing": "upgrade",
+          "price": 2.29,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/0f300f914d8a3a1fc2b5489d3ed23973ece656f5/original.jpeg"
+        },
+        {
+          "id": "spc-granite-guard-amber-oak",
+          "name": "SPC Granite Guard +, Amber Oak",
+          "description": "9\" x 60\", 6mm + 1.5mm IXPE, 20mil wear, Click lock, Matte",
+          "pricing": "upgrade",
+          "price": 3.5,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/17649e8c73e300b1c8bb2fb85713ac440c535c12/original.jpeg"
+        },
+        {
+          "id": "spc-granite-guard-dawn-birch",
+          "name": "SPC Granite Guard +, Dawn Birch",
+          "description": "9\" x 60\", 6mm + 1.5mm IXPE, 20mil wear, Click lock, Matte",
+          "pricing": "upgrade",
+          "price": 3.5,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/a873fae0ee08035d2a3646a907ebcd6e1f1b2a44/original.jpeg"
+        },
+        {
+          "id": "spc-granite-guard-frost-oak-26-25-sf-box",
+          "name": "SPC Granite Guard +, Frost Oak (26.25 sf/box)",
+          "description": "9\" x 60\", 6mm + 1.5mm IXPE, 20mil wear, Click lock, Matte",
+          "pricing": "upgrade",
+          "price": 3.5,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/68ed2a75d2588b901a878eae3bebe552bbba1a34/original.jpeg"
+        },
+        {
+          "id": "spc-granite-guard-honey-timber",
+          "name": "SPC Granite Guard +, Honey Timber",
+          "description": "9\" x 60\", 6mm + 1.5mm IXPE, 20mil wear, Click lock, Matte",
+          "pricing": "upgrade",
+          "price": 3.5,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/763d87e8bb76d78f99e8cbd0fa05af99823a17ee/original.jpeg"
+        },
+        {
+          "id": "spc-granite-guard-whiskey-ash",
+          "name": "SPC Granite Guard +, Whiskey Ash",
+          "description": "9\" x 60\", 6mm + 1.5mm IXPE, 20mil wear, Click lock, Matte",
+          "pricing": "upgrade",
+          "price": 3.5,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/767af2b5f0547ca73f92be862dff9c5ae7f1a757/original.jpeg"
+        },
+        {
+          "id": "spc-granite-guard-american-oak",
+          "name": "SPC Granite Guard, American Oak",
+          "description": "9\" x 48\", 5.5mm + 1.5mm IXPE, 20mil wear, Click lock, Matte",
+          "pricing": "upgrade",
+          "price": 3.15,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/85023903fb2c38f1648f52f4104492f60ba0e5c6/original.jpeg"
+        },
+        {
+          "id": "spc-granite-guard-american-walnut",
+          "name": "SPC Granite Guard, American Walnut",
+          "description": "9\" x 48\", 5.5mm + 1.5mm IXPE, 20mil wear, Click lock, Matte",
+          "pricing": "upgrade",
+          "price": 3.15,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/cb720c01747a044c8f64a464d2659fc88666134d/original.jpeg"
+        },
+        {
+          "id": "spc-granite-guard-warm-oak",
+          "name": "SPC Granite Guard, Warm Oak",
+          "description": "9\" x 48\", 5.5mm + 1.5mm IXPE, 20mil wear, Click lock, Matte",
+          "pricing": "upgrade",
+          "price": 3.15,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/046d9d60f1c39c6701b888e44211c3e3457d2d04/original.jpeg"
+        },
+        {
+          "id": "spc-granite-guard-warm-walnut",
+          "name": "SPC Granite Guard, Warm Walnut",
+          "description": "9\" x 48\", 5.5mm + 1.5mm IXPE, 20mil wear, Click lock, Matte",
+          "pricing": "upgrade",
+          "price": 3.15,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/02cacf441f6a76389348e6df6e5dc7a946e481e7/original.jpeg"
+        },
+        {
+          "id": "spc-ridgelock-pro-antero",
+          "name": "SPC Ridgelock PRO, Antero",
+          "description": "SPC Ridgelock PRO, Antero",
+          "pricing": "upgrade",
+          "price": 3.99,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/28e6e810b6833a1b1b5b8a061d899e059394e9f6/original.jpeg"
+        },
+        {
+          "id": "spc-ridgelock-pro-aspen",
+          "name": "SPC Ridgelock PRO, Aspen",
+          "description": "SPC Ridgelock PRO, Aspen",
+          "pricing": "upgrade",
+          "price": 3.99,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/9c9a328f1469286a877fab303362d54d2ca8b4bc/original.jpeg"
+        },
+        {
+          "id": "spc-ridgelock-pro-cabot",
+          "name": "SPC Ridgelock PRO, Cabot",
+          "description": "SPC Ridgelock PRO, Cabot",
+          "pricing": "upgrade",
+          "price": 3.99,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/c050b78eb832a008b9301e5b6de2c0c23c49ef61/original.jpeg"
+        },
+        {
+          "id": "spc-ridgelock-pro-rundle",
+          "name": "SPC Ridgelock PRO, Rundle",
+          "description": "SPC Ridgelock PRO, Rundle",
+          "pricing": "upgrade",
+          "price": 3.99,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/2f0b41f35539fe4db10d36c6e8821234afa00ab2/original.jpeg"
+        },
+        {
+          "id": "spc-ridgelock-pro-teton",
+          "name": "SPC Ridgelock PRO, Teton",
+          "description": "SPC Ridgelock PRO, Teton",
+          "pricing": "upgrade",
+          "price": 3.99,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/f907ae7093531cdec4b9359bdcd9bdc5cd154892/original.jpeg"
+        },
+        {
+          "id": "spc-ridgelock-cascade",
+          "name": "SPC Ridgelock, Cascade",
+          "description": "9\" x 48\", 5mm + 1mm IXPE, 12mil wear, Drop lock (Unidrop), Matte",
+          "pricing": "upgrade",
+          "price": 3.4,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/53b3c658f3bd167fa05d88127ffe91ace9742190/original.jpeg"
+        },
+        {
+          "id": "spc-ridgelock-highland",
+          "name": "SPC Ridgelock, Highland",
+          "description": "9\" x 48\", 5mm + 1mm IXPE, 12mil wear, Drop lock (Unidrop), Matte",
+          "pricing": "upgrade",
+          "price": 3.4,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/6c3731a95d7fe5c08177dc49b273d5d2d484c952/original.jpeg"
+        },
+        {
+          "id": "spc-ridgelock-sedona",
+          "name": "SPC Ridgelock, Sedona",
+          "description": "9\" x 48\", 5mm + 1mm IXPE, 12mil wear, Drop lock (Unidrop), Matte",
+          "pricing": "upgrade",
+          "price": 3.4,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/93f0771bd6767f68f4538fb81c51aa9caf2bf628/original.jpeg"
+        },
+        {
+          "id": "spc-ridgelock-whistler",
+          "name": "SPC Ridgelock, Whistler",
+          "description": "9\" x 48\", 5mm + 1mm IXPE, 12mil wear, Drop lock (Unidrop), Matte",
+          "pricing": "upgrade",
+          "price": 3.4,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/c4a65f7cf2cad19b57a629ed2544de94d30c4a6c/original.jpeg"
+        }
       ]
     },
     {
-      "id": "cabinets",
-      "name": "Kitchen Cabinets",
-      "description": "Door style and finish for the main kitchen.",
+      "id": "laminate-tidalcore",
+      "name": "Laminate / Tidalcore",
       "options": [
-        { "id": "cab-white", "name": "Shaker — White", "description": "Painted white shaker. Standard.", "pricing": "included", "price": 0, "swatch": "#eee9e1" },
-        { "id": "cab-grey", "name": "Shaker — Stone Grey", "description": "Painted grey shaker. Standard.", "pricing": "included", "price": 0, "swatch": "#9a9a93" },
-        { "id": "cab-twotone", "name": "Two-Tone (Island Accent)", "description": "Contrasting island colour.", "pricing": "upgrade", "price": 1850, "swatch": "#33415c" },
-        { "id": "cab-custom", "name": "Custom Colour Match", "description": "Any paint colour, soft-close.", "pricing": "upgrade", "price": 2950, "swatch": "#6b7a5e" }
+        {
+          "id": "laminate-audacity-sherwood",
+          "name": "Laminate Audacity, Sherwood **",
+          "description": "7.72\" x 47.75\", 12mm (10mm + 2mm IXPE), AC4, Tight lock, Painted bevel",
+          "pricing": "upgrade",
+          "price": 3.5,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/8d08e2101abafa7c8996a533d8c60f1e1e8f277f/original.jpeg"
+        },
+        {
+          "id": "laminate-audacity-windsor",
+          "name": "Laminate Audacity, Windsor **",
+          "description": "7.72\" x 47.75\", 12mm (10mm + 2mm IXPE), AC4, Tight lock, Painted bevel",
+          "pricing": "upgrade",
+          "price": 3.95,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/516765fbd45a52089120e546fd492a36ffeccac9/original.jpeg"
+        },
+        {
+          "id": "laminate-fuzguard-tahoe",
+          "name": "Laminate Fuzguard, Tahoe **",
+          "description": "9-1/4\" x 60\", 12mm, AC4, Click lock",
+          "pricing": "upgrade",
+          "price": 3.65,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/d8c9a91fb281e08546faa0d1bdbfa570ac614dd8/original.png"
+        },
+        {
+          "id": "laminate-nautiq-pro-coral-reef",
+          "name": "Laminate Nautiq Pro, Coral Reef **",
+          "description": "9-1/4\" x 60\", 12mm, AC4, 5G click, Painted bevel",
+          "pricing": "upgrade",
+          "price": 4.15,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/0742d514175586f2167066a243e51b2ed9724153/original.jpeg"
+        },
+        {
+          "id": "laminate-nautiq-pro-monsoon-coast",
+          "name": "Laminate Nautiq Pro, Monsoon Coast **",
+          "description": "9-1/4\" x 60\", 12mm, AC4, 5G click, Painted bevel",
+          "pricing": "upgrade",
+          "price": 4.75,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/cd4699bd796cfb13116072002983599862a52264/original.png"
+        },
+        {
+          "id": "laminate-nautiq-pro-seastorm-oak",
+          "name": "Laminate Nautiq Pro, Seastorm Oak **",
+          "description": "9-1/4\" x 60\", 12mm, AC4, 5G click, Painted bevel",
+          "pricing": "upgrade",
+          "price": 5.36,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/1e82d4206cc1eb687a34601ea05fe61bfbf2ea5b/original.png"
+        },
+        {
+          "id": "laminate-nautiq-pro-tidal-drift",
+          "name": "Laminate Nautiq Pro, Tidal Drift **",
+          "description": "9-1/4\" x 60\", 12mm, AC4, 5G click, Painted bevel",
+          "pricing": "upgrade",
+          "price": 4.15,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/1b9499a5240e10cd7b32f52df2778bb5bab25e76/original.jpeg"
+        },
+        {
+          "id": "laminate-nautiq-pro-tsunami",
+          "name": "Laminate Nautiq Pro, Tsunami **",
+          "description": "9-1/4\" x 60\", 12mm, AC4, 5G click, Painted bevel",
+          "pricing": "upgrade",
+          "price": 4.63,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/3b5d6fd22a733712a1ef9a757931a01fd4612445/original.png"
+        },
+        {
+          "id": "laminate-sequoia-pro-coastal-oak-27-4-sf-bx",
+          "name": "Laminate Sequoia Pro, Coastal Oak (27.4 sf/bx)",
+          "description": "9.45\" x 60\", 12mm, AC4, 2G click, V-groove",
+          "pricing": "upgrade",
+          "price": 3.99,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/f75a76ee2d94fcd0205fe43010a0b2a437414569/original.jpeg"
+        },
+        {
+          "id": "laminate-sequoia-pro-sierra-hearth-27-4-sf-bx",
+          "name": "Laminate Sequoia Pro, Sierra Hearth (27.4 sf/bx)",
+          "description": "9.45\" x 60\", 12mm, AC4, 2G click, V-groove",
+          "pricing": "upgrade",
+          "price": 3.99,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/6687a6d72b630020576e136e35469a423545018e/original.jpeg"
+        },
+        {
+          "id": "laminate-sequoia-pro-valley-mist-27-4-sf-bx",
+          "name": "Laminate Sequoia Pro, Valley Mist (27.4 sf/bx)",
+          "description": "9.45\" x 60\", 12mm, AC4, 2G click, V-groove",
+          "pricing": "upgrade",
+          "price": 3.99,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/9889254c05bcebbcc25736c216a2bcbc5b226979/original.jpeg"
+        },
+        {
+          "id": "laminate-sequoia-pro-whispering-oak-27-4-sf-bx",
+          "name": "Laminate Sequoia Pro, Whispering Oak (27.4 sf/bx)",
+          "description": "9.45\" x 60\", 12mm, AC4, 2G click, V-groove",
+          "pricing": "upgrade",
+          "price": 3.99,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/b3805f65f21a2dba5c42d2fe856f3e491ebf9378/original.jpeg"
+        }
       ]
     },
     {
-      "id": "countertops",
-      "name": "Countertops",
-      "description": "Kitchen counters and island.",
+      "id": "engineered-hardwood",
+      "name": "Engineered Hardwood",
       "options": [
-        { "id": "counter-lam", "name": "Laminate", "description": "Standard package.", "pricing": "included", "price": 0, "swatch": "#cfc6b8" },
-        { "id": "counter-granite", "name": "Granite", "description": "Level 1 granite, eased edge.", "pricing": "upgrade", "price": 2400, "swatch": "#6e6a66" },
-        { "id": "counter-quartz", "name": "Quartz", "description": "Engineered quartz, low maintenance.", "pricing": "upgrade", "price": 3300, "swatch": "#e8e6e2" },
-        { "id": "counter-quartzite", "name": "Natural Quartzite", "description": "Premium natural stone.", "pricing": "upgrade", "price": 5200, "swatch": "#cdd2d4" }
+        {
+          "id": "engineered-hardwood-demure-oak-reflections",
+          "name": "Engineered Hardwood Demure, Oak Reflections **",
+          "description": "6-1/2\" x 3/4\" x RL, T&G",
+          "pricing": "upgrade",
+          "price": 7.49,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/caa5b81842e9da0b2dfc9dfd6d154fb465da759b/original.png"
+        }
       ]
     },
     {
-      "id": "backsplash",
-      "name": "Kitchen Backsplash",
+      "id": "quartz-countertops",
+      "name": "Quartz Countertops",
       "options": [
-        { "id": "bs-subway", "name": "Subway Tile", "description": "3x6 ceramic, standard.", "pricing": "included", "price": 0, "swatch": "#f2efe9" },
-        { "id": "bs-mosaic", "name": "Mosaic Accent", "description": "Glass/stone blend.", "pricing": "upgrade", "price": 950, "swatch": "#7f8c8d" },
-        { "id": "bs-slab", "name": "Full-Height Slab", "description": "Counter material to underside of uppers.", "pricing": "upgrade", "price": 2100, "swatch": "#d9d4cc" }
+        {
+          "id": "crystal-crescent-snowy-peak",
+          "name": "Crystal Crescent - Snowy Peak",
+          "description": "Tier 0",
+          "pricing": "upgrade",
+          "price": 72.5,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/d2a098946894b70e1044597c65f8f42ed8bdfede/original.png"
+        },
+        {
+          "id": "flint",
+          "name": "Flint",
+          "description": "Tier 0",
+          "pricing": "upgrade",
+          "price": 72.5,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/d2a098946894b70e1044597c65f8f42ed8bdfede/original.png"
+        },
+        {
+          "id": "white-rock",
+          "name": "White Rock",
+          "description": "Tier 0",
+          "pricing": "upgrade",
+          "price": 72.5,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/d2a098946894b70e1044597c65f8f42ed8bdfede/original.png"
+        },
+        {
+          "id": "baffin-bay",
+          "name": "Baffin Bay",
+          "description": "Tier 1 - Price Per SF.",
+          "pricing": "upgrade",
+          "price": 84.38
+        },
+        {
+          "id": "chiffon-mist",
+          "name": "Chiffon Mist",
+          "description": "Tier 1 - Price Per SF.",
+          "pricing": "upgrade",
+          "price": 84.38
+        },
+        {
+          "id": "crystal-crescent",
+          "name": "Crystal Crescent",
+          "description": "Tier 1 - Price Per SF.",
+          "pricing": "upgrade",
+          "price": 84.38
+        },
+        {
+          "id": "grey-cinder",
+          "name": "Grey Cinder",
+          "description": "Tier 1 - Price Per SF.",
+          "pricing": "upgrade",
+          "price": 84.38
+        },
+        {
+          "id": "grey-expo",
+          "name": "Grey Expo",
+          "description": "Tier 1 - Price Per SF.",
+          "pricing": "upgrade",
+          "price": 84.38
+        },
+        {
+          "id": "halcyon",
+          "name": "Halcyon",
+          "description": "Tier 1 - Price Per SF.",
+          "pricing": "upgrade",
+          "price": 84.38
+        },
+        {
+          "id": "linen-cream",
+          "name": "Linen Cream",
+          "description": "Tier 1 - Price Per SF.",
+          "pricing": "upgrade",
+          "price": 84.38
+        },
+        {
+          "id": "miami-vena",
+          "name": "Miami Vena",
+          "description": "Tier 1 - Price Per SF.",
+          "pricing": "upgrade",
+          "price": 84.38
+        },
+        {
+          "id": "miami-white",
+          "name": "Miami White",
+          "description": "Tier 1 - Price Per SF.",
+          "pricing": "upgrade",
+          "price": 84.38
+        },
+        {
+          "id": "moon-rock",
+          "name": "Moon Rock",
+          "description": "Tier 1 - Price Per SF.",
+          "pricing": "upgrade",
+          "price": 84.38
+        },
+        {
+          "id": "silver-sand",
+          "name": "Silver Sand",
+          "description": "Tier 1 - Price Per SF.",
+          "pricing": "upgrade",
+          "price": 84.38
+        },
+        {
+          "id": "tofino-grey",
+          "name": "Tofino Grey",
+          "description": "Tier 1 - Price Per SF.",
+          "pricing": "upgrade",
+          "price": 84.38
+        },
+        {
+          "id": "uptown-grey",
+          "name": "Uptown Grey",
+          "description": "Tier 1 - Price Per SF.",
+          "pricing": "upgrade",
+          "price": 84.38
+        },
+        {
+          "id": "whistler",
+          "name": "Whistler",
+          "description": "Tier 1 - Price Per SF.",
+          "pricing": "upgrade",
+          "price": 84.38
+        },
+        {
+          "id": "whistler-gold",
+          "name": "Whistler Gold",
+          "description": "Tier 1 - Price Per SF.",
+          "pricing": "upgrade",
+          "price": 84.38
+        },
+        {
+          "id": "white-sands",
+          "name": "White Sands",
+          "description": "Tier 1 - Price Per SF.",
+          "pricing": "upgrade",
+          "price": 84.38
+        },
+        {
+          "id": "ashen-marble",
+          "name": "Ashen Marble",
+          "description": "Tier 2",
+          "pricing": "upgrade",
+          "price": 95.63
+        },
+        {
+          "id": "aspen",
+          "name": "Aspen",
+          "description": "Tier 2",
+          "pricing": "upgrade",
+          "price": 95.63
+        },
+        {
+          "id": "darton",
+          "name": "Darton",
+          "description": "Tier 2",
+          "pricing": "upgrade",
+          "price": 95.63
+        },
+        {
+          "id": "frozen-tundra",
+          "name": "Frozen Tundra",
+          "description": "Tier 2",
+          "pricing": "upgrade",
+          "price": 95.63
+        },
+        {
+          "id": "golden-sky",
+          "name": "Golden Sky",
+          "description": "Tier 2",
+          "pricing": "upgrade",
+          "price": 95.63
+        },
+        {
+          "id": "helix",
+          "name": "Helix",
+          "description": "Tier 2",
+          "pricing": "upgrade",
+          "price": 95.63
+        },
+        {
+          "id": "organic-white",
+          "name": "Organic White",
+          "description": "Tier 2",
+          "pricing": "upgrade",
+          "price": 95.63
+        },
+        {
+          "id": "persian-white",
+          "name": "Persian White",
+          "description": "Tier 2",
+          "pricing": "upgrade",
+          "price": 95.63
+        },
+        {
+          "id": "siberian-frost",
+          "name": "Siberian Frost",
+          "description": "Tier 2",
+          "pricing": "upgrade",
+          "price": 95.63
+        },
+        {
+          "id": "stone-grey",
+          "name": "Stone Grey",
+          "description": "Tier 2",
+          "pricing": "upgrade",
+          "price": 95.63
+        },
+        {
+          "id": "aterra-blanca",
+          "name": "Aterra Blanca",
+          "description": "Tier 3",
+          "pricing": "upgrade",
+          "price": 107.58
+        },
+        {
+          "id": "cotton",
+          "name": "Cotton",
+          "description": "Tier 3",
+          "pricing": "upgrade",
+          "price": 107.58
+        },
+        {
+          "id": "desert-silver",
+          "name": "Desert Silver",
+          "description": "Tier 3",
+          "pricing": "upgrade",
+          "price": 107.58
+        },
+        {
+          "id": "georgian-bluffs",
+          "name": "Georgian Bluffs",
+          "description": "Tier 3",
+          "pricing": "upgrade",
+          "price": 107.58
+        },
+        {
+          "id": "italian-waves",
+          "name": "Italian Waves",
+          "description": "Tier 3",
+          "pricing": "upgrade",
+          "price": 107.58
+        },
+        {
+          "id": "lime-delight-non-polished-surface",
+          "name": "Lime Delight (Non-Polished Surface)",
+          "description": "Tier 3",
+          "pricing": "upgrade",
+          "price": 107.58
+        },
+        {
+          "id": "primordia-non-polished-surface",
+          "name": "Primordia (Non-Polished Surface)",
+          "description": "Tier 3",
+          "pricing": "upgrade",
+          "price": 107.58
+        },
+        {
+          "id": "ridge",
+          "name": "Ridge",
+          "description": "Tier 3",
+          "pricing": "upgrade",
+          "price": 107.58
+        },
+        {
+          "id": "silhouette",
+          "name": "Silhouette",
+          "description": "Tier 3",
+          "pricing": "upgrade",
+          "price": 107.58
+        },
+        {
+          "id": "snowy-ibiza",
+          "name": "Snowy Ibiza",
+          "description": "Tier 3",
+          "pricing": "upgrade",
+          "price": 107.58
+        },
+        {
+          "id": "turbine-grey",
+          "name": "Turbine Grey",
+          "description": "Tier 3",
+          "pricing": "upgrade",
+          "price": 107.58
+        },
+        {
+          "id": "white-arabesque",
+          "name": "White Arabesque",
+          "description": "Tier 3",
+          "pricing": "upgrade",
+          "price": 107.58
+        },
+        {
+          "id": "winter-whiteout",
+          "name": "Winter Whiteout",
+          "description": "Tier 3",
+          "pricing": "upgrade",
+          "price": 107.58
+        },
+        {
+          "id": "oceana",
+          "name": "Oceana",
+          "description": "Tier 4",
+          "pricing": "upgrade",
+          "price": 118.12
+        }
       ]
     },
     {
-      "id": "paint",
-      "name": "Interior Paint",
+      "id": "butcher-block",
+      "name": "Butcher Block",
       "options": [
-        { "id": "paint-white", "name": "Builder White (Whole Home)", "description": "One standard colour throughout.", "pricing": "included", "price": 0, "swatch": "#f4f1ea" },
-        { "id": "paint-designer", "name": "Designer Colour Scheme", "description": "Curated whole-home palette.", "pricing": "upgrade", "price": 1200, "swatch": "#b9c0b0" },
-        { "id": "paint-accent", "name": "Accent Walls (up to 4)", "description": "Feature walls in select rooms.", "pricing": "upgrade", "price": 650, "swatch": "#4a5a66" }
+        {
+          "id": "butcher-block-countertop-golden-wheat-6-x25",
+          "name": "Butcher Block Countertop, Golden Wheat, 6\"x25\"",
+          "description": "Solid Hevea wood, Pre-stained Golden Wheat, Straight edges, Indoor use only, 6\" x 25\"",
+          "pricing": "upgrade",
+          "price": 293.99,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/86664f08373c19372602d9692660059c126c1d53/original.png"
+        }
       ]
     },
     {
-      "id": "plumbing",
-      "name": "Plumbing Fixtures",
-      "description": "Faucet and fixture finish.",
+      "id": "grout-colours",
+      "name": "Grout Colours",
       "options": [
-        { "id": "plumb-chrome", "name": "Polished Chrome", "description": "Standard.", "pricing": "included", "price": 0, "swatch": "#c8ccce" },
-        { "id": "plumb-nickel", "name": "Brushed Nickel", "description": "Standard.", "pricing": "included", "price": 0, "swatch": "#a9a8a3" },
-        { "id": "plumb-black", "name": "Matte Black", "description": "Upgrade finish.", "pricing": "upgrade", "price": 780, "swatch": "#2b2b2b" },
-        { "id": "plumb-gold", "name": "Brushed Gold", "description": "Upgrade finish.", "pricing": "upgrade", "price": 1150, "swatch": "#b39256" }
+        {
+          "id": "floor-cement-feather-finish-gray-10lb",
+          "name": "Floor Cement, Feather Finish Gray 10lb",
+          "description": "Blend of hydraulic and other cements\nSelf-drying matrix. Mixes with water only.\nTrowelable",
+          "pricing": "upgrade",
+          "price": 40.0,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/cb426a472cd162a4fa15d805b8798248310861bf/original.png"
+        },
+        {
+          "id": "grout-104-timberwolf-25-lb",
+          "name": "Grout, #104 Timberwolf,  25 lb",
+          "description": "Fast-setting, polymer-modified, color-consistent, non-shrinking, efflorescence-free grout\nJoint widths from 1/16\" to 3/4\" (1.5 to 19 mm)\nFine aggregate (FA)\nNo efflorescence (free of Portland cement)\nEasy to install and stain-resistant",
+          "pricing": "upgrade",
+          "price": 51.3,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/302eaf505e8664b17c70546398790457c1b52c03/original.png"
+        },
+        {
+          "id": "grout-5010-black-10-lb",
+          "name": "Grout, #5010 Black, 10 lb",
+          "description": "Fast-setting, polymer-modified, color-consistent, non-shrinking, efflorescence-free grout\nJoint widths from 1/16\" to 3/4\" (1.5 to 19 mm)\nFine aggregate (FA)\nNo efflorescence (free of Portland cement)\nEasy to install and stain-resistant",
+          "pricing": "upgrade",
+          "price": 26.35,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/302eaf505e8664b17c70546398790457c1b52c03/original.png"
+        },
+        {
+          "id": "grout-5093-warm-gray-25-lb-mapei",
+          "name": "Grout, #5093 Warm Gray,  25 lb, Mapei",
+          "description": "Fast-setting, polymer-modified, color-consistent, non-shrinking, efflorescence-free grout for joint widths from 1/16\" to 3/4\" (1.5 to 19 mm)\nFine aggregate (FA) allows for narrow joint widths and improved cleanability\nNo efflorescence (free of Portland cement)\nEasy to install and stain-resistant",
+          "pricing": "upgrade",
+          "price": 51.3,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/893f82f42ba64738bc6e7da9b1f0ff93e1683bfb/original.png"
+        },
+        {
+          "id": "grout-5093-warm-gray-10-lb",
+          "name": "Grout, #5093 Warm Gray, 10 lb",
+          "description": "Fast-setting, polymer-modified, color-consistent, non-shrinking, efflorescence-free grout\nJoint widths from 1/16\" to 3/4\" (1.5 to 19 mm)\nFine aggregate (FA)\nNo efflorescence (free of Portland cement)\nEasy to install and stain-resistant",
+          "pricing": "upgrade",
+          "price": 26.35,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/805e672528a78dd7d4daf3b678d8dd4e90c4fc59/original.png"
+        },
+        {
+          "id": "grout-5103-cobblestone-10-lb",
+          "name": "Grout, #5103 Cobblestone, 10 lb",
+          "description": "Fine aggregate (FA)\nNo efflorescence (free of Portland cement)\nEasy to install and stain-resistant\nNo sealer required",
+          "pricing": "upgrade",
+          "price": 27.95,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/4fa085bf388ac825f835adea7d13cdd2461d23b4/original.png"
+        },
+        {
+          "id": "grout-5104-timberwolf-10-lb",
+          "name": "Grout, #5104 Timberwolf, 10 lb",
+          "description": "Fast-setting, polymer-modified, color-consistent, non-shrinking, efflorescence-free grout\nJoint widths from 1/16\" to 3/4\" (1.5 to 19 mm)\nFine aggregate (FA)\nNo efflorescence (free of Portland cement)\nEasy to install and stain-resistant",
+          "pricing": "upgrade",
+          "price": 26.35,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/805e672528a78dd7d4daf3b678d8dd4e90c4fc59/original.png"
+        },
+        {
+          "id": "membrane-isolation-waterproof-crack-ardex-s-1-k-3-78l",
+          "name": "Membrane, Isolation, Waterproof/Crack,  Ardex S 1-K, 3.78L",
+          "description": "One-Component Waterproofing and Crack Isolation Membrane",
+          "pricing": "upgrade",
+          "price": 82.65,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/c97922a6fd13f6c3cd04dc98f94a90f164c3e280/original.png"
+        },
+        {
+          "id": "mortar-lht-plus-grey-large-tile-50lb",
+          "name": "Mortar Lht Plus Grey Large Tile 50lb",
+          "description": "Exceeds ANSI A118.4 and ANSI A118.11\nSupports heavy tile and stone, reducing lippage problems.\nFor interior and exterior floor and wall applications\nBuild up to 3/4\" (19 mm) without shrinkage or set-up time problems",
+          "pricing": "upgrade",
+          "price": 29.25,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/cbdfe7e494649c525e2bb60708afed184473747b/original.png"
+        },
+        {
+          "id": "mortar-ditra-all-set-modified-thin-set-white-50-lb",
+          "name": "Mortar, Ditra ALL-SET Modified Thin-Set, White, 50 lb",
+          "description": "Engineered for use both under and over all DITRA and KERDI products\nSag-resistant, smooth and creamy\nEasy to handle and spread\nSuitable for use with ceramic, porcelain, and stone tile, including large and heavy tile\nTo be used in conjunction with Schluter-Systems uncoupling and waterproofing membranes (DITRA, DITRA-HEAT, and KERDI), the Schluter-Shower System, and KERDI-BOARD\nMeets ANSI A118.4T, ANSI A118.11, and ANSI A118.15T\nLifetime warranty when used with applicable Schluter products",
+          "pricing": "upgrade",
+          "price": 61.64,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/086a09a3cf042ab10d77d3050c2633c9b6e571a1/original.png"
+        },
+        {
+          "id": "mortar-laticrete-4-xlt-extra-large-tile-grey-50-lb",
+          "name": "Mortar, Laticrete - 4-XLT, Extra Large Tile, Grey 50 lb",
+          "description": "4-XLT is a multi-use, polymer fortified adhesive\nNon-sag, Including large and heavy tile\nMinimum of 3/32” (2.4mm) up to a ¾” (19mm) without shrinkage\nSmooth and Creamy consistency\n\"Extra Heavy\" rating per ASTM C627\nBonds to many suitable substrates\nExceeds ANSI A118.15",
+          "pricing": "upgrade",
+          "price": 47.85,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/f4c992e9fa216ab2cc4480c3acfcba094f91c36b/original.png"
+        },
+        {
+          "id": "mortar-laticrete-tri-lite-grey-30lb",
+          "name": "Mortar, Laticrete Tri-Lite Grey 30lb",
+          "description": "Lightweight formula.\n30 lb (13.6 kg) bag provides the same coverage as a 50 lb (22.7 kg) bag of traditional mortar\nNon-sag\nSmooth, creamy\nExceeds ANSI A118.15 HET, A118.4 and A118.11\nExceeds ISO 13007 - C2TES1P1 classification\nBonds to many suitable substrates",
+          "pricing": "upgrade",
+          "price": 51.8,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/5ce87fa9f1125b9afd759d28827b2255a51a0503/original.png"
+        },
+        {
+          "id": "paint-mixer-hexomixer",
+          "name": "Paint Mixer, Hexomixer",
+          "description": "Length 16\", Diameter 3,2\", Rod Size 3/8\"",
+          "pricing": "upgrade",
+          "price": 13.55,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/068b0b556ab25171ce9e925a8bba006eeb8e7cf7/original.png"
+        },
+        {
+          "id": "penetrating-sealer-stone-tile-grout-aqua-mix-946-ml",
+          "name": "Penetrating Sealer, Stone, Tile, & Grout, Aqua Mix, 946 ml",
+          "description": "Excellent stain protection\nNo sheen, natural look\nSafe, water-based formula",
+          "pricing": "upgrade",
+          "price": 18.45,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/633b518985bbb8457d2b7994945418435bde642f/original.png"
+        },
+        {
+          "id": "q-e-p-econo-floats-9-x-4",
+          "name": "Q.E.P. Econo Floats 9 X 4",
+          "description": "Use to smoothly apply grout to floor and wall tile",
+          "pricing": "upgrade",
+          "price": 8.05,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/16806f2a700bdc50c1a65cfe742849daca8fc59d/original.png"
+        },
+        {
+          "id": "sponge-epoxy-grout",
+          "name": "Sponge, Epoxy Grout",
+          "description": "Extra durable grout clean up sponge\n7\" x 5\" x 2 1/2\"",
+          "pricing": "upgrade",
+          "price": 5.55,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/527b2085bdd4cf62227bb759e9a72c7fd1c400d9/original.png"
+        },
+        {
+          "id": "sponge-grout-cleaning-7-5-x-5-5-x-2-25",
+          "name": "Sponge, Grout Cleaning 7.5 X 5.5 X 2.25",
+          "description": "Premium sponge for grouting and clean up.\nUnique hydrophiliated design provides high water holding capacity.",
+          "pricing": "upgrade",
+          "price": 3.95,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/69d1a4417d5ed6ab7ffd7b0d54ec3618dc3bccf0/original.png"
+        },
+        {
+          "id": "spreader-9-1-16-x-1-16-x-1-16-square",
+          "name": "Spreader 9 1/16 X 1/16 X 1/16 Square",
+          "description": "Blade surface is embossed with ridges for strength\nApplies adhesives (follow adhesive manufacturer's recommendation for tool notch size and style).",
+          "pricing": "upgrade",
+          "price": 5.2,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/0063c337c7d4c6ee0db8a9942601922d159b1ed2/original.png"
+        },
+        {
+          "id": "spreader-9-x-1-32-x-1-16-x-1-32",
+          "name": "Spreader 9 X 1/32 X 1/16 X 1/32",
+          "description": "Use to apply adhesive\nCold-rolled satin-finishes steel blades\nBlade surface is embossed with ridges for strength",
+          "pricing": "upgrade",
+          "price": 5.2,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/0063c337c7d4c6ee0db8a9942601922d159b1ed2/original.png"
+        },
+        {
+          "id": "super-mixer-5-blade-x-22-x-3-8-shaft",
+          "name": "Super Mixer 5 Blade X 22 X 3/8 Shaft",
+          "description": "For mixing grouts, thinset and other setting materials\nDurable, chrome-plated steel for easy cleanup\nWorks with corded drills only\nSpray with water after use to prevent build up of setting material\n24\" long with 5\" wide blade",
+          "pricing": "upgrade",
+          "price": 29.1,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/9030ad96d30fca5679e7d420a11ffed78a7b7f34/original.png"
+        },
+        {
+          "id": "tile-adhesive-wall-floor-ceramic-3-78l-mapei-type-1",
+          "name": "Tile Adhesive, Wall/Floor, Ceramic, 3.78L, Mapei, Type 1",
+          "description": "Excellent grab: Up to 12\" x 12\" (30 x 30 cm) tile\nLow in odor\nSmooth and easy to spread\nExtended open time",
+          "pricing": "upgrade",
+          "price": 26.0,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/9037248d73ba79956bac9ecdd025daeda3497dfd/original.png"
+        },
+        {
+          "id": "tile-clips-flat-lash-a-1-16-100-bag",
+          "name": "Tile Clips, Flat Lash, A 1/16\" 100/Bag",
+          "description": "100/BAG\nProduces 1/16\" tile grout lines\nFor leveling tiles between 1/16\" and 1/2\" thick\nUse with QEP Xtreme Tile Leveling Wedges (sold separately)\nExtra wide, ideal for large format tile installations\nCompatible with all tile types, including porcelain, ceramic, marble and natural stone\nDesigned to break off below the surface of the tile for quick and easy removal",
+          "pricing": "upgrade",
+          "price": 12.8,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/e6fe82d933e1c245d8bca9a87b2fd841ac879375/original.png"
+        },
+        {
+          "id": "tile-clips-flat-lash-a-1-16-2000-box",
+          "name": "Tile Clips, Flat Lash, A 1/16\" 2000/Box",
+          "description": "2000/CASE\nProduces 1/16\" tile grout lines\nFor leveling tiles between 1/16\" and 1/2\" thick\nCompatible with all tile types, including porcelain, ceramic, marble and natural stone\nDesigned to break off below the surface of the tile for quick and easy removal",
+          "pricing": "upgrade",
+          "price": 184.5,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/d8289960592054807beb27fc04377ba2f031a0bb/original.png"
+        },
+        {
+          "id": "tile-clips-flat-lash-a-1-16-250-bag",
+          "name": "Tile Clips, Flat Lash, A 1/16\" 250/Bag",
+          "description": "250/Bag\nProduces 1/16\" tile grout lines\nFor leveling tiles between 1/16\" and 1/2\" thick\nCompatible with all tile types, including porcelain, ceramic, marble and natural stone\nDesigned to break off below the surface of the tile for quick and easy removal",
+          "pricing": "upgrade",
+          "price": 23.1,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/d8289960592054807beb27fc04377ba2f031a0bb/original.png"
+        },
+        {
+          "id": "tile-spacers-1-16-200pk",
+          "name": "TILE SPACERS 1/16 (200PK)",
+          "description": "Tile spacers help you install floor or wall tiles with professional-looking results.",
+          "pricing": "upgrade",
+          "price": 3.35,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/0f1991a10b4c9eb23589fd34f89e6beea3e94e52/original.png"
+        },
+        {
+          "id": "tile-spacers-1-8",
+          "name": "TILE SPACERS 1/8",
+          "description": "200 PER BAG\nTile spacers help you install floor or wall tiles",
+          "pricing": "upgrade",
+          "price": 3.1,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/c4a3a15f6f2c2daa26a9bc746cfb97b0b6d5cfda/original.png"
+        },
+        {
+          "id": "tile-wedges-flat-lash-b-100-plastic-bag",
+          "name": "Tile Wedges, Flat Lash, B, 100/Plastic Bag",
+          "description": "100/BAG\nUse for leveling tile of all types, including porcelain, ceramic, marble and natural stone\nIdeal to hold the tile at an even height for lippage-free results\nFor use with  Tile Leveling Clips (sold separately)\nPolymer construction for superior durability and locking ribs for a secure hold\nWedges are reusable for your next tile installation job",
+          "pricing": "upgrade",
+          "price": 18.4,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/26e871fc636c361ea47b357c6cd21cbaf95e9e82/original.png"
+        },
+        {
+          "id": "trowel-mega-grip-stainless-1-4x1-4x1-4",
+          "name": "Trowel, Mega Grip, Stainless,  1/4x1/4x1/4",
+          "description": "High quality 11\" x 4-1/2\" trowel\nRustproof stainless steel blade\nLonger shank with 9 rivets\nDurable 230 mm aluminum die-cast shank\nExtra handle-to-shank clearance\nLarge, contoured and cushioned grip handles\nFirst and last rivet reinforced and welded",
+          "pricing": "upgrade",
+          "price": 18.35,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/e472717fd4f5ccbd664aeead7ccd126fd0d63d26/original.png"
+        },
+        {
+          "id": "trowel-mega-grip-stainless-1-4x3-8x1-4",
+          "name": "Trowel, Mega Grip, Stainless,  1/4x3/8x1/4",
+          "description": "High quality 11\" x 4-1/2\" trowel\nRustproof stainless steel blade\nLonger shank with 9 rivets\nDurable 230 mm aluminum die-cast shank\nExtra handle-to-shank clearance\nLarge, contoured and cushioned grip handles\nFirst and last rivet reinforced and welded",
+          "pricing": "upgrade",
+          "price": 18.35,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/e472717fd4f5ccbd664aeead7ccd126fd0d63d26/original.png"
+        },
+        {
+          "id": "trowel-mega-grip-stainless-1-2x1-2x1-2",
+          "name": "Trowel, Mega Grip, Stainless, 1/2x1/2x1/2",
+          "description": "High quality 11\" x 4-1/2\" trowel designed for the professional\nRustproof stainless steel blade\nLonger shank with 9 rivets\nDurable 230 mm aluminum die-cast shank\nExtra handle-to-shank clearance to allow for complete hand rotation\nLarge, contoured and cushioned grip handles for comfort\nFirst and last rivet reinforced and welded",
+          "pricing": "upgrade",
+          "price": 18.35,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/e472717fd4f5ccbd664aeead7ccd126fd0d63d26/original.png"
+        },
+        {
+          "id": "trowel-mega-grip-stainless-3-16x5-32",
+          "name": "Trowel, Mega Grip, Stainless, 3/16x5/32",
+          "description": "High quality 11\" x 4-1/2\" trowel\nLonger blade, Rustproof stainless steel blade\nLonger shank with 9 rivets\nDurable 230 mm aluminum die-cast shank\nExtra handle-to-shank clearance\nLarge, contoured and cushioned grip handles\nFirst and last rivet reinforced and welded\nMay also be used to install 3-ply and 5-ply engineered plank, as well as cove base\nRecommended notch size by NTCA",
+          "pricing": "upgrade",
+          "price": 18.35,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/e472717fd4f5ccbd664aeead7ccd126fd0d63d26/original.png"
+        },
+        {
+          "id": "troxell-urethane-grout-3-5x9-5-red-float",
+          "name": "Troxell Urethane Grout 3.5x9.5 Red Float",
+          "description": "Soft urethane brick float cleans textured tiles and stone better. Gorilla grip handle prevents slipping and twisting. Urethane rinses clean and maintains shape.\n\nSPECIFICATIONS",
+          "pricing": "upgrade",
+          "price": 33.5,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/4f31b82afabe1c1a121dd09c9181555ec5527594/original.png"
+        },
+        {
+          "id": "ultra-fa-grout-25lbs-02-pewter",
+          "name": "ULTRA + FA GROUT  25LBS #02 PEWTER",
+          "description": "ULTRA + FA GROUT  25LBS #02 PEWTER",
+          "pricing": "upgrade",
+          "price": 51.3
+        },
+        {
+          "id": "ultra-fa-grout-eggshell-25lbs",
+          "name": "ULTRA + FA GROUT  EGGSHELL 25LBS",
+          "description": "25LBS grout",
+          "pricing": "upgrade",
+          "price": 51.3,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/1a296f50f254c87749d6c9dd0eae615dfe7b3fe7/original.png"
+        },
+        {
+          "id": "ultra-fa-grout-10lbs-02-pewter",
+          "name": "ULTRA + FA GROUT 10LBS  #02  PEWTER",
+          "description": "ULTRA + FA GROUT 10LBS  #02  PEWTER",
+          "pricing": "upgrade",
+          "price": 26.35
+        },
+        {
+          "id": "ultra-fa-grout-10lbs-15-bone",
+          "name": "ULTRA + FA GROUT 10LBS  #15 BONE",
+          "description": "ULTRA + FA GROUT 10LBS  #15 BONE",
+          "pricing": "upgrade",
+          "price": 26.35
+        },
+        {
+          "id": "ultra-fa-grout-10lbs-38-avalanche",
+          "name": "ULTRA + FA GROUT 10LBS # 38  AVALANCHE",
+          "description": "ULTRA + FA GROUT 10LBS # 38  AVALANCHE",
+          "pricing": "upgrade",
+          "price": 26.35
+        },
+        {
+          "id": "ultra-fa-grout-10lbs-01-alabaster",
+          "name": "ULTRA + FA GROUT 10LBS #01 ALABASTER",
+          "description": "ULTRA + FA GROUT 10LBS #01 ALABASTER",
+          "pricing": "upgrade",
+          "price": 26.35
+        },
+        {
+          "id": "ultra-fa-grout-10lbs-77-frost",
+          "name": "ULTRA + FA GROUT 10LBS #77 FROST",
+          "description": "ULTRA + FA GROUT 10LBS #77 FROST",
+          "pricing": "upgrade",
+          "price": 26.35
+        },
+        {
+          "id": "ultra-fa-grout-25lbs-1-alabaster",
+          "name": "ULTRA + FA GROUT 25LBS #1 ALABASTER",
+          "description": "ULTRA + FA GROUT 25LBS #1 ALABASTER",
+          "pricing": "upgrade",
+          "price": 51.3
+        },
+        {
+          "id": "ultra-fa-grout-25lbs-10-black",
+          "name": "ULTRA + FA GROUT 25LBS #10 BLACK",
+          "description": "Fast-setting, polymer-modified, color-consistent, non-shrinking, efflorescence-free grout for joint widths from 1/16\" to 3/4\" (1.5 to 19 mm)\nFine aggregate (FA) allows for narrow joint widths and improved cleanability\nNo efflorescence (free of Portland cement)\nEasy to install and stain-resistant",
+          "pricing": "upgrade",
+          "price": 51.3
+        },
+        {
+          "id": "ultra-fa-grout-25lbs-107-iron",
+          "name": "ULTRA + FA GROUT 25LBS #107 IRON",
+          "description": "ULTRA + FA GROUT 25LBS #107 IRON",
+          "pricing": "upgrade",
+          "price": 51.3
+        },
+        {
+          "id": "ultra-fa-grout-25lbs-15-bone",
+          "name": "ULTRA + FA GROUT 25LBS #15 BONE",
+          "description": "ULTRA + FA GROUT 25LBS #15 BONE",
+          "pricing": "upgrade",
+          "price": 51.3
+        },
+        {
+          "id": "ultra-fa-grout-25lbs-77-frost",
+          "name": "ULTRA + FA GROUT 25LBS #77 FROST",
+          "description": "ULTRA + FA GROUT 25LBS #77 FROST",
+          "pricing": "upgrade",
+          "price": 51.3
+        },
+        {
+          "id": "ultra-fa-grout-10lbs-107-iron",
+          "name": "ULTRA +FA GROUT 10LBS #107 IRON",
+          "description": "ULTRA +FA GROUT 10LBS #107 IRON",
+          "pricing": "upgrade",
+          "price": 26.35
+        },
+        {
+          "id": "ultra-grout-eggshell-5220-10lbs",
+          "name": "Ultra Grout Eggshell #5220 10LBS",
+          "description": "Grout 10LBS",
+          "pricing": "upgrade",
+          "price": 26.35
+        },
+        {
+          "id": "ultra-fa-grout-25lbs-38-avalanche",
+          "name": "ULTRA+FA GROUT  25LBS #38 AVALANCHE",
+          "description": "ULTRA+FA GROUT  25LBS #38 AVALANCHE",
+          "pricing": "upgrade",
+          "price": 51.3
+        },
+        {
+          "id": "ultracolor-fa-grout-10lbs-eggshell",
+          "name": "ULTRACOLOR + FA GROUT 10LBS  EGGSHELL",
+          "description": "ULTRACOLOR + FA GROUT 10LBS  EGGSHELL",
+          "pricing": "upgrade",
+          "price": 26.35
+        }
       ]
     },
     {
-      "id": "hardware",
+      "id": "cabinet-hardware",
       "name": "Cabinet Hardware",
       "options": [
-        { "id": "hw-nickel", "name": "Brushed Nickel Pulls", "description": "Standard.", "pricing": "included", "price": 0, "swatch": "#aaa9a4" },
-        { "id": "hw-black", "name": "Matte Black Pulls", "description": "Upgrade.", "pricing": "upgrade", "price": 320, "swatch": "#2f2f2f" },
-        { "id": "hw-gold", "name": "Champagne Gold Pulls", "description": "Upgrade.", "pricing": "upgrade", "price": 480, "swatch": "#bfa066" }
+        {
+          "id": "cabinet-finger-pull-black-150mm-6",
+          "name": "Cabinet Finger Pull, Black, 150mm (6\")",
+          "description": "Aluminum, Hidden/finger style, 150mm",
+          "pricing": "upgrade",
+          "price": 5.84,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/a22d6b95e353c4aeaa2ac1e4f61e6ce9225cbe83/original.jpeg"
+        },
+        {
+          "id": "cabinet-finger-pull-black-200mm-10",
+          "name": "Cabinet Finger Pull, Black, 200mm (10\")",
+          "description": "Aluminum, Hidden/finger style, 200mm (6.3\")",
+          "pricing": "upgrade",
+          "price": 6.14,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/a22d6b95e353c4aeaa2ac1e4f61e6ce9225cbe83/original.jpeg"
+        },
+        {
+          "id": "cabinet-finger-pull-black-300mm-11-3-4",
+          "name": "Cabinet Finger Pull, Black, 300mm (11-3/4\")",
+          "description": "Aluminum, Hidden/finger style, 300mm (11.81\")",
+          "pricing": "upgrade",
+          "price": 8.8,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/a22d6b95e353c4aeaa2ac1e4f61e6ce9225cbe83/original.jpeg"
+        },
+        {
+          "id": "cabinet-knob-claremont-transitional-matte-black-34mm",
+          "name": "Cabinet Knob, Claremont Transitional, Matte Black, 34mm",
+          "description": "Transitional knob, Matte Black, 34mm",
+          "pricing": "upgrade",
+          "price": 5.99,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/44026ff8048550cb741d5a215d656cf28a70a4fd/original.png"
+        },
+        {
+          "id": "cabinet-knob-roseberry-contemporary-gunmetal-40mm",
+          "name": "Cabinet Knob, Roseberry Contemporary, Gunmetal, 40mm",
+          "description": "Contemporary knob, Gunmetal, 40mm",
+          "pricing": "upgrade",
+          "price": 9.07,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/760be32a5a0d739bfcbae55e978a881582011a57/original.png"
+        },
+        {
+          "id": "matte-black",
+          "name": "Matte Black",
+          "description": "Cabinet Pull, 128mm, Amerock Cityscape",
+          "pricing": "upgrade",
+          "price": 5.23,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/9a91988d873f01a32cbb03dc5b0c3d849d599c6b/original.png"
+        },
+        {
+          "id": "champaigne-bronze",
+          "name": "Champaigne Bronze",
+          "description": "Cabinet Pull, 128mm, Amerock Cityscape",
+          "pricing": "upgrade",
+          "price": 0,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/9a91988d873f01a32cbb03dc5b0c3d849d599c6b/original.png"
+        },
+        {
+          "id": "oil-rubbed-bronze",
+          "name": "Oil Rubbed Bronze",
+          "description": "Cabinet Pull, 128mm, Amerock Cityscape",
+          "pricing": "upgrade",
+          "price": 0,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/9a91988d873f01a32cbb03dc5b0c3d849d599c6b/original.png"
+        },
+        {
+          "id": "silver",
+          "name": "Silver",
+          "description": "Cabinet Pull, 128mm, Amerock Cityscape",
+          "pricing": "upgrade",
+          "price": 0,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/9a91988d873f01a32cbb03dc5b0c3d849d599c6b/original.png"
+        },
+        {
+          "id": "satin-nickel",
+          "name": "Satin Nickel",
+          "description": "Cabinet Pull, 128mm, Amerock Cityscape",
+          "pricing": "upgrade",
+          "price": 0,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/9a91988d873f01a32cbb03dc5b0c3d849d599c6b/original.png"
+        },
+        {
+          "id": "champagne-bronze",
+          "name": "Champagne Bronze",
+          "description": "Cabinet Pull, 160mm, Amerock Cityscape",
+          "pricing": "upgrade",
+          "price": 8.1,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/1bf1f7044c63df74e963ea648da19f1a34392ba3/original.png"
+        },
+        {
+          "id": "matte-black-2",
+          "name": "Matte Black",
+          "description": "Cabinet Pull, 160mm, Amerock Cityscape",
+          "pricing": "upgrade",
+          "price": 8.09,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/1bf1f7044c63df74e963ea648da19f1a34392ba3/original.png"
+        },
+        {
+          "id": "oil-rubbed-bronze-2",
+          "name": "Oil Rubbed Bronze",
+          "description": "Cabinet Pull, 160mm, Amerock Cityscape",
+          "pricing": "upgrade",
+          "price": 8.1,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/1bf1f7044c63df74e963ea648da19f1a34392ba3/original.png"
+        },
+        {
+          "id": "cabinet-pull-160mm-amerock-triomphe-matte-black",
+          "name": "Cabinet Pull, 160mm, Amerock Triomphe, Matte Black",
+          "description": "Matte Black, 160mm (6-5/16\" centre-to-centre)",
+          "pricing": "upgrade",
+          "price": 11.21,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/50aca23bc845f47e4dbf78f63e0517b02367d03c/original.png"
+        },
+        {
+          "id": "cabinet-pull-256mm-amerock-cityscape-polished-chrome",
+          "name": "Cabinet Pull, 256mm, Amerock Cityscape, Polished Chrome",
+          "description": "Polished Chrome, 256mm (10-1/16\" centre-to-centre)",
+          "pricing": "upgrade",
+          "price": 0.0,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/7c83680c4ee3fe29a131357e02ceeb71ccd88637/original.png"
+        },
+        {
+          "id": "cabinet-pull-96mm-amerock-cityscape-champagne-bronze",
+          "name": "Cabinet Pull, 96mm, Amerock Cityscape, Champagne Bronze",
+          "description": "Zinc, Champagne Bronze, 96mm",
+          "pricing": "upgrade",
+          "price": 6.99,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/97beaf384036cb8e5a6ddbd5fc42e09e3baeac89/original.png"
+        },
+        {
+          "id": "cabinet-pull-96mm-matte-black-amerock-cityscape",
+          "name": "Cabinet Pull, 96mm, Matte Black, Amerock Cityscape",
+          "description": "Cabinet Pull, 96mm, Matte Black, Amerock Cityscape",
+          "pricing": "upgrade",
+          "price": 7.45,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/1bf1f7044c63df74e963ea648da19f1a34392ba3/original.png"
+        },
+        {
+          "id": "cabinet-pull-amerock-cityscape-256mm-oil-rubbed-bronze",
+          "name": "Cabinet Pull, Amerock Cityscape, 256mm, Oil Rubbed Bronze",
+          "description": "Cabinet Pull, Amerock Cityscape, 256mm, Oil Rubbed Bronze",
+          "pricing": "upgrade",
+          "price": 13.99,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/9a91988d873f01a32cbb03dc5b0c3d849d599c6b/original.png"
+        },
+        {
+          "id": "cabinet-pull-amerock-cityscape-96mm-oil-rubbed-bronze",
+          "name": "Cabinet Pull, Amerock Cityscape, 96mm,  Oil Rubbed Bronze",
+          "description": "Zinc, Oil Rubbed Bronze, 96mm (4.06\" overall, 3\" centre-to-centre)",
+          "pricing": "upgrade",
+          "price": 7.99,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/3f35440099c58f7f4e56705402e18f8dcdbe5100/original.png"
+        },
+        {
+          "id": "cabinet-pull-amerock-triomphe-128mm-matte-black",
+          "name": "Cabinet Pull, Amerock Triomphe, 128mm, Matte Black",
+          "description": "Matte Black, 128mm (5-1/16\" centre-to-centre)",
+          "pricing": "upgrade",
+          "price": 10.34,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/ec7565841a996202f2b577f7bd6900e0481cd0cf/original.png"
+        },
+        {
+          "id": "graphite",
+          "name": "Graphite",
+          "description": "Cabinet Pull, Ashdale Transitional, 128mm",
+          "pricing": "upgrade",
+          "price": 11.11,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/cc28758fabb89b5d2f4fb311c3f8be74bfc18c46/original.png"
+        },
+        {
+          "id": "brushed-brass-matte",
+          "name": "Brushed Brass Matte",
+          "description": "Cabinet Pull, Ashdale Transitional, 128mm",
+          "pricing": "upgrade",
+          "price": 11.11,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/cc28758fabb89b5d2f4fb311c3f8be74bfc18c46/original.png"
+        },
+        {
+          "id": "cabinet-pull-contemporary-bar-matte-black-128mm-marathon",
+          "name": "Cabinet Pull, Contemporary Bar, Matte Black, 128mm, Marathon",
+          "description": "Matte Black, 128mm",
+          "pricing": "upgrade",
+          "price": 5.98,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/9e7c56f277523fb50fab1cc57a0d348a01adddf2/original.png"
+        },
+        {
+          "id": "cabinet-pull-contemporary-bar-matte-black-160mm",
+          "name": "Cabinet Pull, Contemporary Bar, Matte Black, 160mm",
+          "description": "Matte Black, 160mm",
+          "pricing": "upgrade",
+          "price": 5.18,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/9e7c56f277523fb50fab1cc57a0d348a01adddf2/original.png"
+        },
+        {
+          "id": "cabinet-pull-denman-contemporary-matte-black-128mm",
+          "name": "Cabinet Pull, Denman Contemporary, Matte Black, 128mm",
+          "description": "Matte Black, 128mm",
+          "pricing": "upgrade",
+          "price": 6.12,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/3d5b18b26b8b6c771155b341238c92052564b8db/original.png"
+        },
+        {
+          "id": "cabinet-pull-denman-contemporary-matte-black-160mm",
+          "name": "Cabinet Pull, Denman Contemporary, Matte Black, 160mm",
+          "description": "Matte Black, 160mm",
+          "pricing": "upgrade",
+          "price": 7.47,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/3d5b18b26b8b6c771155b341238c92052564b8db/original.png"
+        },
+        {
+          "id": "cabinet-pull-finger-matte-black-256mm",
+          "name": "Cabinet Pull, Finger, Matte Black, 256mm",
+          "description": "Aluminum, Matte Black, Finger edge, 256mm (10-1/16\" centre-to-centre)",
+          "pricing": "upgrade",
+          "price": 12.58,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/736cff98ce27f61747bad59c3576c1e4aec907d2/original.jpeg"
+        },
+        {
+          "id": "cabinet-pull-straight-finger-bar-matte-black-160mm",
+          "name": "Cabinet Pull, Straight Finger Bar, Matte Black, 160mm",
+          "description": "Matte Black, Slim straight bar, 160mm (6-5/16\" centre-to-centre)",
+          "pricing": "upgrade",
+          "price": 5.85,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/c97c86cf89ced273b82194341cd8a86a17d836c7/original.png"
+        },
+        {
+          "id": "cabinet-pull-straight-finger-bar-matte-black-7-9-16",
+          "name": "Cabinet Pull, Straight Finger Bar, Matte Black, 7-9/16\"",
+          "description": "Matte Black, Slim straight bar, 7-9/16\" centre-to-centre",
+          "pricing": "upgrade",
+          "price": 6.18,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/1006bf76e79e3768721a73a52dd9afac8349974f/original.png"
+        },
+        {
+          "id": "matte-black-3",
+          "name": "Matte Black",
+          "description": "Finger, Pull, Crofton 64mm Contemporary Marathon 9450-64",
+          "pricing": "upgrade",
+          "price": 8.99,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/cb4421b8a9ff3555ae704d07812a29efcbb44eb7/original.png"
+        },
+        {
+          "id": "dark-bronze",
+          "name": "Dark Bronze",
+          "description": "Finger, Pull, Crofton 64mm Contemporary Marathon 9450-64",
+          "pricing": "upgrade",
+          "price": 9.26,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/cb4421b8a9ff3555ae704d07812a29efcbb44eb7/original.png"
+        },
+        {
+          "id": "brushed-satin-nickel",
+          "name": "Brushed Satin Nickel",
+          "description": "Finger, Pull, Crofton 64mm Contemporary Marathon 9450-64",
+          "pricing": "upgrade",
+          "price": 8.99,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/cb4421b8a9ff3555ae704d07812a29efcbb44eb7/original.png"
+        },
+        {
+          "id": "hinge-cabinet-105-degree-opening-soft-close-silver-six-way-adjustable-oppein",
+          "name": "Hinge,  Cabinet, 105-degree opening, soft close, Silver, Six-way Adjustable, Oppein",
+          "description": "Hinge,  Cabinet, 105-degree opening, soft close, Silver, Six-way Adjustable",
+          "pricing": "upgrade",
+          "price": 10.0,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/8218c8b7b9ed534b1145d234e56690ce6fcf3388/original.jpeg"
+        },
+        {
+          "id": "hinge-cabinet-silver-oppein-applied-with-wdc-cabinets",
+          "name": "Hinge,  Cabinet, Silver Oppein , (Applied with WDC Cabinets)",
+          "description": "Hinge,  Cabinet, Silver",
+          "pricing": "upgrade",
+          "price": 18.0,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/a0ead582a701fa1e672ee0e8efbdc903db804e7b/original.jpeg"
+        },
+        {
+          "id": "hinge-cabinet-silver-oppein-applied-with-bls33-bls36-cabinets",
+          "name": "Hinge, Cabinet,  Silver, Oppein (Applied with BLS33 & BLS36 Cabinets)",
+          "description": "Hinge, Cabinet,  Silver",
+          "pricing": "upgrade",
+          "price": 22.0,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/a0cf76456e4355e8d0cb2400803844e0e9ba98ce/original.jpeg"
+        },
+        {
+          "id": "hinge-cabinet-silver-oppein-applied-with-bls33-bls36-cabinets-2",
+          "name": "Hinge, Cabinet,  Silver, Oppein (Applied with BLS33 & BLS36 Cabinets)",
+          "description": "Hinge, Cabinet,  Silver",
+          "pricing": "upgrade",
+          "price": 18.0,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/6b3b9b41c000dcf13cea18a7faf64b887c7a40bb/original.jpeg"
+        },
+        {
+          "id": "matte-black-4",
+          "name": "Matte Black",
+          "description": "HITCH Pull 128mm Marathon 9322-128",
+          "pricing": "upgrade",
+          "price": 7.12,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/e0f19ca6f60724733ed5d4496aded00eff1ee2d9/original.jpeg"
+        },
+        {
+          "id": "golden-champagne",
+          "name": "Golden Champagne",
+          "description": "HITCH Pull 128mm Marathon 9322-128",
+          "pricing": "upgrade",
+          "price": 7.4,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/e0f19ca6f60724733ed5d4496aded00eff1ee2d9/original.jpeg"
+        },
+        {
+          "id": "matte-black-5",
+          "name": "Matte Black",
+          "description": "HITCH Pull 160mm Marathon 9322-160",
+          "pricing": "upgrade",
+          "price": 7.8,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/a58639af7383a15c7723279e645fc66c4733a498/original.jpeg"
+        },
+        {
+          "id": "golden-champagne-2",
+          "name": "Golden Champagne",
+          "description": "HITCH Pull 160mm Marathon 9322-160",
+          "pricing": "upgrade",
+          "price": 8.26,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/a58639af7383a15c7723279e645fc66c4733a498/original.jpeg"
+        },
+        {
+          "id": "brushed-brass",
+          "name": "Brushed Brass",
+          "description": "Knob 37mm MESA Marathon 9621",
+          "pricing": "upgrade",
+          "price": 7.62,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/1f86b08abdff7225dcd26d41b917d95fd74c03f8/original.jpeg"
+        },
+        {
+          "id": "black-nickel",
+          "name": "Black Nickel",
+          "description": "Knob 37mm MESA Marathon 9621",
+          "pricing": "upgrade",
+          "price": 7.62,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/1f86b08abdff7225dcd26d41b917d95fd74c03f8/original.jpeg"
+        },
+        {
+          "id": "matte-black-6",
+          "name": "Matte Black",
+          "description": "Pull IPSWICH 200mm Marathon 9326-200",
+          "pricing": "upgrade",
+          "price": 7.62,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/1b52859057c8e6f937903b7389190a2dfd724dc0/original.jpeg"
+        }
       ]
     },
     {
-      "id": "lighting",
-      "name": "Lighting Package",
+      "id": "interior-paint",
+      "name": "Interior Paint",
       "options": [
-        { "id": "light-standard", "name": "Standard Fixtures", "description": "Builder lighting allowance.", "pricing": "included", "price": 0, "swatch": "#d8cfa8" },
-        { "id": "light-designer", "name": "Designer Fixtures", "description": "Upgraded pendants & fixtures.", "pricing": "upgrade", "price": 1650, "swatch": "#c4a35a" }
-      ]
-    },
-    {
-      "id": "addons",
-      "name": "Optional Add-Ons",
-      "description": "Select any that apply.",
-      "multi": true,
-      "options": [
-        { "id": "add-island", "name": "Waterfall Island Edge", "pricing": "upgrade", "price": 1900, "swatch": "#dcd7cf" },
-        { "id": "add-pantry", "name": "Walk-In Pantry Shelving", "pricing": "upgrade", "price": 1250, "swatch": "#b59b76" },
-        { "id": "add-undercab", "name": "Under-Cabinet LED Lighting", "pricing": "upgrade", "price": 740, "swatch": "#e6dca0" },
-        { "id": "add-trim", "name": "Upgraded Trim & Crown", "pricing": "upgrade", "price": 2100, "swatch": "#efebe3" }
+        {
+          "id": "paint-1-gallon-emerald-satin-white-sand",
+          "name": "Paint, 1-Gallon, Emerald, Satin, White Sand",
+          "description": "Paint, 1-Gallon, Emerald, Satin, White Sand",
+          "pricing": "upgrade",
+          "price": 120.49,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/d1081512a38f25938e3de49b6b4948f89a0d7c13/original.png"
+        },
+        {
+          "id": "paint-1-gallon-emerald-semi-gloss-greek-villa",
+          "name": "Paint, 1-Gallon, Emerald, Semi-Gloss, Greek Villa",
+          "description": "Emerald Interior Acrylic Latex Paint\n1 Gallon",
+          "pricing": "upgrade",
+          "price": 98.65,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/5592a82a003b38065939c63b16e10ca02ecf3e01/original.png"
+        },
+        {
+          "id": "paint-1-gallon-emerald-semi-gloss-iron-ore",
+          "name": "Paint, 1-Gallon, Emerald, Semi-Gloss, Iron Ore",
+          "description": "Emerald Interior Acrylic Latex Paint\n1 Gallon\nIron Ore color",
+          "pricing": "upgrade",
+          "price": 103.49,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/41db1b9b0475aadefff99a2f8a8c59c54a500853/original.png"
+        },
+        {
+          "id": "paint-1-gallon-emerald-semi-gloss-urban-bronze",
+          "name": "Paint, 1-Gallon, Emerald, Semi-Gloss, Urban Bronze",
+          "description": "Emerald Interior Acrylic Latex Paint\n1 Gallon\nUrban Bronze color",
+          "pricing": "upgrade",
+          "price": 103.49,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/1fd27bdbe19083b17455b7878f64cbd7e2abdbcc/original.png"
+        },
+        {
+          "id": "paint-1-gallon-emerald-semi-gloss-white-sand",
+          "name": "Paint, 1-Gallon, Emerald, Semi-Gloss, White Sand",
+          "description": "SEMI-GLOSS\n1 GALLON",
+          "pricing": "upgrade",
+          "price": 120.49,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/d1081512a38f25938e3de49b6b4948f89a0d7c13/original.png"
+        },
+        {
+          "id": "paint-1-gallon-latex-promar-400-nero-voc-extra-white",
+          "name": "Paint, 1-Gallon, Latex, Promar 400-Nero VOC, Extra White",
+          "description": "Paint, 1-Gallon, Latex, Promar 400-Nero VOC, Extra White",
+          "pricing": "upgrade",
+          "price": 120.49,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/f21ecfbf99b165fd492e2c74208f9d35b05617f0/original.jpeg"
+        },
+        {
+          "id": "paint-5-gallon-satin-greek-villa",
+          "name": "Paint, 5-Gallon, Satin, Greek Villa",
+          "description": "Emerald Interior Acrylic Latex Paint\n5 Gallon",
+          "pricing": "upgrade",
+          "price": 487.45,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/5592a82a003b38065939c63b16e10ca02ecf3e01/original.png"
+        },
+        {
+          "id": "paint-5-gallon-satin-inkwell",
+          "name": "Paint, 5-Gallon, Satin, Inkwell",
+          "description": "Emerald Interior Acrylic Latex Paint\n5 Gallon",
+          "pricing": "upgrade",
+          "price": 487.45,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/6f93e5d5c6649ef4727f08a5b8c80d4dd22a6481/original.jpeg"
+        },
+        {
+          "id": "premium-ceiling-paint-1g",
+          "name": "Premium Ceiling Paint 1G",
+          "description": "CEILING PAINT\n1 gallon",
+          "pricing": "upgrade",
+          "price": 61.99,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/36ff8360f8edb6724b325b9f37746e999c41f7b5/original.png"
+        },
+        {
+          "id": "premium-ceiling-paint-5g",
+          "name": "Premium Ceiling Paint 5G",
+          "description": "WHITE CEILING PAINT\nPREMIUM\n5G",
+          "pricing": "upgrade",
+          "price": 304.95,
+          "image": "https://items-images-production.s3.us-west-2.amazonaws.com/files/7aea3b3021cfa6f43e1df7748087582dfde7a8ff/original.png"
+        }
       ]
     }
   ]
