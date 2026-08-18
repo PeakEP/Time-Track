@@ -1,19 +1,18 @@
-import jsPDF from "jspdf";
+// Branded PDF export. Same scaffolding as cabinet-designer/utils/pdf.ts:
+// function-import form of jsPDF + autoTable, a BRAND constant, a faux-gradient
+// title block drawn as side-by-side filled rects, and lastAutoTable.finalY to
+// place totals.
+
+import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
-import type { Discount, ProjectInfo } from "../types";
-import type { SelectedLine, Totals } from "../store";
+import type { LineCost, PricingTotals } from "./pricing";
+import { formatCAD } from "./pricing";
+import { optionImage } from "./swatch";
+import type { Discount, ProjectMeta, UserMode } from "../types";
 
-const BRAND = {
-  company: "Robins Interiors & Designs",
-  tagline: "Custom Home Finish Selections",
-  color: [122, 92, 62] as [number, number, number], // warm brown
-};
+const BRAND = { indigo: "#2C327C", steel: "#3A7AA0", cyan: "#49C1C4" };
 
-function money(n: number): string {
-  return n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
-}
-
-/** Render any image (incl. SVG data URIs) to a PNG data URL for jsPDF. */
+// Render any image (incl. SVG data URIs) to a PNG data URL for jsPDF.addImage.
 function toPng(src: string, w = 120, h = 90): Promise<string | null> {
   return new Promise((resolve) => {
     const img = new Image();
@@ -30,7 +29,7 @@ function toPng(src: string, w = 120, h = 90): Promise<string | null> {
         ctx.drawImage(img, 0, 0, w, h);
         resolve(canvas.toDataURL("image/png"));
       } catch {
-        resolve(null);
+        resolve(null); // tainted canvas / decode failure — skip the thumbnail
       }
     };
     img.onerror = () => resolve(null);
@@ -38,62 +37,67 @@ function toPng(src: string, w = 120, h = 90): Promise<string | null> {
   });
 }
 
-export interface ExportArgs {
-  info: ProjectInfo;
+export type ExportArgs = {
+  meta: ProjectMeta;
   basePrice: number;
-  lines: SelectedLine[];
-  totals: Totals;
+  lines: LineCost[];
+  totals: PricingTotals;
   discount: Discount;
-  /** Client mode hides per-line costs of included items etc. (kept simple here). */
-  mode: "designer" | "client";
-}
+  mode: UserMode;
+};
 
-export async function exportPdf(args: ExportArgs): Promise<void> {
-  const { info, basePrice, lines, totals, discount } = args;
+export async function exportSelectionsPdf(args: ExportArgs): Promise<void> {
+  const { meta, basePrice, lines, totals, discount } = args;
   const doc = new jsPDF({ unit: "pt", format: "letter" });
   const pageW = doc.internal.pageSize.getWidth();
+  const pageH = doc.internal.pageSize.getHeight();
   const margin = 40;
 
-  // Header band
-  doc.setFillColor(...BRAND.color);
-  doc.rect(0, 0, pageW, 70, "F");
-  doc.setTextColor(255, 255, 255);
+  // Title block — three side-by-side fills fake the brand gradient.
+  const bandH = 66;
+  const third = pageW / 3;
+  doc.setFillColor(BRAND.indigo);
+  doc.rect(0, 0, third, bandH, "F");
+  doc.setFillColor(BRAND.steel);
+  doc.rect(third, 0, third, bandH, "F");
+  doc.setFillColor(BRAND.cyan);
+  doc.rect(third * 2, 0, third, bandH, "F");
+  doc.setTextColor("#ffffff");
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(20);
-  doc.text(BRAND.company, margin, 34);
+  doc.setFontSize(19);
+  doc.text("Robins Interiors & Design", margin, 32);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(11);
-  doc.text(BRAND.tagline, margin, 52);
+  doc.text("Custom Home Finish Selections", margin, 50);
 
-  // Project info block
-  doc.setTextColor(40, 40, 40);
+  // Project info block.
+  doc.setTextColor("#333333");
   doc.setFontSize(10);
-  let y = 92;
-  const infoRows: [string, string][] = [
-    ["Client", info.clientName || "—"],
-    ["Project", info.projectName || "—"],
-    ["Address", info.address || "—"],
-    ["Date", info.date || "—"],
-    ["Sales Rep", info.salesRep || "—"],
+  let y = 90;
+  const rows: [string, string][] = [
+    ["Client", meta.client || "—"],
+    ["Project", meta.project || "—"],
+    ["Address", meta.address || "—"],
+    ["Date", meta.date || "—"],
+    ["Sales Rep", meta.salesRep || "—"],
   ];
-  infoRows.forEach(([k, v]) => {
+  for (const [k, v] of rows) {
     doc.setFont("helvetica", "bold");
     doc.text(`${k}:`, margin, y);
     doc.setFont("helvetica", "normal");
     doc.text(String(v), margin + 70, y);
     y += 15;
-  });
+  }
 
-  // Pre-render thumbnails
-  const thumbs = await Promise.all(lines.map((l) => toPng(l.option.image)));
+  // Pre-render thumbnails.
+  const thumbs = await Promise.all(lines.map((l) => toPng(optionImage(l.option))));
 
-  // Selections table with image column
   const body = lines.map((l) => [
     "",
     l.category.name,
     l.option.name,
     l.option.pricing === "included" ? "Included" : "Upgrade",
-    l.option.pricing === "included" ? "—" : money(l.effectivePrice),
+    l.option.pricing === "included" ? "—" : formatCAD(l.price),
   ]);
 
   autoTable(doc, {
@@ -101,90 +105,86 @@ export async function exportPdf(args: ExportArgs): Promise<void> {
     head: [["", "Category", "Selection", "Type", "Price"]],
     body,
     styles: { fontSize: 9, cellPadding: 4, valign: "middle" },
-    headStyles: { fillColor: BRAND.color, textColor: 255 },
+    headStyles: { fillColor: BRAND.indigo, textColor: "#ffffff" },
     columnStyles: {
       0: { cellWidth: 56, minCellHeight: 42 },
       1: { cellWidth: 110 },
       3: { cellWidth: 64 },
-      4: { cellWidth: 70, halign: "right" },
+      4: { cellWidth: 72, halign: "right" },
     },
     didDrawCell: (data) => {
       if (data.section === "body" && data.column.index === 0) {
         const png = thumbs[data.row.index];
-        if (png) {
-          const pad = 3;
-          doc.addImage(
-            png,
-            "PNG",
-            data.cell.x + pad,
-            data.cell.y + pad,
-            50,
-            36
-          );
-        }
+        if (png) doc.addImage(png, "PNG", data.cell.x + 3, data.cell.y + 3, 50, 36);
       }
     },
   });
 
-  // Totals block
-  // @ts-expect-error lastAutoTable is added by the plugin at runtime
-  let ty: number = doc.lastAutoTable.finalY + 20;
+  // Totals — placed under the table (jsPDF-autotable augments doc at runtime).
+  let ty = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 22;
+  if (ty > pageH - 150) {
+    doc.addPage();
+    ty = margin + 20;
+  }
   const labelX = pageW - margin - 200;
   const valX = pageW - margin;
-
-  const totalRow = (label: string, value: string, bold = false) => {
+  const row = (label: string, value: string, bold = false) => {
     doc.setFont("helvetica", bold ? "bold" : "normal");
     doc.setFontSize(bold ? 12 : 10);
+    doc.setTextColor("#333333");
     doc.text(label, labelX, ty);
     doc.text(value, valX, ty, { align: "right" });
     ty += bold ? 20 : 16;
   };
 
-  totalRow("Base Package", money(basePrice));
-  totalRow("Upgrades", money(totals.upgradesTotal));
-  totalRow("Subtotal", money(totals.subtotal));
-  if (totals.discountAmount > 0) {
-    const dLabel =
-      discount.type === "percent"
-        ? `${discount.label} (${discount.value}%)`
-        : discount.label;
-    totalRow(dLabel, `- ${money(totals.discountAmount)}`);
+  row("Base Package", formatCAD(basePrice));
+  row("Upgrades", formatCAD(totals.upgrades));
+  row("Subtotal", formatCAD(totals.subtotal));
+  if (totals.discount > 0) {
+    const label =
+      discount.type === "percent" ? `${discount.label} (${discount.value}%)` : discount.label;
+    row(label, `- ${formatCAD(totals.discount)}`);
   }
-  doc.setDrawColor(...BRAND.color);
+  doc.setDrawColor(BRAND.cyan);
+  doc.setLineWidth(1);
   doc.line(labelX, ty - 6, valX, ty - 6);
-  totalRow("Total", money(totals.grandTotal), true);
+  row("Total", formatCAD(totals.total), true);
 
-  // Notes
-  if (info.notes) {
+  // Notes.
+  if (meta.notes) {
     ty += 10;
     doc.setFont("helvetica", "bold");
     doc.setFontSize(10);
     doc.text("Notes", margin, ty);
     ty += 14;
     doc.setFont("helvetica", "normal");
-    doc.text(doc.splitTextToSize(info.notes, pageW - margin * 2), margin, ty);
+    doc.text(doc.splitTextToSize(meta.notes, pageW - margin * 2), margin, ty);
     ty += 40;
   }
 
-  // Signature line
-  const sigY = Math.min(ty + 30, doc.internal.pageSize.getHeight() - 70);
-  doc.setDrawColor(120, 120, 120);
+  // Signature line.
+  const sigY = Math.min(ty + 24, pageH - 70);
+  doc.setDrawColor("#999999");
+  doc.setLineWidth(0.5);
   doc.line(margin, sigY, margin + 220, sigY);
   doc.line(pageW - margin - 160, sigY, pageW - margin, sigY);
   doc.setFontSize(9);
-  doc.setTextColor(90, 90, 90);
+  doc.setTextColor("#777777");
   doc.text("Client Signature", margin, sigY + 14);
   doc.text("Date", pageW - margin - 160, sigY + 14);
 
-  // Footer
+  // Footer.
   doc.setFontSize(8);
-  doc.setTextColor(140, 140, 140);
+  doc.setTextColor("#999999");
   doc.text(
-    "Prices are estimates and subject to final contract. Generated by Robins Interiors & Designs Finish Selections.",
+    "Prices are estimates, ex. HST, and subject to final contract. Robins Interiors & Design · J.M Robins Construction Ltd.",
     margin,
-    doc.internal.pageSize.getHeight() - 24
+    pageH - 24
   );
 
-  const fname = `${info.clientName || "Selections"}-${info.date || ""}`.replace(/[^a-z0-9-]+/gi, "_");
+  const fname = `JMRC-Selections-${meta.client || "client"}-${meta.date || ""}`.replace(
+    /[^a-z0-9\-_ ]/gi,
+    "_"
+  );
   doc.save(`${fname}.pdf`);
 }

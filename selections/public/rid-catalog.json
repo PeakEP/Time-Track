@@ -1,0 +1,101 @@
+{
+  "_meta": {
+    "currency": "CAD",
+    "pricing_year": 2026,
+    "base_price": 18500,
+    "notes": "DEMO catalog for Robins Interiors & Design. Replace categories/options with the real finish schedule. Each option is 'included' (in base_price) or 'upgrade' (with a price). Set an option's 'image' to a photo path in public/ (e.g. finishes/quartz-white.jpg); the 'swatch' hex is only a placeholder when no image is present."
+  },
+  "categories": [
+    {
+      "id": "flooring",
+      "name": "Flooring",
+      "description": "Main living areas. One selection for the standard package.",
+      "options": [
+        { "id": "floor-lvp", "name": "Luxury Vinyl Plank", "description": "Waterproof, wood-look. Standard package.", "pricing": "included", "price": 0, "swatch": "#b08b5e" },
+        { "id": "floor-carpet", "name": "Plush Carpet (Bedrooms)", "description": "Stain-resistant nylon.", "pricing": "included", "price": 0, "swatch": "#a9a097" },
+        { "id": "floor-hardwood", "name": "Engineered Hardwood", "description": "5\" white oak, matte finish.", "pricing": "upgrade", "price": 4200, "swatch": "#8a6240" },
+        { "id": "floor-tile", "name": "Porcelain Wood-Look Tile", "description": "Through-body porcelain plank.", "pricing": "upgrade", "price": 5600, "swatch": "#9c8a74" }
+      ]
+    },
+    {
+      "id": "cabinets",
+      "name": "Kitchen Cabinets",
+      "description": "Door style and finish for the main kitchen.",
+      "options": [
+        { "id": "cab-white", "name": "Shaker — White", "description": "Painted white shaker. Standard.", "pricing": "included", "price": 0, "swatch": "#eee9e1" },
+        { "id": "cab-grey", "name": "Shaker — Stone Grey", "description": "Painted grey shaker. Standard.", "pricing": "included", "price": 0, "swatch": "#9a9a93" },
+        { "id": "cab-twotone", "name": "Two-Tone (Island Accent)", "description": "Contrasting island colour.", "pricing": "upgrade", "price": 1850, "swatch": "#33415c" },
+        { "id": "cab-custom", "name": "Custom Colour Match", "description": "Any paint colour, soft-close.", "pricing": "upgrade", "price": 2950, "swatch": "#6b7a5e" }
+      ]
+    },
+    {
+      "id": "countertops",
+      "name": "Countertops",
+      "description": "Kitchen counters and island.",
+      "options": [
+        { "id": "counter-lam", "name": "Laminate", "description": "Standard package.", "pricing": "included", "price": 0, "swatch": "#cfc6b8" },
+        { "id": "counter-granite", "name": "Granite", "description": "Level 1 granite, eased edge.", "pricing": "upgrade", "price": 2400, "swatch": "#6e6a66" },
+        { "id": "counter-quartz", "name": "Quartz", "description": "Engineered quartz, low maintenance.", "pricing": "upgrade", "price": 3300, "swatch": "#e8e6e2" },
+        { "id": "counter-quartzite", "name": "Natural Quartzite", "description": "Premium natural stone.", "pricing": "upgrade", "price": 5200, "swatch": "#cdd2d4" }
+      ]
+    },
+    {
+      "id": "backsplash",
+      "name": "Kitchen Backsplash",
+      "options": [
+        { "id": "bs-subway", "name": "Subway Tile", "description": "3x6 ceramic, standard.", "pricing": "included", "price": 0, "swatch": "#f2efe9" },
+        { "id": "bs-mosaic", "name": "Mosaic Accent", "description": "Glass/stone blend.", "pricing": "upgrade", "price": 950, "swatch": "#7f8c8d" },
+        { "id": "bs-slab", "name": "Full-Height Slab", "description": "Counter material to underside of uppers.", "pricing": "upgrade", "price": 2100, "swatch": "#d9d4cc" }
+      ]
+    },
+    {
+      "id": "paint",
+      "name": "Interior Paint",
+      "options": [
+        { "id": "paint-white", "name": "Builder White (Whole Home)", "description": "One standard colour throughout.", "pricing": "included", "price": 0, "swatch": "#f4f1ea" },
+        { "id": "paint-designer", "name": "Designer Colour Scheme", "description": "Curated whole-home palette.", "pricing": "upgrade", "price": 1200, "swatch": "#b9c0b0" },
+        { "id": "paint-accent", "name": "Accent Walls (up to 4)", "description": "Feature walls in select rooms.", "pricing": "upgrade", "price": 650, "swatch": "#4a5a66" }
+      ]
+    },
+    {
+      "id": "plumbing",
+      "name": "Plumbing Fixtures",
+      "description": "Faucet and fixture finish.",
+      "options": [
+        { "id": "plumb-chrome", "name": "Polished Chrome", "description": "Standard.", "pricing": "included", "price": 0, "swatch": "#c8ccce" },
+        { "id": "plumb-nickel", "name": "Brushed Nickel", "description": "Standard.", "pricing": "included", "price": 0, "swatch": "#a9a8a3" },
+        { "id": "plumb-black", "name": "Matte Black", "description": "Upgrade finish.", "pricing": "upgrade", "price": 780, "swatch": "#2b2b2b" },
+        { "id": "plumb-gold", "name": "Brushed Gold", "description": "Upgrade finish.", "pricing": "upgrade", "price": 1150, "swatch": "#b39256" }
+      ]
+    },
+    {
+      "id": "hardware",
+      "name": "Cabinet Hardware",
+      "options": [
+        { "id": "hw-nickel", "name": "Brushed Nickel Pulls", "description": "Standard.", "pricing": "included", "price": 0, "swatch": "#aaa9a4" },
+        { "id": "hw-black", "name": "Matte Black Pulls", "description": "Upgrade.", "pricing": "upgrade", "price": 320, "swatch": "#2f2f2f" },
+        { "id": "hw-gold", "name": "Champagne Gold Pulls", "description": "Upgrade.", "pricing": "upgrade", "price": 480, "swatch": "#bfa066" }
+      ]
+    },
+    {
+      "id": "lighting",
+      "name": "Lighting Package",
+      "options": [
+        { "id": "light-standard", "name": "Standard Fixtures", "description": "Builder lighting allowance.", "pricing": "included", "price": 0, "swatch": "#d8cfa8" },
+        { "id": "light-designer", "name": "Designer Fixtures", "description": "Upgraded pendants & fixtures.", "pricing": "upgrade", "price": 1650, "swatch": "#c4a35a" }
+      ]
+    },
+    {
+      "id": "addons",
+      "name": "Optional Add-Ons",
+      "description": "Select any that apply.",
+      "multi": true,
+      "options": [
+        { "id": "add-island", "name": "Waterfall Island Edge", "pricing": "upgrade", "price": 1900, "swatch": "#dcd7cf" },
+        { "id": "add-pantry", "name": "Walk-In Pantry Shelving", "pricing": "upgrade", "price": 1250, "swatch": "#b59b76" },
+        { "id": "add-undercab", "name": "Under-Cabinet LED Lighting", "pricing": "upgrade", "price": 740, "swatch": "#e6dca0" },
+        { "id": "add-trim", "name": "Upgraded Trim & Crown", "pricing": "upgrade", "price": 2100, "swatch": "#efebe3" }
+      ]
+    }
+  ]
+}

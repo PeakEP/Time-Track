@@ -1,12 +1,14 @@
-# Robins Interiors & Designs — Finish Selections
+# Robins Interiors & Design — Finish Selections
 
-A guided interior-finish selection app for custom homes. Clients/designers pick
-finishes from image cards, some **included** in the base price and some priced
-**upgrades**, with discounts and price overrides, then export a branded **PDF**.
+A guided interior-finish selection app for custom homes. A designer or client walks
+through finish categories, picks options from image cards — some **included** in the base
+price, some priced **upgrades** — with discounts and per-line overrides, then exports a
+branded **PDF**.
 
-Served at **`/selections/`** alongside the other JMRC apps. Built independently
-via `scripts/netlify-build.sh` — it does not touch Time Track, Cabinet Designer,
-or Aline Designer.
+Built in the **JMRC cabinet-designer house style**: React 18 + Vite + TypeScript, a single
+flat **Zustand** store (with undo/redo and namespaced-localStorage autosave), one global
+`styles.css` token system, a runtime catalog fetched from `public/`, and a `jsPDF` +
+`jspdf-autotable` export. Deploys under **`/selections/`** alongside the other JMRC apps.
 
 ## Run locally
 
@@ -15,44 +17,54 @@ cd selections
 npm install
 npm run dev      # http://localhost:5175/selections/
 npm run build    # production build into dist/
+npm run lint     # tsc type-check (the linter, same as the other apps)
 ```
 
-## Features (v1 demo)
+## Architecture (mirrors cabinet-designer)
 
-- **Designer / Client modes** — Designer sees cost fields, price overrides, and
-  discount controls; Client sees a clean selection experience.
-- **Included vs. Upgrade** pricing per option, with a live running total.
-- **Discounts** — order-level percent or flat dollar, plus per-line price
-  overrides (designer mode).
-- **Save & reload** — autosaves to the browser, plus a named project library and
-  import/export of `.json` project files.
-- **PDF export** — branded header, project info, itemized selections with
-  thumbnails, totals, discount, notes, and a signature line.
+```
+src/
+  main.tsx                Entry: createRoot + <App/>, imports styles.css
+  App.tsx                 Shell: catalog load, draft restore, autosave, undo/redo keys, layout
+  store.ts                Zustand store + loadCatalog / attachAutosave / restoreDraft
+  types.ts                All domain types (single source of truth)
+  styles.css              One global stylesheet with the :root brand token block
+  components/             PascalCase panes (SettingsBar, CategoryNav, OptionGrid, SummaryPanel, ProjectDialog, Welcome)
+  utils/
+    pricing.ts            computeLines / computeTotals / formatCAD (CAD)
+    pdf.ts                exportSelectionsPdf — branded, with thumbnails + signature
+    persistence.ts        .json save/open (versioned wrapper) + named library + CSV
+    swatch.ts             placeholder image generator + optionImage() resolver
+public/
+  rid-catalog.json        The catalog (categories → options). Swap this for real data.
+```
 
 ## Replacing the demo catalog with your real data
 
-Everything you select lives in **`src/data/catalog.ts`**. To go live:
+Everything you select lives in **`public/rid-catalog.json`** — fetched at runtime, so no
+rebuild-time coupling. Its shape:
 
-1. Replace the `CATALOG` array. Each **category** has `id`, `name`, optional
-   `description`, optional `multi` (allow several selections), and `options`.
-2. Each **option** has:
-   - `name`, optional `description`
-   - `pricing`: `"included"` or `"upgrade"`
-   - `price`: dollar value (0 for included)
-   - `image`: a photo. The demo uses generated `swatch()` placeholders — replace
-     with real product photos (see below).
-3. Set `DEFAULT_BASE_PRICE` to your standard package price.
+- `_meta`: `{ currency: "CAD", pricing_year, base_price, notes }` — `base_price` is the
+  standard finish package the upgrades add onto.
+- `categories[]`: `{ id, name, description?, multi?, options[] }`
+- each **option**: `{ id, name, description?, pricing: "included" | "upgrade", price, image?, swatch? }`
+  - `pricing: "included"` → in the base package ($0). `"upgrade"` → adds `price`.
+  - `image`: path to a real photo (see below). `swatch`: a hex colour used only for a
+    generated placeholder when no `image` is set.
 
-### Adding real product photos
+### Product photos — no external hosting needed
 
-Drop image files in `selections/public/` (e.g. `public/finishes/quartz-white.jpg`)
-and reference them as `image: "/selections/finishes/quartz-white.jpg"`. They are
-converted to PNG at export time so they embed correctly in the PDF.
+Drop image files in **`selections/public/finishes/`** (e.g. `finishes/quartz-white.jpg`) and
+set the option's `image` to `finishes/quartz-white.jpg`. They're bundled with the app and
+embed correctly into the PDF. Placeholder swatches render until real photos are added.
 
-> Tip: send a spreadsheet (category, option, included/upgrade, price) plus a
-> folder of photos and the catalog file can be generated from it directly.
+### Sourcing from Square
+
+The catalog can be generated from the Robins Interiors **Square** catalog (item names,
+categories, prices, and Square-hosted image URLs), then annotated with which items are
+`included` vs `upgrade` and the `base_price`. See the JMRC assistant to run the import.
 
 ## Branding
 
-PDF branding (company name, tagline, color) is in `src/utils/pdf.ts` (`BRAND`).
-UI colors are CSS variables at the top of `src/styles.css`.
+PDF branding is in `src/utils/pdf.ts` (`BRAND`). UI colours/fonts are the `:root` tokens at
+the top of `src/styles.css` — the JMRC indigo→cyan gradient, Montserrat + Inter.

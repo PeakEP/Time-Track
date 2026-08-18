@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Robins Interiors & Designs — Custom Home Finish Selections. Guided interior finish selection app with included/upgrade pricing, discounts, and branded PDF export.",
+  "description": "Robins Interiors & Design — Custom Home Finish Selections. Guided interior finish selection app (React + Vite + TypeScript + Zustand) with included/upgrade pricing, discounts, undo/redo, project save/reload, and branded PDF export. Built in the JMRC cabinet-designer house style.",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

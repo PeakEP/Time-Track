@@ -1,20 +1,23 @@
 import { create } from "zustand";
 import type {
-  Category,
+  Catalog,
   Discount,
-  FinishOption,
-  ProjectDocument,
-  ProjectInfo,
+  Project,
+  ProjectFile,
+  ProjectMeta,
   UserMode,
 } from "./types";
-import { CATALOG, DEFAULT_BASE_PRICE } from "./data/catalog";
 
-const AUTOSAVE_KEY = "rid-selections-autosave";
+// Namespaced localStorage key (matches cabinet-designer's "jmrc.<app>.<thing>.v1").
+const AUTOSAVE_KEY = "jmrc.selections.draft.v1";
+const HISTORY_LIMIT = 60;
 
-function emptyInfo(): ProjectInfo {
+// ---- Factories ----
+
+function defaultMeta(): ProjectMeta {
   return {
-    clientName: "",
-    projectName: "",
+    client: "",
+    project: "",
     address: "",
     date: new Date().toISOString().slice(0, 10),
     salesRep: "",
@@ -22,169 +25,210 @@ function emptyInfo(): ProjectInfo {
   };
 }
 
-function noDiscount(): Discount {
+function defaultDiscount(): Discount {
   return { label: "Discount", type: "percent", value: 0 };
 }
 
-export interface SelectionState {
-  mode: UserMode;
-  info: ProjectInfo;
-  basePrice: number;
-  selections: Record<string, string[]>;
-  priceOverrides: Record<string, number>;
-  discount: Discount;
-
-  setMode: (mode: UserMode) => void;
-  setInfo: (patch: Partial<ProjectInfo>) => void;
-  setBasePrice: (n: number) => void;
-  toggleOption: (category: Category, optionId: string) => void;
-  setOverride: (optionId: string, price: number | null) => void;
-  setDiscount: (patch: Partial<Discount>) => void;
-  loadDocument: (doc: ProjectDocument) => void;
-  toDocument: () => ProjectDocument;
-  reset: () => void;
+// A fresh, empty project. basePrice is seeded from the catalog once it loads.
+export function defaultProject(basePrice = 0): Project {
+  return {
+    meta: defaultMeta(),
+    basePrice,
+    selections: {},
+    overrides: {},
+    discount: defaultDiscount(),
+  };
 }
 
-export const useStore = create<SelectionState>((set, get) => ({
+// Push the current project onto the undo stack, capped at HISTORY_LIMIT.
+function pushHistory(s: State): Project[] {
+  const next = [...s.past, s.project];
+  if (next.length > HISTORY_LIMIT) next.shift();
+  return next;
+}
+
+// ---- Store ----
+
+type State = {
+  catalog: Catalog | null;
+  project: Project;
+  mode: UserMode;
+  activeCategory: string | null;
+  past: Project[];
+  future: Project[];
+  // setters
+  setCatalog: (c: Catalog) => void;
+  setMode: (m: UserMode) => void;
+  setActiveCategory: (id: string) => void;
+  patchMeta: (m: Partial<ProjectMeta>) => void;
+  setBasePrice: (n: number) => void;
+  toggleOption: (categoryId: string, optionId: string, multi: boolean) => void;
+  setOverride: (optionId: string, price: number | null, opts?: { snapshot?: boolean }) => void;
+  patchDiscount: (d: Partial<Discount>, opts?: { snapshot?: boolean }) => void;
+  loadProject: (p: Project) => void;
+  resetProject: () => void;
+  undo: () => void;
+  redo: () => void;
+  canUndo: () => boolean;
+  canRedo: () => boolean;
+};
+
+export const useStore = create<State>((set, get) => ({
+  catalog: null,
+  project: defaultProject(),
   mode: "designer",
-  info: emptyInfo(),
-  basePrice: DEFAULT_BASE_PRICE,
-  selections: {},
-  priceOverrides: {},
-  discount: noDiscount(),
+  activeCategory: null,
+  past: [],
+  future: [],
 
-  setMode: (mode) => set({ mode }),
-  setInfo: (patch) => set((s) => ({ info: { ...s.info, ...patch } })),
-  setBasePrice: (n) => set({ basePrice: Math.max(0, n || 0) }),
-
-  toggleOption: (category, optionId) =>
+  setCatalog: (c) =>
     set((s) => {
-      const current = s.selections[category.id] ?? [];
+      // Seed a still-pristine project's base price from the catalog.
+      const pristine =
+        s.project.basePrice === 0 &&
+        Object.keys(s.project.selections).length === 0;
+      return {
+        catalog: c,
+        activeCategory: s.activeCategory ?? c.categories[0]?.id ?? null,
+        project: pristine
+          ? { ...s.project, basePrice: c._meta.base_price }
+          : s.project,
+      };
+    }),
+
+  setMode: (m) => set({ mode: m }),
+  setActiveCategory: (id) => set({ activeCategory: id }),
+
+  // Meta and base price are contract details, not design decisions — they stay
+  // out of the undo history.
+  patchMeta: (m) => set((s) => ({ project: { ...s.project, meta: { ...s.project.meta, ...m } } })),
+  setBasePrice: (n) =>
+    set((s) => ({ project: { ...s.project, basePrice: Math.max(0, n || 0) } })),
+
+  toggleOption: (categoryId, optionId, multi) =>
+    set((s) => {
+      const current = s.project.selections[categoryId] ?? [];
       let next: string[];
-      if (category.multi) {
+      if (multi) {
         next = current.includes(optionId)
           ? current.filter((id) => id !== optionId)
           : [...current, optionId];
       } else {
         next = current.includes(optionId) ? [] : [optionId];
       }
-      return { selections: { ...s.selections, [category.id]: next } };
+      return {
+        project: { ...s.project, selections: { ...s.project.selections, [categoryId]: next } },
+        past: pushHistory(s),
+        future: [],
+      };
     }),
 
-  setOverride: (optionId, price) =>
+  setOverride: (optionId, price, opts) =>
     set((s) => {
-      const next = { ...s.priceOverrides };
-      if (price === null || Number.isNaN(price)) delete next[optionId];
-      else next[optionId] = Math.max(0, price);
-      return { priceOverrides: next };
+      const overrides = { ...s.project.overrides };
+      if (price === null || Number.isNaN(price)) delete overrides[optionId];
+      else overrides[optionId] = Math.max(0, price);
+      return {
+        project: { ...s.project, overrides },
+        past: opts?.snapshot === false ? s.past : pushHistory(s),
+        future: opts?.snapshot === false ? s.future : [],
+      };
     }),
 
-  setDiscount: (patch) => set((s) => ({ discount: { ...s.discount, ...patch } })),
+  patchDiscount: (d, opts) =>
+    set((s) => ({
+      project: { ...s.project, discount: { ...s.project.discount, ...d } },
+      past: opts?.snapshot === false ? s.past : pushHistory(s),
+      future: opts?.snapshot === false ? s.future : [],
+    })),
 
-  loadDocument: (doc) =>
-    set({
-      info: { ...emptyInfo(), ...doc.info },
-      basePrice: doc.basePrice,
-      selections: doc.selections ?? {},
-      priceOverrides: doc.priceOverrides ?? {},
-      discount: doc.discount ?? noDiscount(),
+  loadProject: (p) => set({ project: p, past: [], future: [] }),
+
+  resetProject: () =>
+    set((s) => ({
+      project: defaultProject(s.catalog?._meta.base_price ?? 0),
+      past: [],
+      future: [],
+    })),
+
+  undo: () =>
+    set((s) => {
+      if (!s.past.length) return s;
+      const previous = s.past[s.past.length - 1];
+      return {
+        project: previous,
+        past: s.past.slice(0, -1),
+        future: [s.project, ...s.future],
+      };
     }),
 
-  toDocument: () => {
-    const s = get();
-    return {
-      version: 1,
-      info: s.info,
-      basePrice: s.basePrice,
-      selections: s.selections,
-      priceOverrides: s.priceOverrides,
-      discount: s.discount,
-      savedAt: new Date().toISOString(),
-    };
-  },
-
-  reset: () =>
-    set({
-      info: emptyInfo(),
-      basePrice: DEFAULT_BASE_PRICE,
-      selections: {},
-      priceOverrides: {},
-      discount: noDiscount(),
+  redo: () =>
+    set((s) => {
+      if (!s.future.length) return s;
+      const [next, ...rest] = s.future;
+      return { project: next, past: [...s.past, s.project], future: rest };
     }),
+
+  canUndo: () => get().past.length > 0,
+  canRedo: () => get().future.length > 0,
 }));
 
-// ---- Derived pricing helpers (pure functions over state) ----
+// ---- Free functions (catalog load + draft persistence) ----
 
-export interface SelectedLine {
-  category: Category;
-  option: FinishOption;
-  effectivePrice: number;
+// Fetch the catalog JSON from public/, resolving under the deploy sub-path.
+export async function loadCatalog(): Promise<Catalog> {
+  const res = await fetch(`${import.meta.env.BASE_URL}rid-catalog.json`);
+  if (!res.ok) throw new Error(`Failed to load catalog (${res.status})`);
+  return (await res.json()) as Catalog;
 }
 
-export function effectivePrice(
-  option: FinishOption,
-  overrides: Record<string, number>
-): number {
-  if (option.pricing === "included") return 0;
-  return overrides[option.id] ?? option.price;
-}
-
-export function getSelectedLines(
-  selections: Record<string, string[]>,
-  overrides: Record<string, number>
-): SelectedLine[] {
-  const lines: SelectedLine[] = [];
-  for (const category of CATALOG) {
-    const ids = selections[category.id] ?? [];
-    for (const id of ids) {
-      const option = category.options.find((o) => o.id === id);
-      if (option) {
-        lines.push({ category, option, effectivePrice: effectivePrice(option, overrides) });
+// Autosave the project to localStorage, debounced. Attached once in App's mount
+// effect; returns an unsubscribe cleanup. Guarded so a pristine project never
+// clobbers a saved draft.
+export function attachAutosave(): () => void {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const unsub = useStore.subscribe((s) => {
+    const pristine =
+      Object.keys(s.project.selections).length === 0 &&
+      Object.keys(s.project.overrides).length === 0 &&
+      s.project.meta.client === "";
+    if (pristine) return;
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      try {
+        const file: ProjectFile = {
+          app: "jmrc-finish-selections",
+          version: 1,
+          savedAt: new Date().toISOString(),
+          project: s.project,
+        };
+        localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(file));
+      } catch {
+        // ignore quota / private-mode errors
       }
-    }
-  }
-  return lines;
+    }, 600);
+  });
+  return () => {
+    clearTimeout(timer);
+    unsub();
+  };
 }
 
-export interface Totals {
-  upgradesTotal: number;
-  subtotal: number;
-  discountAmount: number;
-  grandTotal: number;
-}
-
-export function computeTotals(state: {
-  basePrice: number;
-  selections: Record<string, string[]>;
-  priceOverrides: Record<string, number>;
-  discount: Discount;
-}): Totals {
-  const lines = getSelectedLines(state.selections, state.priceOverrides);
-  const upgradesTotal = lines.reduce((sum, l) => sum + l.effectivePrice, 0);
-  const subtotal = state.basePrice + upgradesTotal;
-  const discountAmount =
-    state.discount.type === "percent"
-      ? Math.round(subtotal * (state.discount.value / 100))
-      : Math.min(subtotal, state.discount.value || 0);
-  const grandTotal = Math.max(0, subtotal - discountAmount);
-  return { upgradesTotal, subtotal, discountAmount, grandTotal };
-}
-
-// ---- Autosave to localStorage ----
-
-export function loadAutosave(): ProjectDocument | null {
+export function restoreDraft(): Project | null {
   try {
     const raw = localStorage.getItem(AUTOSAVE_KEY);
-    return raw ? (JSON.parse(raw) as ProjectDocument) : null;
+    if (!raw) return null;
+    const file = JSON.parse(raw) as ProjectFile;
+    return file.project ?? null;
   } catch {
     return null;
   }
 }
 
-export function saveAutosave(doc: ProjectDocument): void {
+export function clearDraft(): void {
   try {
-    localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(doc));
+    localStorage.removeItem(AUTOSAVE_KEY);
   } catch {
-    /* ignore quota errors */
+    // ignore
   }
 }
