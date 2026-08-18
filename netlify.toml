@@ -2,6 +2,7 @@
 # - App-launcher landing page (static) lives at the site root
 # - Cabinet Designer (Vite + React) builds into /cabinet-designer/
 # - Aline Cabinet Designer builds into /aline-designer/
+# - Finish Selections builds into /selections/
 
 [build]
   publish = "_site"
@@ -20,6 +21,12 @@
 [[redirects]]
   from = "/aline-designer/*"
   to = "/aline-designer/index.html"
+  status = 200
+
+# Finish Selections SPA fallback
+[[redirects]]
+  from = "/selections/*"
+  to = "/selections/index.html"
   status = 200
 
 # Production context
