@@ -48,6 +48,13 @@ export type Catalog = {
 
 export type BoxMaterial = "PB" | "PLY";
 
+// Named lighting presets exposed in the 3D toolbar. Map to drei's built-in HDR
+// environments (originally sourced from Poly Haven, hosted on the drei CDN).
+//   warm   → "apartment" (warm interior IBL — good for wood-grain finishes)
+//   studio → "studio"    (neutral product-shot — the default; flatters every finish)
+//   bright → "city"      (bright daylight — reads as showroom under skylights)
+export type EnvPreset = "warm" | "studio" | "bright";
+
 export type Rotation = 0 | 90 | 180 | 270;
 export type ItemKind = "cabinet" | "appliance" | "window" | "door" | "filler" | "panel" | "accessory";
 
@@ -107,6 +114,12 @@ export type ProjectSettings = {
   pricingMode: "markup" | "discount" | "margin";
   discountPct: number; // % off MSRP (list)
   marginPct: number; // target gross margin %
+  // 3D image-based-lighting preset (Phase 2 of RENDERING_UPGRADE.md).
+  // Drives the drei <Environment> preset that provides reflections and soft
+  // directional lighting on cabinet doors + hardware. Absent = "studio".
+  envPreset?: EnvPreset;
+  // Multiplier applied on top of the environment map. Absent = 1.0.
+  envIntensity?: number;
 };
 
 export type Project = {

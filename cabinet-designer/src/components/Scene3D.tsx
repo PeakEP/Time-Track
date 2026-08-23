@@ -1,5 +1,5 @@
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, GizmoHelper, GizmoViewport, Grid, Edges } from "@react-three/drei";
+import { OrbitControls, GizmoHelper, GizmoViewport, Grid, Edges, Environment } from "@react-three/drei";
 import { useMemo, useRef, useState } from "react";
 import type { ThreeEvent } from "@react-three/fiber";
 import * as THREE from "three";
@@ -33,6 +33,14 @@ function rayToGround(ray: THREE.Ray, y: number): THREE.Vector3 | null {
 }
 
 // World units = inches. Convert to feet for camera distances feels too large; keep inches.
+// Map the friendly EnvPreset value to the drei preset key.
+function envPresetKey(p: import("../types").EnvPreset | undefined):
+  "apartment" | "studio" | "city" {
+  if (p === "warm") return "apartment";
+  if (p === "bright") return "city";
+  return "studio";
+}
+
 export function Scene3D() {
   const room = useStore((s) => s.project.room);
   const items = useStore((s) => s.project.items);
@@ -41,6 +49,7 @@ export function Scene3D() {
   const select = useStore((s) => s.select);
   const catalog = useStore((s) => s.catalog);
   const updateItem = useStore((s) => s.updateItem);
+  const patchSettings = useStore((s) => s.patchSettings);
   const [orbitEnabled, setOrbitEnabled] = useState(true);
   const dragState = useRef<{ id: string; offX: number; offZ: number; y: number } | null>(null);
 
@@ -116,13 +125,41 @@ export function Scene3D() {
         shadows={false}
         camera={{ position: [cx + cameraDistance, cameraDistance * 0.7, cy + cameraDistance], fov: 40, near: 1, far: 5000 }}
         onPointerMissed={() => select(null)}
-        gl={{ antialias: true, preserveDrawingBuffer: true }}
+        // Colour management + tone mapping (Phase 1 of RENDERING_UPGRADE.md).
+        // ACES filmic tone-maps HDR light into a plausible display range so whites
+        // don't clip and blacks don't collapse; SRGB output guarantees the finish
+        // hexes read the way the finish swatch does. Exposure is tuned for the
+        // current static lighting (heavy fills) and will drop to ~0.85 once the
+        // HDRI environment lands in Phase 2.
+        gl={{
+          antialias: true,
+          preserveDrawingBuffer: true,
+          toneMapping: THREE.ACESFilmicToneMapping,
+          toneMappingExposure: 1.0,
+          outputColorSpace: THREE.SRGBColorSpace,
+        }}
       >
         <color attach="background" args={["#eef1f7"]} />
-        <hemisphereLight args={["#ffffff", "#b8bfd0", 0.8]} />
-        <directionalLight position={[cx + 200, 320, cy + 200]} intensity={0.8} />
-        <directionalLight position={[cx - 150, 260, cy - 100]} intensity={0.3} />
-        <ambientLight intensity={0.4} />
+        {/* Image-based lighting (Phase 2 of RENDERING_UPGRADE.md).
+            An interior HDR environment map is what gives painted doors their
+            soft directional sheen and lets appliance fronts + metal pulls
+            actually reflect something. background={false} keeps the flat blue
+            behind the cabinets so the scene reads as a studio product shot,
+            not a busy 360° panorama. The three CDN-hosted presets from drei
+            were originally sourced from Poly Haven (CC0). */}
+        <Environment
+          preset={envPresetKey(settings.envPreset)}
+          background={false}
+          environmentIntensity={settings.envIntensity ?? 1.0}
+        />
+        {/* Existing three-point rig now acts as a subtle fill on top of the IBL.
+            The old intensities gave a flat "self-lit" look — halved so the
+            environment does most of the work while the directionals keep a
+            clear key direction for door highlights and cast shadows later. */}
+        <hemisphereLight args={["#ffffff", "#b8bfd0", 0.35]} />
+        <directionalLight position={[cx + 200, 320, cy + 200]} intensity={0.5} />
+        <directionalLight position={[cx - 150, 260, cy - 100]} intensity={0.18} />
+        <ambientLight intensity={0.15} />
 
         <Floor room={room} />
         <Walls
@@ -201,6 +238,19 @@ export function Scene3D() {
         <button onClick={() => setView("front")} title="Front view">
           <Eye size={14} /> Front
         </button>
+        {/* Lighting preset — switches the HDR environment powering IBL. */}
+        <select
+          value={settings.envPreset ?? "studio"}
+          onChange={(e) =>
+            patchSettings({ envPreset: e.target.value as import("../types").EnvPreset })
+          }
+          title="3D lighting preset (HDR environment)"
+          className="cam-preset-select"
+        >
+          <option value="studio">Studio (neutral)</option>
+          <option value="warm">Warm interior</option>
+          <option value="bright">Bright daylight</option>
+        </select>
         <button
           onClick={() => {
             const canvas = threeWrapRef.current?.querySelector("canvas");
