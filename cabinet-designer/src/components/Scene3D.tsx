@@ -1,5 +1,13 @@
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, GizmoHelper, GizmoViewport, Grid, Edges, Environment } from "@react-three/drei";
+import {
+  OrbitControls,
+  GizmoHelper,
+  GizmoViewport,
+  Grid,
+  Edges,
+  Environment,
+  ContactShadows,
+} from "@react-three/drei";
 import { useMemo, useRef, useState } from "react";
 import type { ThreeEvent } from "@react-three/fiber";
 import * as THREE from "three";
@@ -169,8 +177,21 @@ export function Scene3D() {
           wallMode={settings.wallMode ?? 4}
           wallViewAngle={settings.wallViewAngle ?? 45}
         />
+        {/* Phase 4 — grounding contact shadow under every cabinet run.
+            Sits just above the room floor (y=0.02"), spans the whole room
+            plus a margin, blurred soft. Without this the cabinets look like
+            they're floating on the floor; with it they read as sitting on it. */}
+        <ContactShadows
+          position={[cx, 0.02, cy]}
+          scale={dim * 2}
+          opacity={0.55}
+          blur={2.6}
+          far={40}
+          resolution={1024}
+          color="#000000"
+        />
         <Grid
-          position={[cx, 0.01, cy]}
+          position={[cx, 0.03, cy]}
           args={[dim * 2, dim * 2]}
           cellSize={12}
           sectionSize={48}
@@ -208,7 +229,10 @@ export function Scene3D() {
             position={[c.x + c.width / 2, c.topZ + c.height / 2, c.y + c.depth / 2]}
           >
             <boxGeometry args={[c.width, c.height, c.depth]} />
-            <meshStandardMaterial color="#2a2a30" roughness={0.35} metalness={0.05} />
+            {/* Countertop: quartz-style subtle clearcoat over a dark base.
+                clearcoat + moderate roughness reads as polished stone under
+                the HDRI without going full-glossy plastic. */}
+            <meshPhysicalMaterial color="#2a2a30" roughness={0.3} clearcoat={0.4} clearcoatRoughness={0.35} />
           </mesh>
         ))}
 
@@ -280,10 +304,35 @@ function Floor({ room }: { room: { points: Point[] } }) {
     return s;
   }, [room.points]);
   const geo = useMemo(() => new THREE.ShapeGeometry(shape), [shape]);
+  // Two-layer floor: a large outer plane extends beyond the room polygon so
+  // the scene doesn't appear to float on nothing when the camera pulls back,
+  // and the room-shape mesh sits 0.02" above it with a slightly warmer wood
+  // tone so the room interior still reads as "the cabinets' floor".
+  const b = useMemo(() => bounds(room.points), [room.points]);
+  const outerCX = (b.minX + b.maxX) / 2;
+  const outerCY = (b.minY + b.maxY) / 2;
+  const outerSize = Math.max(b.maxX - b.minX, b.maxY - b.minY) * 6 + 400;
   return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} geometry={geo} receiveShadow>
-      <meshStandardMaterial color="#b9b0a0" roughness={0.95} />
-    </mesh>
+    <>
+      {/* Outer sub-floor — very neutral, so the room's own floor tone still pops */}
+      <mesh
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[outerCX, -0.05, outerCY]}
+        receiveShadow
+      >
+        <planeGeometry args={[outerSize, outerSize]} />
+        <meshStandardMaterial color="#e7e2d8" roughness={0.98} />
+      </mesh>
+      {/* Room floor — inside the polygon, slightly above the sub-floor */}
+      <mesh
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[0, 0.01, 0]}
+        geometry={geo}
+        receiveShadow
+      >
+        <meshStandardMaterial color="#b9a888" roughness={0.9} />
+      </mesh>
+    </>
   );
 }
 
@@ -538,23 +587,33 @@ function CabinetMesh({
       {isAppliance ? (
         <mesh position={[0, 0, localD / 2 - 0.05]}>
           <boxGeometry args={[localW - 0.5, h - 0.5, 0.6]} />
-          <meshStandardMaterial color={doorColor} roughness={0.25} metalness={0.5} />
+          {/* Appliance front — stainless-ish. Higher metalness so the HDR
+              environment gives it a real reflective character instead of
+              looking like painted plastic. */}
+          <meshStandardMaterial color={doorColor} roughness={0.18} metalness={0.85} />
           <Edges threshold={15} color="#3a4150" />
         </mesh>
       ) : (
         doors.map((dr, i) => (
           <group key={i} position={[0, dr.y, localD / 2]}>
-            {/* door slab, finish colour, proud of the carcass and inset (frame reveal) */}
+            {/* Door slab — painted lacquer look via MeshPhysicalMaterial +
+                clearcoat. This is what makes the door read as sprayed paint
+                catching a soft window highlight, not matte plastic. */}
             <mesh position={[0, 0, 0.25]}>
               <boxGeometry args={[localW - reveal * 2, dr.h, 0.8]} />
-              <meshStandardMaterial color={doorColor} roughness={0.45} />
+              <meshPhysicalMaterial
+                color={doorColor}
+                roughness={0.32}
+                clearcoat={0.35}
+                clearcoatRoughness={0.5}
+              />
               <Edges threshold={15} color="#3a4150" />
             </mesh>
             {/* recessed shaker centre panel (slightly darker + set back) */}
             {localW > 9 && dr.h > 8 && (
               <mesh position={[0, 0, 0.15]}>
                 <boxGeometry args={[localW - reveal * 2 - 5, dr.h - 5, 0.7]} />
-                <meshStandardMaterial color={darken(doorColor, 0.1)} roughness={0.55} />
+                <meshStandardMaterial color={darken(doorColor, 0.1)} roughness={0.42} />
                 <Edges threshold={15} color="#3a4150" />
               </mesh>
             )}
@@ -625,7 +684,13 @@ function CornerMesh({
         return (
           <mesh key={`d${i}`} position={[rx, h / 2, rz]} rotation={[0, -rad, 0]}>
             <boxGeometry args={[dr.w, h - 0.5, dr.d]} />
-            <meshStandardMaterial color={doorColor} roughness={0.4} />
+            {/* corner-cab bi-fold door — same painted-lacquer feel as flat cabs */}
+            <meshPhysicalMaterial
+              color={doorColor}
+              roughness={0.32}
+              clearcoat={0.35}
+              clearcoatRoughness={0.5}
+            />
           </mesh>
         );
       })}
@@ -693,7 +758,12 @@ function DiagonalMesh({
       {/* door slab on the diagonal (hypotenuse) */}
       <mesh position={[mx, h / 2, mz]} rotation={[0, doorAng, 0]}>
         <boxGeometry args={[doorLen, h - 0.5, 0.6]} />
-        <meshStandardMaterial color={doorColor} roughness={0.4} />
+        <meshPhysicalMaterial
+          color={doorColor}
+          roughness={0.32}
+          clearcoat={0.35}
+          clearcoatRoughness={0.5}
+        />
       </mesh>
       {selected && (
         <mesh geometry={geo}>
