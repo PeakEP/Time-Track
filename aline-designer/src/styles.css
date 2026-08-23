@@ -499,6 +499,16 @@ input, select, textarea { font-family: inherit; font-size: 13px; }
   color: var(--text);
 }
 .cam-presets button:hover { background: var(--line-soft); }
+.cam-preset-select {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 11px;
+  color: var(--text);
+  cursor: pointer;
+}
+.cam-preset-select:hover { background: var(--line-soft); }
 
 /* ===== Schedule ===== */
 .schedule {
