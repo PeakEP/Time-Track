@@ -116,7 +116,19 @@ export function Scene3D() {
         shadows={false}
         camera={{ position: [cx + cameraDistance, cameraDistance * 0.7, cy + cameraDistance], fov: 40, near: 1, far: 5000 }}
         onPointerMissed={() => select(null)}
-        gl={{ antialias: true, preserveDrawingBuffer: true }}
+        // Colour management + tone mapping (Phase 1 of RENDERING_UPGRADE.md).
+        // ACES filmic tone-maps HDR light into a plausible display range so whites
+        // don't clip and blacks don't collapse; SRGB output guarantees the finish
+        // hexes read the way the finish swatch does. Exposure is tuned for the
+        // current static lighting (heavy fills) and will drop to ~0.85 once the
+        // HDRI environment lands in Phase 2.
+        gl={{
+          antialias: true,
+          preserveDrawingBuffer: true,
+          toneMapping: THREE.ACESFilmicToneMapping,
+          toneMappingExposure: 1.0,
+          outputColorSpace: THREE.SRGBColorSpace,
+        }}
       >
         <color attach="background" args={["#eef1f7"]} />
         <hemisphereLight args={["#ffffff", "#b8bfd0", 0.8]} />
