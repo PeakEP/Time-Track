@@ -5,10 +5,9 @@ import {
   GizmoViewport,
   Grid,
   Edges,
-  Environment,
   ContactShadows,
 } from "@react-three/drei";
-import { Suspense, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { ThreeEvent } from "@react-three/fiber";
 import * as THREE from "three";
 import { Eye, Box as BoxIcon, Square as SquareIcon, Camera } from "lucide-react";
@@ -41,13 +40,6 @@ function rayToGround(ray: THREE.Ray, y: number): THREE.Vector3 | null {
 }
 
 // World units = inches. Convert to feet for camera distances feels too large; keep inches.
-// Map the friendly EnvPreset value to the drei preset key.
-function envPresetKey(p: import("../types").EnvPreset | undefined):
-  "apartment" | "studio" | "city" {
-  if (p === "warm") return "apartment";
-  if (p === "bright") return "city";
-  return "studio";
-}
 
 export function Scene3D() {
   const room = useStore((s) => s.project.room);
@@ -57,7 +49,6 @@ export function Scene3D() {
   const select = useStore((s) => s.select);
   const catalog = useStore((s) => s.catalog);
   const updateItem = useStore((s) => s.updateItem);
-  const patchSettings = useStore((s) => s.patchSettings);
   const [orbitEnabled, setOrbitEnabled] = useState(true);
   const dragState = useRef<{ id: string; offX: number; offZ: number; y: number } | null>(null);
 
@@ -155,27 +146,14 @@ export function Scene3D() {
             behind the cabinets so the scene reads as a studio product shot,
             not a busy 360° panorama. The three CDN-hosted presets from drei
             were originally sourced from Poly Haven (CC0). */}
-        {/* HDR is loaded async from the drei CDN; a network hiccup or ad-blocker
-            can throw during the load and take the whole Canvas down. Wrapping
-            in Suspense with a null fallback means the scene still renders with
-            the existing three-point lights while the HDR loads (or fails). */}
-        {settings.envPreset !== "off" && (
-          <Suspense fallback={null}>
-            <Environment
-              preset={envPresetKey(settings.envPreset)}
-              background={false}
-              environmentIntensity={settings.envIntensity ?? 1.0}
-            />
-          </Suspense>
-        )}
-        {/* Existing three-point rig now acts as a subtle fill on top of the IBL.
-            The old intensities gave a flat "self-lit" look — halved so the
-            environment does most of the work while the directionals keep a
-            clear key direction for door highlights and cast shadows later. */}
-        <hemisphereLight args={["#ffffff", "#b8bfd0", 0.35]} />
-        <directionalLight position={[cx + 200, 320, cy + 200]} intensity={0.5} />
-        <directionalLight position={[cx - 150, 260, cy - 100]} intensity={0.18} />
-        <ambientLight intensity={0.15} />
+        {/* Environment (Phase 2) temporarily disabled — the drei CDN HDR load
+            was white-screening the app on load. The three-point rig below is
+            back at its pre-Phase-2 intensities so the scene is still lit.
+            When we bring HDR back it'll be self-hosted from /public/hdr/. */}
+        <hemisphereLight args={["#ffffff", "#b8bfd0", 0.8]} />
+        <directionalLight position={[cx + 200, 320, cy + 200]} intensity={0.8} />
+        <directionalLight position={[cx - 150, 260, cy - 100]} intensity={0.3} />
+        <ambientLight intensity={0.4} />
 
         <Floor room={room} />
         <Walls
@@ -270,20 +248,9 @@ export function Scene3D() {
         <button onClick={() => setView("front")} title="Front view">
           <Eye size={14} /> Front
         </button>
-        {/* Lighting preset — switches the HDR environment powering IBL. */}
-        <select
-          value={settings.envPreset ?? "studio"}
-          onChange={(e) =>
-            patchSettings({ envPreset: e.target.value as import("../types").EnvPreset })
-          }
-          title="3D lighting preset (HDR environment)"
-          className="cam-preset-select"
-        >
-          <option value="studio">Studio (neutral)</option>
-          <option value="warm">Warm interior</option>
-          <option value="bright">Bright daylight</option>
-          <option value="off">Lighting off (basic)</option>
-        </select>
+        {/* Lighting preset removed — the HDR CDN fetch was blocked by the
+            site's CSP and white-screening the app. Will return once HDRs are
+            self-hosted from /public/hdr/. */}
         <button
           onClick={() => {
             const canvas = threeWrapRef.current?.querySelector("canvas");
