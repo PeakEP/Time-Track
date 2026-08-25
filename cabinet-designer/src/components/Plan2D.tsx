@@ -581,45 +581,113 @@ function WallModeControl() {
 }
 
 function BlueprintDimensions({ items }: { items: Item[] }) {
+  const placed = items.filter((it) => !it.scheduleOnly && it.kind !== "window" && it.kind !== "door");
+  // Overall bounding box of the placed layout — used for the big full-length /
+  // full-width dim lines an installer verifies against the site measurement
+  // before cutting anything.
+  const bboxes = placed.map((it) => {
+    const fpw = it.rotation === 90 || it.rotation === 270 ? it.depth : it.width;
+    const fph = it.rotation === 90 || it.rotation === 270 ? it.width : it.depth;
+    return { x0: it.x, y0: it.y, x1: it.x + fpw, y1: it.y + fph };
+  });
+  const hasLayout = bboxes.length > 0;
+  const bx0 = hasLayout ? Math.min(...bboxes.map((b) => b.x0)) : 0;
+  const by0 = hasLayout ? Math.min(...bboxes.map((b) => b.y0)) : 0;
+  const bx1 = hasLayout ? Math.max(...bboxes.map((b) => b.x1)) : 0;
+  const by1 = hasLayout ? Math.max(...bboxes.map((b) => b.y1)) : 0;
+  const overallOff = 12; // sit outside the per-cabinet dim tier (which uses 2.5)
   return (
     <g pointerEvents="none" className="blueprint-dims">
-      {items
-        .filter((it) => !it.scheduleOnly && it.kind !== "window" && it.kind !== "door")
-        .map((it) => {
-          const fpw = it.rotation === 90 || it.rotation === 270 ? it.depth : it.width;
-          const fph = it.rotation === 90 || it.rotation === 270 ? it.width : it.depth;
-          const x = it.x;
-          const y = it.y;
-          const off = 2.5; // dim line offset above/left, inches
-          return (
-            <g key={it.id}>
-              {/* width dimension above the item */}
-              <line x1={x} y1={y - off} x2={x + fpw} y2={y - off} stroke="#c0392b" strokeWidth={0.18} />
-              <line x1={x} y1={y - off - 1} x2={x} y2={y - off + 1} stroke="#c0392b" strokeWidth={0.18} />
-              <line x1={x + fpw} y1={y - off - 1} x2={x + fpw} y2={y - off + 1} stroke="#c0392b" strokeWidth={0.18} />
-              <rect x={x + fpw / 2 - 5} y={y - off - 3.2} width={10} height={3} fill="#fff" opacity={0.85} />
-              <text x={x + fpw / 2} y={y - off - 1} textAnchor="middle" fontSize={2.6} fill="#c0392b" fontFamily="Inter" fontWeight={700}>
-                {fmtInch(it.width)}
-              </text>
-              {/* depth dimension on the left */}
-              <line x1={x - off} y1={y} x2={x - off} y2={y + fph} stroke="#c0392b" strokeWidth={0.18} />
-              <line x1={x - off - 1} y1={y} x2={x - off + 1} y2={y} stroke="#c0392b" strokeWidth={0.18} />
-              <line x1={x - off - 1} y1={y + fph} x2={x - off + 1} y2={y + fph} stroke="#c0392b" strokeWidth={0.18} />
-              <text
-                x={x - off - 1}
-                y={y + fph / 2}
-                textAnchor="middle"
-                fontSize={2.6}
-                fill="#c0392b"
-                fontFamily="Inter"
-                fontWeight={700}
-                transform={`rotate(-90 ${x - off - 1} ${y + fph / 2})`}
-              >
-                {fmtInch(it.depth)}
-              </text>
-            </g>
-          );
-        })}
+      {placed.map((it) => {
+        const fpw = it.rotation === 90 || it.rotation === 270 ? it.depth : it.width;
+        const fph = it.rotation === 90 || it.rotation === 270 ? it.width : it.depth;
+        const x = it.x;
+        const y = it.y;
+        const off = 2.5; // dim line offset above/left, inches
+        return (
+          <g key={it.id}>
+            {/* width dimension above the item */}
+            <line x1={x} y1={y - off} x2={x + fpw} y2={y - off} stroke="#c0392b" strokeWidth={0.18} />
+            <line x1={x} y1={y - off - 1} x2={x} y2={y - off + 1} stroke="#c0392b" strokeWidth={0.18} />
+            <line x1={x + fpw} y1={y - off - 1} x2={x + fpw} y2={y - off + 1} stroke="#c0392b" strokeWidth={0.18} />
+            <rect x={x + fpw / 2 - 5} y={y - off - 3.2} width={10} height={3} fill="#fff" opacity={0.85} />
+            <text x={x + fpw / 2} y={y - off - 1} textAnchor="middle" fontSize={2.6} fill="#c0392b" fontFamily="Inter" fontWeight={700}>
+              {fmtInch(it.width)}
+            </text>
+            {/* depth dimension on the left */}
+            <line x1={x - off} y1={y} x2={x - off} y2={y + fph} stroke="#c0392b" strokeWidth={0.18} />
+            <line x1={x - off - 1} y1={y} x2={x - off + 1} y2={y} stroke="#c0392b" strokeWidth={0.18} />
+            <line x1={x - off - 1} y1={y + fph} x2={x - off + 1} y2={y + fph} stroke="#c0392b" strokeWidth={0.18} />
+            <text
+              x={x - off - 1}
+              y={y + fph / 2}
+              textAnchor="middle"
+              fontSize={2.6}
+              fill="#c0392b"
+              fontFamily="Inter"
+              fontWeight={700}
+              transform={`rotate(-90 ${x - off - 1} ${y + fph / 2})`}
+            >
+              {fmtInch(it.depth)}
+            </text>
+          </g>
+        );
+      })}
+      {hasLayout && (
+        <g className="blueprint-overall">
+          {/* Full-width dim across the top, spanning the outermost cabinet edges.
+              Sits above the per-cabinet dim tier at overallOff so the two rows
+              don't overlap. Thicker line + larger label to read as the summary. */}
+          <line x1={bx0} y1={by0 - overallOff} x2={bx1} y2={by0 - overallOff} stroke="#c0392b" strokeWidth={0.35} />
+          <line x1={bx0} y1={by0 - overallOff - 1.6} x2={bx0} y2={by0 - overallOff + 1.6} stroke="#c0392b" strokeWidth={0.35} />
+          <line x1={bx1} y1={by0 - overallOff - 1.6} x2={bx1} y2={by0 - overallOff + 1.6} stroke="#c0392b" strokeWidth={0.35} />
+          <rect
+            x={(bx0 + bx1) / 2 - 12}
+            y={by0 - overallOff - 4.4}
+            width={24}
+            height={4}
+            rx={0.5}
+            fill="#fff"
+            opacity={0.9}
+          />
+          <text
+            x={(bx0 + bx1) / 2}
+            y={by0 - overallOff - 1.8}
+            textAnchor="middle"
+            fontSize={3.4}
+            fill="#c0392b"
+            fontFamily="Inter"
+            fontWeight={800}
+          >
+            OVERALL {fmtInch(bx1 - bx0)}
+          </text>
+          {/* Full-depth dim on the left, spanning outermost top-to-bottom edges */}
+          <line x1={bx0 - overallOff} y1={by0} x2={bx0 - overallOff} y2={by1} stroke="#c0392b" strokeWidth={0.35} />
+          <line x1={bx0 - overallOff - 1.6} y1={by0} x2={bx0 - overallOff + 1.6} y2={by0} stroke="#c0392b" strokeWidth={0.35} />
+          <line x1={bx0 - overallOff - 1.6} y1={by1} x2={bx0 - overallOff + 1.6} y2={by1} stroke="#c0392b" strokeWidth={0.35} />
+          <rect
+            x={bx0 - overallOff - 2}
+            y={(by0 + by1) / 2 - 12}
+            width={4}
+            height={24}
+            rx={0.5}
+            fill="#fff"
+            opacity={0.9}
+          />
+          <text
+            x={bx0 - overallOff}
+            y={(by0 + by1) / 2}
+            textAnchor="middle"
+            fontSize={3.4}
+            fill="#c0392b"
+            fontFamily="Inter"
+            fontWeight={800}
+            transform={`rotate(-90 ${bx0 - overallOff} ${(by0 + by1) / 2})`}
+          >
+            OVERALL {fmtInch(by1 - by0)}
+          </text>
+        </g>
+      )}
     </g>
   );
 }
