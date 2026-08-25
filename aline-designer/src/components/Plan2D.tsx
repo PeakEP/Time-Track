@@ -879,19 +879,25 @@ function ItemNode({
               {label}
             </text>
             <text x={w / 2} y={labelY + 2.5} textAnchor="middle" fontSize={1.9} fill="#4a5364" fontFamily="Inter">
-              {Math.round(w)}"{isAppliance ? " appl" : isWall ? " up" : ""}
+              {/* Cabinets: show the on-screen width so a rotated cabinet reads
+                  correctly along the wall. Panels/fillers: always show the
+                  catalog face width — a 24" panel is a 24" panel no matter
+                  which wall it's turned to. Rotating it to fit sideways
+                  shouldn't relabel it as its 3/4" thickness. */}
+              {Math.round(isPanelPiece ? item.width : w)}"
+              {isAppliance ? " appl" : isWall ? " up" : ""}
             </text>
           </g>
         );
       })()}
       {selected && (
         <>
-          {/* Dim labels reflect the on-screen rectangle — w along the top,
-              h down the left — so a rotated cabinet reads correctly (a 24"D
-              × 12"W base rotated onto a side wall shows 12" along the wall
-              and 24" into the room, not the catalog width/depth). */}
+          {/* Cabinets: dim labels follow rotation (w on top, h on left) so
+              installers see the actual visible run. Panels/fillers keep
+              catalog face dims (width across, depth down) regardless of
+              rotation — a 24 x 3/4 panel always reads 24 x 3/4. */}
           <text x={w / 2} y={-1.5} textAnchor="middle" fontSize={2.4} fill="#2C327C" fontFamily="Inter" fontWeight={600}>
-            {Math.round(w)}"
+            {Math.round(isPanelPiece ? item.width : w)}"
           </text>
           <text
             x={-1.5}
@@ -902,7 +908,7 @@ function ItemNode({
             fontFamily="Inter"
             fontWeight={600}
           >
-            {Math.round(h)}"
+            {Math.round(isPanelPiece ? item.depth : h)}"
           </text>
         </>
       )}
