@@ -854,11 +854,8 @@ input, select, textarea { font-family: inherit; font-size: 13px; }
   padding: 8px 10px;
   background: linear-gradient(90deg, var(--indigo), var(--steel));
   color: #fff;
-  cursor: grab;
-  touch-action: none;
   flex-shrink: 0;
 }
-.inspector-head:active { cursor: grabbing; }
 .inspector-grab { display: flex; align-items: center; gap: 6px; }
 .inspector-grab > svg { opacity: 0.7; }
 .inspector-title { font-family: "Montserrat"; font-weight: 700; font-size: 13px; }
