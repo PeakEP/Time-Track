@@ -8,7 +8,7 @@ import {
   Environment,
   ContactShadows,
 } from "@react-three/drei";
-import { useMemo, useRef, useState } from "react";
+import { Suspense, useMemo, useRef, useState } from "react";
 import type { ThreeEvent } from "@react-three/fiber";
 import * as THREE from "three";
 import { Eye, Box as BoxIcon, Square as SquareIcon, Camera } from "lucide-react";
@@ -155,11 +155,19 @@ export function Scene3D() {
             behind the cabinets so the scene reads as a studio product shot,
             not a busy 360° panorama. The three CDN-hosted presets from drei
             were originally sourced from Poly Haven (CC0). */}
-        <Environment
-          preset={envPresetKey(settings.envPreset)}
-          background={false}
-          environmentIntensity={settings.envIntensity ?? 1.0}
-        />
+        {/* HDR is loaded async from the drei CDN; a network hiccup or ad-blocker
+            can throw during the load and take the whole Canvas down. Wrapping
+            in Suspense with a null fallback means the scene still renders with
+            the existing three-point lights while the HDR loads (or fails). */}
+        {settings.envPreset !== "off" && (
+          <Suspense fallback={null}>
+            <Environment
+              preset={envPresetKey(settings.envPreset)}
+              background={false}
+              environmentIntensity={settings.envIntensity ?? 1.0}
+            />
+          </Suspense>
+        )}
         {/* Existing three-point rig now acts as a subtle fill on top of the IBL.
             The old intensities gave a flat "self-lit" look — halved so the
             environment does most of the work while the directionals keep a
@@ -274,6 +282,7 @@ export function Scene3D() {
           <option value="studio">Studio (neutral)</option>
           <option value="warm">Warm interior</option>
           <option value="bright">Bright daylight</option>
+          <option value="off">Lighting off (basic)</option>
         </select>
         <button
           onClick={() => {

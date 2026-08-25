@@ -50,10 +50,12 @@ export type BoxMaterial = "PB" | "PLY";
 
 // Named lighting presets exposed in the 3D toolbar. Map to drei's built-in HDR
 // environments (originally sourced from Poly Haven, hosted on the drei CDN).
+//   off    → no HDR — falls back to the three-point light rig only. Escape
+//            hatch when the drei CDN is blocked (offline, ad-block, corp network).
 //   warm   → "apartment" (warm interior IBL — good for wood-grain finishes)
 //   studio → "studio"    (neutral product-shot — the default; flatters every finish)
 //   bright → "city"      (bright daylight — reads as showroom under skylights)
-export type EnvPreset = "warm" | "studio" | "bright";
+export type EnvPreset = "off" | "warm" | "studio" | "bright";
 
 export type Rotation = 0 | 90 | 180 | 270;
 export type ItemKind = "cabinet" | "appliance" | "window" | "door" | "filler" | "panel" | "accessory";
