@@ -960,12 +960,13 @@ function ItemNode({
       })()}
       {selected && (
         <>
-          {/* Cabinets: dim labels follow rotation (w on top, h on left) so
-              installers see the actual visible run. Panels/fillers keep
-              catalog face dims (width across, depth down) regardless of
-              rotation — a 24 x 3/4 panel always reads 24 x 3/4. */}
+          {/* Dim labels ALWAYS follow the on-screen rect — top label sits
+              over the horizontal edge and shows w; left label sits beside the
+              vertical edge and shows h. When a 24" panel is rotated so the
+              24" runs vertically, the left label reads 24 and the top label
+              reads 0.75 — matching what the installer is actually seeing. */}
           <text x={w / 2} y={-1.5} textAnchor="middle" fontSize={2.4} fill="#2C327C" fontFamily="Inter" fontWeight={600}>
-            {Math.round(isPanelPiece ? item.width : w)}"
+            {Math.round(w)}"
           </text>
           <text
             x={-1.5}
@@ -976,7 +977,7 @@ function ItemNode({
             fontFamily="Inter"
             fontWeight={600}
           >
-            {Math.round(isPanelPiece ? item.depth : h)}"
+            {Math.round(h)}"
           </text>
         </>
       )}
