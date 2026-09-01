@@ -427,7 +427,15 @@ export function Plan2D() {
               />
             ))}
             <DimensionLines />
-            {showDimensions && <BlueprintDimensions items={items} />}
+            {showDimensions && (
+              <BlueprintDimensions
+                items={items}
+                viewMinX={b.minX - padIn}
+                viewMaxX={b.maxX + padIn}
+                viewMinY={b.minY - padIn}
+                viewMaxY={b.maxY + padIn}
+              />
+            )}
             {ghost && cursor && <GhostPreview cursor={cursor} />}
             <VertexEditor screenToWorldIn={screenToWorldIn} />
           </g>
@@ -580,7 +588,19 @@ function WallModeControl() {
   );
 }
 
-function BlueprintDimensions({ items }: { items: Item[] }) {
+function BlueprintDimensions({
+  items,
+  viewMinX,
+  viewMaxX,
+  viewMinY,
+  viewMaxY,
+}: {
+  items: Item[];
+  viewMinX: number;
+  viewMaxX: number;
+  viewMinY: number;
+  viewMaxY: number;
+}) {
   const placed = items.filter((it) => !it.scheduleOnly && it.kind !== "window" && it.kind !== "door");
   // Overall bounding box of the placed layout — used for the big full-length /
   // full-width dim lines an installer verifies against the site measurement
@@ -633,61 +653,74 @@ function BlueprintDimensions({ items }: { items: Item[] }) {
           </g>
         );
       })}
-      {hasLayout && (
-        <g className="blueprint-overall">
-          {/* Full-width dim across the top, spanning the outermost cabinet edges.
-              Sits above the per-cabinet dim tier at overallOff so the two rows
-              don't overlap. Thicker line + larger label to read as the summary. */}
-          <line x1={bx0} y1={by0 - overallOff} x2={bx1} y2={by0 - overallOff} stroke="#c0392b" strokeWidth={0.35} />
-          <line x1={bx0} y1={by0 - overallOff - 1.6} x2={bx0} y2={by0 - overallOff + 1.6} stroke="#c0392b" strokeWidth={0.35} />
-          <line x1={bx1} y1={by0 - overallOff - 1.6} x2={bx1} y2={by0 - overallOff + 1.6} stroke="#c0392b" strokeWidth={0.35} />
-          <rect
-            x={(bx0 + bx1) / 2 - 12}
-            y={by0 - overallOff - 4.4}
-            width={24}
-            height={4}
-            rx={0.5}
-            fill="#fff"
-            opacity={0.9}
-          />
-          <text
-            x={(bx0 + bx1) / 2}
-            y={by0 - overallOff - 1.8}
-            textAnchor="middle"
-            fontSize={3.4}
-            fill="#c0392b"
-            fontFamily="Inter"
-            fontWeight={800}
-          >
-            OVERALL {fmtInch(bx1 - bx0)}
-          </text>
-          {/* Full-depth dim on the left, spanning outermost top-to-bottom edges */}
-          <line x1={bx0 - overallOff} y1={by0} x2={bx0 - overallOff} y2={by1} stroke="#c0392b" strokeWidth={0.35} />
-          <line x1={bx0 - overallOff - 1.6} y1={by0} x2={bx0 - overallOff + 1.6} y2={by0} stroke="#c0392b" strokeWidth={0.35} />
-          <line x1={bx0 - overallOff - 1.6} y1={by1} x2={bx0 - overallOff + 1.6} y2={by1} stroke="#c0392b" strokeWidth={0.35} />
-          <rect
-            x={bx0 - overallOff - 2}
-            y={(by0 + by1) / 2 - 12}
-            width={4}
-            height={24}
-            rx={0.5}
-            fill="#fff"
-            opacity={0.9}
-          />
-          <text
-            x={bx0 - overallOff}
-            y={(by0 + by1) / 2}
-            textAnchor="middle"
-            fontSize={3.4}
-            fill="#c0392b"
-            fontFamily="Inter"
-            fontWeight={800}
-            transform={`rotate(-90 ${bx0 - overallOff} ${(by0 + by1) / 2})`}
-          >
-            OVERALL {fmtInch(by1 - by0)}
-          </text>
-        </g>
-      )}
+      {hasLayout && (() => {
+        // The label rect+text is centered on the dim-line midpoint. If the
+        // layout sits near a room edge, the midpoint can land where half the
+        // label would overflow the plan viewport and get clipped by the SVG
+        // (which is what Mike hit). We clamp the label position (not the dim
+        // line — that stays exactly on the layout) so the number is always
+        // readable regardless of where the run sits in the room.
+        const halfLabelIn = 13; // approx half-width of "OVERALL 25.5"" at fontSize 3.4
+        const labelXMid = (bx0 + bx1) / 2;
+        const labelYMid = (by0 + by1) / 2;
+        const clampedLabelX = Math.max(viewMinX + halfLabelIn, Math.min(viewMaxX - halfLabelIn, labelXMid));
+        const clampedLabelY = Math.max(viewMinY + halfLabelIn, Math.min(viewMaxY - halfLabelIn, labelYMid));
+        const widthTxt = `OVERALL ${fmtInch(bx1 - bx0)}`;
+        const depthTxt = `OVERALL ${fmtInch(by1 - by0)}`;
+        return (
+          <g className="blueprint-overall">
+            {/* Full-width dim across the top, spanning the outermost cabinet edges. */}
+            <line x1={bx0} y1={by0 - overallOff} x2={bx1} y2={by0 - overallOff} stroke="#c0392b" strokeWidth={0.35} />
+            <line x1={bx0} y1={by0 - overallOff - 1.6} x2={bx0} y2={by0 - overallOff + 1.6} stroke="#c0392b" strokeWidth={0.35} />
+            <line x1={bx1} y1={by0 - overallOff - 1.6} x2={bx1} y2={by0 - overallOff + 1.6} stroke="#c0392b" strokeWidth={0.35} />
+            <rect
+              x={clampedLabelX - halfLabelIn}
+              y={by0 - overallOff - 4.4}
+              width={halfLabelIn * 2}
+              height={4}
+              rx={0.5}
+              fill="#fff"
+              opacity={0.9}
+            />
+            <text
+              x={clampedLabelX}
+              y={by0 - overallOff - 1.8}
+              textAnchor="middle"
+              fontSize={3.4}
+              fill="#c0392b"
+              fontFamily="Inter"
+              fontWeight={800}
+            >
+              {widthTxt}
+            </text>
+            {/* Full-depth dim on the left, spanning outermost top-to-bottom edges */}
+            <line x1={bx0 - overallOff} y1={by0} x2={bx0 - overallOff} y2={by1} stroke="#c0392b" strokeWidth={0.35} />
+            <line x1={bx0 - overallOff - 1.6} y1={by0} x2={bx0 - overallOff + 1.6} y2={by0} stroke="#c0392b" strokeWidth={0.35} />
+            <line x1={bx0 - overallOff - 1.6} y1={by1} x2={bx0 - overallOff + 1.6} y2={by1} stroke="#c0392b" strokeWidth={0.35} />
+            <rect
+              x={bx0 - overallOff - 2}
+              y={clampedLabelY - halfLabelIn}
+              width={4}
+              height={halfLabelIn * 2}
+              rx={0.5}
+              fill="#fff"
+              opacity={0.9}
+            />
+            <text
+              x={bx0 - overallOff}
+              y={clampedLabelY}
+              textAnchor="middle"
+              fontSize={3.4}
+              fill="#c0392b"
+              fontFamily="Inter"
+              fontWeight={800}
+              transform={`rotate(-90 ${bx0 - overallOff} ${clampedLabelY})`}
+            >
+              {depthTxt}
+            </text>
+          </g>
+        );
+      })()}
     </g>
   );
 }
