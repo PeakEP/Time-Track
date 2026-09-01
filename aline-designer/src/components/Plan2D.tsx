@@ -113,7 +113,11 @@ export function Plan2D() {
         if (!selectedId) return;
         const it = items.find((i) => i.id === selectedId);
         if (!it) return;
-        const step = e.shiftKey ? 0.125 : 1;
+        // Default nudge = 0.25" (1/4"): fine enough to fit a 0.75" panel
+        // flush against a wall without eyeballing. Shift = 0.125" (1/8") for
+        // even finer trim work. Was 1" default before, which snapped past
+        // typical panel thicknesses in a single tap.
+        const step = e.shiftKey ? 0.125 : 0.25;
         const dx = e.key === "ArrowLeft" ? -step : e.key === "ArrowRight" ? step : 0;
         const dy = e.key === "ArrowUp" ? -step : e.key === "ArrowDown" ? step : 0;
         updateItem(selectedId, {
@@ -985,7 +989,7 @@ function ItemNode({
                   catalog face width — a 24" panel is a 24" panel no matter
                   which wall it's turned to. Rotating it to fit sideways
                   shouldn't relabel it as its 3/4" thickness. */}
-              {Math.round(isPanelPiece ? item.width : w)}"
+              {fmtInch(isPanelPiece ? item.width : w)}
               {isAppliance ? " appl" : isWall ? " up" : ""}
             </text>
           </g>
@@ -995,11 +999,11 @@ function ItemNode({
         <>
           {/* Dim labels ALWAYS follow the on-screen rect — top label sits
               over the horizontal edge and shows w; left label sits beside the
-              vertical edge and shows h. When a 24" panel is rotated so the
-              24" runs vertically, the left label reads 24 and the top label
-              reads 0.75 — matching what the installer is actually seeing. */}
+              vertical edge and shows h. Uses fmtInch so a 0.75" panel reads
+              0.75, not rounded to 1 — Mike was placing panels expecting 0.75
+              and seeing the label say 1 which caused wall-flush confusion. */}
           <text x={w / 2} y={-1.5} textAnchor="middle" fontSize={2.4} fill="#2C327C" fontFamily="Inter" fontWeight={600}>
-            {Math.round(w)}"
+            {fmtInch(w)}
           </text>
           <text
             x={-1.5}
@@ -1010,7 +1014,7 @@ function ItemNode({
             fontFamily="Inter"
             fontWeight={600}
           >
-            {Math.round(h)}"
+            {fmtInch(h)}
           </text>
         </>
       )}

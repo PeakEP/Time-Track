@@ -5077,8 +5077,8 @@
     {
       "sku": "BEP21",
       "desc": "Vanity End Panel 21\"",
-      "cat": "Vanity",
-      "dims": "",
+      "cat": "Panels",
+      "dims": "21.75\"W x 0.75\"D x 34.5\"H",
       "flat": {
         "essential": 77,
         "plus": 77,
@@ -5086,9 +5086,9 @@
         "premium": 148,
         "elite": 148
       },
-      "width_in": null,
-      "depth_in": null,
-      "height_in": null
+      "width_in": 21.75,
+      "depth_in": 0.75,
+      "height_in": 34.5
     }
   ]
 }
