@@ -434,6 +434,7 @@ export function Plan2D() {
             {showDimensions && (
               <BlueprintDimensions
                 items={items}
+                room={room}
                 viewMinX={b.minX - padIn}
                 viewMaxX={b.maxX + padIn}
                 viewMinY={b.minY - padIn}
@@ -594,12 +595,14 @@ function WallModeControl() {
 
 function BlueprintDimensions({
   items,
+  room,
   viewMinX,
   viewMaxX,
   viewMinY,
   viewMaxY,
 }: {
   items: Item[];
+  room: import("../types").Room;
   viewMinX: number;
   viewMaxX: number;
   viewMinY: number;
@@ -636,7 +639,9 @@ function BlueprintDimensions({
             <line x1={x + fpw} y1={y - off - 1} x2={x + fpw} y2={y - off + 1} stroke="#c0392b" strokeWidth={0.18} />
             <rect x={x + fpw / 2 - 5} y={y - off - 3.2} width={10} height={3} fill="#fff" opacity={0.85} />
             <text x={x + fpw / 2} y={y - off - 1} textAnchor="middle" fontSize={2.6} fill="#c0392b" fontFamily="Inter" fontWeight={700}>
-              {fmtInch(it.width)}
+              {/* Use post-rotation footprint dim so a rotated filler / cabinet
+                  reads correctly (top label = width of the on-screen edge). */}
+              {fmtInch(fpw)}
             </text>
             {/* depth dimension on the left */}
             <line x1={x - off} y1={y} x2={x - off} y2={y + fph} stroke="#c0392b" strokeWidth={0.18} />
@@ -652,7 +657,9 @@ function BlueprintDimensions({
               fontWeight={700}
               transform={`rotate(-90 ${x - off - 1} ${y + fph / 2})`}
             >
-              {fmtInch(it.depth)}
+              {/* Use post-rotation footprint dim so a rotated filler / cabinet
+                  reads correctly (left label = height of the on-screen edge). */}
+              {fmtInch(fph)}
             </text>
           </g>
         );
@@ -721,6 +728,88 @@ function BlueprintDimensions({
               transform={`rotate(-90 ${bx0 - overallOff} ${clampedLabelY})`}
             >
               {depthTxt}
+            </text>
+          </g>
+        );
+      })()}
+      {/* Room INTERIOR overall — wall-face to wall-face inside dimension.
+          Different tier than the cabinet-run OVERALL so an installer can
+          verify both: "cabinets are this wide" AND "the room's inside is
+          this wide". Positioned on the OPPOSITE side of the layout (bottom
+          and right) so it doesn't overlap the cabinet-run tier at top/left.
+          Blue to distinguish from the red cabinet dims. */}
+      {(() => {
+        const halfW = room.wallThickness / 2;
+        const rb = { minX: Infinity, minY: Infinity, maxX: -Infinity, maxY: -Infinity };
+        for (const p of room.points) {
+          rb.minX = Math.min(rb.minX, p.x);
+          rb.minY = Math.min(rb.minY, p.y);
+          rb.maxX = Math.max(rb.maxX, p.x);
+          rb.maxY = Math.max(rb.maxY, p.y);
+        }
+        // Interior span = polygon-bounds - wall thickness on each side
+        const insideW = (rb.maxX - rb.minX) - room.wallThickness;
+        const insideD = (rb.maxY - rb.minY) - room.wallThickness;
+        const insideX0 = rb.minX + halfW;
+        const insideX1 = rb.maxX - halfW;
+        const insideY0 = rb.minY + halfW;
+        const insideY1 = rb.maxY - halfW;
+        const off = 6; // sit just outside the interior surface
+        const roomLabelHalf = 13;
+        const roomLabelXMid = (insideX0 + insideX1) / 2;
+        const roomLabelYMid = (insideY0 + insideY1) / 2;
+        const clampedRoomX = Math.max(viewMinX + roomLabelHalf, Math.min(viewMaxX - roomLabelHalf, roomLabelXMid));
+        const clampedRoomY = Math.max(viewMinY + roomLabelHalf, Math.min(viewMaxY - roomLabelHalf, roomLabelYMid));
+        return (
+          <g className="blueprint-room-inside">
+            {/* Interior width along the BOTTOM edge */}
+            <line x1={insideX0} y1={insideY1 + off} x2={insideX1} y2={insideY1 + off} stroke="#2C327C" strokeWidth={0.35} />
+            <line x1={insideX0} y1={insideY1 + off - 1.6} x2={insideX0} y2={insideY1 + off + 1.6} stroke="#2C327C" strokeWidth={0.35} />
+            <line x1={insideX1} y1={insideY1 + off - 1.6} x2={insideX1} y2={insideY1 + off + 1.6} stroke="#2C327C" strokeWidth={0.35} />
+            <rect
+              x={clampedRoomX - roomLabelHalf}
+              y={insideY1 + off + 0.6}
+              width={roomLabelHalf * 2}
+              height={4}
+              rx={0.5}
+              fill="#fff"
+              opacity={0.9}
+            />
+            <text
+              x={clampedRoomX}
+              y={insideY1 + off + 3.4}
+              textAnchor="middle"
+              fontSize={3.4}
+              fill="#2C327C"
+              fontFamily="Inter"
+              fontWeight={800}
+            >
+              INSIDE {fmtInch(insideW)}
+            </text>
+            {/* Interior depth along the RIGHT edge */}
+            <line x1={insideX1 + off} y1={insideY0} x2={insideX1 + off} y2={insideY1} stroke="#2C327C" strokeWidth={0.35} />
+            <line x1={insideX1 + off - 1.6} y1={insideY0} x2={insideX1 + off + 1.6} y2={insideY0} stroke="#2C327C" strokeWidth={0.35} />
+            <line x1={insideX1 + off - 1.6} y1={insideY1} x2={insideX1 + off + 1.6} y2={insideY1} stroke="#2C327C" strokeWidth={0.35} />
+            <rect
+              x={insideX1 + off - 2}
+              y={clampedRoomY - roomLabelHalf}
+              width={4}
+              height={roomLabelHalf * 2}
+              rx={0.5}
+              fill="#fff"
+              opacity={0.9}
+            />
+            <text
+              x={insideX1 + off}
+              y={clampedRoomY}
+              textAnchor="middle"
+              fontSize={3.4}
+              fill="#2C327C"
+              fontFamily="Inter"
+              fontWeight={800}
+              transform={`rotate(90 ${insideX1 + off} ${clampedRoomY})`}
+            >
+              INSIDE {fmtInch(insideD)}
             </text>
           </g>
         );
