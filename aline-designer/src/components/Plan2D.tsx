@@ -676,8 +676,29 @@ function BlueprintDimensions({
         const labelYMid = (by0 + by1) / 2;
         const clampedLabelX = Math.max(viewMinX + halfLabelIn, Math.min(viewMaxX - halfLabelIn, labelXMid));
         const clampedLabelY = Math.max(viewMinY + halfLabelIn, Math.min(viewMaxY - halfLabelIn, labelYMid));
-        const widthTxt = `OVERALL ${fmtInch(bx1 - bx0)}`;
-        const depthTxt = `OVERALL ${fmtInch(by1 - by0)}`;
+        // Compute OVERALL as SUM along the run axis, MAX across it, so a
+        // three-item stack of 2 + 24 + 0.5 reads 26.5 even if the items are
+        // slightly overlapping in Y (which the 3" cabinet snap grid can force
+        // when panels are 0.75" thick). Pure bounding-box math was reporting
+        // 24 in that case and confused Mike into thinking numbers were wrong.
+        //   - Vertical stack  (bbox taller than wide): width = max item width,
+        //                                              depth = sum of item depths
+        //   - Horizontal run  (bbox wider than tall):  width = sum of widths,
+        //                                              depth = max item depth
+        // Falls back to bbox for the degenerate wider==taller case.
+        const bboxWidth = bx1 - bx0;
+        const bboxDepth = by1 - by0;
+        const fpws = bboxes.map((b) => b.x1 - b.x0);
+        const fphs = bboxes.map((b) => b.y1 - b.y0);
+        const sumWidths = fpws.reduce((s, w) => s + w, 0);
+        const sumDepths = fphs.reduce((s, h) => s + h, 0);
+        const maxWidth = Math.max(...fpws);
+        const maxDepth = Math.max(...fphs);
+        const isVerticalStack = bboxDepth > bboxWidth;
+        const overallW = isVerticalStack ? maxWidth : sumWidths;
+        const overallD = isVerticalStack ? sumDepths : maxDepth;
+        const widthTxt = `OVERALL ${fmtInch(overallW)}`;
+        const depthTxt = `OVERALL ${fmtInch(overallD)}`;
         return (
           <g className="blueprint-overall">
             {/* Full-width dim across the top, spanning the outermost cabinet edges. */}
