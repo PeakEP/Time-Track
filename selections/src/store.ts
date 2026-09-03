@@ -9,7 +9,8 @@ import type {
 } from "./types";
 
 // Namespaced localStorage key (matches cabinet-designer's "jmrc.<app>.<thing>.v1").
-const AUTOSAVE_KEY = "jmrc.selections.draft.v1";
+// Bump the version to invalidate stale drafts when the catalog/base price changes.
+const AUTOSAVE_KEY = "jmrc.selections.draft.v2";
 const HISTORY_LIMIT = 60;
 
 // ---- Factories ----
