@@ -81,16 +81,17 @@ function OptionCard({ category, option }: { category: Category; option: FinishOp
         <strong>{option.name}</strong>
         {option.description && <p>{option.description}</p>}
 
-        {selected && isUpgrade && (
+        {/* Area field only for per-square-foot categories; flat/per-selection
+            upgrades are added at their price (quantity 1). */}
+        {selected && isUpgrade && unit === "sqft" && (
           <div className="qty-row">
             <label className="qty">
-              {unit === "sqft" ? "Area (sq ft)" : "Qty"}
+              Area (sq ft)
               <input
                 type="number"
                 min={0}
-                step={unit === "sqft" ? 1 : 1}
-                value={quantity ?? (unit === "sqft" ? "" : 1)}
-                placeholder={unit === "sqft" ? "0" : "1"}
+                value={quantity ?? ""}
+                placeholder="0"
                 onChange={(e) =>
                   setQuantity(option.id, e.target.value === "" ? null : Number(e.target.value))
                 }
