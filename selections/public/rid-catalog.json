@@ -1,0 +1,2066 @@
+{
+  "_meta": {
+    "currency": "CAD",
+    "pricing_year": 2026,
+    "base_price": 490000,
+    "notes": "Extracted from White Pines Block C Selections Package (Draft 21). Base package $490,000; upgrades are flat per-selection amounts."
+  },
+  "categories": [
+    {
+      "id": "luxury-vinyl-plank",
+      "name": "Luxury Vinyl Plank",
+      "description": "Robins Flooring SPC waterproof plank - Granite Guard Collection (5.5mm) and Ridgelock Collection (6mm/Unidrop).",
+      "unit": "each",
+      "options": [
+        {
+          "id": "luxury-vinyl-plank-american-oak",
+          "name": "American Oak",
+          "description": "Granite Guard Collection. SPC 9\" X 48\" 5.5MM 20MIL WEAR LAYER 1.5MM IXPE PADDING. FV11-8",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C9A876",
+          "image": "finishes/luxury-vinyl-plank-american-oak.jpeg"
+        },
+        {
+          "id": "luxury-vinyl-plank-american-walnut",
+          "name": "American Walnut",
+          "description": "Granite Guard Collection. SPC 9\" X 48\" 5.5MM 20MIL WEAR LAYER 1.5MM IXPE PADDING. FV40-01",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#8B5A2B",
+          "image": "finishes/luxury-vinyl-plank-american-walnut.jpeg"
+        },
+        {
+          "id": "luxury-vinyl-plank-warm-walnut",
+          "name": "Warm Walnut",
+          "description": "Granite Guard Collection. SPC 9\" X 48\" 5.5MM 20MIL WEAR LAYER 1.5MM IXPE PADDING. FV02-10",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#A0663A",
+          "image": "finishes/luxury-vinyl-plank-warm-walnut.jpeg"
+        },
+        {
+          "id": "luxury-vinyl-plank-warm-oak",
+          "name": "Warm Oak",
+          "description": "Granite Guard Collection. SPC 9\" X 48\" 5.5MM 20MIL WEAR LAYER 1.5MM IXPE PADDING. FV38-11",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C79A5B",
+          "image": "finishes/luxury-vinyl-plank-warm-oak.jpeg"
+        },
+        {
+          "id": "luxury-vinyl-plank-whistler",
+          "name": "Whistler",
+          "description": "Ridgelock Collection. SPC 9\" X 48\" 6MM 12MIL WEAR LAYER 1.0MM IXPE PADDING. FV09-12",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C4A579",
+          "image": "finishes/luxury-vinyl-plank-whistler.jpeg"
+        },
+        {
+          "id": "luxury-vinyl-plank-cascade",
+          "name": "Cascade",
+          "description": "Ridgelock Collection. SPC 9\" X 48\" 6MM 12MIL WEAR LAYER 1.0MM IXPE PADDING. FV15-1",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#D8C4A0",
+          "image": "finishes/luxury-vinyl-plank-cascade.jpeg"
+        },
+        {
+          "id": "luxury-vinyl-plank-sedona",
+          "name": "Sedona",
+          "description": "Ridgelock Collection. SPC 9\" X 48\" 6MM 12MIL WEAR LAYER 1.0MM IXPE PADDING. FV45-02",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C8964F",
+          "image": "finishes/luxury-vinyl-plank-sedona.jpeg"
+        },
+        {
+          "id": "luxury-vinyl-plank-highland",
+          "name": "Highland",
+          "description": "Ridgelock Collection. SPC 9\" X 48\" 6MM 12MIL WEAR LAYER 1.0MM IXPE PADDING. FV43-02",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#A9683B",
+          "image": "finishes/luxury-vinyl-plank-highland.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "laminate",
+      "name": "Laminate",
+      "description": "Robins Flooring waterproof laminate - Sequoia Pro Collection.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "laminate-coastal-oak",
+          "name": "Coastal Oak",
+          "description": "Sequoia Pro Collection. 59.6\" X 9.45\" 12MM THICKNESS | EIR | AC4 WEAR LAYER. | V-GROOVE. WB-C15006",
+          "pricing": "upgrade",
+          "price": 1200,
+          "swatch": "#B98E5A",
+          "image": "finishes/laminate-coastal-oak.jpeg"
+        },
+        {
+          "id": "laminate-whispering-oak",
+          "name": "Whispering Oak",
+          "description": "Sequoia Pro Collection. 59.6\" X 9.45\" 12MM THICKNESS | EIR | AC4 WEAR LAYER. | V-GROOVE. WB-C15001",
+          "pricing": "upgrade",
+          "price": 1200,
+          "swatch": "#D2B489",
+          "image": "finishes/laminate-whispering-oak.jpeg"
+        },
+        {
+          "id": "laminate-valley-mist",
+          "name": "Valley Mist",
+          "description": "Sequoia Pro Collection. 59.6\" X 9.45\" 12MM THICKNESS | EIR | AC4 WEAR LAYER. | V-GROOVE. WB-B15005",
+          "pricing": "upgrade",
+          "price": 1200,
+          "swatch": "#CFC3A8",
+          "image": "finishes/laminate-valley-mist.jpeg"
+        },
+        {
+          "id": "laminate-sierra-hearth",
+          "name": "Sierra Hearth",
+          "description": "Sequoia Pro Collection. 59.6\" X 9.45\" 12MM THICKNESS | EIR | AC4 WEAR LAYER. | V-GROOVE. WB-B15004",
+          "pricing": "upgrade",
+          "price": 1200,
+          "swatch": "#C9B48E",
+          "image": "finishes/laminate-sierra-hearth.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "bedroom-fans",
+      "name": "Bedroom Fans",
+      "description": "Bedroom ceiling fans combining comfort, functionality and style.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "bedroom-fans-matte-black-brown-blades",
+          "name": "Matte Black with Brown Blades",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#5A4632",
+          "image": "finishes/bedroom-fans-matte-black-brown-blades.jpeg"
+        },
+        {
+          "id": "bedroom-fans-nickel-burlywood-blades",
+          "name": "Nickel with Burlywood Blades",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C9A878",
+          "image": "finishes/bedroom-fans-nickel-burlywood-blades.jpeg"
+        },
+        {
+          "id": "bedroom-fans-black-midnight-blades",
+          "name": "Black with Midnight Blades",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 200,
+          "swatch": "#1C1C1C",
+          "image": "finishes/bedroom-fans-black-midnight-blades.jpeg"
+        },
+        {
+          "id": "bedroom-fans-white-oak-wood-blades",
+          "name": "White with Oak Wood Blades",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 200,
+          "swatch": "#D8C29A",
+          "image": "finishes/bedroom-fans-white-oak-wood-blades.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "door-handles",
+      "name": "Door Handles",
+      "description": "Interior and exterior door handle finishes: Satin Nickel or Matte Black.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "door-handles-interior-satin-nickel",
+          "name": "Satin Nickel",
+          "description": "Interior",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#B7B8BA",
+          "image": "finishes/door-handles-interior-satin-nickel.jpeg"
+        },
+        {
+          "id": "door-handles-interior-matte-black",
+          "name": "Matte Black",
+          "description": "Interior",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#2B2B2B",
+          "image": "finishes/door-handles-interior-matte-black.jpeg"
+        },
+        {
+          "id": "door-handles-exterior-satin-nickel-no-keypad",
+          "name": "Satin Nickel No Keypad",
+          "description": "Exterior",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#B7B8BA",
+          "image": "finishes/door-handles-exterior-satin-nickel-no-keypad.jpeg"
+        },
+        {
+          "id": "door-handles-exterior-matte-black-no-keypad",
+          "name": "Matte Black No Keypad",
+          "description": "Exterior",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#2B2B2B",
+          "image": "finishes/door-handles-exterior-matte-black-no-keypad.jpeg"
+        },
+        {
+          "id": "door-handles-exterior-matte-black-with-keypad",
+          "name": "Matte Black With Keypad",
+          "description": "Exterior",
+          "pricing": "upgrade",
+          "price": 99.99,
+          "swatch": "#2B2B2B",
+          "image": "finishes/door-handles-exterior-matte-black-with-keypad.jpeg"
+        },
+        {
+          "id": "door-handles-exterior-satin-nickel-with-keypad",
+          "name": "Satin Nickel With Keypad",
+          "description": "Exterior",
+          "pricing": "upgrade",
+          "price": 99.99,
+          "swatch": "#B7B8BA",
+          "image": "finishes/door-handles-exterior-satin-nickel-with-keypad.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "kitchen-cabinets",
+      "name": "Kitchen Cabinets",
+      "description": "Kitchen cabinet door styles across collections (Classic, Modern Classic, Woodland, Contemporary, Timberland, Timeless, Modern, Refined).",
+      "unit": "each",
+      "options": [
+        {
+          "id": "kitchen-cabinets-classic-white-single-shaker",
+          "name": "White Single Shaker (WSS)",
+          "description": "Classic Collection - single shaker",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#F0EFEA"
+        },
+        {
+          "id": "kitchen-cabinets-classic-gray-single-shaker",
+          "name": "Gray Single Shaker (GSS)",
+          "description": "Classic Collection - single shaker",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#9AA0A0"
+        },
+        {
+          "id": "kitchen-cabinets-classic-blue-single-shaker",
+          "name": "Blue Single Shaker (BSS)",
+          "description": "Classic Collection - single shaker",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#26374D",
+          "image": "finishes/kitchen-cabinets-classic-blue-single-shaker.jpeg"
+        },
+        {
+          "id": "kitchen-cabinets-modern-classic-white-slim-shaker",
+          "name": "White Slim Shaker (SSW)",
+          "description": "Modern Classic Collection - slim shaker (narrower stiles and rails)",
+          "pricing": "upgrade",
+          "price": 2999,
+          "swatch": "#F2F1EC",
+          "image": "finishes/kitchen-cabinets-modern-classic-white-slim-shaker.jpeg"
+        },
+        {
+          "id": "kitchen-cabinets-woodland-pure-white",
+          "name": "Pure White (MPW)",
+          "description": "Woodland Collection - natural wood / melamine",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#F4F3EE"
+        },
+        {
+          "id": "kitchen-cabinets-woodland-whitish-maple",
+          "name": "Whitish Maple (MWM)",
+          "description": "Woodland Collection - natural wood / melamine",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#D9D3C6"
+        },
+        {
+          "id": "kitchen-cabinets-woodland-natural-wood",
+          "name": "Natural Wood (MNW)",
+          "description": "Woodland Collection - natural wood / melamine",
+          "pricing": "upgrade",
+          "price": 2199,
+          "swatch": "#C2A16A",
+          "image": "finishes/kitchen-cabinets-woodland-natural-wood.jpeg"
+        },
+        {
+          "id": "kitchen-cabinets-woodland-smoked-oak",
+          "name": "Smoked Oak (MSO)",
+          "description": "Woodland Collection - natural wood / melamine",
+          "pricing": "upgrade",
+          "price": 2199,
+          "swatch": "#5C4A3A"
+        },
+        {
+          "id": "kitchen-cabinets-contemporary-glossy-white",
+          "name": "Glossy White (PGW)",
+          "description": "Contemporary Collection - high gloss / matte",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#F5F5F2",
+          "image": "finishes/kitchen-cabinets-contemporary-glossy-white.jpeg"
+        },
+        {
+          "id": "kitchen-cabinets-contemporary-glossy-gray",
+          "name": "Glossy Gray (PGG)",
+          "description": "Contemporary Collection - high gloss / matte",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#8A8D8C"
+        },
+        {
+          "id": "kitchen-cabinets-contemporary-glossy-ash",
+          "name": "Glossy Ash (PGA)",
+          "description": "Contemporary Collection - high gloss / matte",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#B9BBB8"
+        },
+        {
+          "id": "kitchen-cabinets-contemporary-matte-gray",
+          "name": "Matte Gray (PMG)",
+          "description": "Contemporary Collection - high gloss / matte",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#55585A"
+        },
+        {
+          "id": "kitchen-cabinets-contemporary-matte-white",
+          "name": "Matte White (PMW)",
+          "description": "Contemporary Collection - high gloss / matte",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#EDEDE9"
+        },
+        {
+          "id": "kitchen-cabinets-contemporary-matte-ash",
+          "name": "Matte Ash (PMA)",
+          "description": "Contemporary Collection - high gloss / matte",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C3C4C2"
+        },
+        {
+          "id": "kitchen-cabinets-contemporary-matte-black",
+          "name": "Matte Black (PMB)",
+          "description": "Contemporary Collection - high gloss / matte",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#232323"
+        },
+        {
+          "id": "kitchen-cabinets-timberland-natural-wood",
+          "name": "Natural Wood (NW)",
+          "description": "Timberland Collection - HDF frameless, melamine wood-look",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C2A472",
+          "image": "finishes/kitchen-cabinets-timberland-natural-wood.jpeg"
+        },
+        {
+          "id": "kitchen-cabinets-timberland-white-oak",
+          "name": "White Oak (WO)",
+          "description": "Timberland Collection - HDF frameless, melamine wood-look",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#E4DCCB",
+          "image": "finishes/kitchen-cabinets-timberland-white-oak.jpeg"
+        },
+        {
+          "id": "kitchen-cabinets-timberland-wood-grey",
+          "name": "Wood Grey (WG)",
+          "description": "Timberland Collection - HDF frameless, melamine wood-look",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#8E8A85",
+          "image": "finishes/kitchen-cabinets-timberland-wood-grey.jpeg"
+        },
+        {
+          "id": "kitchen-cabinets-timeless-shaker-white",
+          "name": "Shaker White (SW)",
+          "description": "Timeless Collection - classic shaker",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#F1F0EB"
+        },
+        {
+          "id": "kitchen-cabinets-timeless-skaker-grey",
+          "name": "Skaker Grey (SG)",
+          "description": "Timeless Collection - classic shaker. Name printed as 'Skaker Grey' in document (likely 'Shaker Grey').",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#A9AEAD"
+        },
+        {
+          "id": "kitchen-cabinets-timeless-double-shaker-white",
+          "name": "Double Shaker White (DSW)",
+          "description": "Timeless Collection - double shaker",
+          "pricing": "upgrade",
+          "price": 2199,
+          "swatch": "#EFEEE9"
+        },
+        {
+          "id": "kitchen-cabinets-timeless-double-shaker-blue",
+          "name": "Double Shaker Blue (DSB)",
+          "description": "Timeless Collection - double shaker",
+          "pricing": "upgrade",
+          "price": 2199,
+          "swatch": "#1F2E44"
+        },
+        {
+          "id": "kitchen-cabinets-timeless-shaker-maple-caramel",
+          "name": "Shaker Maple Caramel (SMC)",
+          "description": "Timeless Collection - shaker, maple + solid wood",
+          "pricing": "upgrade",
+          "price": 2199,
+          "swatch": "#C6923F",
+          "image": "finishes/kitchen-cabinets-timeless-shaker-maple-caramel.jpeg"
+        },
+        {
+          "id": "kitchen-cabinets-modern-high-gloss-white",
+          "name": "High Gloss White (HGW)",
+          "description": "Modern Collection - PET finish HDF",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#F6F6F3",
+          "image": "finishes/kitchen-cabinets-modern-high-gloss-white.jpeg"
+        },
+        {
+          "id": "kitchen-cabinets-modern-high-gloss-grey",
+          "name": "High Gloss Grey (HGG)",
+          "description": "Modern Collection - PET finish HDF",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#86898A"
+        },
+        {
+          "id": "kitchen-cabinets-modern-high-gloss-light-grey",
+          "name": "High Gloss Light Grey (HGLG)",
+          "description": "Modern Collection - PET finish HDF",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#BFC1BE"
+        },
+        {
+          "id": "kitchen-cabinets-modern-matte-grey",
+          "name": "Matte Grey (MG)",
+          "description": "Modern Collection - PET finish HDF",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#565A5C"
+        },
+        {
+          "id": "kitchen-cabinets-modern-matte-white",
+          "name": "Matte White (MW)",
+          "description": "Modern Collection - PET finish HDF",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#EDEDE9"
+        },
+        {
+          "id": "kitchen-cabinets-refined-slim-shaker-white",
+          "name": "Slim Shaker White (SSW)",
+          "description": "Refined Collection - slim shaker, HDF or HDF + solid wood frame",
+          "pricing": "upgrade",
+          "price": 2199,
+          "swatch": "#F1F0EB",
+          "image": "finishes/kitchen-cabinets-refined-slim-shaker-white.jpeg"
+        },
+        {
+          "id": "kitchen-cabinets-refined-slim-shaker-veneer",
+          "name": "Slim Shaker Veneer (SSV)",
+          "description": "Refined Collection - slim shaker, wood veneer",
+          "pricing": "upgrade",
+          "price": 2199,
+          "swatch": "#C4A06A",
+          "image": "finishes/kitchen-cabinets-refined-slim-shaker-veneer.jpeg"
+        },
+        {
+          "id": "kitchen-cabinets-refined-slim-shaker-green",
+          "name": "Slim Shaker Green (SSG)",
+          "description": "Refined Collection - slim shaker",
+          "pricing": "upgrade",
+          "price": 2199,
+          "swatch": "#3B4A3A",
+          "image": "finishes/kitchen-cabinets-refined-slim-shaker-green.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "kitchen-sinks",
+      "name": "Kitchen Sinks",
+      "description": "Modern double-bowl sinks in stainless steel or 80% natural granite.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "kitchen-sinks-stainless-steel",
+          "name": "Stainless Steel",
+          "description": "Double-bowl stainless steel with satin finish",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C4C6C8",
+          "image": "finishes/kitchen-sinks-stainless-steel.jpeg"
+        },
+        {
+          "id": "kitchen-sinks-black-stainless",
+          "name": "Black Stainless",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 199,
+          "swatch": "#2E2E2E",
+          "image": "finishes/kitchen-sinks-black-stainless.jpeg"
+        },
+        {
+          "id": "kitchen-sinks-white-granite",
+          "name": "White Granite",
+          "description": "80% natural granite",
+          "pricing": "upgrade",
+          "price": 299,
+          "swatch": "#EDEBE6",
+          "image": "finishes/kitchen-sinks-white-granite.jpeg"
+        },
+        {
+          "id": "kitchen-sinks-black-granite",
+          "name": "Black Granite",
+          "description": "80% natural granite",
+          "pricing": "upgrade",
+          "price": 299,
+          "swatch": "#2A2A2A",
+          "image": "finishes/kitchen-sinks-black-granite.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "kitchen-countertops",
+      "name": "Kitchen Countertops",
+      "description": "Quartz countertop selection. Waterfall island available starting at $2500; quartz backsplash available starting at $4000.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "kitchen-countertops-whistler-gold",
+          "name": "Whistler Gold",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#EDEBE4",
+          "image": "finishes/kitchen-countertops-whistler-gold.jpeg"
+        },
+        {
+          "id": "kitchen-countertops-helix",
+          "name": "Helix",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#E8E9EA",
+          "image": "finishes/kitchen-countertops-helix.jpeg"
+        },
+        {
+          "id": "kitchen-countertops-siberian-frost",
+          "name": "Siberian Frost",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#ECEAE0",
+          "image": "finishes/kitchen-countertops-siberian-frost.jpeg"
+        },
+        {
+          "id": "kitchen-countertops-ridge",
+          "name": "Ridge",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#E9E7E0",
+          "image": "finishes/kitchen-countertops-ridge.jpeg"
+        },
+        {
+          "id": "kitchen-countertops-ethereal-glow",
+          "name": "Ethereal Glow",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 2999,
+          "swatch": "#EFEFEF",
+          "image": "finishes/kitchen-countertops-ethereal-glow.jpeg"
+        },
+        {
+          "id": "kitchen-countertops-taj-luxe",
+          "name": "Taj Luxe",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 2999,
+          "swatch": "#E5DFD2",
+          "image": "finishes/kitchen-countertops-taj-luxe.jpeg"
+        },
+        {
+          "id": "kitchen-countertops-elba-white",
+          "name": "Elba White",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 2999,
+          "swatch": "#E8E9E6",
+          "image": "finishes/kitchen-countertops-elba-white.jpeg"
+        },
+        {
+          "id": "kitchen-countertops-matterhorn",
+          "name": "Matterhorn",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 2999,
+          "swatch": "#E4E6E5",
+          "image": "finishes/kitchen-countertops-matterhorn.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "backsplash",
+      "name": "Backsplash",
+      "description": "Kitchen backsplash tile selection. Quartz backsplash also available starting at $4000.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "backsplash-metro-white",
+          "name": "Metro White",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#F0EFEC",
+          "image": "finishes/backsplash-metro-white.jpeg"
+        },
+        {
+          "id": "backsplash-white-ice",
+          "name": "White Ice",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#F2F1ED",
+          "image": "finishes/backsplash-white-ice.jpeg"
+        },
+        {
+          "id": "backsplash-marmol-grey",
+          "name": "Marmol Grey",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C9CBCC"
+        },
+        {
+          "id": "backsplash-princess-white",
+          "name": "Princess White",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 399,
+          "swatch": "#E6E7E4",
+          "image": "finishes/backsplash-princess-white.jpeg"
+        },
+        {
+          "id": "backsplash-renzo-dove",
+          "name": "Renzo Dove",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 599,
+          "swatch": "#D8D6CF",
+          "image": "finishes/backsplash-renzo-dove.jpeg"
+        },
+        {
+          "id": "backsplash-renzo-jade",
+          "name": "Renzo Jade",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 599,
+          "swatch": "#B7C9B4",
+          "image": "finishes/backsplash-renzo-jade.jpeg"
+        },
+        {
+          "id": "backsplash-whales-gray",
+          "name": "Whales Gray",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 599,
+          "swatch": "#B0AFA9",
+          "image": "finishes/backsplash-whales-gray.jpeg"
+        },
+        {
+          "id": "backsplash-whisper-white",
+          "name": "Whisper White",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 899,
+          "swatch": "#F0EFEB",
+          "image": "finishes/backsplash-whisper-white.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "kitchen-faucets",
+      "name": "Kitchen Faucets",
+      "description": "Kitchen faucet selection.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "kitchen-faucets-monroe-chrome",
+          "name": "Monroe Chrome",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C7C9CB",
+          "image": "finishes/kitchen-faucets-monroe-chrome.jpeg"
+        },
+        {
+          "id": "kitchen-faucets-monroe-brushed-brass",
+          "name": "Monroe Brushed Brass",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#B79A5E",
+          "image": "finishes/kitchen-faucets-monroe-brushed-brass.jpeg"
+        },
+        {
+          "id": "kitchen-faucets-monroe-matte-black",
+          "name": "Monroe Matte Black",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#262626",
+          "image": "finishes/kitchen-faucets-monroe-matte-black.jpeg"
+        },
+        {
+          "id": "kitchen-faucets-mica-black",
+          "name": "Mica Black",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#222222",
+          "image": "finishes/kitchen-faucets-mica-black.jpeg"
+        },
+        {
+          "id": "kitchen-faucets-master-matte-black",
+          "name": "Master Matte Black",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 99,
+          "swatch": "#262626",
+          "image": "finishes/kitchen-faucets-master-matte-black.jpeg"
+        },
+        {
+          "id": "kitchen-faucets-moochie-black-stainless",
+          "name": "Moochie Black Stainless",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 199,
+          "swatch": "#3A3D40",
+          "image": "finishes/kitchen-faucets-moochie-black-stainless.jpeg"
+        },
+        {
+          "id": "kitchen-faucets-moochie-matte-black",
+          "name": "Moochie Matte Black",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 199,
+          "swatch": "#262626",
+          "image": "finishes/kitchen-faucets-moochie-matte-black.jpeg"
+        },
+        {
+          "id": "kitchen-faucets-moochie-brushed-brass",
+          "name": "Moochie Brushed Brass",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 199,
+          "swatch": "#B79A5E",
+          "image": "finishes/kitchen-faucets-moochie-brushed-brass.jpeg"
+        },
+        {
+          "id": "kitchen-faucets-miaggi-brushed-brass",
+          "name": "Miaggi Brushed Brass",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 199,
+          "swatch": "#B79A5E",
+          "image": "finishes/kitchen-faucets-miaggi-brushed-brass.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "kitchen-handle-selection",
+      "name": "Kitchen Handle Selection",
+      "description": "Cabinet handle/pull finishes in Classic, Contemporary and Newham styles.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "kitchen-handle-classic-satin-nickel",
+          "name": "Satin Nickel",
+          "description": "Classic",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#B7B8BA",
+          "image": "finishes/kitchen-handle-classic-satin-nickel.jpeg"
+        },
+        {
+          "id": "kitchen-handle-classic-matte-black",
+          "name": "Matte Black",
+          "description": "Classic",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#2B2B2B",
+          "image": "finishes/kitchen-handle-classic-matte-black.jpeg"
+        },
+        {
+          "id": "kitchen-handle-classic-gold",
+          "name": "Gold",
+          "description": "Classic",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C2A14E",
+          "image": "finishes/kitchen-handle-classic-gold.jpeg"
+        },
+        {
+          "id": "kitchen-handle-contemporary-matte-black",
+          "name": "Matte Black",
+          "description": "Contemporary",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#2B2B2B",
+          "image": "finishes/kitchen-handle-contemporary-matte-black.jpeg"
+        },
+        {
+          "id": "kitchen-handle-contemporary-dark-bronze",
+          "name": "Dark Bronze",
+          "description": "Contemporary",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#4A3B2E",
+          "image": "finishes/kitchen-handle-contemporary-dark-bronze.jpeg"
+        },
+        {
+          "id": "kitchen-handle-contemporary-polished-chrome",
+          "name": "Polished Chrome",
+          "description": "Contemporary",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#CDCFD1",
+          "image": "finishes/kitchen-handle-contemporary-polished-chrome.jpeg"
+        },
+        {
+          "id": "kitchen-handle-contemporary-gold-champagne",
+          "name": "Gold Champagne",
+          "description": "Contemporary",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C7B27E",
+          "image": "finishes/kitchen-handle-contemporary-gold-champagne.jpeg"
+        },
+        {
+          "id": "kitchen-handle-newham-brushed-nickel",
+          "name": "Brushed Nickel",
+          "description": "Newham",
+          "pricing": "upgrade",
+          "price": 299,
+          "swatch": "#B7B8BA",
+          "image": "finishes/kitchen-handle-newham-brushed-nickel.jpeg"
+        },
+        {
+          "id": "kitchen-handle-newham-graphite",
+          "name": "Graphite",
+          "description": "Newham",
+          "pricing": "upgrade",
+          "price": 299,
+          "swatch": "#4B4E50",
+          "image": "finishes/kitchen-handle-newham-graphite.jpeg"
+        },
+        {
+          "id": "kitchen-handle-newham-matte-black",
+          "name": "Matte Black",
+          "description": "Newham",
+          "pricing": "upgrade",
+          "price": 299,
+          "swatch": "#2B2B2B"
+        },
+        {
+          "id": "kitchen-handle-newham-bronze-champagne",
+          "name": "Bronze Champagne",
+          "description": "Newham",
+          "pricing": "upgrade",
+          "price": 299,
+          "swatch": "#B08D5B",
+          "image": "finishes/kitchen-handle-newham-bronze-champagne.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "kitchen-lighting",
+      "name": "Kitchen Lighting",
+      "description": "Modern pendant lighting for kitchen islands and countertops.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "kitchen-lighting-matte-black-gold-accent",
+          "name": "Matte Black & Gold Accent",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#2B2B2B",
+          "image": "finishes/kitchen-lighting-matte-black-gold-accent.jpeg"
+        },
+        {
+          "id": "kitchen-lighting-gold",
+          "name": "Gold",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C2A14E",
+          "image": "finishes/kitchen-lighting-gold.jpeg"
+        },
+        {
+          "id": "kitchen-lighting-chrome",
+          "name": "Chrome",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#CDCFD1",
+          "image": "finishes/kitchen-lighting-chrome.jpeg"
+        },
+        {
+          "id": "kitchen-lighting-black",
+          "name": "Black",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#262626",
+          "image": "finishes/kitchen-lighting-black.jpeg"
+        },
+        {
+          "id": "kitchen-lighting-natural",
+          "name": "Natural",
+          "description": "Rattan dome pendant. Upgrade price is for 3 pendants.",
+          "pricing": "upgrade",
+          "price": 600,
+          "swatch": "#C2A06A",
+          "image": "finishes/kitchen-lighting-natural.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "island-upgrade",
+      "name": "Island Upgrade",
+      "description": "Kitchen island size upgrade.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "island-upgrade-standard",
+          "name": "Standard Island (38\" Countertop / 24\" Cabinet Box)",
+          "description": "Included: 38\" Countertop; 24\" Cabinet box",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#E9E7E0",
+          "image": "finishes/island-upgrade-standard.jpeg"
+        },
+        {
+          "id": "island-upgrade-extended",
+          "name": "Extended Island (50\" Countertop / 36\" Cabinet Box)",
+          "description": "50\" Countertop; 36\" Cabinet box; Increases width by 12\"; Three 30\"x12\" cabinets on seated side",
+          "pricing": "upgrade",
+          "price": 2099.99,
+          "swatch": "#E9E7E0",
+          "image": "finishes/island-upgrade-extended.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "bathroom-tile",
+      "name": "Bathroom Tile Selection",
+      "description": "Ensuite tile is used for the ensuite floor, ensuite shower walls and laundry room flooring; Main Bathroom tile is used for main bathroom floor and walls. Upgrade tiles are priced Main/Ensuite; the price field shows the Main amount.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "bathroom-tile-brighton-gold",
+          "name": "Brighton Gold",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#ECE9E0",
+          "image": "finishes/bathroom-tile-brighton-gold.jpeg"
+        },
+        {
+          "id": "bathroom-tile-brighton-grey",
+          "name": "Brighton Grey",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#E4E4E2",
+          "image": "finishes/bathroom-tile-brighton-grey.jpeg"
+        },
+        {
+          "id": "bathroom-tile-pietra-calacatta",
+          "name": "Pietra Calacatta",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#E8E9E6",
+          "image": "finishes/bathroom-tile-pietra-calacatta.jpeg"
+        },
+        {
+          "id": "bathroom-tile-antrax",
+          "name": "Antrax",
+          "description": "Upgrade: Main $299 / Ensuite $499",
+          "pricing": "upgrade",
+          "price": 299,
+          "swatch": "#6E7072",
+          "image": "finishes/bathroom-tile-antrax.jpeg"
+        },
+        {
+          "id": "bathroom-tile-bali-beige",
+          "name": "Bali Beige",
+          "description": "Upgrade: Main $299 / Ensuite $499",
+          "pricing": "upgrade",
+          "price": 299,
+          "swatch": "#D8CDB8",
+          "image": "finishes/bathroom-tile-bali-beige.jpeg"
+        },
+        {
+          "id": "bathroom-tile-travertino-beige",
+          "name": "Travertino Beige",
+          "description": "18X36 large format tile. Upgrade: Main $499 / Ensuite $799",
+          "pricing": "upgrade",
+          "price": 499,
+          "swatch": "#D4C3A2",
+          "image": "finishes/bathroom-tile-travertino-beige.jpeg"
+        },
+        {
+          "id": "bathroom-tile-taj-mahal-bianco",
+          "name": "Taj Mahal Bianco",
+          "description": "24X48 large format tile. Upgrade: Main $499 / Ensuite $799",
+          "pricing": "upgrade",
+          "price": 499,
+          "swatch": "#E7E1D4",
+          "image": "finishes/bathroom-tile-taj-mahal-bianco.jpeg"
+        },
+        {
+          "id": "bathroom-tile-tortora",
+          "name": "Tortora",
+          "description": "24X48 large format tile. Upgrade: Main $499 / Ensuite $799",
+          "pricing": "upgrade",
+          "price": 499,
+          "swatch": "#CFCBC4",
+          "image": "finishes/bathroom-tile-tortora.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "vanities",
+      "name": "Vanities",
+      "description": "Bathroom vanity cabinet finishes in Signature Line and Vital Line. Ensuite vanity is 60\" and Main bath is 36\". Upgrade finishes are priced Main/Ensuite; the price field shows the Main amount ($399/$599).",
+      "unit": "each",
+      "options": [
+        {
+          "id": "vanities-signature-white-single-shaker",
+          "name": "White Single Shaker (WSS)",
+          "description": "Signature Line",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#F0EFEA",
+          "image": "finishes/vanities-signature-white-single-shaker.jpeg"
+        },
+        {
+          "id": "vanities-signature-grey-single-shaker",
+          "name": "Grey Single Shaker (GSS)",
+          "description": "Signature Line",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#9AA0A0",
+          "image": "finishes/vanities-signature-grey-single-shaker.jpeg"
+        },
+        {
+          "id": "vanities-signature-blue-single-shaker",
+          "name": "Blue Single Shaker (BSS)",
+          "description": "Signature Line",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#26374D",
+          "image": "finishes/vanities-signature-blue-single-shaker.jpeg"
+        },
+        {
+          "id": "vanities-signature-white-slim-shaker",
+          "name": "White Slim Shaker (SSW)",
+          "description": "Signature Line. Upgrade: Main $399 / Ensuite $599",
+          "pricing": "upgrade",
+          "price": 399,
+          "swatch": "#F2F1EC",
+          "image": "finishes/vanities-signature-white-slim-shaker.jpeg"
+        },
+        {
+          "id": "vanities-signature-pure-white",
+          "name": "Pure White (MPW)",
+          "description": "Signature Line",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#F4F3EE"
+        },
+        {
+          "id": "vanities-signature-whitish-maple",
+          "name": "Whitish Maple (MWM)",
+          "description": "Signature Line",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#D9D3C6"
+        },
+        {
+          "id": "vanities-signature-natural-wood",
+          "name": "Natural Wood (MNW)",
+          "description": "Signature Line. Upgrade: Main $399 / Ensuite $599",
+          "pricing": "upgrade",
+          "price": 399,
+          "swatch": "#C2A16A",
+          "image": "finishes/vanities-signature-natural-wood.jpeg"
+        },
+        {
+          "id": "vanities-signature-smoked-oak",
+          "name": "Smoked Oak (MSO)",
+          "description": "Signature Line. Upgrade: Main $399 / Ensuite $599",
+          "pricing": "upgrade",
+          "price": 399,
+          "swatch": "#5C4A3A",
+          "image": "finishes/vanities-signature-smoked-oak.jpeg"
+        },
+        {
+          "id": "vanities-signature-glossy-white",
+          "name": "Glossy White (PGW)",
+          "description": "Signature Line",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#F5F5F2"
+        },
+        {
+          "id": "vanities-signature-glossy-gray",
+          "name": "Glossy Gray (PGG)",
+          "description": "Signature Line",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#8A8D8C"
+        },
+        {
+          "id": "vanities-signature-glossy-ash",
+          "name": "Glossy Ash (PGA)",
+          "description": "Signature Line",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#B9BBB8"
+        },
+        {
+          "id": "vanities-signature-matte-gray",
+          "name": "Matte Gray (PMG)",
+          "description": "Signature Line",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#55585A"
+        },
+        {
+          "id": "vanities-signature-matte-white",
+          "name": "Matte White (PMW)",
+          "description": "Signature Line",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#EDEDE9"
+        },
+        {
+          "id": "vanities-signature-matte-ash",
+          "name": "Matte Ash (PMA)",
+          "description": "Signature Line",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C3C4C2"
+        },
+        {
+          "id": "vanities-signature-matte-black",
+          "name": "Matte Black (PMB)",
+          "description": "Signature Line",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#232323"
+        },
+        {
+          "id": "vanities-vital-shaker-white",
+          "name": "Shaker White (SW)",
+          "description": "Vital Line",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#F1F0EB"
+        },
+        {
+          "id": "vanities-vital-skaker-grey",
+          "name": "Skaker Grey (SG)",
+          "description": "Vital Line. Name printed as 'Skaker Grey' in document (likely 'Shaker Grey').",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#A9AEAD"
+        },
+        {
+          "id": "vanities-vital-double-shaker-white",
+          "name": "Double Shaker White (DSW)",
+          "description": "Vital Line. Upgrade: Main $399 / Ensuite $599",
+          "pricing": "upgrade",
+          "price": 399,
+          "swatch": "#EFEEE9"
+        },
+        {
+          "id": "vanities-vital-double-shaker-blue",
+          "name": "Double Shaker Blue (DSB)",
+          "description": "Vital Line. Upgrade: Main $399 / Ensuite $599",
+          "pricing": "upgrade",
+          "price": 399,
+          "swatch": "#1F2E44"
+        },
+        {
+          "id": "vanities-vital-shaker-maple-caramel",
+          "name": "Shaker Maple Caramel (SMC)",
+          "description": "Vital Line. Upgrade: Main $399 / Ensuite $599",
+          "pricing": "upgrade",
+          "price": 399,
+          "swatch": "#C6923F"
+        },
+        {
+          "id": "vanities-vital-natural-wood",
+          "name": "Natural Wood (NW)",
+          "description": "Vital Line",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C2A472"
+        },
+        {
+          "id": "vanities-vital-white-oak",
+          "name": "White Oak (WO)",
+          "description": "Vital Line",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#E4DCCB"
+        },
+        {
+          "id": "vanities-vital-wood-grey",
+          "name": "Wood Grey (WG)",
+          "description": "Vital Line",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#8E8A85"
+        },
+        {
+          "id": "vanities-vital-high-gloss-white",
+          "name": "High Gloss White (HGW)",
+          "description": "Vital Line",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#F6F6F3"
+        },
+        {
+          "id": "vanities-vital-high-gloss-grey",
+          "name": "High Gloss Grey (HGG)",
+          "description": "Vital Line",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#86898A"
+        },
+        {
+          "id": "vanities-vital-high-gloss-light-grey",
+          "name": "High Gloss Light Grey (HGLG)",
+          "description": "Vital Line",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#BFC1BE"
+        },
+        {
+          "id": "vanities-vital-matte-grey",
+          "name": "Matte Grey (MG)",
+          "description": "Vital Line",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#565A5C"
+        },
+        {
+          "id": "vanities-vital-matte-white",
+          "name": "Matte White (MW)",
+          "description": "Vital Line",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#EDEDE9"
+        },
+        {
+          "id": "vanities-vital-slim-shaker-white",
+          "name": "Slim Shaker White (SSW)",
+          "description": "Vital Line. Upgrade: Main $399 / Ensuite $599",
+          "pricing": "upgrade",
+          "price": 399,
+          "swatch": "#F1F0EB"
+        },
+        {
+          "id": "vanities-vital-slim-shaker-veneer",
+          "name": "Slim Shaker Veneer (SSV)",
+          "description": "Vital Line. Upgrade: Main $399 / Ensuite $599",
+          "pricing": "upgrade",
+          "price": 399,
+          "swatch": "#C4A06A"
+        },
+        {
+          "id": "vanities-vital-slim-shaker-green",
+          "name": "Slim Shaker Green (SSG)",
+          "description": "Vital Line. Upgrade: Main $399 / Ensuite $599",
+          "pricing": "upgrade",
+          "price": 399,
+          "swatch": "#3B4A3A"
+        }
+      ]
+    },
+    {
+      "id": "bathroom-countertops",
+      "name": "Bathroom Countertops",
+      "description": "Bathroom vanity countertop selection (quartz). Upgrade finishes are priced Main/Ensuite; the price field shows the Main amount ($325/$520).",
+      "unit": "each",
+      "options": [
+        {
+          "id": "bathroom-countertops-whistler-gold",
+          "name": "Whistler Gold",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#EDEBE4",
+          "image": "finishes/bathroom-countertops-whistler-gold.jpeg"
+        },
+        {
+          "id": "bathroom-countertops-helix",
+          "name": "Helix",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#E8E9EA",
+          "image": "finishes/bathroom-countertops-helix.jpeg"
+        },
+        {
+          "id": "bathroom-countertops-siberian-frost",
+          "name": "Siberian Frost",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#ECEAE0",
+          "image": "finishes/bathroom-countertops-siberian-frost.jpeg"
+        },
+        {
+          "id": "bathroom-countertops-ridge",
+          "name": "Ridge",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#E9E7E0",
+          "image": "finishes/bathroom-countertops-ridge.jpeg"
+        },
+        {
+          "id": "bathroom-countertops-ethereal-glow",
+          "name": "Ethereal Glow",
+          "description": "Upgrade: Main $325 / Ensuite $520",
+          "pricing": "upgrade",
+          "price": 325,
+          "swatch": "#EFEFEF",
+          "image": "finishes/bathroom-countertops-ethereal-glow.jpeg"
+        },
+        {
+          "id": "bathroom-countertops-taj-luxe",
+          "name": "Taj Luxe",
+          "description": "Upgrade: Main $325 / Ensuite $520",
+          "pricing": "upgrade",
+          "price": 325,
+          "swatch": "#E5DFD2",
+          "image": "finishes/bathroom-countertops-taj-luxe.jpeg"
+        },
+        {
+          "id": "bathroom-countertops-elba-white",
+          "name": "Elba White",
+          "description": "Upgrade: Main $325 / Ensuite $520",
+          "pricing": "upgrade",
+          "price": 325,
+          "swatch": "#E8E9E6",
+          "image": "finishes/bathroom-countertops-elba-white.jpeg"
+        },
+        {
+          "id": "bathroom-countertops-matterhorn",
+          "name": "Matterhorn",
+          "description": "Upgrade: Main $325 / Ensuite $520",
+          "pricing": "upgrade",
+          "price": 325,
+          "swatch": "#E4E6E5",
+          "image": "finishes/bathroom-countertops-matterhorn.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "bathroom-handle-selection",
+      "name": "Bathroom Handle Selection",
+      "description": "Bathroom cabinet handle/pull finishes in Classic and Contemporary styles.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "bathroom-handle-classic-satin-nickel",
+          "name": "Satin Nickel",
+          "description": "Classic",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#B7B8BA",
+          "image": "finishes/bathroom-handle-classic-satin-nickel.jpeg"
+        },
+        {
+          "id": "bathroom-handle-classic-matte-black",
+          "name": "Matte Black",
+          "description": "Classic",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#2B2B2B",
+          "image": "finishes/bathroom-handle-classic-matte-black.jpeg"
+        },
+        {
+          "id": "bathroom-handle-classic-gold",
+          "name": "Gold",
+          "description": "Classic",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C2A14E",
+          "image": "finishes/bathroom-handle-classic-gold.jpeg"
+        },
+        {
+          "id": "bathroom-handle-contemporary-matte-black",
+          "name": "Matte Black",
+          "description": "Contemporary",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#2B2B2B",
+          "image": "finishes/bathroom-handle-contemporary-matte-black.jpeg"
+        },
+        {
+          "id": "bathroom-handle-contemporary-dark-bronze",
+          "name": "Dark Bronze",
+          "description": "Contemporary",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#4A3B2E",
+          "image": "finishes/bathroom-handle-contemporary-dark-bronze.jpeg"
+        },
+        {
+          "id": "bathroom-handle-contemporary-polished-chrome",
+          "name": "Polished Chrome",
+          "description": "Contemporary",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#CDCFD1",
+          "image": "finishes/bathroom-handle-contemporary-polished-chrome.jpeg"
+        },
+        {
+          "id": "bathroom-handle-contemporary-gold-champagne",
+          "name": "Gold Champagne",
+          "description": "Contemporary",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C7B27E",
+          "image": "finishes/bathroom-handle-contemporary-gold-champagne.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "bathroom-faucets",
+      "name": "Bathroom Faucets",
+      "description": "Bathroom vanity faucet selection (Rico, Rosi, Rentato).",
+      "unit": "each",
+      "options": [
+        {
+          "id": "bathroom-faucets-rico-chrome",
+          "name": "Rico Chrome",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C7C9CB",
+          "image": "finishes/bathroom-faucets-rico-chrome.jpeg"
+        },
+        {
+          "id": "bathroom-faucets-rico-matte-black",
+          "name": "Rico Matte Black",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#262626",
+          "image": "finishes/bathroom-faucets-rico-matte-black.jpeg"
+        },
+        {
+          "id": "bathroom-faucets-rico-gold",
+          "name": "Rico Gold",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 50,
+          "swatch": "#C2A14E",
+          "image": "finishes/bathroom-faucets-rico-gold.jpeg"
+        },
+        {
+          "id": "bathroom-faucets-rosi-chrome",
+          "name": "Rosi Chrome",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C7C9CB",
+          "image": "finishes/bathroom-faucets-rosi-chrome.jpeg"
+        },
+        {
+          "id": "bathroom-faucets-rosi-matte-black",
+          "name": "Rosi Matte Black",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#262626",
+          "image": "finishes/bathroom-faucets-rosi-matte-black.jpeg"
+        },
+        {
+          "id": "bathroom-faucets-rosi-gold",
+          "name": "Rosi Gold",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 50,
+          "swatch": "#C2A14E",
+          "image": "finishes/bathroom-faucets-rosi-gold.jpeg"
+        },
+        {
+          "id": "bathroom-faucets-rentato-brushed-nickel",
+          "name": "Rentato Brushed Nickel",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 59.99,
+          "swatch": "#B7B8BA",
+          "image": "finishes/bathroom-faucets-rentato-brushed-nickel.jpeg"
+        },
+        {
+          "id": "bathroom-faucets-rentato-matte-black",
+          "name": "Rentato Matte Black",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 59.99,
+          "swatch": "#262626",
+          "image": "finishes/bathroom-faucets-rentato-matte-black.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "bath-selection",
+      "name": "Bath Selection",
+      "description": "Choose a bathtub or a shower base. White shower base requires a drain cover selection (black, gold or stainless steel).",
+      "unit": "each",
+      "options": [
+        {
+          "id": "bath-selection-white-shower-base",
+          "name": "White Shower Base",
+          "description": "Drain cover selection required: Black, gold or stainless steel",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#ECEBE7",
+          "image": "finishes/bath-selection-white-shower-base.jpeg"
+        },
+        {
+          "id": "bath-selection-white-tub",
+          "name": "White Tub",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#F0EFEB",
+          "image": "finishes/bath-selection-white-tub.jpeg"
+        },
+        {
+          "id": "bath-selection-white-textured-marble-composite-base",
+          "name": "White Textured Marble Composite Base",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 399,
+          "swatch": "#E6E4DD",
+          "image": "finishes/bath-selection-white-textured-marble-composite-base.jpeg"
+        },
+        {
+          "id": "bath-selection-black-tub",
+          "name": "Black Tub",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 299,
+          "swatch": "#262626",
+          "image": "finishes/bath-selection-black-tub.jpeg"
+        },
+        {
+          "id": "bath-selection-black-textured-marble-composite-base",
+          "name": "Black Textured Marble Composite Base",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 399,
+          "swatch": "#2A2A2A",
+          "image": "finishes/bath-selection-black-textured-marble-composite-base.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "shower-glass",
+      "name": "Shower Glass",
+      "description": "Sliding shower glass door, with or without towel bar.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "shower-glass-chrome",
+          "name": "Chrome",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 800,
+          "swatch": "#CDCFD1",
+          "image": "finishes/shower-glass-chrome.jpeg"
+        },
+        {
+          "id": "shower-glass-matte-black",
+          "name": "Matte Black",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 800,
+          "swatch": "#262626",
+          "image": "finishes/shower-glass-matte-black.jpeg"
+        },
+        {
+          "id": "shower-glass-gold",
+          "name": "Gold",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 850,
+          "swatch": "#C2A14E",
+          "image": "finishes/shower-glass-gold.jpeg"
+        },
+        {
+          "id": "shower-glass-chrome-with-towel",
+          "name": "Chrome With Towel",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 950,
+          "swatch": "#CDCFD1",
+          "image": "finishes/shower-glass-chrome-with-towel.jpeg"
+        },
+        {
+          "id": "shower-glass-matte-black-with-towel",
+          "name": "Matte Black With Towel",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 950,
+          "swatch": "#262626",
+          "image": "finishes/shower-glass-matte-black-with-towel.jpeg"
+        },
+        {
+          "id": "shower-glass-gold-with-towel",
+          "name": "Gold With Towel",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 999,
+          "swatch": "#C2A14E",
+          "image": "finishes/shower-glass-gold-with-towel.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "shower-niche",
+      "name": "Shower Niche",
+      "description": "Recessed shower niche in 12x12 or 12x24 sizes.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "shower-niche-12x12-matte-black",
+          "name": "12x12 Matte Black",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 249,
+          "swatch": "#262626",
+          "image": "finishes/shower-niche-12x12-matte-black.jpeg"
+        },
+        {
+          "id": "shower-niche-12x12-gold",
+          "name": "12x12 Gold",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 249,
+          "swatch": "#B79A5E",
+          "image": "finishes/shower-niche-12x12-gold.jpeg"
+        },
+        {
+          "id": "shower-niche-12x12-stainless",
+          "name": "12x12 Stainless",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 249,
+          "swatch": "#C4C6C8",
+          "image": "finishes/shower-niche-12x12-stainless.jpeg"
+        },
+        {
+          "id": "shower-niche-12x12-matte-white",
+          "name": "12x12 Matte White",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 249,
+          "swatch": "#EDEDE9",
+          "image": "finishes/shower-niche-12x12-matte-white.jpeg"
+        },
+        {
+          "id": "shower-niche-12x24-matte-black",
+          "name": "12x24 Matte Black",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 299,
+          "swatch": "#262626",
+          "image": "finishes/shower-niche-12x24-matte-black.jpeg"
+        },
+        {
+          "id": "shower-niche-12x24-gold",
+          "name": "12x24 Gold",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 299,
+          "swatch": "#B79A5E",
+          "image": "finishes/shower-niche-12x24-gold.jpeg"
+        },
+        {
+          "id": "shower-niche-12x24-stainless",
+          "name": "12x24 Stainless",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 299,
+          "swatch": "#C4C6C8",
+          "image": "finishes/shower-niche-12x24-stainless.jpeg"
+        },
+        {
+          "id": "shower-niche-12x24-matte-white",
+          "name": "12x24 Matte White",
+          "description": "",
+          "pricing": "upgrade",
+          "price": 299,
+          "swatch": "#EDEDE9",
+          "image": "finishes/shower-niche-12x24-matte-white.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "shower-head",
+      "name": "Shower Head",
+      "description": "Shower head / shower system options labeled A-G in the document (no product names printed).",
+      "unit": "each",
+      "options": [
+        {
+          "id": "shower-head-option-a",
+          "name": "Option A",
+          "description": "Matte black tub & shower trim set",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#262626",
+          "image": "finishes/shower-head-option-a.jpeg"
+        },
+        {
+          "id": "shower-head-option-b",
+          "name": "Option B",
+          "description": "Chrome tub & shower trim set",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C7C9CB",
+          "image": "finishes/shower-head-option-b.jpeg"
+        },
+        {
+          "id": "shower-head-option-c",
+          "name": "Option C",
+          "description": "Chrome shower with handheld",
+          "pricing": "upgrade",
+          "price": 179.99,
+          "swatch": "#C7C9CB",
+          "image": "finishes/shower-head-option-c.jpeg"
+        },
+        {
+          "id": "shower-head-option-d",
+          "name": "Option D",
+          "description": "Matte black shower with handheld",
+          "pricing": "upgrade",
+          "price": 229.99,
+          "swatch": "#262626",
+          "image": "finishes/shower-head-option-d.jpeg"
+        },
+        {
+          "id": "shower-head-option-e",
+          "name": "Option E",
+          "description": "Matte black rain shower head",
+          "pricing": "upgrade",
+          "price": 149.99,
+          "swatch": "#262626",
+          "image": "finishes/shower-head-option-e.jpeg"
+        },
+        {
+          "id": "shower-head-option-f",
+          "name": "Option F",
+          "description": "Chrome rain shower system with handheld",
+          "pricing": "upgrade",
+          "price": 379.99,
+          "swatch": "#C7C9CB",
+          "image": "finishes/shower-head-option-f.jpeg"
+        },
+        {
+          "id": "shower-head-option-g",
+          "name": "Option G",
+          "description": "Matte black rain shower system with handheld",
+          "pricing": "upgrade",
+          "price": 779.99,
+          "swatch": "#262626",
+          "image": "finishes/shower-head-option-g.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "bathroom-lighting",
+      "name": "Bathroom Lighting",
+      "description": "Bathroom vanity/wall lighting. Vanity bar upgrades are priced per light.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "bathroom-lighting-chrome-flute",
+          "name": "Chrome Flute",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C7C9CB",
+          "image": "finishes/bathroom-lighting-chrome-flute.jpeg"
+        },
+        {
+          "id": "bathroom-lighting-black-flute",
+          "name": "Black Flute",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#262626",
+          "image": "finishes/bathroom-lighting-black-flute.jpeg"
+        },
+        {
+          "id": "bathroom-lighting-gold-flute",
+          "name": "Gold Flute",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C2A14E",
+          "image": "finishes/bathroom-lighting-gold-flute.jpeg"
+        },
+        {
+          "id": "bathroom-lighting-black-trio-light",
+          "name": "Black Trio Light",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#262626",
+          "image": "finishes/bathroom-lighting-black-trio-light.jpeg"
+        },
+        {
+          "id": "bathroom-lighting-chrome-vanity",
+          "name": "Chrome Vanity",
+          "description": "Priced per light ($100/light)",
+          "pricing": "upgrade",
+          "price": 100,
+          "swatch": "#C7C9CB",
+          "image": "finishes/bathroom-lighting-chrome-vanity.jpeg"
+        },
+        {
+          "id": "bathroom-lighting-black-vanity",
+          "name": "Black Vanity",
+          "description": "Priced per light ($100/light)",
+          "pricing": "upgrade",
+          "price": 100,
+          "swatch": "#262626"
+        },
+        {
+          "id": "bathroom-lighting-gold-vanity",
+          "name": "Gold Vanity",
+          "description": "Priced per light ($100/light)",
+          "pricing": "upgrade",
+          "price": 100,
+          "swatch": "#C2A14E",
+          "image": "finishes/bathroom-lighting-gold-vanity.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "hardware-selection",
+      "name": "Hardware Selection",
+      "description": "Bathroom hardware set (towel bar, ring, toilet paper holder, robe hook).",
+      "unit": "each",
+      "options": [
+        {
+          "id": "hardware-selection-chrome",
+          "name": "Chrome",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C7C9CB",
+          "image": "finishes/hardware-selection-chrome.jpeg"
+        },
+        {
+          "id": "hardware-selection-matte-black",
+          "name": "Matte Black",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#262626",
+          "image": "finishes/hardware-selection-matte-black.jpeg"
+        },
+        {
+          "id": "hardware-selection-gold",
+          "name": "Gold",
+          "description": "",
+          "pricing": "included",
+          "price": 0,
+          "swatch": "#C2A14E",
+          "image": "finishes/hardware-selection-gold.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "mirrors",
+      "name": "Mirrors",
+      "description": "Main bath and ensuite mirrors. All ensuite mirrors are 36\" wide to match length of vanity.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "mirrors-main-ossana-gold",
+          "name": "Ossana Gold",
+          "description": "Main Bath",
+          "pricing": "upgrade",
+          "price": 200,
+          "swatch": "#C2A14E",
+          "image": "finishes/mirrors-main-ossana-gold.jpeg"
+        },
+        {
+          "id": "mirrors-main-ossana-black",
+          "name": "Ossana Black",
+          "description": "Main Bath",
+          "pricing": "upgrade",
+          "price": 200,
+          "swatch": "#262626",
+          "image": "finishes/mirrors-main-ossana-black.jpeg"
+        },
+        {
+          "id": "mirrors-main-olaf-gold-led",
+          "name": "Olaf Gold LED",
+          "description": "Main Bath",
+          "pricing": "upgrade",
+          "price": 400,
+          "swatch": "#C2A14E",
+          "image": "finishes/mirrors-main-olaf-gold-led.jpeg"
+        },
+        {
+          "id": "mirrors-main-olaf-black-led",
+          "name": "Olaf Black LED",
+          "description": "Main Bath",
+          "pricing": "upgrade",
+          "price": 400,
+          "swatch": "#262626",
+          "image": "finishes/mirrors-main-olaf-black-led.jpeg"
+        },
+        {
+          "id": "mirrors-ensuite-black",
+          "name": "Ensuite Black",
+          "description": "Ensuite - 36\" wide",
+          "pricing": "upgrade",
+          "price": 300,
+          "swatch": "#262626",
+          "image": "finishes/mirrors-ensuite-black.jpeg"
+        },
+        {
+          "id": "mirrors-ensuite-gold",
+          "name": "Ensuite Gold",
+          "description": "Ensuite - 36\" wide",
+          "pricing": "upgrade",
+          "price": 300,
+          "swatch": "#C2A14E",
+          "image": "finishes/mirrors-ensuite-gold.jpeg"
+        },
+        {
+          "id": "mirrors-ensuite-silver",
+          "name": "Ensuite Silver",
+          "description": "Ensuite - 36\" wide",
+          "pricing": "upgrade",
+          "price": 300,
+          "swatch": "#C4C6C8",
+          "image": "finishes/mirrors-ensuite-silver.jpeg"
+        },
+        {
+          "id": "mirrors-ensuite-led",
+          "name": "Ensuite LED",
+          "description": "Ensuite - 36\" wide, LED",
+          "pricing": "upgrade",
+          "price": 500,
+          "swatch": "#DCE6EC",
+          "image": "finishes/mirrors-ensuite-led.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "misc-upgrades",
+      "name": "Misc Upgrades",
+      "description": "Miscellaneous whole-home upgrade options. Prices quoted + HST.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "misc-upgrades-basement-mini-split",
+          "name": "Basement Mini Split",
+          "description": "$3499.99 + HST",
+          "pricing": "upgrade",
+          "price": 3499.99,
+          "swatch": "#C7C9CB"
+        },
+        {
+          "id": "misc-upgrades-finished-basements",
+          "name": "Finished Basements",
+          "description": "Starting at $39,999.99 + HST",
+          "pricing": "upgrade",
+          "price": 39999.99,
+          "swatch": "#8A8D8C"
+        },
+        {
+          "id": "misc-upgrades-closet-organizers",
+          "name": "Closet Organizers",
+          "description": "$449.99 + HST each (x2 shown = 2 closets)",
+          "pricing": "upgrade",
+          "price": 449.99,
+          "swatch": "#B0A99C",
+          "image": "finishes/misc-upgrades-closet-organizers.jpeg"
+        }
+      ]
+    },
+    {
+      "id": "laundry-upgrade",
+      "name": "Laundry Upgrade",
+      "description": "Laundry room cabinet upgrade packages. Prices quoted + HST.",
+      "unit": "each",
+      "options": [
+        {
+          "id": "laundry-upgrade-full-cabinet-single-pantry-countertop",
+          "name": "Full Cabinet, Single Pantry & Countertop",
+          "description": "$1989.99 + HST",
+          "pricing": "upgrade",
+          "price": 1989.99,
+          "swatch": "#EDECE7"
+        },
+        {
+          "id": "laundry-upgrade-full-cabinet-double-pantry-countertop",
+          "name": "Full Cabinet, Double Pantry & Countertop",
+          "description": "$2299.99 + HST",
+          "pricing": "upgrade",
+          "price": 2299.99,
+          "swatch": "#EDECE7"
+        }
+      ]
+    }
+  ]
+}
