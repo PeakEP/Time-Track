@@ -19,7 +19,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#C9A876",
-          "image": "finishes/luxury-vinyl-plank-american-oak.jpeg"
+          "image": "finishes/luxury-vinyl-plank-american-oak.png"
         },
         {
           "id": "luxury-vinyl-plank-american-walnut",
@@ -28,7 +28,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#8B5A2B",
-          "image": "finishes/luxury-vinyl-plank-american-walnut.jpeg"
+          "image": "finishes/luxury-vinyl-plank-american-walnut.png"
         },
         {
           "id": "luxury-vinyl-plank-warm-walnut",
@@ -37,7 +37,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#A0663A",
-          "image": "finishes/luxury-vinyl-plank-warm-walnut.jpeg"
+          "image": "finishes/luxury-vinyl-plank-warm-walnut.png"
         },
         {
           "id": "luxury-vinyl-plank-warm-oak",
@@ -46,7 +46,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#C79A5B",
-          "image": "finishes/luxury-vinyl-plank-warm-oak.jpeg"
+          "image": "finishes/luxury-vinyl-plank-warm-oak.png"
         },
         {
           "id": "luxury-vinyl-plank-whistler",
@@ -55,7 +55,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#C4A579",
-          "image": "finishes/luxury-vinyl-plank-whistler.jpeg"
+          "image": "finishes/luxury-vinyl-plank-whistler.png"
         },
         {
           "id": "luxury-vinyl-plank-cascade",
@@ -64,7 +64,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#D8C4A0",
-          "image": "finishes/luxury-vinyl-plank-cascade.jpeg"
+          "image": "finishes/luxury-vinyl-plank-cascade.png"
         },
         {
           "id": "luxury-vinyl-plank-sedona",
@@ -73,7 +73,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#C8964F",
-          "image": "finishes/luxury-vinyl-plank-sedona.jpeg"
+          "image": "finishes/luxury-vinyl-plank-sedona.png"
         },
         {
           "id": "luxury-vinyl-plank-highland",
@@ -82,7 +82,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#A9683B",
-          "image": "finishes/luxury-vinyl-plank-highland.jpeg"
+          "image": "finishes/luxury-vinyl-plank-highland.png"
         }
       ]
     },
@@ -99,7 +99,7 @@
           "pricing": "upgrade",
           "price": 1200,
           "swatch": "#B98E5A",
-          "image": "finishes/laminate-coastal-oak.jpeg"
+          "image": "finishes/laminate-coastal-oak.png"
         },
         {
           "id": "laminate-whispering-oak",
@@ -108,7 +108,7 @@
           "pricing": "upgrade",
           "price": 1200,
           "swatch": "#D2B489",
-          "image": "finishes/laminate-whispering-oak.jpeg"
+          "image": "finishes/laminate-whispering-oak.png"
         },
         {
           "id": "laminate-valley-mist",
@@ -117,7 +117,7 @@
           "pricing": "upgrade",
           "price": 1200,
           "swatch": "#CFC3A8",
-          "image": "finishes/laminate-valley-mist.jpeg"
+          "image": "finishes/laminate-valley-mist.png"
         },
         {
           "id": "laminate-sierra-hearth",
@@ -126,7 +126,7 @@
           "pricing": "upgrade",
           "price": 1200,
           "swatch": "#C9B48E",
-          "image": "finishes/laminate-sierra-hearth.jpeg"
+          "image": "finishes/laminate-sierra-hearth.png"
         }
       ]
     },
@@ -143,7 +143,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#5A4632",
-          "image": "finishes/bedroom-fans-matte-black-brown-blades.jpeg"
+          "image": "finishes/bedroom-fans-matte-black-brown-blades.jpg"
         },
         {
           "id": "bedroom-fans-nickel-burlywood-blades",
@@ -187,7 +187,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#B7B8BA",
-          "image": "finishes/door-handles-interior-satin-nickel.jpeg"
+          "image": "finishes/door-handles-interior-satin-nickel.png"
         },
         {
           "id": "door-handles-interior-matte-black",
@@ -196,7 +196,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#2B2B2B",
-          "image": "finishes/door-handles-interior-matte-black.jpeg"
+          "image": "finishes/door-handles-interior-matte-black.png"
         },
         {
           "id": "door-handles-exterior-satin-nickel-no-keypad",
@@ -205,7 +205,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#B7B8BA",
-          "image": "finishes/door-handles-exterior-satin-nickel-no-keypad.jpeg"
+          "image": "finishes/door-handles-exterior-satin-nickel-no-keypad.png"
         },
         {
           "id": "door-handles-exterior-matte-black-no-keypad",
@@ -214,7 +214,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#2B2B2B",
-          "image": "finishes/door-handles-exterior-matte-black-no-keypad.jpeg"
+          "image": "finishes/door-handles-exterior-matte-black-no-keypad.png"
         },
         {
           "id": "door-handles-exterior-matte-black-with-keypad",
@@ -223,7 +223,7 @@
           "pricing": "upgrade",
           "price": 99.99,
           "swatch": "#2B2B2B",
-          "image": "finishes/door-handles-exterior-matte-black-with-keypad.jpeg"
+          "image": "finishes/door-handles-exterior-matte-black-with-keypad.png"
         },
         {
           "id": "door-handles-exterior-satin-nickel-with-keypad",
@@ -232,7 +232,7 @@
           "pricing": "upgrade",
           "price": 99.99,
           "swatch": "#B7B8BA",
-          "image": "finishes/door-handles-exterior-satin-nickel-with-keypad.jpeg"
+          "image": "finishes/door-handles-exterior-satin-nickel-with-keypad.png"
         }
       ]
     },
@@ -248,7 +248,8 @@
           "description": "Classic Collection - single shaker",
           "pricing": "included",
           "price": 0,
-          "swatch": "#F0EFEA"
+          "swatch": "#F0EFEA",
+          "image": "finishes/kitchen-cabinets-classic-white-single-shaker.png"
         },
         {
           "id": "kitchen-cabinets-classic-gray-single-shaker",
@@ -256,7 +257,8 @@
           "description": "Classic Collection - single shaker",
           "pricing": "included",
           "price": 0,
-          "swatch": "#9AA0A0"
+          "swatch": "#9AA0A0",
+          "image": "finishes/kitchen-cabinets-classic-gray-single-shaker.png"
         },
         {
           "id": "kitchen-cabinets-classic-blue-single-shaker",
@@ -265,7 +267,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#26374D",
-          "image": "finishes/kitchen-cabinets-classic-blue-single-shaker.jpeg"
+          "image": "finishes/kitchen-cabinets-classic-blue-single-shaker.png"
         },
         {
           "id": "kitchen-cabinets-modern-classic-white-slim-shaker",
@@ -282,7 +284,8 @@
           "description": "Woodland Collection - natural wood / melamine",
           "pricing": "included",
           "price": 0,
-          "swatch": "#F4F3EE"
+          "swatch": "#F4F3EE",
+          "image": "finishes/kitchen-cabinets-woodland-pure-white.png"
         },
         {
           "id": "kitchen-cabinets-woodland-whitish-maple",
@@ -290,7 +293,8 @@
           "description": "Woodland Collection - natural wood / melamine",
           "pricing": "included",
           "price": 0,
-          "swatch": "#D9D3C6"
+          "swatch": "#D9D3C6",
+          "image": "finishes/kitchen-cabinets-woodland-whitish-maple.png"
         },
         {
           "id": "kitchen-cabinets-woodland-natural-wood",
@@ -299,7 +303,7 @@
           "pricing": "upgrade",
           "price": 2199,
           "swatch": "#C2A16A",
-          "image": "finishes/kitchen-cabinets-woodland-natural-wood.jpeg"
+          "image": "finishes/kitchen-cabinets-woodland-natural-wood.png"
         },
         {
           "id": "kitchen-cabinets-woodland-smoked-oak",
@@ -307,7 +311,8 @@
           "description": "Woodland Collection - natural wood / melamine",
           "pricing": "upgrade",
           "price": 2199,
-          "swatch": "#5C4A3A"
+          "swatch": "#5C4A3A",
+          "image": "finishes/kitchen-cabinets-woodland-smoked-oak.png"
         },
         {
           "id": "kitchen-cabinets-contemporary-glossy-white",
@@ -316,7 +321,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#F5F5F2",
-          "image": "finishes/kitchen-cabinets-contemporary-glossy-white.jpeg"
+          "image": "finishes/kitchen-cabinets-contemporary-glossy-white.png"
         },
         {
           "id": "kitchen-cabinets-contemporary-glossy-gray",
@@ -324,7 +329,8 @@
           "description": "Contemporary Collection - high gloss / matte",
           "pricing": "included",
           "price": 0,
-          "swatch": "#8A8D8C"
+          "swatch": "#8A8D8C",
+          "image": "finishes/kitchen-cabinets-contemporary-glossy-gray.png"
         },
         {
           "id": "kitchen-cabinets-contemporary-glossy-ash",
@@ -332,7 +338,8 @@
           "description": "Contemporary Collection - high gloss / matte",
           "pricing": "included",
           "price": 0,
-          "swatch": "#B9BBB8"
+          "swatch": "#B9BBB8",
+          "image": "finishes/kitchen-cabinets-contemporary-glossy-ash.png"
         },
         {
           "id": "kitchen-cabinets-contemporary-matte-gray",
@@ -340,7 +347,8 @@
           "description": "Contemporary Collection - high gloss / matte",
           "pricing": "included",
           "price": 0,
-          "swatch": "#55585A"
+          "swatch": "#55585A",
+          "image": "finishes/kitchen-cabinets-contemporary-matte-gray.png"
         },
         {
           "id": "kitchen-cabinets-contemporary-matte-white",
@@ -348,7 +356,8 @@
           "description": "Contemporary Collection - high gloss / matte",
           "pricing": "included",
           "price": 0,
-          "swatch": "#EDEDE9"
+          "swatch": "#EDEDE9",
+          "image": "finishes/kitchen-cabinets-contemporary-matte-white.png"
         },
         {
           "id": "kitchen-cabinets-contemporary-matte-ash",
@@ -356,7 +365,8 @@
           "description": "Contemporary Collection - high gloss / matte",
           "pricing": "included",
           "price": 0,
-          "swatch": "#C3C4C2"
+          "swatch": "#C3C4C2",
+          "image": "finishes/kitchen-cabinets-contemporary-matte-ash.png"
         },
         {
           "id": "kitchen-cabinets-contemporary-matte-black",
@@ -364,7 +374,8 @@
           "description": "Contemporary Collection - high gloss / matte",
           "pricing": "included",
           "price": 0,
-          "swatch": "#232323"
+          "swatch": "#232323",
+          "image": "finishes/kitchen-cabinets-contemporary-matte-black.png"
         },
         {
           "id": "kitchen-cabinets-timberland-natural-wood",
@@ -373,7 +384,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#C2A472",
-          "image": "finishes/kitchen-cabinets-timberland-natural-wood.jpeg"
+          "image": "finishes/kitchen-cabinets-timberland-natural-wood.png"
         },
         {
           "id": "kitchen-cabinets-timberland-white-oak",
@@ -382,7 +393,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#E4DCCB",
-          "image": "finishes/kitchen-cabinets-timberland-white-oak.jpeg"
+          "image": "finishes/kitchen-cabinets-timberland-white-oak.png"
         },
         {
           "id": "kitchen-cabinets-timberland-wood-grey",
@@ -391,7 +402,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#8E8A85",
-          "image": "finishes/kitchen-cabinets-timberland-wood-grey.jpeg"
+          "image": "finishes/kitchen-cabinets-timberland-wood-grey.png"
         },
         {
           "id": "kitchen-cabinets-timeless-shaker-white",
@@ -399,7 +410,8 @@
           "description": "Timeless Collection - classic shaker",
           "pricing": "included",
           "price": 0,
-          "swatch": "#F1F0EB"
+          "swatch": "#F1F0EB",
+          "image": "finishes/kitchen-cabinets-timeless-shaker-white.png"
         },
         {
           "id": "kitchen-cabinets-timeless-skaker-grey",
@@ -407,7 +419,8 @@
           "description": "Timeless Collection - classic shaker. Name printed as 'Skaker Grey' in document (likely 'Shaker Grey').",
           "pricing": "included",
           "price": 0,
-          "swatch": "#A9AEAD"
+          "swatch": "#A9AEAD",
+          "image": "finishes/kitchen-cabinets-timeless-skaker-grey.png"
         },
         {
           "id": "kitchen-cabinets-timeless-double-shaker-white",
@@ -415,7 +428,8 @@
           "description": "Timeless Collection - double shaker",
           "pricing": "upgrade",
           "price": 2199,
-          "swatch": "#EFEEE9"
+          "swatch": "#EFEEE9",
+          "image": "finishes/kitchen-cabinets-timeless-double-shaker-white.png"
         },
         {
           "id": "kitchen-cabinets-timeless-double-shaker-blue",
@@ -423,7 +437,8 @@
           "description": "Timeless Collection - double shaker",
           "pricing": "upgrade",
           "price": 2199,
-          "swatch": "#1F2E44"
+          "swatch": "#1F2E44",
+          "image": "finishes/kitchen-cabinets-timeless-double-shaker-blue.png"
         },
         {
           "id": "kitchen-cabinets-timeless-shaker-maple-caramel",
@@ -432,7 +447,7 @@
           "pricing": "upgrade",
           "price": 2199,
           "swatch": "#C6923F",
-          "image": "finishes/kitchen-cabinets-timeless-shaker-maple-caramel.jpeg"
+          "image": "finishes/kitchen-cabinets-timeless-shaker-maple-caramel.png"
         },
         {
           "id": "kitchen-cabinets-modern-high-gloss-white",
@@ -441,7 +456,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#F6F6F3",
-          "image": "finishes/kitchen-cabinets-modern-high-gloss-white.jpeg"
+          "image": "finishes/kitchen-cabinets-modern-high-gloss-white.png"
         },
         {
           "id": "kitchen-cabinets-modern-high-gloss-grey",
@@ -449,7 +464,8 @@
           "description": "Modern Collection - PET finish HDF",
           "pricing": "included",
           "price": 0,
-          "swatch": "#86898A"
+          "swatch": "#86898A",
+          "image": "finishes/kitchen-cabinets-modern-high-gloss-grey.png"
         },
         {
           "id": "kitchen-cabinets-modern-high-gloss-light-grey",
@@ -457,7 +473,8 @@
           "description": "Modern Collection - PET finish HDF",
           "pricing": "included",
           "price": 0,
-          "swatch": "#BFC1BE"
+          "swatch": "#BFC1BE",
+          "image": "finishes/kitchen-cabinets-modern-high-gloss-light-grey.png"
         },
         {
           "id": "kitchen-cabinets-modern-matte-grey",
@@ -465,7 +482,8 @@
           "description": "Modern Collection - PET finish HDF",
           "pricing": "included",
           "price": 0,
-          "swatch": "#565A5C"
+          "swatch": "#565A5C",
+          "image": "finishes/kitchen-cabinets-modern-matte-grey.png"
         },
         {
           "id": "kitchen-cabinets-modern-matte-white",
@@ -473,7 +491,8 @@
           "description": "Modern Collection - PET finish HDF",
           "pricing": "included",
           "price": 0,
-          "swatch": "#EDEDE9"
+          "swatch": "#EDEDE9",
+          "image": "finishes/kitchen-cabinets-modern-matte-white.png"
         },
         {
           "id": "kitchen-cabinets-refined-slim-shaker-white",
@@ -482,7 +501,7 @@
           "pricing": "upgrade",
           "price": 2199,
           "swatch": "#F1F0EB",
-          "image": "finishes/kitchen-cabinets-refined-slim-shaker-white.jpeg"
+          "image": "finishes/kitchen-cabinets-refined-slim-shaker-white.png"
         },
         {
           "id": "kitchen-cabinets-refined-slim-shaker-veneer",
@@ -491,7 +510,7 @@
           "pricing": "upgrade",
           "price": 2199,
           "swatch": "#C4A06A",
-          "image": "finishes/kitchen-cabinets-refined-slim-shaker-veneer.jpeg"
+          "image": "finishes/kitchen-cabinets-refined-slim-shaker-veneer.png"
         },
         {
           "id": "kitchen-cabinets-refined-slim-shaker-green",
@@ -500,7 +519,7 @@
           "pricing": "upgrade",
           "price": 2199,
           "swatch": "#3B4A3A",
-          "image": "finishes/kitchen-cabinets-refined-slim-shaker-green.jpeg"
+          "image": "finishes/kitchen-cabinets-refined-slim-shaker-green.png"
         }
       ]
     },
@@ -517,7 +536,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#C4C6C8",
-          "image": "finishes/kitchen-sinks-stainless-steel.jpeg"
+          "image": "finishes/kitchen-sinks-stainless-steel.jpg"
         },
         {
           "id": "kitchen-sinks-black-stainless",
@@ -526,7 +545,7 @@
           "pricing": "upgrade",
           "price": 199,
           "swatch": "#2E2E2E",
-          "image": "finishes/kitchen-sinks-black-stainless.jpeg"
+          "image": "finishes/kitchen-sinks-black-stainless.jpg"
         },
         {
           "id": "kitchen-sinks-white-granite",
@@ -535,7 +554,7 @@
           "pricing": "upgrade",
           "price": 299,
           "swatch": "#EDEBE6",
-          "image": "finishes/kitchen-sinks-white-granite.jpeg"
+          "image": "finishes/kitchen-sinks-white-granite.jpg"
         },
         {
           "id": "kitchen-sinks-black-granite",
@@ -544,7 +563,7 @@
           "pricing": "upgrade",
           "price": 299,
           "swatch": "#2A2A2A",
-          "image": "finishes/kitchen-sinks-black-granite.jpeg"
+          "image": "finishes/kitchen-sinks-black-granite.jpg"
         }
       ]
     },
@@ -561,7 +580,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#EDEBE4",
-          "image": "finishes/kitchen-countertops-whistler-gold.jpeg"
+          "image": "finishes/kitchen-countertops-whistler-gold.jpg"
         },
         {
           "id": "kitchen-countertops-helix",
@@ -570,7 +589,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#E8E9EA",
-          "image": "finishes/kitchen-countertops-helix.jpeg"
+          "image": "finishes/kitchen-countertops-helix.jpg"
         },
         {
           "id": "kitchen-countertops-siberian-frost",
@@ -579,7 +598,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#ECEAE0",
-          "image": "finishes/kitchen-countertops-siberian-frost.jpeg"
+          "image": "finishes/kitchen-countertops-siberian-frost.jpg"
         },
         {
           "id": "kitchen-countertops-ridge",
@@ -588,7 +607,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#E9E7E0",
-          "image": "finishes/kitchen-countertops-ridge.jpeg"
+          "image": "finishes/kitchen-countertops-ridge.jpg"
         },
         {
           "id": "kitchen-countertops-ethereal-glow",
@@ -597,7 +616,7 @@
           "pricing": "upgrade",
           "price": 2999,
           "swatch": "#EFEFEF",
-          "image": "finishes/kitchen-countertops-ethereal-glow.jpeg"
+          "image": "finishes/kitchen-countertops-ethereal-glow.jpg"
         },
         {
           "id": "kitchen-countertops-taj-luxe",
@@ -606,7 +625,7 @@
           "pricing": "upgrade",
           "price": 2999,
           "swatch": "#E5DFD2",
-          "image": "finishes/kitchen-countertops-taj-luxe.jpeg"
+          "image": "finishes/kitchen-countertops-taj-luxe.jpg"
         },
         {
           "id": "kitchen-countertops-elba-white",
@@ -615,7 +634,7 @@
           "pricing": "upgrade",
           "price": 2999,
           "swatch": "#E8E9E6",
-          "image": "finishes/kitchen-countertops-elba-white.jpeg"
+          "image": "finishes/kitchen-countertops-elba-white.jpg"
         },
         {
           "id": "kitchen-countertops-matterhorn",
@@ -624,7 +643,7 @@
           "pricing": "upgrade",
           "price": 2999,
           "swatch": "#E4E6E5",
-          "image": "finishes/kitchen-countertops-matterhorn.jpeg"
+          "image": "finishes/kitchen-countertops-matterhorn.jpg"
         }
       ]
     },
@@ -641,7 +660,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#F0EFEC",
-          "image": "finishes/backsplash-metro-white.jpeg"
+          "image": "finishes/backsplash-metro-white.png"
         },
         {
           "id": "backsplash-white-ice",
@@ -650,7 +669,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#F2F1ED",
-          "image": "finishes/backsplash-white-ice.jpeg"
+          "image": "finishes/backsplash-white-ice.png"
         },
         {
           "id": "backsplash-marmol-grey",
@@ -658,7 +677,8 @@
           "description": "",
           "pricing": "included",
           "price": 0,
-          "swatch": "#C9CBCC"
+          "swatch": "#C9CBCC",
+          "image": "finishes/backsplash-marmol-grey.png"
         },
         {
           "id": "backsplash-princess-white",
@@ -667,7 +687,7 @@
           "pricing": "upgrade",
           "price": 399,
           "swatch": "#E6E7E4",
-          "image": "finishes/backsplash-princess-white.jpeg"
+          "image": "finishes/backsplash-princess-white.jpg"
         },
         {
           "id": "backsplash-renzo-dove",
@@ -676,7 +696,7 @@
           "pricing": "upgrade",
           "price": 599,
           "swatch": "#D8D6CF",
-          "image": "finishes/backsplash-renzo-dove.jpeg"
+          "image": "finishes/backsplash-renzo-dove.png"
         },
         {
           "id": "backsplash-renzo-jade",
@@ -685,7 +705,7 @@
           "pricing": "upgrade",
           "price": 599,
           "swatch": "#B7C9B4",
-          "image": "finishes/backsplash-renzo-jade.jpeg"
+          "image": "finishes/backsplash-renzo-jade.jpg"
         },
         {
           "id": "backsplash-whales-gray",
@@ -694,7 +714,7 @@
           "pricing": "upgrade",
           "price": 599,
           "swatch": "#B0AFA9",
-          "image": "finishes/backsplash-whales-gray.jpeg"
+          "image": "finishes/backsplash-whales-gray.jpg"
         },
         {
           "id": "backsplash-whisper-white",
@@ -703,7 +723,7 @@
           "pricing": "upgrade",
           "price": 899,
           "swatch": "#F0EFEB",
-          "image": "finishes/backsplash-whisper-white.jpeg"
+          "image": "finishes/backsplash-whisper-white.png"
         }
       ]
     },
@@ -720,7 +740,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#C7C9CB",
-          "image": "finishes/kitchen-faucets-monroe-chrome.jpeg"
+          "image": "finishes/kitchen-faucets-monroe-chrome.jpg"
         },
         {
           "id": "kitchen-faucets-monroe-brushed-brass",
@@ -729,7 +749,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#B79A5E",
-          "image": "finishes/kitchen-faucets-monroe-brushed-brass.jpeg"
+          "image": "finishes/kitchen-faucets-monroe-brushed-brass.png"
         },
         {
           "id": "kitchen-faucets-monroe-matte-black",
@@ -738,7 +758,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#262626",
-          "image": "finishes/kitchen-faucets-monroe-matte-black.jpeg"
+          "image": "finishes/kitchen-faucets-monroe-matte-black.jpg"
         },
         {
           "id": "kitchen-faucets-mica-black",
@@ -747,7 +767,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#222222",
-          "image": "finishes/kitchen-faucets-mica-black.jpeg"
+          "image": "finishes/kitchen-faucets-mica-black.jpg"
         },
         {
           "id": "kitchen-faucets-master-matte-black",
@@ -756,7 +776,7 @@
           "pricing": "upgrade",
           "price": 99,
           "swatch": "#262626",
-          "image": "finishes/kitchen-faucets-master-matte-black.jpeg"
+          "image": "finishes/kitchen-faucets-master-matte-black.jpg"
         },
         {
           "id": "kitchen-faucets-moochie-black-stainless",
@@ -765,7 +785,7 @@
           "pricing": "upgrade",
           "price": 199,
           "swatch": "#3A3D40",
-          "image": "finishes/kitchen-faucets-moochie-black-stainless.jpeg"
+          "image": "finishes/kitchen-faucets-moochie-black-stainless.jpg"
         },
         {
           "id": "kitchen-faucets-moochie-matte-black",
@@ -774,7 +794,7 @@
           "pricing": "upgrade",
           "price": 199,
           "swatch": "#262626",
-          "image": "finishes/kitchen-faucets-moochie-matte-black.jpeg"
+          "image": "finishes/kitchen-faucets-moochie-matte-black.png"
         },
         {
           "id": "kitchen-faucets-moochie-brushed-brass",
@@ -783,7 +803,7 @@
           "pricing": "upgrade",
           "price": 199,
           "swatch": "#B79A5E",
-          "image": "finishes/kitchen-faucets-moochie-brushed-brass.jpeg"
+          "image": "finishes/kitchen-faucets-moochie-brushed-brass.png"
         },
         {
           "id": "kitchen-faucets-miaggi-brushed-brass",
@@ -792,7 +812,7 @@
           "pricing": "upgrade",
           "price": 199,
           "swatch": "#B79A5E",
-          "image": "finishes/kitchen-faucets-miaggi-brushed-brass.jpeg"
+          "image": "finishes/kitchen-faucets-miaggi-brushed-brass.png"
         }
       ]
     },
@@ -809,7 +829,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#B7B8BA",
-          "image": "finishes/kitchen-handle-classic-satin-nickel.jpeg"
+          "image": "finishes/kitchen-handle-classic-satin-nickel.png"
         },
         {
           "id": "kitchen-handle-classic-matte-black",
@@ -818,7 +838,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#2B2B2B",
-          "image": "finishes/kitchen-handle-classic-matte-black.jpeg"
+          "image": "finishes/kitchen-handle-classic-matte-black.png"
         },
         {
           "id": "kitchen-handle-classic-gold",
@@ -827,7 +847,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#C2A14E",
-          "image": "finishes/kitchen-handle-classic-gold.jpeg"
+          "image": "finishes/kitchen-handle-classic-gold.png"
         },
         {
           "id": "kitchen-handle-contemporary-matte-black",
@@ -836,7 +856,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#2B2B2B",
-          "image": "finishes/kitchen-handle-contemporary-matte-black.jpeg"
+          "image": "finishes/kitchen-handle-contemporary-matte-black.jpg"
         },
         {
           "id": "kitchen-handle-contemporary-dark-bronze",
@@ -845,7 +865,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#4A3B2E",
-          "image": "finishes/kitchen-handle-contemporary-dark-bronze.jpeg"
+          "image": "finishes/kitchen-handle-contemporary-dark-bronze.jpg"
         },
         {
           "id": "kitchen-handle-contemporary-polished-chrome",
@@ -854,7 +874,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#CDCFD1",
-          "image": "finishes/kitchen-handle-contemporary-polished-chrome.jpeg"
+          "image": "finishes/kitchen-handle-contemporary-polished-chrome.png"
         },
         {
           "id": "kitchen-handle-contemporary-gold-champagne",
@@ -863,7 +883,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#C7B27E",
-          "image": "finishes/kitchen-handle-contemporary-gold-champagne.jpeg"
+          "image": "finishes/kitchen-handle-contemporary-gold-champagne.jpg"
         },
         {
           "id": "kitchen-handle-newham-brushed-nickel",
@@ -872,7 +892,7 @@
           "pricing": "upgrade",
           "price": 299,
           "swatch": "#B7B8BA",
-          "image": "finishes/kitchen-handle-newham-brushed-nickel.jpeg"
+          "image": "finishes/kitchen-handle-newham-brushed-nickel.png"
         },
         {
           "id": "kitchen-handle-newham-graphite",
@@ -881,7 +901,7 @@
           "pricing": "upgrade",
           "price": 299,
           "swatch": "#4B4E50",
-          "image": "finishes/kitchen-handle-newham-graphite.jpeg"
+          "image": "finishes/kitchen-handle-newham-graphite.png"
         },
         {
           "id": "kitchen-handle-newham-matte-black",
@@ -889,7 +909,8 @@
           "description": "Newham",
           "pricing": "upgrade",
           "price": 299,
-          "swatch": "#2B2B2B"
+          "swatch": "#2B2B2B",
+          "image": "finishes/kitchen-handle-newham-matte-black.png"
         },
         {
           "id": "kitchen-handle-newham-bronze-champagne",
@@ -898,7 +919,7 @@
           "pricing": "upgrade",
           "price": 299,
           "swatch": "#B08D5B",
-          "image": "finishes/kitchen-handle-newham-bronze-champagne.jpeg"
+          "image": "finishes/kitchen-handle-newham-bronze-champagne.png"
         }
       ]
     },
@@ -915,7 +936,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#2B2B2B",
-          "image": "finishes/kitchen-lighting-matte-black-gold-accent.jpeg"
+          "image": "finishes/kitchen-lighting-matte-black-gold-accent.jpg"
         },
         {
           "id": "kitchen-lighting-gold",
@@ -924,7 +945,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#C2A14E",
-          "image": "finishes/kitchen-lighting-gold.jpeg"
+          "image": "finishes/kitchen-lighting-gold.jpg"
         },
         {
           "id": "kitchen-lighting-chrome",
@@ -933,7 +954,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#CDCFD1",
-          "image": "finishes/kitchen-lighting-chrome.jpeg"
+          "image": "finishes/kitchen-lighting-chrome.jpg"
         },
         {
           "id": "kitchen-lighting-black",
@@ -942,7 +963,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#262626",
-          "image": "finishes/kitchen-lighting-black.jpeg"
+          "image": "finishes/kitchen-lighting-black.jpg"
         },
         {
           "id": "kitchen-lighting-natural",
@@ -951,7 +972,7 @@
           "pricing": "upgrade",
           "price": 600,
           "swatch": "#C2A06A",
-          "image": "finishes/kitchen-lighting-natural.jpeg"
+          "image": "finishes/kitchen-lighting-natural.jpg"
         }
       ]
     },
@@ -968,7 +989,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#E9E7E0",
-          "image": "finishes/island-upgrade-standard.jpeg"
+          "image": "finishes/island-upgrade-standard.png"
         },
         {
           "id": "island-upgrade-extended",
@@ -977,7 +998,7 @@
           "pricing": "upgrade",
           "price": 2099.99,
           "swatch": "#E9E7E0",
-          "image": "finishes/island-upgrade-extended.jpeg"
+          "image": "finishes/island-upgrade-extended.png"
         }
       ]
     },
@@ -994,7 +1015,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#ECE9E0",
-          "image": "finishes/bathroom-tile-brighton-gold.jpeg"
+          "image": "finishes/bathroom-tile-brighton-gold.jpg"
         },
         {
           "id": "bathroom-tile-brighton-grey",
@@ -1003,7 +1024,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#E4E4E2",
-          "image": "finishes/bathroom-tile-brighton-grey.jpeg"
+          "image": "finishes/bathroom-tile-brighton-grey.jpg"
         },
         {
           "id": "bathroom-tile-pietra-calacatta",
@@ -1012,7 +1033,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#E8E9E6",
-          "image": "finishes/bathroom-tile-pietra-calacatta.jpeg"
+          "image": "finishes/bathroom-tile-pietra-calacatta.jpg"
         },
         {
           "id": "bathroom-tile-antrax",
@@ -1021,7 +1042,7 @@
           "pricing": "upgrade",
           "price": 299,
           "swatch": "#6E7072",
-          "image": "finishes/bathroom-tile-antrax.jpeg"
+          "image": "finishes/bathroom-tile-antrax.jpg"
         },
         {
           "id": "bathroom-tile-bali-beige",
@@ -1030,7 +1051,7 @@
           "pricing": "upgrade",
           "price": 299,
           "swatch": "#D8CDB8",
-          "image": "finishes/bathroom-tile-bali-beige.jpeg"
+          "image": "finishes/bathroom-tile-bali-beige.png"
         },
         {
           "id": "bathroom-tile-travertino-beige",
@@ -1039,7 +1060,7 @@
           "pricing": "upgrade",
           "price": 499,
           "swatch": "#D4C3A2",
-          "image": "finishes/bathroom-tile-travertino-beige.jpeg"
+          "image": "finishes/bathroom-tile-travertino-beige.png"
         },
         {
           "id": "bathroom-tile-taj-mahal-bianco",
@@ -1048,7 +1069,7 @@
           "pricing": "upgrade",
           "price": 499,
           "swatch": "#E7E1D4",
-          "image": "finishes/bathroom-tile-taj-mahal-bianco.jpeg"
+          "image": "finishes/bathroom-tile-taj-mahal-bianco.png"
         },
         {
           "id": "bathroom-tile-tortora",
@@ -1057,7 +1078,7 @@
           "pricing": "upgrade",
           "price": 499,
           "swatch": "#CFCBC4",
-          "image": "finishes/bathroom-tile-tortora.jpeg"
+          "image": "finishes/bathroom-tile-tortora.png"
         }
       ]
     },
@@ -1074,7 +1095,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#F0EFEA",
-          "image": "finishes/vanities-signature-white-single-shaker.jpeg"
+          "image": "finishes/vanities-signature-white-single-shaker.png"
         },
         {
           "id": "vanities-signature-grey-single-shaker",
@@ -1083,7 +1104,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#9AA0A0",
-          "image": "finishes/vanities-signature-grey-single-shaker.jpeg"
+          "image": "finishes/vanities-signature-grey-single-shaker.png"
         },
         {
           "id": "vanities-signature-blue-single-shaker",
@@ -1092,7 +1113,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#26374D",
-          "image": "finishes/vanities-signature-blue-single-shaker.jpeg"
+          "image": "finishes/vanities-signature-blue-single-shaker.png"
         },
         {
           "id": "vanities-signature-white-slim-shaker",
@@ -1109,7 +1130,8 @@
           "description": "Signature Line",
           "pricing": "included",
           "price": 0,
-          "swatch": "#F4F3EE"
+          "swatch": "#F4F3EE",
+          "image": "finishes/vanities-signature-pure-white.png"
         },
         {
           "id": "vanities-signature-whitish-maple",
@@ -1117,7 +1139,8 @@
           "description": "Signature Line",
           "pricing": "included",
           "price": 0,
-          "swatch": "#D9D3C6"
+          "swatch": "#D9D3C6",
+          "image": "finishes/vanities-signature-whitish-maple.png"
         },
         {
           "id": "vanities-signature-natural-wood",
@@ -1126,7 +1149,7 @@
           "pricing": "upgrade",
           "price": 399,
           "swatch": "#C2A16A",
-          "image": "finishes/vanities-signature-natural-wood.jpeg"
+          "image": "finishes/vanities-signature-natural-wood.png"
         },
         {
           "id": "vanities-signature-smoked-oak",
@@ -1135,7 +1158,7 @@
           "pricing": "upgrade",
           "price": 399,
           "swatch": "#5C4A3A",
-          "image": "finishes/vanities-signature-smoked-oak.jpeg"
+          "image": "finishes/vanities-signature-smoked-oak.png"
         },
         {
           "id": "vanities-signature-glossy-white",
@@ -1143,7 +1166,8 @@
           "description": "Signature Line",
           "pricing": "included",
           "price": 0,
-          "swatch": "#F5F5F2"
+          "swatch": "#F5F5F2",
+          "image": "finishes/vanities-signature-glossy-white.png"
         },
         {
           "id": "vanities-signature-glossy-gray",
@@ -1151,7 +1175,8 @@
           "description": "Signature Line",
           "pricing": "included",
           "price": 0,
-          "swatch": "#8A8D8C"
+          "swatch": "#8A8D8C",
+          "image": "finishes/vanities-signature-glossy-gray.png"
         },
         {
           "id": "vanities-signature-glossy-ash",
@@ -1159,7 +1184,8 @@
           "description": "Signature Line",
           "pricing": "included",
           "price": 0,
-          "swatch": "#B9BBB8"
+          "swatch": "#B9BBB8",
+          "image": "finishes/vanities-signature-glossy-ash.png"
         },
         {
           "id": "vanities-signature-matte-gray",
@@ -1167,7 +1193,8 @@
           "description": "Signature Line",
           "pricing": "included",
           "price": 0,
-          "swatch": "#55585A"
+          "swatch": "#55585A",
+          "image": "finishes/vanities-signature-matte-gray.png"
         },
         {
           "id": "vanities-signature-matte-white",
@@ -1175,7 +1202,8 @@
           "description": "Signature Line",
           "pricing": "included",
           "price": 0,
-          "swatch": "#EDEDE9"
+          "swatch": "#EDEDE9",
+          "image": "finishes/vanities-signature-matte-white.png"
         },
         {
           "id": "vanities-signature-matte-ash",
@@ -1183,7 +1211,8 @@
           "description": "Signature Line",
           "pricing": "included",
           "price": 0,
-          "swatch": "#C3C4C2"
+          "swatch": "#C3C4C2",
+          "image": "finishes/vanities-signature-matte-ash.png"
         },
         {
           "id": "vanities-signature-matte-black",
@@ -1191,7 +1220,8 @@
           "description": "Signature Line",
           "pricing": "included",
           "price": 0,
-          "swatch": "#232323"
+          "swatch": "#232323",
+          "image": "finishes/vanities-signature-matte-black.png"
         },
         {
           "id": "vanities-vital-shaker-white",
@@ -1199,7 +1229,8 @@
           "description": "Vital Line",
           "pricing": "included",
           "price": 0,
-          "swatch": "#F1F0EB"
+          "swatch": "#F1F0EB",
+          "image": "finishes/vanities-vital-shaker-white.png"
         },
         {
           "id": "vanities-vital-skaker-grey",
@@ -1207,7 +1238,8 @@
           "description": "Vital Line. Name printed as 'Skaker Grey' in document (likely 'Shaker Grey').",
           "pricing": "included",
           "price": 0,
-          "swatch": "#A9AEAD"
+          "swatch": "#A9AEAD",
+          "image": "finishes/vanities-vital-skaker-grey.png"
         },
         {
           "id": "vanities-vital-double-shaker-white",
@@ -1215,7 +1247,8 @@
           "description": "Vital Line. Upgrade: Main $399 / Ensuite $599",
           "pricing": "upgrade",
           "price": 399,
-          "swatch": "#EFEEE9"
+          "swatch": "#EFEEE9",
+          "image": "finishes/vanities-vital-double-shaker-white.png"
         },
         {
           "id": "vanities-vital-double-shaker-blue",
@@ -1223,7 +1256,8 @@
           "description": "Vital Line. Upgrade: Main $399 / Ensuite $599",
           "pricing": "upgrade",
           "price": 399,
-          "swatch": "#1F2E44"
+          "swatch": "#1F2E44",
+          "image": "finishes/vanities-vital-double-shaker-blue.png"
         },
         {
           "id": "vanities-vital-shaker-maple-caramel",
@@ -1231,7 +1265,8 @@
           "description": "Vital Line. Upgrade: Main $399 / Ensuite $599",
           "pricing": "upgrade",
           "price": 399,
-          "swatch": "#C6923F"
+          "swatch": "#C6923F",
+          "image": "finishes/vanities-vital-shaker-maple-caramel.png"
         },
         {
           "id": "vanities-vital-natural-wood",
@@ -1239,7 +1274,8 @@
           "description": "Vital Line",
           "pricing": "included",
           "price": 0,
-          "swatch": "#C2A472"
+          "swatch": "#C2A472",
+          "image": "finishes/vanities-vital-natural-wood.png"
         },
         {
           "id": "vanities-vital-white-oak",
@@ -1247,7 +1283,8 @@
           "description": "Vital Line",
           "pricing": "included",
           "price": 0,
-          "swatch": "#E4DCCB"
+          "swatch": "#E4DCCB",
+          "image": "finishes/vanities-vital-white-oak.png"
         },
         {
           "id": "vanities-vital-wood-grey",
@@ -1255,7 +1292,8 @@
           "description": "Vital Line",
           "pricing": "included",
           "price": 0,
-          "swatch": "#8E8A85"
+          "swatch": "#8E8A85",
+          "image": "finishes/vanities-vital-wood-grey.png"
         },
         {
           "id": "vanities-vital-high-gloss-white",
@@ -1263,7 +1301,8 @@
           "description": "Vital Line",
           "pricing": "included",
           "price": 0,
-          "swatch": "#F6F6F3"
+          "swatch": "#F6F6F3",
+          "image": "finishes/vanities-vital-high-gloss-white.png"
         },
         {
           "id": "vanities-vital-high-gloss-grey",
@@ -1271,7 +1310,8 @@
           "description": "Vital Line",
           "pricing": "included",
           "price": 0,
-          "swatch": "#86898A"
+          "swatch": "#86898A",
+          "image": "finishes/vanities-vital-high-gloss-grey.png"
         },
         {
           "id": "vanities-vital-high-gloss-light-grey",
@@ -1279,7 +1319,8 @@
           "description": "Vital Line",
           "pricing": "included",
           "price": 0,
-          "swatch": "#BFC1BE"
+          "swatch": "#BFC1BE",
+          "image": "finishes/vanities-vital-high-gloss-light-grey.png"
         },
         {
           "id": "vanities-vital-matte-grey",
@@ -1287,7 +1328,8 @@
           "description": "Vital Line",
           "pricing": "included",
           "price": 0,
-          "swatch": "#565A5C"
+          "swatch": "#565A5C",
+          "image": "finishes/vanities-vital-matte-grey.png"
         },
         {
           "id": "vanities-vital-matte-white",
@@ -1295,7 +1337,8 @@
           "description": "Vital Line",
           "pricing": "included",
           "price": 0,
-          "swatch": "#EDEDE9"
+          "swatch": "#EDEDE9",
+          "image": "finishes/vanities-vital-matte-white.png"
         },
         {
           "id": "vanities-vital-slim-shaker-white",
@@ -1303,7 +1346,8 @@
           "description": "Vital Line. Upgrade: Main $399 / Ensuite $599",
           "pricing": "upgrade",
           "price": 399,
-          "swatch": "#F1F0EB"
+          "swatch": "#F1F0EB",
+          "image": "finishes/vanities-vital-slim-shaker-white.png"
         },
         {
           "id": "vanities-vital-slim-shaker-veneer",
@@ -1311,7 +1355,8 @@
           "description": "Vital Line. Upgrade: Main $399 / Ensuite $599",
           "pricing": "upgrade",
           "price": 399,
-          "swatch": "#C4A06A"
+          "swatch": "#C4A06A",
+          "image": "finishes/vanities-vital-slim-shaker-veneer.png"
         },
         {
           "id": "vanities-vital-slim-shaker-green",
@@ -1319,7 +1364,8 @@
           "description": "Vital Line. Upgrade: Main $399 / Ensuite $599",
           "pricing": "upgrade",
           "price": 399,
-          "swatch": "#3B4A3A"
+          "swatch": "#3B4A3A",
+          "image": "finishes/vanities-vital-slim-shaker-green.png"
         }
       ]
     },
@@ -1336,7 +1382,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#EDEBE4",
-          "image": "finishes/bathroom-countertops-whistler-gold.jpeg"
+          "image": "finishes/bathroom-countertops-whistler-gold.jpg"
         },
         {
           "id": "bathroom-countertops-helix",
@@ -1345,7 +1391,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#E8E9EA",
-          "image": "finishes/bathroom-countertops-helix.jpeg"
+          "image": "finishes/bathroom-countertops-helix.jpg"
         },
         {
           "id": "bathroom-countertops-siberian-frost",
@@ -1354,7 +1400,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#ECEAE0",
-          "image": "finishes/bathroom-countertops-siberian-frost.jpeg"
+          "image": "finishes/bathroom-countertops-siberian-frost.jpg"
         },
         {
           "id": "bathroom-countertops-ridge",
@@ -1363,7 +1409,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#E9E7E0",
-          "image": "finishes/bathroom-countertops-ridge.jpeg"
+          "image": "finishes/bathroom-countertops-ridge.jpg"
         },
         {
           "id": "bathroom-countertops-ethereal-glow",
@@ -1372,7 +1418,7 @@
           "pricing": "upgrade",
           "price": 325,
           "swatch": "#EFEFEF",
-          "image": "finishes/bathroom-countertops-ethereal-glow.jpeg"
+          "image": "finishes/bathroom-countertops-ethereal-glow.jpg"
         },
         {
           "id": "bathroom-countertops-taj-luxe",
@@ -1381,7 +1427,7 @@
           "pricing": "upgrade",
           "price": 325,
           "swatch": "#E5DFD2",
-          "image": "finishes/bathroom-countertops-taj-luxe.jpeg"
+          "image": "finishes/bathroom-countertops-taj-luxe.jpg"
         },
         {
           "id": "bathroom-countertops-elba-white",
@@ -1390,7 +1436,7 @@
           "pricing": "upgrade",
           "price": 325,
           "swatch": "#E8E9E6",
-          "image": "finishes/bathroom-countertops-elba-white.jpeg"
+          "image": "finishes/bathroom-countertops-elba-white.jpg"
         },
         {
           "id": "bathroom-countertops-matterhorn",
@@ -1399,7 +1445,7 @@
           "pricing": "upgrade",
           "price": 325,
           "swatch": "#E4E6E5",
-          "image": "finishes/bathroom-countertops-matterhorn.jpeg"
+          "image": "finishes/bathroom-countertops-matterhorn.jpg"
         }
       ]
     },
@@ -1416,7 +1462,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#B7B8BA",
-          "image": "finishes/bathroom-handle-classic-satin-nickel.jpeg"
+          "image": "finishes/bathroom-handle-classic-satin-nickel.png"
         },
         {
           "id": "bathroom-handle-classic-matte-black",
@@ -1425,7 +1471,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#2B2B2B",
-          "image": "finishes/bathroom-handle-classic-matte-black.jpeg"
+          "image": "finishes/bathroom-handle-classic-matte-black.png"
         },
         {
           "id": "bathroom-handle-classic-gold",
@@ -1434,7 +1480,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#C2A14E",
-          "image": "finishes/bathroom-handle-classic-gold.jpeg"
+          "image": "finishes/bathroom-handle-classic-gold.png"
         },
         {
           "id": "bathroom-handle-contemporary-matte-black",
@@ -1443,7 +1489,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#2B2B2B",
-          "image": "finishes/bathroom-handle-contemporary-matte-black.jpeg"
+          "image": "finishes/bathroom-handle-contemporary-matte-black.jpg"
         },
         {
           "id": "bathroom-handle-contemporary-dark-bronze",
@@ -1452,7 +1498,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#4A3B2E",
-          "image": "finishes/bathroom-handle-contemporary-dark-bronze.jpeg"
+          "image": "finishes/bathroom-handle-contemporary-dark-bronze.jpg"
         },
         {
           "id": "bathroom-handle-contemporary-polished-chrome",
@@ -1461,7 +1507,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#CDCFD1",
-          "image": "finishes/bathroom-handle-contemporary-polished-chrome.jpeg"
+          "image": "finishes/bathroom-handle-contemporary-polished-chrome.png"
         },
         {
           "id": "bathroom-handle-contemporary-gold-champagne",
@@ -1470,7 +1516,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#C7B27E",
-          "image": "finishes/bathroom-handle-contemporary-gold-champagne.jpeg"
+          "image": "finishes/bathroom-handle-contemporary-gold-champagne.jpg"
         }
       ]
     },
@@ -1487,7 +1533,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#C7C9CB",
-          "image": "finishes/bathroom-faucets-rico-chrome.jpeg"
+          "image": "finishes/bathroom-faucets-rico-chrome.jpg"
         },
         {
           "id": "bathroom-faucets-rico-matte-black",
@@ -1496,7 +1542,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#262626",
-          "image": "finishes/bathroom-faucets-rico-matte-black.jpeg"
+          "image": "finishes/bathroom-faucets-rico-matte-black.jpg"
         },
         {
           "id": "bathroom-faucets-rico-gold",
@@ -1505,7 +1551,7 @@
           "pricing": "upgrade",
           "price": 50,
           "swatch": "#C2A14E",
-          "image": "finishes/bathroom-faucets-rico-gold.jpeg"
+          "image": "finishes/bathroom-faucets-rico-gold.jpg"
         },
         {
           "id": "bathroom-faucets-rosi-chrome",
@@ -1514,7 +1560,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#C7C9CB",
-          "image": "finishes/bathroom-faucets-rosi-chrome.jpeg"
+          "image": "finishes/bathroom-faucets-rosi-chrome.jpg"
         },
         {
           "id": "bathroom-faucets-rosi-matte-black",
@@ -1523,7 +1569,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#262626",
-          "image": "finishes/bathroom-faucets-rosi-matte-black.jpeg"
+          "image": "finishes/bathroom-faucets-rosi-matte-black.jpg"
         },
         {
           "id": "bathroom-faucets-rosi-gold",
@@ -1532,7 +1578,7 @@
           "pricing": "upgrade",
           "price": 50,
           "swatch": "#C2A14E",
-          "image": "finishes/bathroom-faucets-rosi-gold.jpeg"
+          "image": "finishes/bathroom-faucets-rosi-gold.jpg"
         },
         {
           "id": "bathroom-faucets-rentato-brushed-nickel",
@@ -1541,7 +1587,7 @@
           "pricing": "upgrade",
           "price": 59.99,
           "swatch": "#B7B8BA",
-          "image": "finishes/bathroom-faucets-rentato-brushed-nickel.jpeg"
+          "image": "finishes/bathroom-faucets-rentato-brushed-nickel.jpg"
         },
         {
           "id": "bathroom-faucets-rentato-matte-black",
@@ -1550,7 +1596,7 @@
           "pricing": "upgrade",
           "price": 59.99,
           "swatch": "#262626",
-          "image": "finishes/bathroom-faucets-rentato-matte-black.jpeg"
+          "image": "finishes/bathroom-faucets-rentato-matte-black.jpg"
         }
       ]
     },
@@ -1567,7 +1613,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#ECEBE7",
-          "image": "finishes/bath-selection-white-shower-base.jpeg"
+          "image": "finishes/bath-selection-white-shower-base.jpg"
         },
         {
           "id": "bath-selection-white-tub",
@@ -1576,7 +1622,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#F0EFEB",
-          "image": "finishes/bath-selection-white-tub.jpeg"
+          "image": "finishes/bath-selection-white-tub.jpg"
         },
         {
           "id": "bath-selection-white-textured-marble-composite-base",
@@ -1585,7 +1631,7 @@
           "pricing": "upgrade",
           "price": 399,
           "swatch": "#E6E4DD",
-          "image": "finishes/bath-selection-white-textured-marble-composite-base.jpeg"
+          "image": "finishes/bath-selection-white-textured-marble-composite-base.jpg"
         },
         {
           "id": "bath-selection-black-tub",
@@ -1594,7 +1640,7 @@
           "pricing": "upgrade",
           "price": 299,
           "swatch": "#262626",
-          "image": "finishes/bath-selection-black-tub.jpeg"
+          "image": "finishes/bath-selection-black-tub.jpg"
         },
         {
           "id": "bath-selection-black-textured-marble-composite-base",
@@ -1603,7 +1649,7 @@
           "pricing": "upgrade",
           "price": 399,
           "swatch": "#2A2A2A",
-          "image": "finishes/bath-selection-black-textured-marble-composite-base.jpeg"
+          "image": "finishes/bath-selection-black-textured-marble-composite-base.jpg"
         }
       ]
     },
@@ -1620,7 +1666,7 @@
           "pricing": "upgrade",
           "price": 800,
           "swatch": "#CDCFD1",
-          "image": "finishes/shower-glass-chrome.jpeg"
+          "image": "finishes/shower-glass-chrome.jpg"
         },
         {
           "id": "shower-glass-matte-black",
@@ -1629,7 +1675,7 @@
           "pricing": "upgrade",
           "price": 800,
           "swatch": "#262626",
-          "image": "finishes/shower-glass-matte-black.jpeg"
+          "image": "finishes/shower-glass-matte-black.jpg"
         },
         {
           "id": "shower-glass-gold",
@@ -1638,7 +1684,7 @@
           "pricing": "upgrade",
           "price": 850,
           "swatch": "#C2A14E",
-          "image": "finishes/shower-glass-gold.jpeg"
+          "image": "finishes/shower-glass-gold.jpg"
         },
         {
           "id": "shower-glass-chrome-with-towel",
@@ -1647,7 +1693,7 @@
           "pricing": "upgrade",
           "price": 950,
           "swatch": "#CDCFD1",
-          "image": "finishes/shower-glass-chrome-with-towel.jpeg"
+          "image": "finishes/shower-glass-chrome-with-towel.jpg"
         },
         {
           "id": "shower-glass-matte-black-with-towel",
@@ -1656,7 +1702,7 @@
           "pricing": "upgrade",
           "price": 950,
           "swatch": "#262626",
-          "image": "finishes/shower-glass-matte-black-with-towel.jpeg"
+          "image": "finishes/shower-glass-matte-black-with-towel.jpg"
         },
         {
           "id": "shower-glass-gold-with-towel",
@@ -1665,7 +1711,7 @@
           "pricing": "upgrade",
           "price": 999,
           "swatch": "#C2A14E",
-          "image": "finishes/shower-glass-gold-with-towel.jpeg"
+          "image": "finishes/shower-glass-gold-with-towel.jpg"
         }
       ]
     },
@@ -1682,7 +1728,7 @@
           "pricing": "upgrade",
           "price": 249,
           "swatch": "#262626",
-          "image": "finishes/shower-niche-12x12-matte-black.jpeg"
+          "image": "finishes/shower-niche-12x12-matte-black.jpg"
         },
         {
           "id": "shower-niche-12x12-gold",
@@ -1691,7 +1737,7 @@
           "pricing": "upgrade",
           "price": 249,
           "swatch": "#B79A5E",
-          "image": "finishes/shower-niche-12x12-gold.jpeg"
+          "image": "finishes/shower-niche-12x12-gold.jpg"
         },
         {
           "id": "shower-niche-12x12-stainless",
@@ -1700,7 +1746,7 @@
           "pricing": "upgrade",
           "price": 249,
           "swatch": "#C4C6C8",
-          "image": "finishes/shower-niche-12x12-stainless.jpeg"
+          "image": "finishes/shower-niche-12x12-stainless.jpg"
         },
         {
           "id": "shower-niche-12x12-matte-white",
@@ -1709,7 +1755,7 @@
           "pricing": "upgrade",
           "price": 249,
           "swatch": "#EDEDE9",
-          "image": "finishes/shower-niche-12x12-matte-white.jpeg"
+          "image": "finishes/shower-niche-12x12-matte-white.jpg"
         },
         {
           "id": "shower-niche-12x24-matte-black",
@@ -1718,7 +1764,7 @@
           "pricing": "upgrade",
           "price": 299,
           "swatch": "#262626",
-          "image": "finishes/shower-niche-12x24-matte-black.jpeg"
+          "image": "finishes/shower-niche-12x24-matte-black.jpg"
         },
         {
           "id": "shower-niche-12x24-gold",
@@ -1727,7 +1773,7 @@
           "pricing": "upgrade",
           "price": 299,
           "swatch": "#B79A5E",
-          "image": "finishes/shower-niche-12x24-gold.jpeg"
+          "image": "finishes/shower-niche-12x24-gold.jpg"
         },
         {
           "id": "shower-niche-12x24-stainless",
@@ -1736,7 +1782,7 @@
           "pricing": "upgrade",
           "price": 299,
           "swatch": "#C4C6C8",
-          "image": "finishes/shower-niche-12x24-stainless.jpeg"
+          "image": "finishes/shower-niche-12x24-stainless.jpg"
         },
         {
           "id": "shower-niche-12x24-matte-white",
@@ -1745,7 +1791,7 @@
           "pricing": "upgrade",
           "price": 299,
           "swatch": "#EDEDE9",
-          "image": "finishes/shower-niche-12x24-matte-white.jpeg"
+          "image": "finishes/shower-niche-12x24-matte-white.jpg"
         }
       ]
     },
@@ -1762,7 +1808,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#262626",
-          "image": "finishes/shower-head-option-a.jpeg"
+          "image": "finishes/shower-head-option-a.png"
         },
         {
           "id": "shower-head-option-b",
@@ -1771,7 +1817,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#C7C9CB",
-          "image": "finishes/shower-head-option-b.jpeg"
+          "image": "finishes/shower-head-option-b.png"
         },
         {
           "id": "shower-head-option-c",
@@ -1780,7 +1826,7 @@
           "pricing": "upgrade",
           "price": 179.99,
           "swatch": "#C7C9CB",
-          "image": "finishes/shower-head-option-c.jpeg"
+          "image": "finishes/shower-head-option-c.png"
         },
         {
           "id": "shower-head-option-d",
@@ -1789,7 +1835,7 @@
           "pricing": "upgrade",
           "price": 229.99,
           "swatch": "#262626",
-          "image": "finishes/shower-head-option-d.jpeg"
+          "image": "finishes/shower-head-option-d.png"
         },
         {
           "id": "shower-head-option-e",
@@ -1798,7 +1844,7 @@
           "pricing": "upgrade",
           "price": 149.99,
           "swatch": "#262626",
-          "image": "finishes/shower-head-option-e.jpeg"
+          "image": "finishes/shower-head-option-e.png"
         },
         {
           "id": "shower-head-option-f",
@@ -1807,7 +1853,7 @@
           "pricing": "upgrade",
           "price": 379.99,
           "swatch": "#C7C9CB",
-          "image": "finishes/shower-head-option-f.jpeg"
+          "image": "finishes/shower-head-option-f.png"
         },
         {
           "id": "shower-head-option-g",
@@ -1816,7 +1862,7 @@
           "pricing": "upgrade",
           "price": 779.99,
           "swatch": "#262626",
-          "image": "finishes/shower-head-option-g.jpeg"
+          "image": "finishes/shower-head-option-g.png"
         }
       ]
     },
@@ -1833,7 +1879,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#C7C9CB",
-          "image": "finishes/bathroom-lighting-chrome-flute.jpeg"
+          "image": "finishes/bathroom-lighting-chrome-flute.jpg"
         },
         {
           "id": "bathroom-lighting-black-flute",
@@ -1842,7 +1888,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#262626",
-          "image": "finishes/bathroom-lighting-black-flute.jpeg"
+          "image": "finishes/bathroom-lighting-black-flute.jpg"
         },
         {
           "id": "bathroom-lighting-gold-flute",
@@ -1851,7 +1897,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#C2A14E",
-          "image": "finishes/bathroom-lighting-gold-flute.jpeg"
+          "image": "finishes/bathroom-lighting-gold-flute.jpg"
         },
         {
           "id": "bathroom-lighting-black-trio-light",
@@ -1860,7 +1906,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#262626",
-          "image": "finishes/bathroom-lighting-black-trio-light.jpeg"
+          "image": "finishes/bathroom-lighting-black-trio-light.png"
         },
         {
           "id": "bathroom-lighting-chrome-vanity",
@@ -1869,7 +1915,7 @@
           "pricing": "upgrade",
           "price": 100,
           "swatch": "#C7C9CB",
-          "image": "finishes/bathroom-lighting-chrome-vanity.jpeg"
+          "image": "finishes/bathroom-lighting-chrome-vanity.jpg"
         },
         {
           "id": "bathroom-lighting-black-vanity",
@@ -1877,7 +1923,8 @@
           "description": "Priced per light ($100/light)",
           "pricing": "upgrade",
           "price": 100,
-          "swatch": "#262626"
+          "swatch": "#262626",
+          "image": "finishes/bathroom-lighting-black-vanity.jpg"
         },
         {
           "id": "bathroom-lighting-gold-vanity",
@@ -1886,7 +1933,7 @@
           "pricing": "upgrade",
           "price": 100,
           "swatch": "#C2A14E",
-          "image": "finishes/bathroom-lighting-gold-vanity.jpeg"
+          "image": "finishes/bathroom-lighting-gold-vanity.jpg"
         }
       ]
     },
@@ -1903,7 +1950,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#C7C9CB",
-          "image": "finishes/hardware-selection-chrome.jpeg"
+          "image": "finishes/hardware-selection-chrome.jpg"
         },
         {
           "id": "hardware-selection-matte-black",
@@ -1912,7 +1959,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#262626",
-          "image": "finishes/hardware-selection-matte-black.jpeg"
+          "image": "finishes/hardware-selection-matte-black.jpg"
         },
         {
           "id": "hardware-selection-gold",
@@ -1921,7 +1968,7 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#C2A14E",
-          "image": "finishes/hardware-selection-gold.jpeg"
+          "image": "finishes/hardware-selection-gold.jpg"
         }
       ]
     },
@@ -1938,7 +1985,7 @@
           "pricing": "upgrade",
           "price": 200,
           "swatch": "#C2A14E",
-          "image": "finishes/mirrors-main-ossana-gold.jpeg"
+          "image": "finishes/mirrors-main-ossana-gold.png"
         },
         {
           "id": "mirrors-main-ossana-black",
@@ -1947,7 +1994,7 @@
           "pricing": "upgrade",
           "price": 200,
           "swatch": "#262626",
-          "image": "finishes/mirrors-main-ossana-black.jpeg"
+          "image": "finishes/mirrors-main-ossana-black.png"
         },
         {
           "id": "mirrors-main-olaf-gold-led",
@@ -1956,7 +2003,7 @@
           "pricing": "upgrade",
           "price": 400,
           "swatch": "#C2A14E",
-          "image": "finishes/mirrors-main-olaf-gold-led.jpeg"
+          "image": "finishes/mirrors-main-olaf-gold-led.png"
         },
         {
           "id": "mirrors-main-olaf-black-led",
@@ -1965,7 +2012,7 @@
           "pricing": "upgrade",
           "price": 400,
           "swatch": "#262626",
-          "image": "finishes/mirrors-main-olaf-black-led.jpeg"
+          "image": "finishes/mirrors-main-olaf-black-led.png"
         },
         {
           "id": "mirrors-ensuite-black",
@@ -1974,7 +2021,7 @@
           "pricing": "upgrade",
           "price": 300,
           "swatch": "#262626",
-          "image": "finishes/mirrors-ensuite-black.jpeg"
+          "image": "finishes/mirrors-ensuite-black.png"
         },
         {
           "id": "mirrors-ensuite-gold",
@@ -1983,7 +2030,7 @@
           "pricing": "upgrade",
           "price": 300,
           "swatch": "#C2A14E",
-          "image": "finishes/mirrors-ensuite-gold.jpeg"
+          "image": "finishes/mirrors-ensuite-gold.png"
         },
         {
           "id": "mirrors-ensuite-silver",
@@ -1992,7 +2039,7 @@
           "pricing": "upgrade",
           "price": 300,
           "swatch": "#C4C6C8",
-          "image": "finishes/mirrors-ensuite-silver.jpeg"
+          "image": "finishes/mirrors-ensuite-silver.png"
         },
         {
           "id": "mirrors-ensuite-led",
@@ -2001,7 +2048,7 @@
           "pricing": "upgrade",
           "price": 500,
           "swatch": "#DCE6EC",
-          "image": "finishes/mirrors-ensuite-led.jpeg"
+          "image": "finishes/mirrors-ensuite-led.png"
         }
       ]
     },
@@ -2034,7 +2081,7 @@
           "pricing": "upgrade",
           "price": 449.99,
           "swatch": "#B0A99C",
-          "image": "finishes/misc-upgrades-closet-organizers.jpeg"
+          "image": "finishes/misc-upgrades-closet-organizers.png"
         }
       ]
     },
@@ -2050,7 +2097,8 @@
           "description": "$1989.99 + HST",
           "pricing": "upgrade",
           "price": 1989.99,
-          "swatch": "#EDECE7"
+          "swatch": "#EDECE7",
+          "image": "finishes/laundry-upgrade-full-cabinet-single-pantry-countertop.png"
         },
         {
           "id": "laundry-upgrade-full-cabinet-double-pantry-countertop",
@@ -2058,7 +2106,8 @@
           "description": "$2299.99 + HST",
           "pricing": "upgrade",
           "price": 2299.99,
-          "swatch": "#EDECE7"
+          "swatch": "#EDECE7",
+          "image": "finishes/laundry-upgrade-full-cabinet-double-pantry-countertop.png"
         }
       ]
     }
