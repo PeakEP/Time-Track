@@ -101,6 +101,25 @@ function OptionCard({ category, option }: { category: Category; option: FinishOp
           </div>
         )}
 
+        {/* Quantity for multi-select categories (e.g. a fan per bedroom, faucets
+            per bathroom) — how many of this option. */}
+        {selected && category.multi && unit !== "sqft" && !tbd && (
+          <div className="qty-row">
+            <label className="qty">
+              Qty
+              <input
+                type="number"
+                min={1}
+                value={quantity ?? 1}
+                onChange={(e) =>
+                  setQuantity(option.id, e.target.value === "" ? null : Number(e.target.value))
+                }
+              />
+            </label>
+            {isUpgrade && <span className="line-total num">{formatCAD(lineTotal)}</span>}
+          </div>
+        )}
+
         {designer && isUpgrade && (
           <label className="override">
             Unit $

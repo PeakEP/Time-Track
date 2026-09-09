@@ -133,7 +133,7 @@
     {
       "id": "bedroom-fans",
       "name": "Bedroom Fans",
-      "description": "Bedroom ceiling fans combining comfort, functionality and style.",
+      "description": "Bedroom ceiling fans — select one per bedroom (2 bedrooms). Set Qty if using the same fan in both.",
       "unit": "each",
       "options": [
         {
@@ -1515,7 +1515,7 @@
     {
       "id": "bathroom-faucets",
       "name": "Bathroom Faucets",
-      "description": "Bathroom vanity faucet selection (Rico, Rosi, Rentato).",
+      "description": "Bathroom vanity faucet selection (Rico, Rosi, Rentato). Select the faucets you need — e.g. 2 for the ensuite and 1 for the main bath (set Qty on each).",
       "unit": "each",
       "options": [
         {
@@ -1590,7 +1590,8 @@
           "swatch": "#262626",
           "image": "finishes/bathroom-faucets-rentato-matte-black.jpg"
         }
-      ]
+      ],
+      "multi": true
     },
     {
       "id": "bath-selection",

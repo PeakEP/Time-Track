@@ -40,7 +40,7 @@ export function SummaryPanel() {
                 {l.option.pricing === "upgrade" && l.unit === "sqft" && (
                   <em className="qty-note">{l.quantity > 0 ? ` · ${l.quantity} sf` : " · enter sf"}</em>
                 )}
-                {l.option.pricing === "upgrade" && l.unit === "each" && l.quantity !== 1 && (
+                {l.unit === "each" && l.quantity !== 1 && (
                   <em className="qty-note">{` · ×${l.quantity}`}</em>
                 )}
               </span>
