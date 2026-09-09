@@ -172,7 +172,8 @@
           "swatch": "#D8C29A",
           "image": "finishes/bedroom-fans-white-oak-wood-blades.jpeg"
         }
-      ]
+      ],
+      "multi": true
     },
     {
       "id": "door-handles",
@@ -268,15 +269,6 @@
           "price": 0,
           "swatch": "#26374D",
           "image": "finishes/kitchen-cabinets-classic-blue-single-shaker.png"
-        },
-        {
-          "id": "kitchen-cabinets-modern-classic-white-slim-shaker",
-          "name": "White Slim Shaker (SSW)",
-          "description": "Modern Classic Collection - slim shaker (narrower stiles and rails)",
-          "pricing": "upgrade",
-          "price": 2999,
-          "swatch": "#F2F1EC",
-          "image": "finishes/kitchen-cabinets-modern-classic-white-slim-shaker.jpeg"
         },
         {
           "id": "kitchen-cabinets-woodland-pure-white",
