@@ -391,6 +391,11 @@ h3 {
   font-style: normal;
   color: var(--text-muted);
 }
+.cat-label {
+  font-style: normal;
+  color: var(--text-muted);
+  font-size: 11px;
+}
 
 /* ===== Summary (right) ===== */
 .summary {

@@ -36,6 +36,7 @@ export function SummaryPanel() {
           {lines.map((l) => (
             <li key={`${l.category.id}:${l.option.id}`}>
               <span className="line-name">
+                <em className="cat-label">{l.category.name}: </em>
                 {l.option.name}
                 {l.option.pricing === "upgrade" && l.unit === "sqft" && (
                   <em className="qty-note">{l.quantity > 0 ? ` · ${l.quantity} sf` : " · enter sf"}</em>
