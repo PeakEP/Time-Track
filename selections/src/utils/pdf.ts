@@ -157,9 +157,11 @@ export async function exportSelectionsPdf(args: ExportArgs): Promise<void> {
       discount.type === "percent" ? `${discount.label} (${discount.value}%)` : discount.label;
     row(label, `- ${formatCAD(totals.discount)}`);
   }
+  ty += 4;
   doc.setDrawColor(BRAND.cyan);
   doc.setLineWidth(1);
-  doc.line(labelX, ty - 6, valX, ty - 6);
+  doc.line(labelX, ty, valX, ty); // divider sits in the gap above the Total row
+  ty += 17;
   row("Total", formatCAD(totals.total), true);
 
   // Notes.
