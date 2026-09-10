@@ -5,6 +5,7 @@ set -euo pipefail
 # - App-launcher landing page (static index.html) at the site root.
 # - Cabinet Designer (OPPEIN catalog) → /cabinet-designer/
 # - Aline Cabinet Designer (ALINE catalog) → /aline-designer/
+# - Finish Selections (Robins Interiors & Design) → /selections/
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 OUT_DIR="${ROOT_DIR}/_site"
@@ -35,6 +36,7 @@ build_vite_app() {
 
 build_vite_app cabinet-designer cabinet-designer
 build_vite_app aline-designer aline-designer
+build_vite_app selections selections
 
 echo "==> Build complete. Contents:"
 ls -la "${OUT_DIR}"
