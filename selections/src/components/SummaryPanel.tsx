@@ -57,7 +57,7 @@ export function SummaryPanel() {
         <h3>Pricing</h3>
         <div className="totals">
           <div className="trow">
-            <span>Base Package</span>
+            <span>Base Package <em className="tax-note">incl. HST</em></span>
             {designer ? (
               <input
                 className="num-input"
@@ -73,10 +73,6 @@ export function SummaryPanel() {
           <div className="trow">
             <span>Upgrades</span>
             <span className="num">{formatCAD(totals.upgrades)}</span>
-          </div>
-          <div className="trow">
-            <span>Subtotal</span>
-            <span className="num">{formatCAD(totals.subtotal)}</span>
           </div>
 
           {designer && (
@@ -114,6 +110,11 @@ export function SummaryPanel() {
               <span className="num">- {formatCAD(totals.discount)}</span>
             </div>
           )}
+
+          <div className="trow">
+            <span>HST (15%) on upgrades</span>
+            <span className="num">{formatCAD(totals.hst)}</span>
+          </div>
 
           <div className="trow grand">
             <span>Total</span>

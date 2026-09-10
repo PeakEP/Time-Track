@@ -149,14 +149,14 @@ export async function exportSelectionsPdf(args: ExportArgs): Promise<void> {
     ty += bold ? 20 : 16;
   };
 
-  row("Base Package", formatCAD(basePrice));
+  row("Base Package (incl. HST)", formatCAD(basePrice));
   row("Upgrades", formatCAD(totals.upgrades));
-  row("Subtotal", formatCAD(totals.subtotal));
   if (totals.discount > 0) {
     const label =
       discount.type === "percent" ? `${discount.label} (${discount.value}%)` : discount.label;
     row(label, `- ${formatCAD(totals.discount)}`);
   }
+  row("HST (15%) on upgrades", formatCAD(totals.hst));
   ty += 4;
   doc.setDrawColor(BRAND.cyan);
   doc.setLineWidth(1);

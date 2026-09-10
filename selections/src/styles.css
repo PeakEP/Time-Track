@@ -396,6 +396,12 @@ h3 {
   color: var(--text-muted);
   font-size: 11px;
 }
+.tax-note {
+  font-style: normal;
+  color: var(--text-muted);
+  font-size: 10.5px;
+  font-weight: 400;
+}
 
 /* ===== Summary (right) ===== */
 .summary {

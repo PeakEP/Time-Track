@@ -14,11 +14,15 @@ export type LineCost = {
   lineTotal: number; // unitPrice * quantity
 };
 
+// New Brunswick HST. The base package price already includes HST; HST is applied
+// only to the (discounted) upgrade finishes.
+export const HST_RATE = 0.15;
+
 export type PricingTotals = {
-  upgrades: number;
-  subtotal: number; // basePrice + upgrades
-  discount: number; // dollar amount of the discount
-  total: number;
+  upgrades: number; // sum of upgrade line totals (pre-tax)
+  discount: number; // dollar amount of the discount (applied to upgrades)
+  hst: number; // HST on the net upgrades
+  total: number; // basePrice + net upgrades + HST
 };
 
 // CAD money formatter, NaN-guarded (JMRC operates in New Brunswick).
@@ -44,11 +48,10 @@ export function resolveUnit(category: Category, option: FinishOption): PriceUnit
   return option.unit ?? category.unit ?? "each";
 }
 
-// Effective unit price: included items are 0; upgrades use the designer override
-// when present, otherwise the catalog price.
-export function unitPrice(option: FinishOption, overrides: Record<string, number>): number {
-  if (option.pricing === "included") return 0;
-  return overrides[option.id] ?? option.price;
+// Fixed unit price from the catalog: included items are 0; upgrades use the
+// catalog price (prices are not editable in the app).
+export function unitPrice(option: FinishOption): number {
+  return option.pricing === "included" ? 0 : option.price;
 }
 
 // Default quantity when none has been entered: 1 for counted items, 0 for
@@ -67,7 +70,7 @@ export function computeLines(project: Project, catalog: Catalog | null): LineCos
       const option = category.options.find((o) => o.id === id);
       if (!option) continue;
       const unit = resolveUnit(category, option);
-      const price = unitPrice(option, project.overrides);
+      const price = unitPrice(option);
       const quantity = project.quantities[id] ?? defaultQuantity(unit);
       lines.push({
         category,
@@ -84,12 +87,15 @@ export function computeLines(project: Project, catalog: Catalog | null): LineCos
 
 export function computeTotals(lines: LineCost[], project: Project): PricingTotals {
   const upgrades = lines.reduce((sum, l) => sum + l.lineTotal, 0);
-  const subtotal = project.basePrice + upgrades;
   const { discount } = project;
+  // Discount applies to the upgrade finishes (the base package is a fixed,
+  // tax-inclusive contract price).
   const amount =
     discount.type === "percent"
-      ? Math.round(subtotal * (discount.value / 100))
-      : Math.min(subtotal, discount.value || 0);
-  const total = Math.max(0, subtotal - amount);
-  return { upgrades, subtotal, discount: amount, total };
+      ? Math.round(upgrades * (discount.value / 100))
+      : Math.min(upgrades, discount.value || 0);
+  const netUpgrades = Math.max(0, upgrades - amount);
+  const hst = Math.round(netUpgrades * HST_RATE);
+  const total = project.basePrice + netUpgrades + hst;
+  return { upgrades, discount: amount, hst, total };
 }

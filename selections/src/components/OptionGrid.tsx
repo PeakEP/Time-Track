@@ -1,12 +1,6 @@
 import { Check } from "lucide-react";
 import { useStore } from "../store";
-import {
-  defaultQuantity,
-  formatCAD,
-  formatUnitPrice,
-  resolveUnit,
-  unitPrice,
-} from "../utils/pricing";
+import { defaultQuantity, formatCAD, formatUnitPrice, resolveUnit } from "../utils/pricing";
 import { optionImage } from "../utils/swatch";
 import type { Category, FinishOption } from "../types";
 
@@ -39,15 +33,12 @@ export function OptionGrid() {
 // the designer price override.
 function OptionCard({ category, option }: { category: Category; option: FinishOption }) {
   const selected = useStore((s) => (s.project.selections[category.id] ?? []).includes(option.id));
-  const override = useStore((s) => s.project.overrides[option.id]);
   const quantity = useStore((s) => s.project.quantities[option.id]);
-  const designer = useStore((s) => s.mode === "designer");
   const toggleOption = useStore((s) => s.toggleOption);
-  const setOverride = useStore((s) => s.setOverride);
   const setQuantity = useStore((s) => s.setQuantity);
 
   const unit = resolveUnit(category, option);
-  const price = override ?? option.price;
+  const price = option.price; // fixed catalog price — not editable
   const tbd = !!option.tbd;
   const isUpgrade = option.pricing === "upgrade" && !tbd;
   const qty = quantity ?? defaultQuantity(unit);
@@ -118,19 +109,6 @@ function OptionCard({ category, option }: { category: Category; option: FinishOp
             </label>
             {isUpgrade && <span className="line-total num">{formatCAD(lineTotal)}</span>}
           </div>
-        )}
-
-        {designer && isUpgrade && (
-          <label className="override">
-            Unit $
-            <input
-              type="number"
-              min={0}
-              value={price}
-              onChange={(e) => setOverride(option.id, e.target.value === "" ? null : Number(e.target.value))}
-            />
-            {unit === "sqft" && <span className="unit-suffix">/sf</span>}
-          </label>
         )}
       </div>
     </div>
