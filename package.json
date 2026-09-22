@@ -1,0 +1,13 @@
+{
+  "name": "jmrc-design-suite",
+  "private": true,
+  "type": "module",
+  "description": "JMRC app suite — root package holds Netlify Function dependencies (Vendor Orders API). Each app has its own package.json.",
+  "scripts": {
+    "test:vendor-orders": "node --test vendor-orders/tests/*.test.mjs"
+  },
+  "dependencies": {
+    "jose": "^6.2.12",
+    "postgres": "^3.4.9"
+  }
+}
