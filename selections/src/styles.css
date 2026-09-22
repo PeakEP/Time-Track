@@ -263,6 +263,29 @@ h3 {
   background: var(--line-soft);
   color: var(--indigo);
 }
+.pill-soft {
+  margin-top: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* One room's single-select within a slotted category (Ensuite / Main Bath). */
+.slot-section {
+  margin-top: 22px;
+}
+.slot-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--line-soft);
+}
+.slot-head h3 {
+  font-size: 15px;
+  color: var(--indigo);
+  letter-spacing: 0.01em;
+}
 
 .card-grid {
   margin-top: 16px;
@@ -296,6 +319,13 @@ h3 {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+/* Tall product photos (e.g. shower heads) shown whole rather than cropped. */
+.card-img--contain {
+  background: #ffffff;
+}
+.card-img--contain img {
+  object-fit: contain;
 }
 .card-tick {
   position: absolute;

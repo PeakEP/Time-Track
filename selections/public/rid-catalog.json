@@ -188,7 +188,10 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#B7B8BA",
-          "image": "finishes/door-handles-interior-satin-nickel.png"
+          "image": "finishes/door-handles-interior-satin-nickel.png",
+          "slots": [
+            "interior"
+          ]
         },
         {
           "id": "door-handles-interior-matte-black",
@@ -197,7 +200,10 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#2B2B2B",
-          "image": "finishes/door-handles-interior-matte-black.png"
+          "image": "finishes/door-handles-interior-matte-black.png",
+          "slots": [
+            "interior"
+          ]
         },
         {
           "id": "door-handles-exterior-satin-nickel-no-keypad",
@@ -206,7 +212,10 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#B7B8BA",
-          "image": "finishes/door-handles-exterior-satin-nickel-no-keypad.png"
+          "image": "finishes/door-handles-exterior-satin-nickel-no-keypad.png",
+          "slots": [
+            "exterior"
+          ]
         },
         {
           "id": "door-handles-exterior-matte-black-no-keypad",
@@ -215,7 +224,10 @@
           "pricing": "included",
           "price": 0,
           "swatch": "#2B2B2B",
-          "image": "finishes/door-handles-exterior-matte-black-no-keypad.png"
+          "image": "finishes/door-handles-exterior-matte-black-no-keypad.png",
+          "slots": [
+            "exterior"
+          ]
         },
         {
           "id": "door-handles-exterior-matte-black-with-keypad",
@@ -224,7 +236,10 @@
           "pricing": "upgrade",
           "price": 99.99,
           "swatch": "#2B2B2B",
-          "image": "finishes/door-handles-exterior-matte-black-with-keypad.png"
+          "image": "finishes/door-handles-exterior-matte-black-with-keypad.png",
+          "slots": [
+            "exterior"
+          ]
         },
         {
           "id": "door-handles-exterior-satin-nickel-with-keypad",
@@ -233,7 +248,20 @@
           "pricing": "upgrade",
           "price": 99.99,
           "swatch": "#B7B8BA",
-          "image": "finishes/door-handles-exterior-satin-nickel-with-keypad.png"
+          "image": "finishes/door-handles-exterior-satin-nickel-with-keypad.png",
+          "slots": [
+            "exterior"
+          ]
+        }
+      ],
+      "slots": [
+        {
+          "id": "interior",
+          "label": "Interior"
+        },
+        {
+          "id": "exterior",
+          "label": "Exterior"
         }
       ]
     },
@@ -2193,6 +2221,16 @@
           "swatch": "#3B4A3A",
           "image": "finishes/vanities-vital-slim-shaker-green.png"
         }
+      ],
+      "slots": [
+        {
+          "id": "ensuite",
+          "label": "Ensuite"
+        },
+        {
+          "id": "main",
+          "label": "Main Bath"
+        }
       ]
     },
     {
@@ -2273,6 +2311,16 @@
           "swatch": "#E4E6E5",
           "image": "finishes/bathroom-countertops-matterhorn.jpg"
         }
+      ],
+      "slots": [
+        {
+          "id": "ensuite",
+          "label": "Ensuite"
+        },
+        {
+          "id": "main",
+          "label": "Main Bath"
+        }
       ]
     },
     {
@@ -2343,6 +2391,16 @@
           "price": 0,
           "swatch": "#C7B27E",
           "image": "finishes/bathroom-handle-contemporary-gold-champagne.jpg"
+        }
+      ],
+      "slots": [
+        {
+          "id": "ensuite",
+          "label": "Ensuite"
+        },
+        {
+          "id": "main",
+          "label": "Main Bath"
         }
       ]
     },
@@ -2425,7 +2483,20 @@
           "image": "finishes/bathroom-faucets-rentato-matte-black.jpg"
         }
       ],
-      "multi": true
+      "slots": [
+        {
+          "id": "ensuite-1",
+          "label": "Ensuite — Sink 1"
+        },
+        {
+          "id": "ensuite-2",
+          "label": "Ensuite — Sink 2"
+        },
+        {
+          "id": "main",
+          "label": "Main Bath"
+        }
+      ]
     },
     {
       "id": "bath-selection",
@@ -2477,6 +2548,16 @@
           "price": 399,
           "swatch": "#2A2A2A",
           "image": "finishes/bath-selection-black-textured-marble-composite-base.jpg"
+        }
+      ],
+      "slots": [
+        {
+          "id": "ensuite",
+          "label": "Ensuite"
+        },
+        {
+          "id": "main",
+          "label": "Main Bath"
         }
       ]
     },
@@ -2620,6 +2701,18 @@
           "swatch": "#EDEDE9",
           "image": "finishes/shower-niche-12x24-matte-white.jpg"
         }
+      ],
+      "slots": [
+        {
+          "id": "ensuite",
+          "label": "Ensuite",
+          "optional": true
+        },
+        {
+          "id": "main",
+          "label": "Main Bath",
+          "optional": true
+        }
       ]
     },
     {
@@ -2671,7 +2764,10 @@
           "pricing": "upgrade",
           "price": 149.99,
           "swatch": "#262626",
-          "image": "finishes/shower-head-option-e.png"
+          "image": "finishes/shower-head-option-e.png",
+          "slots": [
+            "ensuite"
+          ]
         },
         {
           "id": "shower-head-option-f",
@@ -2680,7 +2776,10 @@
           "pricing": "upgrade",
           "price": 379.99,
           "swatch": "#C7C9CB",
-          "image": "finishes/shower-head-option-f.png"
+          "image": "finishes/shower-head-option-f.png",
+          "slots": [
+            "ensuite"
+          ]
         },
         {
           "id": "shower-head-option-g",
@@ -2689,9 +2788,23 @@
           "pricing": "upgrade",
           "price": 779.99,
           "swatch": "#262626",
-          "image": "finishes/shower-head-option-g.png"
+          "image": "finishes/shower-head-option-g.png",
+          "slots": [
+            "ensuite"
+          ]
         }
-      ]
+      ],
+      "slots": [
+        {
+          "id": "ensuite",
+          "label": "Ensuite"
+        },
+        {
+          "id": "main",
+          "label": "Main Bath"
+        }
+      ],
+      "fit": "contain"
     },
     {
       "id": "bathroom-lighting",
@@ -2762,6 +2875,16 @@
           "swatch": "#C2A14E",
           "image": "finishes/bathroom-lighting-gold-vanity.jpg"
         }
+      ],
+      "slots": [
+        {
+          "id": "ensuite",
+          "label": "Ensuite"
+        },
+        {
+          "id": "main",
+          "label": "Main Bath"
+        }
       ]
     },
     {
@@ -2797,6 +2920,16 @@
           "swatch": "#C2A14E",
           "image": "finishes/hardware-selection-gold.jpg"
         }
+      ],
+      "slots": [
+        {
+          "id": "ensuite",
+          "label": "Ensuite"
+        },
+        {
+          "id": "main",
+          "label": "Main Bath"
+        }
       ]
     },
     {
@@ -2812,7 +2945,10 @@
           "pricing": "upgrade",
           "price": 200,
           "swatch": "#C2A14E",
-          "image": "finishes/mirrors-main-ossana-gold.png"
+          "image": "finishes/mirrors-main-ossana-gold.png",
+          "slots": [
+            "main"
+          ]
         },
         {
           "id": "mirrors-main-ossana-black",
@@ -2821,7 +2957,10 @@
           "pricing": "upgrade",
           "price": 200,
           "swatch": "#262626",
-          "image": "finishes/mirrors-main-ossana-black.png"
+          "image": "finishes/mirrors-main-ossana-black.png",
+          "slots": [
+            "main"
+          ]
         },
         {
           "id": "mirrors-main-olaf-gold-led",
@@ -2830,7 +2969,10 @@
           "pricing": "upgrade",
           "price": 400,
           "swatch": "#C2A14E",
-          "image": "finishes/mirrors-main-olaf-gold-led.png"
+          "image": "finishes/mirrors-main-olaf-gold-led.png",
+          "slots": [
+            "main"
+          ]
         },
         {
           "id": "mirrors-main-olaf-black-led",
@@ -2839,7 +2981,10 @@
           "pricing": "upgrade",
           "price": 400,
           "swatch": "#262626",
-          "image": "finishes/mirrors-main-olaf-black-led.png"
+          "image": "finishes/mirrors-main-olaf-black-led.png",
+          "slots": [
+            "main"
+          ]
         },
         {
           "id": "mirrors-ensuite-black",
@@ -2848,7 +2993,10 @@
           "pricing": "upgrade",
           "price": 300,
           "swatch": "#262626",
-          "image": "finishes/mirrors-ensuite-black.png"
+          "image": "finishes/mirrors-ensuite-black.png",
+          "slots": [
+            "ensuite"
+          ]
         },
         {
           "id": "mirrors-ensuite-gold",
@@ -2857,7 +3005,10 @@
           "pricing": "upgrade",
           "price": 300,
           "swatch": "#C2A14E",
-          "image": "finishes/mirrors-ensuite-gold.png"
+          "image": "finishes/mirrors-ensuite-gold.png",
+          "slots": [
+            "ensuite"
+          ]
         },
         {
           "id": "mirrors-ensuite-silver",
@@ -2866,7 +3017,10 @@
           "pricing": "upgrade",
           "price": 300,
           "swatch": "#C4C6C8",
-          "image": "finishes/mirrors-ensuite-silver.png"
+          "image": "finishes/mirrors-ensuite-silver.png",
+          "slots": [
+            "ensuite"
+          ]
         },
         {
           "id": "mirrors-ensuite-led",
@@ -2875,7 +3029,20 @@
           "pricing": "upgrade",
           "price": 500,
           "swatch": "#DCE6EC",
-          "image": "finishes/mirrors-ensuite-led.png"
+          "image": "finishes/mirrors-ensuite-led.png",
+          "slots": [
+            "ensuite"
+          ]
+        }
+      ],
+      "slots": [
+        {
+          "id": "ensuite",
+          "label": "Ensuite"
+        },
+        {
+          "id": "main",
+          "label": "Main Bath"
         }
       ]
     },

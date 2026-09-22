@@ -99,11 +99,14 @@ export async function exportSelectionsPdf(args: ExportArgs): Promise<void> {
       ? "—"
       : `${formatCAD(l.unitPrice)}${l.unit === "sqft" ? "/sf" : ""}`;
 
+  const catLabel = (l: LineCost) =>
+    l.slotLabel ? `${l.category.name}\n(${l.slotLabel})` : l.category.name;
+
   const body = lines.map((l) => {
-    if (l.option.tbd) return ["", l.category.name, l.option.name, "—", "TBD", "TBD"];
+    if (l.option.tbd) return ["", catLabel(l), l.option.name, "—", "TBD", "TBD"];
     return [
       "",
-      l.category.name,
+      catLabel(l),
       l.option.name,
       l.option.pricing === "included" ? "Included" : qtyLabel(l),
       unitLabel(l),

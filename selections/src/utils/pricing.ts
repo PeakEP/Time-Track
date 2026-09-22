@@ -12,7 +12,14 @@ export type LineCost = {
   unitPrice: number; // effective per-unit price (0 for included items)
   quantity: number; // sq ft for "sqft" units, count for "each"
   lineTotal: number; // unitPrice * quantity
+  slotLabel?: string; // room/slot this line belongs to (e.g. "Ensuite")
 };
+
+// Selection-map key for one slot of a slotted category. Non-slotted categories
+// key their selections by the plain category id.
+export function slotKey(categoryId: string, slotId: string): string {
+  return `${categoryId}::${slotId}`;
+}
 
 // New Brunswick HST. The base package price already includes HST; HST is applied
 // only to the (discounted) upgrade finishes.
@@ -65,6 +72,29 @@ export function computeLines(project: Project, catalog: Catalog | null): LineCos
   if (!catalog) return [];
   const lines: LineCost[] = [];
   for (const category of catalog.categories) {
+    // Slotted categories: one single-select per named slot (each room picks its
+    // own finish). Each filled slot is its own line, always quantity 1.
+    if (category.slots?.length) {
+      for (const slot of category.slots) {
+        const ids = project.selections[slotKey(category.id, slot.id)] ?? [];
+        const id = ids[0];
+        if (!id) continue;
+        const option = category.options.find((o) => o.id === id);
+        if (!option) continue;
+        const price = unitPrice(option);
+        lines.push({
+          category,
+          option,
+          unit: "each",
+          unitPrice: price,
+          quantity: 1,
+          lineTotal: price,
+          slotLabel: slot.label,
+        });
+      }
+      continue;
+    }
+
     const ids = project.selections[category.id] ?? [];
     for (const id of ids) {
       const option = category.options.find((o) => o.id === id);

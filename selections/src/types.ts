@@ -28,6 +28,20 @@ export type FinishOption = {
   swatch?: string;
   // Pricing not yet set (e.g. cabinet colours). Shows "Price TBD" and adds $0.
   tbd?: boolean;
+  // Slot eligibility: the room-slot ids this option may be chosen for (e.g.
+  // interior-only door handles, ensuite-only rain showers). Omitted = eligible
+  // for every slot. Only meaningful on categories that define `slots`.
+  slots?: string[];
+};
+
+// A named single-select slot within a category — e.g. an Ensuite vs Main Bath
+// vanity, or an Interior vs Exterior door handle. Each slot independently holds
+// (at most) one option.
+export type RoomSlot = {
+  id: string;
+  label: string;
+  // When true, the slot may be left empty (e.g. a shower niche is optional).
+  optional?: boolean;
 };
 
 export type Category = {
@@ -36,6 +50,12 @@ export type Category = {
   description?: string;
   // When true, more than one option may be chosen (e.g. optional add-ons).
   multi?: boolean;
+  // Named slots turn this category into one single-select per slot (each room
+  // picks its own finish). Supersedes `multi` when present.
+  slots?: RoomSlot[];
+  // How option photos are fitted in the card image box. "contain" shows the
+  // whole (e.g. tall) image; defaults to "cover".
+  fit?: "cover" | "contain";
   // Default pricing unit for this category's options ("each" when omitted).
   unit?: PriceUnit;
   options: FinishOption[];
