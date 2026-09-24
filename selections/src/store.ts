@@ -55,12 +55,15 @@ type State = {
   catalog: Catalog | null;
   project: Project;
   mode: UserMode;
+  // Customers are locked to the client view.
+  modeLocked: boolean;
   activeCategory: string | null;
   past: Project[];
   future: Project[];
   // setters
   setCatalog: (c: Catalog) => void;
   setMode: (m: UserMode) => void;
+  lockMode: (m: UserMode | null) => void;
   setActiveCategory: (id: string) => void;
   patchMeta: (m: Partial<ProjectMeta>) => void;
   setBasePrice: (n: number) => void;
@@ -69,6 +72,9 @@ type State = {
   setQuantity: (optionId: string, qty: number | null, opts?: { snapshot?: boolean }) => void;
   patchDiscount: (d: Partial<Discount>, opts?: { snapshot?: boolean }) => void;
   loadProject: (p: Project) => void;
+  // Swap in a newer copy (e.g. merged with someone else's save) without
+  // clearing undo history.
+  replaceProject: (p: Project) => void;
   resetProject: () => void;
   undo: () => void;
   redo: () => void;
@@ -80,6 +86,7 @@ export const useStore = create<State>((set, get) => ({
   catalog: null,
   project: defaultProject(),
   mode: "designer",
+  modeLocked: false,
   activeCategory: null,
   past: [],
   future: [],
@@ -99,7 +106,8 @@ export const useStore = create<State>((set, get) => ({
       };
     }),
 
-  setMode: (m) => set({ mode: m }),
+  setMode: (m) => set((s) => (s.modeLocked ? s : { mode: m })),
+  lockMode: (m) => set(m ? { mode: m, modeLocked: true } : { modeLocked: false }),
   setActiveCategory: (id) => set({ activeCategory: id }),
 
   // Meta and base price are contract details, not design decisions — they stay
@@ -165,6 +173,8 @@ export const useStore = create<State>((set, get) => ({
       future: [],
     }),
 
+  replaceProject: (p) => set({ project: p }),
+
   resetProject: () =>
     set((s) => ({
       project: defaultProject(s.catalog?._meta.base_price ?? 0),
@@ -206,9 +216,16 @@ export async function loadCatalog(): Promise<Catalog> {
 // Autosave the project to localStorage, debounced. Attached once in App's mount
 // effect; returns an unsubscribe cleanup. Guarded so a pristine project never
 // clobbers a saved draft.
+// Off while a shared (online) project is open — that one saves to the server.
+let localAutosave = true;
+export function setLocalAutosave(on: boolean): void {
+  localAutosave = on;
+}
+
 export function attachAutosave(): () => void {
   let timer: ReturnType<typeof setTimeout> | undefined;
   const unsub = useStore.subscribe((s) => {
+    if (!localAutosave) return;
     const pristine =
       Object.keys(s.project.selections).length === 0 &&
       Object.keys(s.project.overrides).length === 0 &&
@@ -216,6 +233,7 @@ export function attachAutosave(): () => void {
     if (pristine) return;
     clearTimeout(timer);
     timer = setTimeout(() => {
+      if (!localAutosave) return;
       try {
         const file: ProjectFile = {
           app: "jmrc-finish-selections",

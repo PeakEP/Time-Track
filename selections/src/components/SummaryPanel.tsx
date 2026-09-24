@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useStore } from "../store";
+import { useCloud } from "../cloud";
 import { computeLines, computeTotals, formatCAD } from "../utils/pricing";
 
 // Right pane: project details, running selection list, and the pricing rollup.
@@ -7,6 +8,8 @@ export function SummaryPanel() {
   const catalog = useStore((s) => s.catalog);
   const project = useStore((s) => s.project);
   const designer = useStore((s) => s.mode === "designer");
+  // Clients can't edit project details (the server ignores it anyway).
+  const readOnly = useCloud((s) => s.me?.kind === "customer");
   const patchMeta = useStore((s) => s.patchMeta);
   const setBasePrice = useStore((s) => s.setBasePrice);
   const patchDiscount = useStore((s) => s.patchDiscount);
@@ -19,10 +22,10 @@ export function SummaryPanel() {
       <section>
         <h3>Project</h3>
         <div className="fields">
-          <Field label="Client" value={project.meta.client} onChange={(v) => patchMeta({ client: v })} />
-          <Field label="Project" value={project.meta.project} onChange={(v) => patchMeta({ project: v })} />
-          <Field label="Address" value={project.meta.address} onChange={(v) => patchMeta({ address: v })} />
-          <Field label="Date" type="date" value={project.meta.date} onChange={(v) => patchMeta({ date: v })} />
+          <Field label="Client" value={project.meta.client} onChange={(v) => patchMeta({ client: v })} readOnly={readOnly} />
+          <Field label="Project" value={project.meta.project} onChange={(v) => patchMeta({ project: v })} readOnly={readOnly} />
+          <Field label="Address" value={project.meta.address} onChange={(v) => patchMeta({ address: v })} readOnly={readOnly} />
+          <Field label="Date" type="date" value={project.meta.date} onChange={(v) => patchMeta({ date: v })} readOnly={readOnly} />
           {designer && (
             <Field label="Sales Rep" value={project.meta.salesRep} onChange={(v) => patchMeta({ salesRep: v })} />
           )}
@@ -134,16 +137,18 @@ function Field({
   value,
   type = "text",
   onChange,
+  readOnly = false,
 }: {
   label: string;
   value: string;
   type?: string;
   onChange: (v: string) => void;
+  readOnly?: boolean;
 }) {
   return (
     <label className="field">
       <span>{label}</span>
-      <input type={type} value={value} onChange={(e) => onChange(e.target.value)} />
+      <input type={type} value={value} readOnly={readOnly} onChange={(e) => onChange(e.target.value)} />
     </label>
   );
 }

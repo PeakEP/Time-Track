@@ -28,6 +28,13 @@
   status = 200
   force = true
 
+# Finish Selections API → Netlify Function
+[[redirects]]
+  from = "/api/selections/*"
+  to = "/.netlify/functions/selections-api/:splat"
+  status = 200
+  force = true
+
 # Cabinet Designer (OPPEIN) SPA fallback
 [[redirects]]
   from = "/cabinet-designer/*"

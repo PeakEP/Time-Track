@@ -5,7 +5,10 @@ import { OptionGrid } from "./components/OptionGrid";
 import { SummaryPanel } from "./components/SummaryPanel";
 import { ProjectDialog } from "./components/ProjectDialog";
 import { Welcome } from "./components/Welcome";
+import { SignIn } from "./components/SignIn";
+import { CloudProjectsDialog } from "./components/CloudProjectsDialog";
 import { attachAutosave, loadCatalog, restoreDraft, useStore } from "./store";
+import { attachCloudSync, fetchConfig, lastProjectId, openProject, resume, useCloud } from "./cloud";
 import { computeLines, computeTotals } from "./utils/pricing";
 import { exportSelectionsPdf } from "./utils/pdf";
 
@@ -18,8 +21,12 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
   const [projectsOpen, setProjectsOpen] = useState(false);
+  // "checking" → "signin" | "in" (online) or "local" (no server: works as before)
+  const [access, setAccess] = useState<"checking" | "signin" | "in" | "local">("checking");
+  const me = useCloud((s) => s.me);
+  const cloudProjectId = useCloud((s) => s.projectId);
 
-  // Load catalog, restore any autosaved draft, and attach autosave.
+  // Load catalog, restore any autosaved draft, and attach autosave + sync.
   useEffect(() => {
     let alive = true;
     loadCatalog()
@@ -32,11 +39,40 @@ export default function App() {
       })
       .catch((e: Error) => alive && setError(e.message));
     const detach = attachAutosave();
+    const detachSync = attachCloudSync();
     return () => {
       alive = false;
       detach();
+      detachSync();
     };
   }, [setCatalog, loadProject]);
+
+  // Online (Netlify) the app needs a sign-in; without a server it runs locally.
+  useEffect(() => {
+    fetchConfig().then(async (cfg) => {
+      if (!cfg) {
+        if (import.meta.env.DEV) return setAccess("local");
+        return setError("Couldn't reach the Finish Selections service. Check your connection and reload.");
+      }
+      if (!cfg.live) return setAccess("local");
+      useCloud.setState({ live: true });
+      setAccess((await resume()) ? "in" : "signin");
+    });
+  }, []);
+
+  // Signed out (button or expired session) → back to the sign-in screen.
+  useEffect(() => {
+    if (access === "in" && !me) setAccess("signin");
+  }, [access, me]);
+
+  // After sign-in: clients go straight to their project; staff reopen the
+  // project they last had open (if any).
+  useEffect(() => {
+    if (access !== "in" || !me || !ready) return;
+    const id = me.kind === "customer" ? me.projectId : lastProjectId();
+    if (id && useCloud.getState().projectId !== id)
+      openProject(id).catch((e: Error) => me.kind === "customer" && setError(e.message));
+  }, [access, me, ready]);
 
   // Undo / redo keyboard shortcuts (ignore typing in inputs).
   useEffect(() => {
@@ -71,14 +107,23 @@ export default function App() {
     }
   }
 
+  if (access === "signin")
+    return (
+      <div className="app-shell">
+        <SignIn onSignedIn={() => setAccess("in")} />
+      </div>
+    );
+
+  const waitingForClientProject = me?.kind === "customer" && !cloudProjectId;
+
   return (
     <div className="app-shell">
       <SettingsBar onOpenProjects={() => setProjectsOpen(true)} onExport={handleExport} />
 
       {error ? (
         <div className="app-error">Could not load the catalog: {error}</div>
-      ) : !ready ? (
-        <div className="app-loading">Loading catalog…</div>
+      ) : !ready || access === "checking" || waitingForClientProject ? (
+        <div className="app-loading">Loading…</div>
       ) : (
         <div className="workspace">
           <CategoryNav />
@@ -93,7 +138,12 @@ export default function App() {
       </footer>
 
       <Welcome />
-      {projectsOpen && <ProjectDialog onClose={() => setProjectsOpen(false)} />}
+      {projectsOpen &&
+        (access === "in" ? (
+          <CloudProjectsDialog onClose={() => setProjectsOpen(false)} />
+        ) : (
+          <ProjectDialog onClose={() => setProjectsOpen(false)} />
+        ))}
     </div>
   );
 }
