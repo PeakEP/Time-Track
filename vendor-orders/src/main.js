@@ -239,6 +239,13 @@ function renderTabs() {
     .map(([k, l]) => `<button class="${view === k || (k === "dashboard" && view === "batch") ? "active" : ""}" data-tab="${k}">${l}</button>`)
     .join("");
 }
+// Run fn when Enter is pressed in el. (Not `el.onkeydown = e => cond && fn()`:
+// an on* handler returning false cancels the key, which blocks typing.)
+function onEnter(el, fn) {
+  el.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") fn();
+  });
+}
 function renderSignIn() {
   const last = savedUser();
   const demoNote = store.mode === "demo" ? `<p class="small muted" style="margin:12px 0 0">Demo mode: any PIN works.</p>` : "";
@@ -252,7 +259,7 @@ function renderSignIn() {
     <button class="btn primary" id="si_go" data-action="signIn">Sign in</button>${demoNote}
   </div>`);
   (last && last.name ? $("si_pin") : $("si_name")).focus();
-  for (const id of ["si_name", "si_pin"]) $(id).onkeydown = (e) => e.key === "Enter" && signIn();
+  for (const id of ["si_name", "si_pin"]) onEnter($(id), signIn);
 }
 function renderSetup() {
   renderApp(`<div class="card signin">
@@ -263,7 +270,7 @@ function renderSetup() {
     <button class="btn primary" id="su_go" data-action="setupFirst">Create my account</button>
   </div>`);
   $("su_name").focus();
-  $("su_name").onkeydown = (e) => e.key === "Enter" && setupFirst();
+  onEnter($("su_name"), setupFirst);
 }
 
 function renderDashboard() {
@@ -731,7 +738,9 @@ function openTypeConfirm(title, msg, phrase, cb) {
   const inp = $("tc_in"),
     go = $("tc_go");
   inp.focus();
-  inp.oninput = () => (go.disabled = inp.value.trim() !== phrase);
+  inp.addEventListener("input", () => {
+    go.disabled = inp.value.trim() !== phrase;
+  });
   go.onclick = () => {
     closeModal();
     cb(phrase);
