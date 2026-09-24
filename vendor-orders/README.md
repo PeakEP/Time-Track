@@ -13,22 +13,33 @@ Netlify + Vite, so the module is built this way instead:
 |---|---|
 | Next.js route `/tools/vendor-orders` | Vite app → `/vendor-orders/` (same pattern as the other two tools) |
 | Next.js API routes | One Netlify Function, `netlify/functions/vendor-orders-api/`, at `/api/vendor-orders/*` |
-| Postgres + `schema.sql` | Any Postgres through `DATABASE_URL` (Netlify DB / Neon works). The function creates its tables and seeds vendors, cutoffs and cost codes on first use (`db.mjs`) |
+| Postgres + `schema.sql` | **Netlify Blobs**, the storage built into every Netlify site, so there's nothing to set up. Vendors, cutoffs and cost codes seed themselves on first use (`storage.mjs`) |
 | NextAuth + Entra ID (M365) | Replaced by **name + PIN**. A Purchaser issues each person a random 6-digit PIN. Roles are stored on the server, not chosen by the user |
 | `claude.use('downloads')` | A normal browser CSV download (`buildCSV`, ported as-is) |
 | localStorage name/role modal | Replaced by the name + PIN sign-in, with a server session token |
 
 ## Turning it on (one-time)
 
-Until a database is connected, the page runs in **demo mode**: the full UI works, but data
-lives only in that browser. A banner says so.
+There's nothing to configure. On Netlify the tool is live as soon as it deploys.
 
-1. **Database.** In Netlify, enable Netlify DB, or set `DATABASE_URL` to any Postgres 13+
-   connection string. No migration step is needed.
-2. Redeploy, then **open `/vendor-orders/` straight away**. The first screen is
+1. **Open `/vendor-orders/` straight away** after the first deploy. The first screen is
    *First-time setup*: enter your name to become the first Purchaser, and you'll be shown
    your PIN. Setup only appears while no Purchaser with a PIN exists.
-3. Under **Settings → Team & roles**, add each employee. Each one gets a PIN to hand out.
+2. Under **Settings → Team & roles**, add each employee. Each one gets a PIN to hand out.
+
+**Where the data lives:**
+
+- The whole order book is one JSON document in the `vendor-orders` Blobs store.
+- Every save is a compare-and-swap on that document's version, retried on conflict, so
+  two people saving at the same moment never overwrite each other. A test covers this.
+- The audit log is written as separate entries under `events/`.
+- Deploy previews and branch deploys use a separate store (`vendor-orders-deploy-preview`,
+  etc.), so testing never touches real orders.
+- Outside Netlify, such as plain `vite dev`, the page runs in **demo mode** with
+  browser-only data, and a banner says so.
+
+A single document suits a team this size, even with thousands of lines. If it ever grows
+very large, **Clear ordered/received history** trims it.
 
 ## Signing in (name + PIN)
 
@@ -71,7 +82,7 @@ Changes from the prototype:
 - Cutoffs are computed in **America/Halifax**, including DST. The prototype used the
   viewer's own clock.
 - Vendors are editable in Settings instead of hardcoded.
-- Every change is written to an `order_events` audit table.
+- Every change is written to an audit log (`events/` in the Blobs store).
 - Live sync is replaced by a 30-second refresh. The refresh never redraws a form you are
   typing in.
 
@@ -79,8 +90,8 @@ Changes from the prototype:
 
 ```bash
 cd vendor-orders && npm install && npm run dev   # UI in demo mode at :5175
-npm install && npm run test:vendor-orders        # from repo root; logic tests
-TEST_DATABASE_URL=postgres://… npm run test:vendor-orders   # + API tests (wipes that DB)
+npm install && npm run test:vendor-orders        # from repo root; logic + API tests
+                                                 # (API tests use a local Blobs server)
 ```
 
 To run the UI against the real API locally, use `netlify dev`. Vite proxies `/api` to it.

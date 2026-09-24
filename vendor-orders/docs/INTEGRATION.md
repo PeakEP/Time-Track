@@ -221,7 +221,7 @@ else in the business.
 ---
 
 > **Note (repo copy):** this is the original handoff brief. See `../README.md` for how it was
-> built on this Netlify site. The live DDL is in `netlify/functions/vendor-orders-api/db.mjs`,
+> built on this Netlify site. Data is stored in Netlify Blobs (`netlify/functions/vendor-orders-api/storage.mjs`),
 > and the seed files are in `../seed/`.
 
 ## 8. Files in this handoff

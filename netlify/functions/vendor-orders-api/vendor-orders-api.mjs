@@ -1,8 +1,9 @@
 // Vendor Orders API (Netlify Function). Mounted at /api/vendor-orders/* via netlify.toml.
+// Data lives in Netlify Blobs (storage.mjs), so no database needs setting up.
 // Sign-in is name + a PIN issued by a Purchaser; POST /login returns a session
-// token the browser sends as a Bearer token. Roles live in app_users and are
+// token the browser sends as a Bearer token. Roles live on the server and are
 // checked here on every Purchaser-only route, never taken from the client.
-import { getSql, ensureSchema, databaseUrl, DEFAULT_CUTOFFS } from "./db.mjs";
+import { openStore, readState, mutate, DEFAULT_CUTOFFS } from "./storage.mjs";
 import {
   newPin, hashPin, checkPin, newToken, hashToken, MAX_FAILED, LOCK_MINUTES, SESSION_DAYS,
 } from "./pins.mjs";
@@ -17,11 +18,13 @@ import {
 
 const STATUSES = ["pending", "ready", "ordered", "received", "backordered"];
 const DAYS = ["tue", "thu"];
+const MAX_ORDERS_RETURNED = 5000;
 
 class HttpError extends Error {
-  constructor(status, message) {
+  constructor(status, message, commit = false) {
     super(message);
     this.status = status;
+    this.commit = commit;
   }
 }
 const bad = (msg) => new HttpError(400, msg);
@@ -33,72 +36,20 @@ const json = (body, status = 200) =>
 
 /* ------------------------------ mapping ------------------------------ */
 
-const ORDER_COLUMNS = (sql) => sql`
-  o.id, o.order_group_id, o.vendor, o.order_day, o.po, o.job_code, o.client, o.product_name,
-  o.sku, o.description, o.coa, o.qty, o.unit, o.unit_cost, o.needed_by::text AS needed_by,
-  o.notes, o.status, o.approved, o.created_by, o.ordered_by, o.confirmation, o.eta::text AS eta,
-  o.created_at, o.ordered_at, o.received_at,
-  cu.display_name AS created_by_name, ou.display_name AS ordered_by_name`;
-
-function mapOrder(r) {
-  return {
-    id: r.id,
-    groupId: r.order_group_id,
-    vendor: r.vendor,
-    orderDay: r.order_day,
-    po: r.po,
-    jobCode: r.job_code || "",
-    client: r.client || "",
-    productName: r.product_name,
-    sku: r.sku || "",
-    description: r.description || "",
-    coa: r.coa || "",
-    qty: Number(r.qty),
-    unit: r.unit || "",
-    cost: Number(r.unit_cost),
-    neededBy: r.needed_by || "",
-    notes: r.notes || "",
-    status: r.status,
-    approved: r.approved,
-    createdBy: r.created_by,
-    createdByName: r.created_by_name || "",
-    orderedByName: r.ordered_by_name || "",
-    confirmation: r.confirmation || "",
-    eta: r.eta || "",
-    createdAt: r.created_at && new Date(r.created_at).toISOString(),
-    orderedAt: r.ordered_at ? new Date(r.ordered_at).toISOString() : "",
-    receivedAt: r.received_at ? new Date(r.received_at).toISOString() : "",
-  };
-}
-const mapUser = (u) => ({
-  id: u.id,
-  name: u.display_name,
-  role: u.role,
-  active: u.active,
-  hasPin: !!u.pin_hash,
+const nameOf = (state, id) => (id && state.users.find((u) => u.id === id)?.name) || "";
+const outOrder = (state, o) => ({
+  ...o,
+  createdByName: nameOf(state, o.createdBy),
+  orderedByName: nameOf(state, o.orderedBy),
 });
-const mapVendor = (v) => ({
-  id: v.id,
-  name: v.name,
-  day: v.order_day,
-  cat: v.category || "",
-  active: v.active,
-  sortOrder: v.sort_order,
-});
-const mapCutoff = (c) => ({
-  key: c.order_day,
-  label: c.label,
-  weekday: c.weekday,
-  cutoff: c.cutoff_time,
-  timezone: c.timezone,
-});
+const mapUser = (u) => ({ id: u.id, name: u.name, role: u.role, active: u.active, hasPin: !!u.pinHash });
 
 /* ------------------------------ validation ------------------------------ */
 
 const str = (v, max = 500) => String(v == null ? "" : v).trim().slice(0, max);
-function dateOrNull(v, field) {
+function dateOrEmpty(v, field) {
   const s = str(v, 10);
-  if (!s) return null;
+  if (!s) return "";
   if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) throw bad(`${field} must be a date (YYYY-MM-DD)`);
   return s;
 }
@@ -111,7 +62,7 @@ function requireCoa(code) {
 function positiveQty(v) {
   const n = Number(v);
   if (!(n > 0)) throw bad("Qty must be greater than zero");
-  return n;
+  return Math.round(n * 1000) / 1000;
 }
 function cost(v) {
   const n = Number(v) || 0;
@@ -123,98 +74,96 @@ function requireText(v, msg, max) {
   if (!s) throw bad(msg);
   return s;
 }
+const cleanName = (v) => str(v, 80).replace(/\s+/g, " ");
+const sameName = (a, b) => a.toLowerCase() === b.toLowerCase();
 
-/* ------------------------------ data helpers ------------------------------ */
+/* ------------------------------ helpers ------------------------------ */
 
-async function loadOrder(sql, id) {
-  const [r] = await sql`
-    SELECT ${ORDER_COLUMNS(sql)} FROM orders o
-    LEFT JOIN app_users cu ON cu.id = o.created_by
-    LEFT JOIN app_users ou ON ou.id = o.ordered_by
-    WHERE o.id = ${id}`;
-  if (!r) throw new HttpError(404, "Line not found — it may have been deleted");
-  return mapOrder(r);
-}
-async function loadVendor(sql, name) {
-  const [v] = await sql`SELECT * FROM vendors WHERE name = ${name}`;
-  if (!v) throw bad(`Unknown vendor ${name}`);
-  return v;
-}
-function logEvents(sql, orderIds, event, actor, detail = null) {
-  if (!orderIds.length) return;
-  const rows = orderIds.map((order_id) => ({ order_id, event, actor, detail }));
-  return sql`INSERT INTO order_events ${sql(rows, "order_id", "event", "actor", "detail")}`;
-}
 function requirePurchaser(user) {
   if (!isPurchaser(user)) throw new HttpError(403, "Purchaser access required");
 }
-const isUuid = (s) => /^[0-9a-f-]{36}$/i.test(s);
-
-function cleanName(v) {
-  return str(v, 80).replace(/\s+/g, " ");
+function findOrder(state, id) {
+  const o = state.orders.find((x) => x.id === id);
+  if (!o) throw new HttpError(404, "Line not found — it may have been deleted");
+  return o;
 }
+function findVendor(state, name) {
+  const v = state.vendors.find((x) => x.name === name);
+  if (!v) throw bad(`Unknown vendor ${name}`);
+  return v;
+}
+function findUser(state, id) {
+  const u = state.users.find((x) => x.id === id);
+  if (!u) throw new HttpError(404, "User not found");
+  return u;
+}
+const logEach = (events, ids, event, actor, detail) =>
+  ids.forEach((orderId) => events.push({ orderId, event, actor, detail }));
+const now = () => new Date().toISOString();
+
+/* ------------------------------ sign-in ------------------------------ */
 
 const LOGIN_FAILED = "Name or PIN not recognised";
 
 // First-run: until an active Purchaser with a PIN exists, anyone may create one.
-async function needsSetup(sql) {
-  const [{ n }] = await sql`SELECT count(*)::int AS n FROM app_users
-                            WHERE role = 'purchaser' AND active AND pin_hash IS NOT NULL`;
-  return n === 0;
-}
+const needsSetup = (state) => !state.users.some((u) => u.role === "purchaser" && u.active && u.pinHash);
 
-async function startSession(sql, userId) {
+function startSession(state, userId) {
   const token = newToken();
-  await sql`INSERT INTO app_sessions (token_hash, user_id, expires_at)
-            VALUES (${hashToken(token)}, ${userId}, now() + ${SESSION_DAYS + " days"}::interval)`;
-  await sql`DELETE FROM app_sessions WHERE expires_at < now()`;
+  const t = Date.now();
+  state.sessions = state.sessions.filter((s) => new Date(s.expiresAt).getTime() > t);
+  state.sessions.push({
+    tokenHash: hashToken(token),
+    userId,
+    expiresAt: new Date(t + SESSION_DAYS * 86400000).toISOString(),
+  });
   return token;
 }
 
-async function setupFirstPurchaser(sql, body) {
+function setupFirstPurchaser(state, body) {
   const name = cleanName(body.name);
   if (name.length < 2) throw bad("Enter your full name");
+  if (!needsSetup(state)) throw new HttpError(409, "Setup is already done — sign in with your PIN.");
   const pin = newPin();
-  const user = await sql.begin(async (tx) => {
-    await tx`LOCK TABLE app_users IN SHARE ROW EXCLUSIVE MODE`;
-    if (!(await needsSetup(tx))) throw new HttpError(409, "Setup is already done — sign in with your PIN.");
-    const [u] = await tx`
-      INSERT INTO app_users (display_name, role, pin_hash) VALUES (${name}, 'purchaser', ${hashPin(pin)})
-      ON CONFLICT ((lower(display_name))) DO UPDATE
-        SET role = 'purchaser', active = true, pin_hash = EXCLUDED.pin_hash, updated_at = now()
-      RETURNING *`;
-    return u;
-  });
-  return { pin, token: await startSession(sql, user.id), me: mapUser(user) };
+  let u = state.users.find((x) => sameName(x.name, name));
+  if (u) Object.assign(u, { role: "purchaser", active: true, pinHash: hashPin(pin), failedAttempts: 0, lockedUntil: "" });
+  else {
+    u = { id: crypto.randomUUID(), name, role: "purchaser", active: true, pinHash: hashPin(pin), failedAttempts: 0, lockedUntil: "", createdAt: now() };
+    state.users.push(u);
+  }
+  return { pin, token: startSession(state, u.id), me: mapUser(u) };
 }
 
-async function loginUser(sql, body) {
+function loginUser(state, body) {
   const name = cleanName(body.name);
   const pin = str(body.pin, 12);
   if (!name || !pin) throw bad("Enter your name and PIN");
-  const [u] = await sql`SELECT * FROM app_users WHERE lower(display_name) = lower(${name})`;
-  if (!u || !u.pin_hash) throw new HttpError(401, LOGIN_FAILED);
-  if (u.locked_until && new Date(u.locked_until) > new Date())
+  const u = state.users.find((x) => sameName(x.name, name));
+  if (!u || !u.pinHash) throw new HttpError(401, LOGIN_FAILED);
+  if (u.lockedUntil && new Date(u.lockedUntil) > new Date())
     throw new HttpError(429, `Too many wrong PINs — try again in ${LOCK_MINUTES} minutes, or ask a Purchaser to reset it.`);
-  if (!checkPin(pin, u.pin_hash)) {
-    const fails = u.failed_attempts + 1;
+  if (!checkPin(pin, u.pinHash)) {
+    const fails = (u.failedAttempts || 0) + 1;
     const lock = fails >= MAX_FAILED;
-    await sql`UPDATE app_users SET failed_attempts = ${lock ? 0 : fails},
-              locked_until = ${lock ? new Date(Date.now() + LOCK_MINUTES * 60000) : null}
-              WHERE id = ${u.id}`;
-    throw new HttpError(401, LOGIN_FAILED);
+    u.failedAttempts = lock ? 0 : fails;
+    u.lockedUntil = lock ? new Date(Date.now() + LOCK_MINUTES * 60000).toISOString() : "";
+    throw new HttpError(401, LOGIN_FAILED, true); // save the failed attempt, then refuse
   }
   if (!u.active) throw new HttpError(403, "Your access has been turned off. Ask a Purchaser.");
-  await sql`UPDATE app_users SET failed_attempts = 0, locked_until = NULL WHERE id = ${u.id}`;
-  return { token: await startSession(sql, u.id), me: mapUser(u) };
+  u.failedAttempts = 0;
+  u.lockedUntil = "";
+  return { token: startSession(state, u.id), me: mapUser(u) };
 }
 
-async function currentUser(sql, req) {
-  const token = (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
+function tokenOf(req) {
+  return (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
+}
+function currentUser(state, req) {
+  const token = tokenOf(req);
   if (!token) throw new HttpError(401, "Sign in with your name and PIN");
-  const [u] = await sql`
-    SELECT u.* FROM app_sessions s JOIN app_users u ON u.id = s.user_id
-    WHERE s.token_hash = ${hashToken(token)} AND s.expires_at > now()`;
+  const h = hashToken(token);
+  const s = state.sessions.find((x) => x.tokenHash === h && new Date(x.expiresAt) > new Date());
+  const u = s && state.users.find((x) => x.id === s.userId);
   if (!u) throw new HttpError(401, "Your session has ended — sign in again");
   if (!u.active) throw new HttpError(403, "Your access has been turned off. Ask a Purchaser.");
   return u;
@@ -222,90 +171,89 @@ async function currentUser(sql, req) {
 
 /* ------------------------------ routes ------------------------------ */
 
-async function bootstrap(sql, user) {
-  const [vendors, cutoffs, orders] = await Promise.all([
-    sql`SELECT * FROM vendors ORDER BY sort_order, name`,
-    sql`SELECT * FROM cutoffs ORDER BY weekday`,
-    sql`SELECT ${ORDER_COLUMNS(sql)} FROM orders o
-        LEFT JOIN app_users cu ON cu.id = o.created_by
-        LEFT JOIN app_users ou ON ou.id = o.ordered_by
-        ORDER BY o.created_at DESC LIMIT 5000`,
-  ]);
+function bootstrap(state, user) {
   return {
     me: mapUser(user),
-    vendors: vendors.map(mapVendor),
-    cutoffs: cutoffs.map(mapCutoff),
-    orders: orders.map(mapOrder),
+    vendors: [...state.vendors].sort((a, b) => a.sortOrder - b.sortOrder || a.name.localeCompare(b.name)),
+    cutoffs: [...state.cutoffs].sort((a, b) => a.weekday - b.weekday),
+    orders: [...state.orders]
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      .slice(0, MAX_ORDERS_RETURNED)
+      .map((o) => outOrder(state, o)),
   };
 }
 
-async function createOrder(sql, user, body) {
-  const vendor = await loadVendor(sql, str(body.vendor, 200));
+function createOrder(state, events, user, body) {
+  const vendor = findVendor(state, str(body.vendor, 200));
   if (!vendor.active) throw bad(`${vendor.name} is inactive`);
   const po = requireText(body.po, "PO # is required", 100);
   const items = Array.isArray(body.items) ? body.items : [];
   if (!items.length) throw bad("Add at least one item with a product name and qty");
   if (items.length > 200) throw bad("Too many items on one order");
   const approved = !!body.approved;
+  const t = now();
   const common = {
+    groupId: crypto.randomUUID(),
     vendor: vendor.name,
-    order_day: vendor.order_day,
+    orderDay: vendor.day,
     po,
-    job_code: str(body.jobCode, 100) || null,
-    client: str(body.client, 300) || null,
-    needed_by: dateOrNull(body.neededBy, "Needed by"),
-    notes: str(body.notes, 2000) || null,
+    jobCode: str(body.jobCode, 100),
+    client: str(body.client, 300),
+    neededBy: dateOrEmpty(body.neededBy, "Needed by"),
+    notes: str(body.notes, 2000),
     status: approved ? "ready" : "pending",
     approved,
-    created_by: user.id,
+    createdBy: user.id,
+    orderedBy: "",
+    confirmation: "",
+    eta: "",
+    createdAt: t,
+    orderedAt: "",
+    receivedAt: "",
+    updatedAt: t,
   };
   const rows = items.map((it) => ({
+    id: crypto.randomUUID(),
     ...common,
-    product_name: requireText(it.productName, "Every item needs a product name", 300),
-    sku: str(it.sku, 100) || null,
-    description: str(it.description, 1000) || null,
+    productName: requireText(it.productName, "Every item needs a product name", 300),
+    sku: str(it.sku, 100),
+    description: str(it.description, 1000),
     coa: requireCoa(it.coa),
     qty: positiveQty(it.qty),
-    unit: str(it.unit, 20) || null,
-    unit_cost: cost(it.cost),
+    unit: str(it.unit, 20),
+    cost: cost(it.cost),
   }));
-  const ids = await sql.begin(async (tx) => {
-    const [{ gid }] = await tx`SELECT gen_random_uuid() AS gid`;
-    const withGroup = rows.map((r) => ({ ...r, order_group_id: gid }));
-    const inserted = await tx`INSERT INTO orders ${tx(withGroup, Object.keys(withGroup[0]))} RETURNING id`;
-    const ids = inserted.map((r) => r.id);
-    await logEvents(tx, ids, "created", user.id);
-    return ids;
-  });
+  state.orders.push(...rows);
+  const ids = rows.map((r) => r.id);
+  logEach(events, ids, "created", user.id);
   return { created: ids.length, ids };
 }
 
-async function patchOrder(sql, user, id, body) {
-  const order = await loadOrder(sql, id);
+function patchOrder(state, events, user, id, body) {
+  const order = findOrder(state, id);
   const err = checkPatch(user, order, body);
   if (err) throw new HttpError(403, err);
 
   const set = {};
   if ("vendor" in body) {
-    const v = await loadVendor(sql, str(body.vendor, 200));
+    const v = findVendor(state, str(body.vendor, 200));
     set.vendor = v.name;
-    set.order_day = v.order_day;
+    set.orderDay = v.day;
   }
   if ("po" in body) set.po = requireText(body.po, "PO # is required", 100);
   if ("coa" in body) set.coa = requireCoa(body.coa);
-  if ("jobCode" in body) set.job_code = str(body.jobCode, 100) || null;
-  if ("client" in body) set.client = str(body.client, 300) || null;
-  if ("neededBy" in body) set.needed_by = dateOrNull(body.neededBy, "Needed by");
-  if ("productName" in body)
-    set.product_name = requireText(body.productName, "Product name and qty required", 300);
-  if ("sku" in body) set.sku = str(body.sku, 100) || null;
-  if ("description" in body) set.description = str(body.description, 1000) || null;
+  if ("jobCode" in body) set.jobCode = str(body.jobCode, 100);
+  if ("client" in body) set.client = str(body.client, 300);
+  if ("neededBy" in body) set.neededBy = dateOrEmpty(body.neededBy, "Needed by");
+  if ("productName" in body) set.productName = requireText(body.productName, "Product name and qty required", 300);
+  if ("sku" in body) set.sku = str(body.sku, 100);
+  if ("description" in body) set.description = str(body.description, 1000);
   if ("qty" in body) set.qty = positiveQty(body.qty);
-  if ("unit" in body) set.unit = str(body.unit, 20) || null;
-  if ("cost" in body) set.unit_cost = cost(body.cost);
-  if ("notes" in body) set.notes = str(body.notes, 2000) || null;
-  if ("confirmation" in body) set.confirmation = str(body.confirmation, 100) || null;
-  if ("eta" in body) set.eta = dateOrNull(body.eta, "ETA");
+  if ("unit" in body) set.unit = str(body.unit, 20);
+  if ("cost" in body) set.cost = cost(body.cost);
+  if ("notes" in body) set.notes = str(body.notes, 2000);
+  if ("confirmation" in body) set.confirmation = str(body.confirmation, 100);
+  if ("eta" in body) set.eta = dateOrEmpty(body.eta, "ETA");
 
   let event = "edited";
   if ("status" in body && body.status !== order.status) {
@@ -314,75 +262,64 @@ async function patchOrder(sql, user, id, body) {
     set.status = status;
     set.approved = status !== "pending";
     if (status === "ordered" && !order.orderedAt) {
-      set.ordered_at = new Date();
-      set.ordered_by = user.id;
+      set.orderedAt = now();
+      set.orderedBy = user.id;
     }
-    if (status === "received") set.received_at = new Date();
+    if (status === "received") set.receivedAt = now();
     event = status === "ready" ? "approved" : status;
   }
   if (!Object.keys(set).length) return { ok: true };
-  set.updated_at = new Date();
-
-  await sql.begin(async (tx) => {
-    await tx`UPDATE orders SET ${tx(set, Object.keys(set))} WHERE id = ${id}`;
-    await logEvents(tx, [id], event, user.id, { fields: Object.keys(set) });
-  });
+  Object.assign(order, set, { updatedAt: now() });
+  logEach(events, [id], event, user.id, { fields: Object.keys(set) });
   return { ok: true };
 }
 
-async function deleteOrder(sql, user, id) {
-  const order = await loadOrder(sql, id);
+function deleteOrder(state, events, user, id) {
+  const order = findOrder(state, id);
   if (!canModifyLine(user, order))
     throw new HttpError(403, "You can only delete your own lines before they are ordered.");
-  await sql.begin(async (tx) => {
-    await tx`DELETE FROM orders WHERE id = ${id}`;
-    await logEvents(tx, [id], "deleted", user.id, { po: order.po, product: order.productName });
-  });
+  state.orders = state.orders.filter((o) => o.id !== id);
+  logEach(events, [id], "deleted", user.id, { po: order.po, product: order.productName });
   return { deleted: 1 };
 }
 
-async function deleteGroup(sql, user, gid) {
-  const rows = await sql`SELECT id, status, created_by FROM orders WHERE order_group_id = ${gid}`;
-  if (!rows.length) throw new HttpError(404, "Order not found");
-  for (const r of rows) {
-    if (!canModifyLine(user, { createdBy: r.created_by, status: r.status }))
-      throw new HttpError(403, "Only a Purchaser can delete an order that has lines already ordered or added by someone else.");
-  }
-  const ids = rows.map((r) => r.id);
-  await sql.begin(async (tx) => {
-    await tx`DELETE FROM orders WHERE order_group_id = ${gid}`;
-    await logEvents(tx, ids, "deleted", user.id, { group: gid });
-  });
-  return { deleted: ids.length };
+function deleteGroup(state, events, user, gid) {
+  const lines = state.orders.filter((o) => o.groupId === gid);
+  if (!lines.length) throw new HttpError(404, "Order not found");
+  if (lines.some((o) => !canModifyLine(user, o)))
+    throw new HttpError(403, "Only a Purchaser can delete an order that has lines already ordered or added by someone else.");
+  state.orders = state.orders.filter((o) => o.groupId !== gid);
+  logEach(events, lines.map((o) => o.id), "deleted", user.id, { group: gid });
+  return { deleted: lines.length };
 }
 
-async function markBatchOrdered(sql, user, body) {
+function markBatchOrdered(state, events, user, body) {
   requirePurchaser(user);
   const vendor = str(body.vendor, 200);
-  const ids = (Array.isArray(body.ids) ? body.ids : []).filter(isUuid);
-  if (!vendor || !ids.length) throw bad("Nothing to order");
-  const eta = dateOrNull(body.eta, "ETA");
-  const confirmation = str(body.confirmation, 100) || null;
-  return sql.begin(async (tx) => {
-    const updated = await tx`
-      UPDATE orders SET status = 'ordered', ordered_at = now(), ordered_by = ${user.id},
-        confirmation = ${confirmation}, eta = ${eta}, updated_at = now()
-      WHERE id IN ${tx(ids)} AND vendor = ${vendor} AND status = 'ready'
-      RETURNING id`;
-    const done = updated.map((r) => r.id);
-    await logEvents(tx, done, "ordered", user.id, { vendor, confirmation, eta });
-    return { ordered: done.length };
-  });
+  const ids = new Set(Array.isArray(body.ids) ? body.ids : []);
+  if (!vendor || !ids.size) throw bad("Nothing to order");
+  const eta = dateOrEmpty(body.eta, "ETA");
+  const confirmation = str(body.confirmation, 100);
+  const t = now();
+  const done = [];
+  for (const o of state.orders) {
+    if (ids.has(o.id) && o.vendor === vendor && o.status === "ready") {
+      Object.assign(o, { status: "ordered", orderedAt: t, orderedBy: user.id, confirmation, eta, updatedAt: t });
+      done.push(o.id);
+    }
+  }
+  logEach(events, done, "ordered", user.id, { vendor, confirmation, eta });
+  return { ordered: done.length };
 }
 
-async function saveCutoffs(sql, user, body) {
+function saveCutoffs(state, user, body) {
   requirePurchaser(user);
   for (const day of DAYS) {
     if (!(day in body)) continue;
     const t = str(body[day], 5);
     if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(t)) throw bad("Cutoff must be a time (HH:MM)");
-    await sql`UPDATE cutoffs SET cutoff_time = ${t}, updated_by = ${user.id}, updated_at = now()
-              WHERE order_day = ${day}`;
+    const c = state.cutoffs.find((x) => x.key === day);
+    if (c) c.cutoff = t;
   }
   return { ok: true };
 }
@@ -392,79 +329,69 @@ function vendorFields(body, partial) {
   if (!partial || "name" in body) out.name = requireText(body.name, "Vendor name is required", 200);
   if (!partial || "day" in body) {
     if (!DAYS.includes(body.day)) throw bad("Order day must be Tuesday or Thursday");
-    out.order_day = body.day;
+    out.day = body.day;
   }
-  if (!partial || "cat" in body) out.category = str(body.cat, 100) || null;
+  if (!partial || "cat" in body) out.cat = str(body.cat, 100);
   if ("active" in body) out.active = !!body.active;
   return out;
 }
-async function createVendor(sql, user, body) {
+function createVendor(state, user, body) {
   requirePurchaser(user);
   const v = vendorFields(body, false);
-  const [{ next }] = await sql`SELECT coalesce(max(sort_order), 0) + 1 AS next FROM vendors`;
-  try {
-    const [row] = await sql`INSERT INTO vendors ${sql({ ...v, sort_order: next })} RETURNING *`;
-    return mapVendor(row);
-  } catch (e) {
-    if (e.code === "23505") throw bad(`${v.name} already exists`);
-    throw e;
-  }
+  if (state.vendors.some((x) => sameName(x.name, v.name))) throw bad(`${v.name} already exists`);
+  const row = {
+    id: crypto.randomUUID(), active: true, ...v,
+    sortOrder: Math.max(0, ...state.vendors.map((x) => x.sortOrder)) + 1,
+  };
+  state.vendors.push(row);
+  return row;
 }
-async function updateVendor(sql, user, id, body) {
+function updateVendor(state, user, id, body) {
   requirePurchaser(user);
   const v = vendorFields(body, true);
-  if (!Object.keys(v).length) return { ok: true };
-  try {
-    await sql.begin(async (tx) => {
-      const [row] = await tx`UPDATE vendors SET ${tx(v, Object.keys(v))} WHERE id = ${id} RETURNING *`;
-      if (!row) throw new HttpError(404, "Vendor not found");
-      // Open lines follow the vendor to its new order day.
-      if (v.order_day)
-        await tx`UPDATE orders SET order_day = ${v.order_day} WHERE vendor = ${row.name}
-                 AND status IN ('pending','ready')`;
-    });
-  } catch (e) {
-    if (e.code === "23505") throw bad(`${v.name} already exists`);
-    throw e;
+  const row = state.vendors.find((x) => x.id === id);
+  if (!row) throw new HttpError(404, "Vendor not found");
+  if (v.name && v.name !== row.name && state.vendors.some((x) => x.id !== id && sameName(x.name, v.name)))
+    throw bad(`${v.name} already exists`);
+  for (const o of state.orders) {
+    if (o.vendor !== row.name) continue;
+    if (v.name) o.vendor = v.name; // lines follow a renamed vendor
+    if (v.day && ["pending", "ready"].includes(o.status)) o.orderDay = v.day; // open lines move day
   }
+  Object.assign(row, v);
   return { ok: true };
 }
 
-async function listUsers(sql, user) {
+function listUsers(state, user) {
   requirePurchaser(user);
-  const rows = await sql`SELECT * FROM app_users ORDER BY display_name`;
-  return { users: rows.map(mapUser) };
+  return { users: [...state.users].sort((a, b) => a.name.localeCompare(b.name)).map(mapUser) };
 }
-async function createUser(sql, user, body) {
+function createUser(state, user, body) {
   requirePurchaser(user);
   const name = cleanName(body.name);
   if (name.length < 2) throw bad("Enter the person's full name");
-  const role = body.role === "purchaser" ? "purchaser" : "sales_rep";
+  if (state.users.some((u) => sameName(u.name, name)))
+    throw bad(`${name} is already on the team — use Reset PIN instead.`);
   const pin = newPin();
-  try {
-    const [u] = await sql`INSERT INTO app_users (display_name, role, pin_hash)
-                          VALUES (${name}, ${role}, ${hashPin(pin)}) RETURNING *`;
-    return { user: mapUser(u), pin };
-  } catch (e) {
-    if (e.code === "23505") throw bad(`${name} is already on the team — use Reset PIN instead.`);
-    throw e;
-  }
+  const u = {
+    id: crypto.randomUUID(), name, role: body.role === "purchaser" ? "purchaser" : "sales_rep",
+    active: true, pinHash: hashPin(pin), failedAttempts: 0, lockedUntil: "", createdAt: now(),
+  };
+  state.users.push(u);
+  return { user: mapUser(u), pin };
 }
 // New PIN for someone who lost theirs; signs them out everywhere.
-async function resetPin(sql, user, id) {
+function resetPin(state, user, id) {
   requirePurchaser(user);
+  const u = findUser(state, id);
   const pin = newPin();
-  return sql.begin(async (tx) => {
-    const [u] = await tx`UPDATE app_users SET pin_hash = ${hashPin(pin)}, failed_attempts = 0,
-                         locked_until = NULL, updated_at = now() WHERE id = ${id} RETURNING *`;
-    if (!u) throw new HttpError(404, "User not found");
-    await tx`DELETE FROM app_sessions WHERE user_id = ${id}`;
-    return { user: mapUser(u), pin };
-  });
+  Object.assign(u, { pinHash: hashPin(pin), failedAttempts: 0, lockedUntil: "" });
+  state.sessions = state.sessions.filter((s) => s.userId !== id);
+  return { user: mapUser(u), pin };
 }
-
-async function updateUser(sql, user, id, body) {
+function updateUser(state, user, id, body) {
   requirePurchaser(user);
+  const u = findUser(state, id);
   const set = {};
   if ("role" in body) {
     if (!["sales_rep", "purchaser"].includes(body.role)) throw bad("Unknown role");
@@ -472,39 +399,32 @@ async function updateUser(sql, user, id, body) {
   }
   if ("active" in body) set.active = !!body.active;
   if (!Object.keys(set).length) return { ok: true };
-  if (id === user.id && (set.role === "sales_rep" || set.active === false)) {
-    const [{ n }] = await sql`SELECT count(*)::int AS n FROM app_users
-                              WHERE role = 'purchaser' AND active AND id <> ${user.id}`;
-    if (n === 0) throw bad("You are the only Purchaser — promote someone else first.");
+  const demotes = set.role === "sales_rep" || set.active === false;
+  if (demotes && u.role === "purchaser" && u.active) {
+    const others = state.users.filter((x) => x.id !== id && x.role === "purchaser" && x.active);
+    if (!others.length) throw bad("That's the only Purchaser — promote someone else first.");
   }
-  set.updated_at = new Date();
-  const [row] = await sql`UPDATE app_users SET ${sql(set, Object.keys(set))} WHERE id = ${id} RETURNING id`;
-  if (!row) throw new HttpError(404, "User not found");
-  if (set.active === false) await sql`DELETE FROM app_sessions WHERE user_id = ${id}`;
+  Object.assign(u, set);
+  if (set.active === false) state.sessions = state.sessions.filter((s) => s.userId !== id);
   return { ok: true };
 }
 
-async function clearHistory(sql, user, body) {
+function clearHistory(state, events, user, body) {
   requirePurchaser(user);
   if (body.confirm !== CLEAR_HISTORY_PHRASE) throw bad(`Type ${CLEAR_HISTORY_PHRASE} to confirm`);
-  return sql.begin(async (tx) => {
-    const rows = await tx`DELETE FROM orders WHERE status IN ('ordered','received') RETURNING id`;
-    await logEvents(tx, rows.map((r) => r.id), "cleared", user.id);
-    return { deleted: rows.length };
-  });
+  const gone = state.orders.filter((o) => ["ordered", "received"].includes(o.status));
+  state.orders = state.orders.filter((o) => !["ordered", "received"].includes(o.status));
+  logEach(events, gone.map((o) => o.id), "cleared", user.id);
+  return { deleted: gone.length };
 }
-async function resetAll(sql, user, body) {
+function resetAll(state, events, user, body) {
   requirePurchaser(user);
   if (body.confirm !== RESET_ALL_PHRASE) throw bad(`Type ${RESET_ALL_PHRASE} to confirm`);
-  return sql.begin(async (tx) => {
-    const rows = await tx`DELETE FROM orders RETURNING id`;
-    for (const c of DEFAULT_CUTOFFS)
-      await tx`UPDATE cutoffs SET cutoff_time = ${c.cutoff_time}, updated_by = ${user.id},
-               updated_at = now() WHERE order_day = ${c.order_day}`;
-    await tx`INSERT INTO order_events (event, actor, detail)
-             VALUES ('reset', ${user.id}, ${tx.json({ deleted: rows.length })})`;
-    return { deleted: rows.length };
-  });
+  const n = state.orders.length;
+  state.orders = [];
+  state.cutoffs = DEFAULT_CUTOFFS.map((c) => ({ ...c }));
+  events.push({ event: "reset", actor: user.id, detail: { deleted: n } });
+  return { deleted: n };
 }
 
 /* ------------------------------ handler ------------------------------ */
@@ -514,61 +434,67 @@ export function routePath(url) {
   const m = p.match(/\/(?:api\/vendor-orders|\.netlify\/functions\/vendor-orders-api)\/?(.*)$/);
   return (m ? m[1] : "").replace(/\/+$/, "");
 }
+const isUuid = (s) => /^[0-9a-f-]{36}$/i.test(s || "");
 
-export function createHandler() {
-  return async function handler(req) {
+// `store` can be injected (tests); on Netlify it comes from the deploy context.
+export function createHandler({ store: injected } = {}) {
+  return async function handler(req, context) {
     const path = routePath(req.url);
     const method = req.method;
-    const live = !!databaseUrl();
+    const store = injected || openStore(context);
 
     try {
-      if (path === "config" && method === "GET" && !live) return json({ live });
-      if (!live) throw new HttpError(503, "Vendor Orders is not configured on this deployment yet.");
-
-      await ensureSchema();
-      const sql = getSql();
-      if (path === "config" && method === "GET") return json({ live, needsSetup: await needsSetup(sql) });
-      if (method === "POST" && path === "setup")
-        return json(await setupFirstPurchaser(sql, await req.json().catch(() => ({}))));
-      if (method === "POST" && path === "login")
-        return json(await loginUser(sql, await req.json().catch(() => ({}))));
-      const user = await currentUser(sql, req);
-      if (method === "POST" && path === "logout") {
-        const token = req.headers.get("authorization").replace(/^Bearer\s+/i, "");
-        await sql`DELETE FROM app_sessions WHERE token_hash = ${hashToken(token)}`;
-        return json({ ok: true });
+      if (!store) {
+        if (path === "config" && method === "GET") return json({ live: false });
+        throw new HttpError(503, "Vendor Orders storage isn't available on this deployment.");
       }
+      if (path === "config" && method === "GET")
+        return json({ live: true, needsSetup: needsSetup(await readState(store)) });
 
       const body = ["POST", "PUT", "PATCH", "DELETE"].includes(method)
         ? await req.json().catch(() => ({}))
         : {};
-      const [a, b, c] = path.split("/").map(decodeURIComponent);
 
-      if (method === "GET" && a === "bootstrap") return json(await bootstrap(sql, user));
-      if (method === "POST" && a === "orders" && !b) return json(await createOrder(sql, user, body), 201);
-      if (a === "orders" && b && isUuid(b) && !c) {
-        if (method === "PATCH") return json(await patchOrder(sql, user, b, body));
-        if (method === "DELETE") return json(await deleteOrder(sql, user, b));
+      if (method === "POST" && path === "setup") return json(await mutate(store, (s) => setupFirstPurchaser(s, body)));
+      if (method === "POST" && path === "login") return json(await mutate(store, (s) => loginUser(s, body)));
+
+      if (method === "GET") {
+        const state = await readState(store);
+        const user = currentUser(state, req);
+        if (path === "bootstrap") return json(bootstrap(state, user));
+        if (path === "users") return json(listUsers(state, user));
+        throw new HttpError(404, "Not found");
       }
-      if (method === "DELETE" && a === "groups" && isUuid(b)) return json(await deleteGroup(sql, user, b));
-      if (method === "POST" && a === "batches" && b === "ordered")
-        return json(await markBatchOrdered(sql, user, body));
-      if (method === "PUT" && a === "cutoffs") return json(await saveCutoffs(sql, user, body));
-      if (method === "POST" && a === "vendors" && !b) return json(await createVendor(sql, user, body), 201);
-      if (method === "PATCH" && a === "vendors" && isUuid(b)) return json(await updateVendor(sql, user, b, body));
-      if (method === "GET" && a === "users") return json(await listUsers(sql, user));
-      if (method === "POST" && a === "users" && !b) return json(await createUser(sql, user, body), 201);
-      if (method === "POST" && a === "users" && isUuid(b) && c === "reset-pin")
-        return json(await resetPin(sql, user, b));
-      if (method === "PATCH" && a === "users" && isUuid(b) && !c) return json(await updateUser(sql, user, b, body));
-      if (method === "POST" && a === "admin" && b === "clear-history")
-        return json(await clearHistory(sql, user, body));
-      if (method === "POST" && a === "admin" && b === "reset") return json(await resetAll(sql, user, body));
 
-      throw new HttpError(404, "Not found");
+      const [a, b, c] = path.split("/").map(decodeURIComponent);
+      const route = (state, events, user) => {
+        if (method === "POST" && path === "logout") {
+          const h = hashToken(tokenOf(req));
+          state.sessions = state.sessions.filter((s) => s.tokenHash !== h);
+          return { ok: true };
+        }
+        if (method === "POST" && a === "orders" && !b) return createOrder(state, events, user, body);
+        if (a === "orders" && isUuid(b) && !c) {
+          if (method === "PATCH") return patchOrder(state, events, user, b, body);
+          if (method === "DELETE") return deleteOrder(state, events, user, b);
+        }
+        if (method === "DELETE" && a === "groups" && isUuid(b)) return deleteGroup(state, events, user, b);
+        if (method === "POST" && a === "batches" && b === "ordered") return markBatchOrdered(state, events, user, body);
+        if (method === "PUT" && a === "cutoffs") return saveCutoffs(state, user, body);
+        if (method === "POST" && a === "vendors" && !b) return createVendor(state, user, body);
+        if (method === "PATCH" && a === "vendors" && isUuid(b)) return updateVendor(state, user, b, body);
+        if (method === "POST" && a === "users" && !b) return createUser(state, user, body);
+        if (method === "POST" && a === "users" && isUuid(b) && c === "reset-pin") return resetPin(state, user, b);
+        if (method === "PATCH" && a === "users" && isUuid(b) && !c) return updateUser(state, user, b, body);
+        if (method === "POST" && a === "admin" && b === "clear-history") return clearHistory(state, events, user, body);
+        if (method === "POST" && a === "admin" && b === "reset") return resetAll(state, events, user, body);
+        throw new HttpError(404, "Not found");
+      };
+      const created = method === "POST" && ["orders", "vendors", "users"].includes(a) && !b;
+      const result = await mutate(store, (state, events) => route(state, events, currentUser(state, req)));
+      return json(result, created ? 201 : 200);
     } catch (e) {
-      if (e instanceof HttpError) return json({ error: e.message }, e.status);
-      if (e && e.code === "23503") return json({ error: "That vendor or cost code does not exist." }, 400);
+      if (e instanceof HttpError || e.status) return json({ error: e.message }, e.status);
       console.error("vendor-orders-api", e);
       return json({ error: "Server error — try again" }, 500);
     }
