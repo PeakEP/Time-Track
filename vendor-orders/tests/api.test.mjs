@@ -1,13 +1,15 @@
-// Integration tests for the Vendor Orders API against a real Postgres.
-// Run with: TEST_DATABASE_URL=postgres://... npm run test:vendor-orders
-// (Skipped when TEST_DATABASE_URL is not set. The database is wiped.)
+// Integration tests for the Vendor Orders API against a local Netlify Blobs
+// server (the same client code Netlify runs in production).
 import { test, before, after } from "node:test";
 import assert from "node:assert/strict";
+import { mkdtemp, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { BlobsServer } from "@netlify/blobs/server";
+import { getStore } from "@netlify/blobs";
 
-const DB = process.env.TEST_DATABASE_URL;
-const skip = !DB && "TEST_DATABASE_URL not set";
-
-let handler, sql;
+const skip = false;
+let handler, server, store, dir;
 const TOKENS = {}; // who -> session token
 const IDS = {}; // who -> user id
 
@@ -24,14 +26,18 @@ async function call(who, method, path, body) {
 
 before(async () => {
   if (skip) return;
-  Object.assign(process.env, { DATABASE_URL: DB });
+  dir = await mkdtemp(join(tmpdir(), "vo-blobs-"));
+  const token = "test-token";
+  server = new BlobsServer({ directory: dir, token });
+  const { port } = await server.start();
+  store = getStore({ name: "vendor-orders", siteID: "test-site", token, edgeURL: `http://localhost:${port}`, uncachedEdgeURL: `http://localhost:${port}`, consistency: "strong" });
   const mod = await import("../../netlify/functions/vendor-orders-api/vendor-orders-api.mjs");
-  const db = await import("../../netlify/functions/vendor-orders-api/db.mjs");
-  sql = db.getSql();
-  await sql.unsafe("DROP TABLE IF EXISTS order_events, orders, cost_codes, cutoffs, vendors, app_users CASCADE");
-  handler = mod.createHandler();
+  handler = mod.createHandler({ store });
 });
-after(async () => { if (sql) await sql.end(); });
+after(async () => {
+  if (server) await server.stop();
+  if (dir) await rm(dir, { recursive: true, force: true });
+});
 
 const item = (o = {}) => ({ productName: "Oak LVP", coa: "5540", qty: 10, unit: "box", cost: 42.5, ...o });
 
@@ -151,8 +157,12 @@ test("full cycle: add → approve → mark ordered → receive", { skip }, async
   orders = (await call("mike", "GET", "bootstrap")).body.orders;
   assert.ok(orders.find((x) => x.id === a.id).receivedAt);
 
-  const ev = await sql`SELECT event FROM order_events WHERE order_id = ${a.id} ORDER BY created_at`;
-  assert.deepEqual(ev.map((e) => e.event), ["created", "approved", "ordered", "backordered", "received"]);
+  const { blobs } = await store.list({ prefix: "events/" });
+  const ev = (await Promise.all(blobs.map((b) => store.get(b.key, { type: "json" }))))
+    .filter((e) => e.orderId === a.id)
+    .sort((x, y) => x.at.localeCompare(y.at))
+    .map((e) => e.event);
+  assert.deepEqual(ev, ["created", "approved", "ordered", "backordered", "received"]);
 
   // group delete by rep blocked (one line ordered); purchaser can
   assert.equal((await call("rep", "DELETE", "groups/" + a.groupId)).status, 403);
@@ -199,4 +209,63 @@ test("clear history and reset need purchaser + typed phrase", { skip }, async ()
   const boot = (await call("mike", "GET", "bootstrap")).body;
   assert.equal(boot.orders.length, 0);
   assert.equal(boot.cutoffs.find((c) => c.key === "tue").cutoff, "10:00");
+});
+
+// Netlify's local BlobsServer checks If-Match and writes in two steps (and its
+// ETags are mtime-based), so it can't referee a race. This store does what
+// production Blobs documents: an atomic compare-and-swap on a content ETag,
+// with a delay inside every call so requests really interleave.
+function casStore() {
+  const data = new Map();
+  let n = 0;
+  const pause = () => new Promise((r) => setTimeout(r, Math.random() * 5));
+  return {
+    async get(key) { await pause(); const v = data.get(key); return v ? JSON.parse(v.body) : null; },
+    async getWithMetadata(key) {
+      await pause();
+      const v = data.get(key);
+      return v ? { data: JSON.parse(v.body), etag: v.etag, metadata: {} } : null;
+    },
+    async setJSON(key, value, opts = {}) {
+      await pause();
+      const cur = data.get(key); // check-and-set below runs without awaiting: atomic
+      if (opts.onlyIfNew && cur) return { modified: false };
+      if (opts.onlyIfMatch && (!cur || cur.etag !== opts.onlyIfMatch)) return { modified: false };
+      const etag = `"${++n}"`;
+      data.set(key, { body: JSON.stringify(value), etag });
+      return { modified: true, etag };
+    },
+    async list() { return { blobs: [], directories: [] }; },
+  };
+}
+
+test("simultaneous saves never overwrite each other", async () => {
+  const mod = await import("../../netlify/functions/vendor-orders-api/vendor-orders-api.mjs");
+  const h = mod.createHandler({ store: casStore() });
+  const req = (method, path, body, token) =>
+    h(new Request("https://x.test/api/vendor-orders/" + path, {
+      method,
+      headers: { authorization: token ? "Bearer " + token : "", "content-type": "application/json" },
+      body: body ? JSON.stringify(body) : undefined,
+    })).then(async (r) => ({ status: r.status, body: await r.json() }));
+
+  const { token } = (await req("POST", "setup", { name: "Mike Robins" })).body;
+  const results = await Promise.all(
+    Array.from({ length: 15 }, (_, i) =>
+      req("POST", "orders", { vendor: "Agua", po: "C" + i, approved: true, items: [item()] }, token),
+    ),
+  );
+  assert.ok(results.every((r) => r.status === 201), JSON.stringify(results.map((r) => r.body)));
+  const orders = (await req("GET", "bootstrap", null, token)).body.orders;
+  assert.equal(orders.length, 15);
+  assert.equal(new Set(orders.map((o) => o.po)).size, 15);
+});
+
+test("preview deploys use their own storage", async () => {
+  const { openStore } = await import("../../netlify/functions/vendor-orders-api/storage.mjs");
+  // Outside Netlify there's no Blobs environment: the app reports demo mode.
+  assert.equal(openStore({ deploy: { context: "production" } }), null);
+  const mod = await import("../../netlify/functions/vendor-orders-api/vendor-orders-api.mjs");
+  const res = await mod.default(new Request("https://x.test/api/vendor-orders/config"), {});
+  assert.deepEqual(await res.json(), { live: false });
 });

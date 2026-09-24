@@ -1,4 +1,4 @@
-// Data layer. `remoteStore` talks to the Vendor Orders API (shared Postgres queue).
+// Data layer. `remoteStore` talks to the Vendor Orders API (shared queue in Netlify Blobs).
 // `demoStore` mirrors the same calls in this browser's localStorage so the tool
 // can be reviewed on a deployment that has no database / sign-in configured yet.
 import {
