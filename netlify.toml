@@ -17,6 +17,10 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
+# Page gate: netlify/edge-functions/suite-gate.js runs on every app page and
+# asks the Suite API whether the visitor may open it (paths are declared in
+# that file's `config`).
+
 # All redirects live here, in order: the first matching rule wins. Don't add a
 # _redirects file: Netlify evaluates it BEFORE these rules, so a catch-all
 # there would shadow the API route and the SPA fallbacks.
@@ -34,6 +38,19 @@
   to = "/.netlify/functions/selections-api/:splat"
   status = 200
   force = true
+
+# Suite API (home-page sign-in, Admin page, page gate) → Netlify Function
+[[redirects]]
+  from = "/api/suite/*"
+  to = "/.netlify/functions/suite-api/:splat"
+  status = 200
+  force = true
+
+# Admin page (static)
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/index.html"
+  status = 200
 
 # Cabinet Designer (OPPEIN) SPA fallback
 [[redirects]]

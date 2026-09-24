@@ -17,7 +17,6 @@ let ME = null;
 let VENDORS = []; // [{id,name,day,cat,active,sortOrder}]
 let DAYS = {}; // {tue:{label,weekday,cutoff,timezone}, ...}
 let ORDERS = [];
-let USERS = null;
 let state = "connecting"; // connecting | setup | signin | ready | error
 let errMsg = "";
 let lastSync = null;
@@ -105,7 +104,8 @@ function signedOut() {
   state = "signin";
 }
 async function startSession(r) {
-  saveUser({ name: r.me.name, token: r.token });
+  // Live: the server's sign-in cookie carries the session. Demo: keep the token.
+  saveUser({ name: r.me.name, token: store.mode === "demo" ? r.token : "" });
   state = "connecting";
   view = "dashboard";
   await refresh();
@@ -530,27 +530,12 @@ function renderSettings() {
      <button class="btn" data-action="addVendor">＋ Add vendor</button>
    </div></div>`;
 
-  // Team
-  h += `<div class="section-title"><h2>Team &amp; roles</h2><span class="rule"></span></div>
+  // Team: managed for the whole suite on the Admin page.
+  h += `<div class="section-title"><h2>Team &amp; PINs</h2><span class="rule"></span></div>
    <div class="card" style="padding:20px">
-   <p class="muted small" style="margin-top:0">Add each person here to issue their sign-in PIN. The PIN is shown <b>once</b>: write it down or pass it on privately. If someone forgets their PIN, or it gets out, use <b>Reset PIN</b> to issue a new one. That also signs them out everywhere. <b>Deactivate</b> blocks sign-in.</p>`;
-  if (!USERS) h += `<div class="muted small">Loading team…</div>`;
-  else {
-    h += `<div class="tbl-wrap"><table style="min-width:560px"><thead><tr><th>Name</th><th>Role</th><th>PIN</th><th>Access</th></tr></thead><tbody>`;
-    for (const u of USERS) {
-      h += `<tr class="${u.active ? "" : "inactive"}"><td><b>${esc(u.name)}</b>${u.id === ME.id ? ' <span class="muted small">(you)</span>' : ""}</td>
-        <td><select data-user-role="${u.id}"><option value="sales_rep" ${u.role === "sales_rep" ? "selected" : ""}>Sales rep</option><option value="purchaser" ${u.role === "purchaser" ? "selected" : ""}>Purchaser</option></select></td>
-        <td>${u.hasPin ? "" : '<span class="muted small">none</span> '}<button class="btn sm ghost" data-action="resetPin" data-id="${u.id}">${u.hasPin ? "Reset PIN" : "Issue PIN"}</button></td>
-        <td><button class="btn sm ghost" data-action="toggleUser" data-id="${u.id}">${u.active ? "Deactivate" : "Reactivate"}</button></td></tr>`;
-    }
-    h += `</tbody></table></div>`;
-  }
-  h += `<div class="inline-form" style="margin-top:14px">
-     <div class="fld"><label>Add person</label><input id="nu_name" placeholder="First Last"></div>
-     <div class="fld"><label>Role</label><select id="nu_role"><option value="sales_rep">Sales rep</option><option value="purchaser">Purchaser</option></select></div>
-     <button class="btn" data-action="addUser">＋ Add &amp; issue PIN</button>
+   <p class="muted small" style="margin:0">People, PINs, roles (Sales rep / Purchaser) and which apps each person can open are managed for the whole suite on the Admin page.
+   ${ME.admin ? '<br><br><a class="btn" href="/admin/">Open Suite Admin →</a>' : "Ask a suite Admin to add someone or reset a PIN."}</p>
    </div>`;
-  h += `</div>`;
 
   // Danger zone
   h += `<div class="section-title"><h2>Reset &amp; clear</h2><span class="rule"></span></div>
@@ -561,16 +546,6 @@ function renderSettings() {
      <button class="btn danger" data-action="resetAll">Reset all data…</button>
    </div>`;
   renderApp(h);
-  if (!USERS) loadUsers();
-}
-async function loadUsers() {
-  try {
-    USERS = (await store.listUsers()).users;
-  } catch (e) {
-    USERS = [];
-    toast(e.message);
-  }
-  if (view === "settings") renderSettings();
 }
 
 /* ============================ ORDER ACTIONS ============================ */
@@ -632,41 +607,6 @@ function toggleVendor(id) {
   const v = VENDORS.find((x) => x.id === id);
   if (v) act(store.updateVendor(id, { active: !v.active }), v.name + (v.active ? " deactivated" : " reactivated"));
 }
-async function addUser() {
-  const name = $("nu_name").value.trim();
-  if (name.length < 2) return toast("Enter the person's full name");
-  try {
-    const r = await store.createUser({ name, role: $("nu_role").value });
-    USERS = null;
-    renderSettings();
-    openPinModal(r.user.name, r.pin);
-  } catch (e) {
-    toast(e.message);
-  }
-}
-function resetPin(id) {
-  const u = (USERS || []).find((x) => x.id === id);
-  if (!u) return;
-  const self = u.id === ME.id;
-  openConfirm(
-    (u.hasPin ? "Reset PIN for " : "Issue PIN for ") + u.name + "?",
-    u.hasPin
-      ? "Their old PIN stops working right away and they're signed out on every device." +
-        (self ? " <b>This is you</b>: you'll need the new PIN next time you sign in." : "")
-      : "A new PIN will be generated for them.",
-    async () => {
-      try {
-        const r = await store.resetPin(id);
-        USERS = null;
-        renderSettings();
-        openPinModal(r.user.name, r.pin);
-      } catch (e) {
-        toast(e.message);
-      }
-    },
-    u.hasPin ? "Reset PIN" : "Issue PIN",
-  );
-}
 // Shows a freshly issued PIN. It can't be looked up again afterwards.
 function openPinModal(name, pin, isSelf = false) {
   $("modalRoot").innerHTML = `<div class="overlay"><div class="card modal" style="text-align:center">
@@ -678,30 +618,6 @@ function openPinModal(name, pin, isSelf = false) {
   $("pin_copy").onclick = () =>
     navigator.clipboard ? navigator.clipboard.writeText(pin).then(() => toast("PIN copied"), () => toast("Copy failed")) : toast("Copy not available");
 }
-async function toggleUser(id) {
-  const u = (USERS || []).find((x) => x.id === id);
-  if (!u) return;
-  try {
-    await store.updateUser(id, { active: !u.active });
-    toast(u.name + (u.active ? " deactivated" : " reactivated"));
-  } catch (e) {
-    toast(e.message);
-  }
-  USERS = null;
-  renderSettings();
-}
-async function setUserRole(id, role) {
-  try {
-    await store.updateUser(id, { role });
-    toast("Role updated");
-    if (id === ME.id) await refresh();
-  } catch (e) {
-    toast(e.message);
-  }
-  USERS = null;
-  render();
-}
-
 /* ============================ MODALS ============================ */
 function openOrderModal(name, count, cb) {
   $("modalRoot").innerHTML = `<div class="overlay"><div class="card modal">
@@ -859,7 +775,6 @@ document.addEventListener("click", (e) => {
   if (t.dataset.tab) {
     view = t.dataset.tab;
     selectedVendor = null;
-    if (view === "settings") USERS = null;
     render();
     return;
   }
@@ -882,8 +797,7 @@ document.addEventListener("click", (e) => {
   }
   ({
     submitOrder, closeModal, saveSchedule, addVendor,
-    signIn, switchUser, setupFirst, addUser,
-    resetPin: () => resetPin(id),
+    signIn, switchUser, setupFirst,
     reload: () => location.reload(),
     clearForm: () => renderAddForm(),
     edit: () => edit(id),
@@ -891,7 +805,6 @@ document.addEventListener("click", (e) => {
     markOrdered: () => markOrdered(id), exportBatch: () => exportBatch(id),
     editVendor: () => { const v = VENDORS.find((x) => x.id === id); if (v) openVendorModal(v); },
     toggleVendor: () => toggleVendor(id),
-    toggleUser: () => toggleUser(id),
     clearHistory: () => openTypeConfirm("Clear history",
       "Every <b>Ordered</b> and <b>Received</b> line will be permanently deleted for everyone.", CLEAR_HISTORY_PHRASE,
       (p) => act(store.clearHistory(p), (r) => r.deleted + " line" + (r.deleted === 1 ? "" : "s") + " cleared")),
@@ -919,8 +832,6 @@ document.addEventListener("change", async (e) => {
     }
     return;
   }
-  const ur = e.target.closest("[data-user-role]");
-  if (ur) return setUserRole(ur.dataset.userRole, ur.value);
   const dr = e.target.closest("[data-demo-role]");
   if (dr && store.mode === "demo") {
     await store.setDemoIdentity(null, dr.value);
@@ -981,9 +892,14 @@ async function boot() {
     return render();
   }
   store = cfg && cfg.live ? remoteStore : demoStore;
+  if (cfg && cfg.needsSetup) {
+    state = "setup";
+    return render();
+  }
+  // Live: signed in if the suite cookie is (a 401 shows the sign-in screen).
   const saved = savedUser();
-  if (!saved || !saved.token) {
-    state = cfg && cfg.needsSetup ? "setup" : "signin";
+  if (store.mode === "demo" && !(saved && saved.token)) {
+    state = "signin";
     return render();
   }
   await refresh();

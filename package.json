@@ -4,7 +4,7 @@
   "type": "module",
   "description": "JMRC app suite — root package holds Netlify Function dependencies (Vendor Orders API). Each app has its own package.json.",
   "scripts": {
-    "test:vendor-orders": "node --test --test-concurrency=1 vendor-orders/tests/*.test.mjs selections/tests/*.test.mjs"
+    "test:vendor-orders": "node --test --test-concurrency=1 vendor-orders/tests/*.test.mjs selections/tests/*.test.mjs suite/tests/*.test.mjs"
   },
   "dependencies": {
     "@netlify/blobs": "^11.1.1"

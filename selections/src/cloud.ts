@@ -61,7 +61,9 @@ export class ApiError extends Error {
 
 /* ------------------------------ session ------------------------------ */
 
-type Session = { name: string; token?: string };
+// The last name signed in on this device (pre-fills the sign-in form). The
+// session itself is the suite sign-in cookie, set by the server.
+type Session = { name: string };
 
 export function savedSession(): Session | null {
   try {
@@ -107,13 +109,10 @@ export async function fetchConfig(): Promise<{ live: boolean } | null> {
 }
 
 async function api<T>(method: string, path: string, body?: unknown): Promise<T> {
-  const token = savedSession()?.token;
   const r = await fetch(API + path, {
     method,
-    headers: {
-      ...(token ? { authorization: "Bearer " + token } : {}),
-      ...(body !== undefined ? { "content-type": "application/json" } : {}),
-    },
+    credentials: "same-origin", // the suite sign-in cookie
+    headers: body !== undefined ? { "content-type": "application/json" } : {},
     body: body !== undefined ? JSON.stringify(body) : undefined,
   });
   const data = await r.json().catch(() => ({}));
@@ -128,8 +127,6 @@ async function api<T>(method: string, path: string, body?: unknown): Promise<T> 
 
 // Keep the name on the device so the next sign-in only needs the PIN.
 function signedOut() {
-  const last = savedSession();
-  saveSession(last ? { name: last.name } : null);
   closeProject();
   useCloud.setState({ me: null });
   useStore.getState().lockMode(null);
@@ -141,8 +138,8 @@ function applyMe(me: Me) {
 }
 
 export async function signIn(name: string, pin: string): Promise<Me> {
-  const r = await api<{ token: string; me: Me }>("POST", "login", { name, pin });
-  saveSession({ name: r.me.name, token: r.token });
+  const r = await api<{ me: Me }>("POST", "login", { name, pin });
+  saveSession({ name: r.me.name });
   applyMe(r.me);
   return r.me;
 }
@@ -156,9 +153,8 @@ export async function signOut() {
   signedOut();
 }
 
-// On page load: resume the saved session, if it's still valid.
+// On page load: already signed in (on the suite home page or here)?
 export async function resume(): Promise<Me | null> {
-  if (!savedSession()?.token) return null;
   try {
     const { me } = await api<{ me: Me }>("GET", "me");
     applyMe(me);

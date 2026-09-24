@@ -10,11 +10,13 @@
 // `projects/<id>` document per project. Staff accounts/sessions stay in the
 // Vendor Orders store. Saves are three-way merged (merge.mjs) and written with
 // compare-and-swap, so a designer and a customer editing together don't clash.
-import { openStore, readState, mutate } from "../vendor-orders-api/storage.mjs";
-import { newPin, hashPin, attemptPin, addSession, findSession, hashToken, LOCK_MINUTES } from "../vendor-orders-api/pins.mjs";
+import { openStore, readState, mutate } from "../../shared/storage.mjs";
+import { newPin, hashPin, findSession, hashToken } from "../../shared/pins.mjs";
 import { merge3, same } from "./merge.mjs";
+import { canUse, sessionCookie, clearCookie, tokenOf } from "../../shared/accounts.mjs";
+import { signIn, SEL_INDEX, resetClientPin, setClientAccess } from "../../shared/signin.mjs";
 
-const INDEX = { key: "index", init: () => ({ version: 1, customers: [], sessions: [], projects: [] }) };
+const INDEX = SEL_INDEX;
 const projectKey = (id) => ({ key: `projects/${id}`, init: () => null });
 const MAX_TITLE = 200;
 
@@ -26,10 +28,10 @@ class HttpError extends Error {
   }
 }
 const bad = (msg) => new HttpError(400, msg);
-const json = (body, status = 200) =>
+const json = (body, status = 200, headers = {}) =>
   new Response(JSON.stringify(body), {
     status,
-    headers: { "content-type": "application/json", "cache-control": "no-store" },
+    headers: { "content-type": "application/json", "cache-control": "no-store", ...headers },
   });
 
 const str = (v, max = 500) => String(v == null ? "" : v).trim().slice(0, max);
@@ -37,9 +39,7 @@ const cleanName = (v) => str(v, 80).replace(/\s+/g, " ");
 const sameName = (a, b) => a.toLowerCase() === b.toLowerCase();
 const isId = (s) => /^[0-9a-f-]{36}$/i.test(s || "");
 const now = () => new Date().toISOString();
-const tokenOf = (req) => (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
 
-const LOGIN_FAILED = "Name or PIN not recognised";
 
 /* ------------------------------ project shape ------------------------------ */
 
@@ -112,7 +112,8 @@ async function whoIs(stores, req) {
   const ss = findSession(vo, token);
   const u = ss && vo.users.find((x) => x.id === ss.userId);
   if (!u) throw new HttpError(401, "Your session has ended — sign in again");
-  if (!u.active) throw new HttpError(403, "Your access has been turned off. Ask a Purchaser.");
+  if (!u.active) throw new HttpError(403, "Your access has been turned off. Ask an Admin.");
+  if (!canUse(u, "selections")) throw new HttpError(403, "You don't have access to Finish Selections. Ask an Admin.");
   return { kind: "staff", id: u.id, name: u.name, role: u.role };
 }
 const requireStaff = (who) => {
@@ -125,38 +126,8 @@ function canOpen(who, projectId) {
 
 /* ------------------------------ sign-in ------------------------------ */
 
-// Staff are checked first (Vendor Orders list), then customers. Each wrong PIN
-// counts against that account's lockout, same as Vendor Orders.
-async function login(stores, body) {
-  const name = cleanName(body.name);
-  const pin = str(body.pin, 12);
-  if (!name || !pin) throw bad("Enter your name and PIN");
-
-  const staff = await mutate(stores.vo, (vo) => {
-    const u = vo.users.find((x) => sameName(x.name, name) && x.pinHash);
-    if (!u) return null;
-    const r = attemptPin(u, pin);
-    if (r === "locked") throw new HttpError(429, `Too many wrong PINs — try again in ${LOCK_MINUTES} minutes.`);
-    if (r === "bad") return { bad: true };
-    if (!u.active) throw new HttpError(403, "Your access has been turned off. Ask a Purchaser.");
-    const token = addSession(vo, { userId: u.id });
-    return { token, me: { kind: "staff", id: u.id, name: u.name, role: u.role } };
-  });
-  if (staff && !staff.bad) return staff;
-
-  const cust = await mutate(stores.sel, (idx) => {
-    const c = idx.customers.find((x) => sameName(x.name, name) && x.pinHash);
-    if (!c) return null;
-    const r = attemptPin(c, pin);
-    if (r === "locked") throw new HttpError(429, `Too many wrong PINs — try again in ${LOCK_MINUTES} minutes.`);
-    if (r === "bad") throw new HttpError(401, LOGIN_FAILED, true); // save the failed attempt
-    if (!c.active) throw new HttpError(403, "This link has been turned off. Contact Robins Interiors & Design.");
-    const token = addSession(idx, { customerId: c.id });
-    return { token, me: { kind: "customer", id: c.id, name: c.name, projectId: c.projectId } };
-  }, INDEX);
-  if (cust) return cust;
-  throw new HttpError(401, LOGIN_FAILED);
-}
+// Shared suite sign-in (shared/signin.mjs); staff need Finish Selections access.
+const login = (stores, body) => signIn(stores, body, { app: "selections" });
 
 async function logout(stores, req) {
   const h = hashToken(tokenOf(req));
@@ -248,26 +219,12 @@ async function saveProject(stores, who, id, body) {
 
 async function resetCustomerPin(stores, who, id) {
   requireStaff(who);
-  const pin = newPin();
-  const name = await mutate(stores.sel, (idx) => {
-    const c = idx.customers.find((x) => x.projectId === id);
-    if (!c) throw new HttpError(404, "No client sign-in for this project");
-    Object.assign(c, { pinHash: hashPin(pin), failedAttempts: 0, lockedUntil: "", active: true });
-    idx.sessions = idx.sessions.filter((s) => s.customerId !== c.id);
-    return c.name;
-  }, INDEX);
-  return { customerName: name, pin };
+  return resetClientPin(stores, id);
 }
 
 async function setCustomerAccess(stores, who, id, body) {
   requireStaff(who);
-  await mutate(stores.sel, (idx) => {
-    const c = idx.customers.find((x) => x.projectId === id);
-    if (!c) throw new HttpError(404, "No client sign-in for this project");
-    c.active = !!body.active;
-    if (!c.active) idx.sessions = idx.sessions.filter((s) => s.customerId !== c.id);
-  }, INDEX);
-  return { ok: true };
+  return setClientAccess(stores, id, body.active);
 }
 
 async function deleteProject(stores, who, id) {
@@ -305,12 +262,16 @@ export function createHandler({ stores: injected } = {}) {
       if (path === "config" && method === "GET") return json({ live: true });
 
       const body = ["POST", "PUT", "PATCH"].includes(method) ? await req.json().catch(() => ({})) : {};
-      if (method === "POST" && path === "login") return json(await login(stores, body));
+      if (method === "POST" && path === "login") {
+        const r = await login(stores, body);
+        return json(r, 200, { "set-cookie": sessionCookie(r.token) });
+      }
 
       const who = await whoIs(stores, req);
       const [a, b, c] = path.split("/");
       if (method === "GET" && a === "me") return json({ me: who });
-      if (method === "POST" && a === "logout") return json(await logout(stores, req));
+      if (method === "POST" && a === "logout")
+        return json(await logout(stores, req), 200, { "set-cookie": clearCookie() });
       if (a === "projects" && !b) {
         if (method === "GET") return json(await listProjects(stores, who));
         if (method === "POST") return json(await createProject(stores, who, body), 201);

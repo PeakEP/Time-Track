@@ -234,6 +234,40 @@
         color: var(--cyan);
       }
 
+
+      /* ---- Sign-in ---- */
+      .gate { padding-bottom: clamp(48px, 8vw, 84px); }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 28px;
+        max-width: 420px;
+      }
+      .card h2 { font-size: 21px; font-weight: 600; color: var(--indigo); margin-bottom: 6px; }
+      .card p { font-size: 14px; color: var(--ink-2); margin-bottom: 18px; }
+      .card label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin: 12px 0 5px; }
+      .card input {
+        width: 100%; font: inherit; font-size: 16px; padding: 10px 12px;
+        border: 1px solid var(--line-2); border-radius: 8px; background: var(--surface-2); color: var(--ink);
+      }
+      .card input:focus { outline: 2px solid var(--cyan); outline-offset: 1px; }
+      .btn {
+        display: inline-block; margin-top: 18px; font: inherit; font-size: 14px; font-weight: 600;
+        padding: 10px 20px; border: 0; border-radius: 8px; background: var(--indigo); color: #fff; cursor: pointer;
+      }
+      .btn:disabled { opacity: 0.6; cursor: default; }
+      .msg { margin-top: 14px; font-size: 13.5px; color: #b3261e; min-height: 1em; }
+      .pin-big { font-size: 34px; font-weight: 700; letter-spacing: 0.2em; color: var(--indigo); margin: 6px 0 4px; }
+      .who {
+        display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px;
+        margin: -8px 0 26px; font-size: 13.5px; color: var(--ink-2);
+      }
+      .who strong { color: var(--ink); }
+      .link-btn { background: none; border: 0; font: inherit; color: var(--steel); text-decoration: underline; cursor: pointer; padding: 0; }
+      .notice { font-size: 14px; color: var(--ink-2); padding-bottom: 48px; }
+      [hidden] { display: none !important; }
+
       /* ---- Footer ---- */
       footer.site {
         background: var(--indigo);
@@ -355,9 +389,47 @@
         </p>
       </section>
 
+      <p class="notice" id="checking">Checking your sign-in…</p>
+
+      <section class="gate" id="signin" hidden>
+        <form class="card" id="signin-form" autocomplete="on">
+          <h2>Sign in</h2>
+          <p>Enter your name and the PIN you were given.</p>
+          <label for="si-name">Name</label>
+          <input id="si-name" name="username" autocomplete="username" required />
+          <label for="si-pin">PIN</label>
+          <input id="si-pin" name="pin" type="password" inputmode="numeric" autocomplete="current-password" required />
+          <button class="btn" type="submit">Sign in</button>
+          <div class="msg" id="si-msg" role="alert"></div>
+        </form>
+      </section>
+
+      <section class="gate" id="setup" hidden>
+        <form class="card" id="setup-form">
+          <h2>First-time setup</h2>
+          <p>No one has been set up yet. Enter your name: you'll become the suite Admin and get a PIN.</p>
+          <label for="su-name">Your full name</label>
+          <input id="su-name" autocomplete="name" required />
+          <button class="btn" type="submit">Set me up</button>
+          <div class="msg" id="su-msg" role="alert"></div>
+        </form>
+        <div class="card" id="setup-done" hidden>
+          <h2>You're the Admin</h2>
+          <p>Your PIN is below. Write it down — it won't be shown again. Use Admin to add your team.</p>
+          <div class="pin-big" id="su-pin"></div>
+          <button class="btn" type="button" id="su-continue">Continue</button>
+        </div>
+      </section>
+
+      <div class="who" id="who" hidden>
+        <span>Signed in as <strong id="who-name"></strong></span>
+        <button class="link-btn" type="button" id="signout">Sign out</button>
+      </div>
+
+      <div id="apps" hidden>
       <div class="tools-label reveal d3">Design Tools</div>
       <section class="tools" aria-label="Applications">
-        <a class="tool reveal d3" href="/cabinet-designer/">
+        <a class="tool reveal d3" href="/cabinet-designer/" data-app="cabinet">
           <div class="tool-top">
             <span class="tool-tag">Kitchen · Cabinetry</span>
             <span class="tool-arrow" aria-hidden="true">→</span>
@@ -367,7 +439,7 @@
           <span class="tool-open">Open tool</span>
         </a>
 
-        <a class="tool reveal d4" href="/aline-designer/">
+        <a class="tool reveal d4" href="/aline-designer/" data-app="aline">
           <div class="tool-top">
             <span class="tool-tag">Kitchen · Cabinetry</span>
             <span class="tool-arrow" aria-hidden="true">→</span>
@@ -377,7 +449,7 @@
           <span class="tool-open">Open tool</span>
         </a>
 
-        <a class="tool reveal d4" href="/selections/">
+        <a class="tool reveal d4" href="/selections/" data-app="selections">
           <div class="tool-top">
             <span class="tool-tag">Interiors · Finishes</span>
             <span class="tool-arrow" aria-hidden="true">→</span>
@@ -390,7 +462,7 @@
 
       <div class="tools-label reveal d4">Purchasing &amp; Operations</div>
       <section class="tools" aria-label="Operations applications">
-        <a class="tool reveal d4" href="/vendor-orders/">
+        <a class="tool reveal d4" href="/vendor-orders/" data-app="vendorOrders">
           <div class="tool-top">
             <span class="tool-tag">Purchasing · Intercompany</span>
             <span class="tool-arrow" aria-hidden="true">→</span>
@@ -400,6 +472,20 @@
           <span class="tool-open">Open tool</span>
         </a>
       </section>
+
+      <div class="tools-label reveal d4">Administration</div>
+      <section class="tools" aria-label="Administration">
+        <a class="tool reveal d4" href="/admin/" data-app="admin">
+          <div class="tool-top">
+            <span class="tool-tag">Team · Clients · Access</span>
+            <span class="tool-arrow" aria-hidden="true">→</span>
+          </div>
+          <h2>Suite Admin</h2>
+          <p>Add people, issue PINs, and choose who can open which app. Manage client sign-ins.</p>
+          <span class="tool-open">Open admin</span>
+        </a>
+      </section>
+      </div>
     </main>
 
     <footer class="site">
@@ -408,5 +494,131 @@
         <span class="fmeta">160 Park Street, Sussex, NB E4E 1V3 · Tel: 506-808-2711</span>
       </div>
     </footer>
+
+    <script>
+      // Suite sign-in. One name + PIN signs you in to every app you have
+      // access to (an HttpOnly cookie set by /api/suite). Apps you can't use
+      // are hidden; clients go straight to their finish selections.
+      (function () {
+        const $ = (id) => document.getElementById(id);
+        const params = new URLSearchParams(location.search);
+        // Where the page gate sent you from (same-site paths only).
+        const raw = params.get("next") || "";
+        const next = /^\/(?!\/)/.test(raw) ? raw : "";
+
+        async function api(path, body) {
+          const res = await fetch("/api/suite/" + path, {
+            method: body ? "POST" : "GET",
+            headers: body ? { "content-type": "application/json" } : {},
+            body: body ? JSON.stringify(body) : undefined,
+            credentials: "same-origin",
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) throw Object.assign(new Error(data.error || "Something went wrong — try again"), { status: res.status });
+          return data;
+        }
+
+        function show(id) {
+          for (const x of ["checking", "signin", "setup", "apps", "who"]) $(x).hidden = x !== id;
+        }
+
+        function enter(me) {
+          if (me.kind === "customer") return location.replace(next.startsWith("/selections") ? next : "/selections/");
+          if (next) return location.replace(next);
+          const allowed = (app) => (app === "admin" ? me.admin : me.apps && me.apps[app] && me.apps[app] !== "none");
+          document.querySelectorAll("[data-app]").forEach((a) => (a.hidden = !allowed(a.dataset.app)));
+          document.querySelectorAll("#apps .tools").forEach((sec) => {
+            const any = [...sec.querySelectorAll("[data-app]")].some((a) => !a.hidden);
+            sec.hidden = !any;
+            sec.previousElementSibling.hidden = !any;
+          });
+          show("apps");
+          $("who").hidden = false;
+          $("who-name").textContent = me.name;
+        }
+
+        function signInScreen() {
+          show("signin");
+          // Share links carry the client's name: /selections/?name=Jane%20Smith
+          try {
+            const n = new URL(next || "/", location.origin).searchParams.get("name") || params.get("name");
+            if (n) $("si-name").value = n;
+          } catch {}
+          ($("si-name").value ? $("si-pin") : $("si-name")).focus();
+        }
+
+        $("signin-form").addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const btn = e.target.querySelector("button");
+          btn.disabled = true;
+          $("si-msg").textContent = "";
+          try {
+            const r = await api("login", { name: $("si-name").value, pin: $("si-pin").value });
+            enter(r.me);
+          } catch (err) {
+            $("si-msg").textContent = err.message;
+            $("si-pin").value = "";
+            $("si-pin").focus();
+          } finally {
+            btn.disabled = false;
+          }
+        });
+
+        let setupMe = null;
+        $("setup-form").addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const btn = e.target.querySelector("button");
+          btn.disabled = true;
+          $("su-msg").textContent = "";
+          try {
+            const r = await api("setup", { name: $("su-name").value });
+            setupMe = r.me;
+            $("su-pin").textContent = r.pin;
+            $("setup-form").hidden = true;
+            $("setup-done").hidden = false;
+          } catch (err) {
+            $("su-msg").textContent = err.message;
+          } finally {
+            btn.disabled = false;
+          }
+        });
+        $("su-continue").addEventListener("click", () => enter(setupMe));
+
+        $("signout").addEventListener("click", async () => {
+          try { await api("logout", {}); } catch {}
+          // Apps keep their own copy of the sign-in; clear those too.
+          try {
+            localStorage.removeItem("rid_vo_session");
+            localStorage.removeItem("jmrc.selections.session.v1");
+          } catch {}
+          location.replace("/");
+        });
+
+        (async function start() {
+          let config;
+          try {
+            config = await api("config");
+          } catch {
+            config = null;
+          }
+          // No suite service (opened as a plain file or a local static server):
+          // show every tool, as before sign-in existed.
+          if (!config || !config.live) {
+            document.querySelectorAll("[data-app='admin']").forEach((a) => {
+              a.hidden = true;
+              a.closest(".tools").hidden = true;
+              a.closest(".tools").previousElementSibling.hidden = true;
+            });
+            return show("apps");
+          }
+          if (config.needsSetup) return show("setup"), $("su-name").focus();
+          try {
+            enter((await api("me")).me);
+          } catch {
+            signInScreen();
+          }
+        })();
+      })();
+    </script>
   </body>
 </html>

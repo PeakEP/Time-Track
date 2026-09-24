@@ -12,15 +12,19 @@ flat **Zustand** store (with undo/redo and namespaced-localStorage autosave), on
 
 ## Online: staff and client sign-in
 
-On the live site (Netlify), the app asks everyone to sign in with a **name + PIN**:
+On the live site (Netlify), everyone signs in with a **name + PIN** on the suite home
+page. The page gate sends anyone who isn't signed in there first, then back here.
 
-- **Staff** use the same name + PIN as Vendor Orders (one team list for the suite).
-  They get the designer view and **Projects → Client projects**.
+- **Staff** use their suite name + PIN (one team list for the suite, managed on
+  **Suite Admin**, `/admin/`). Staff whose Finish Selections access is set to *Designer*
+  get the designer view and **Projects → Client projects**.
 - **New client project** creates a shared project plus a sign-in for the client. It shows
   the client's PIN **once**, a link that pre-fills their name, and a ready-to-send message.
   From the same list, staff can reissue a PIN (🔑), turn a client's access off or on (⏻),
-  or delete a project.
-- **Clients** see only their own project, locked to the **client view**. The Designer
+  or delete a project. Suite Admin also lists every client sign-in, with the same
+  reissue and on/off controls.
+- **Clients** see only their own project, locked to the **client view**. They can't open
+  any other app in the suite. The Designer
   toggle and Projects button are hidden, and the project details are read-only. They can
   pick and change selections and quantities, and the server ignores anything else they send.
 - Changes save automatically and show up for the other side within about 15 seconds. If

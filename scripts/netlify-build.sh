@@ -8,6 +8,8 @@ set -euo pipefail
 # - Finish Selections (Robins Interiors & Design) → /selections/
 # - Vendor Orders (weekly vendor order consolidation) → /vendor-orders/
 #   Its API is a Netlify Function in netlify/functions/vendor-orders-api/.
+# - Suite Admin (static) → /admin/. Sign-in and access: netlify/functions/suite-api/,
+#   enforced on every app page by netlify/edge-functions/suite-gate.js.
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 OUT_DIR="${ROOT_DIR}/_site"
@@ -18,6 +20,9 @@ mkdir -p "${OUT_DIR}"
 
 echo "==> Copying landing page + static assets"
 cp "${ROOT_DIR}/index.html" "${OUT_DIR}/index.html"
+# Suite Admin page (static; its API is netlify/functions/suite-api).
+mkdir -p "${OUT_DIR}/admin"
+cp "${ROOT_DIR}/admin/index.html" "${OUT_DIR}/admin/index.html"
 [[ -f "${ROOT_DIR}/_headers" ]] && cp "${ROOT_DIR}/_headers" "${OUT_DIR}/_headers"
 # (Redirects are all in netlify.toml; there is intentionally no _redirects file.)
 
