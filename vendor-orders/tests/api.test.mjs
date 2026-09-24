@@ -262,7 +262,7 @@ test("simultaneous saves never overwrite each other", async () => {
 });
 
 test("preview deploys use their own storage", async () => {
-  const { openStore } = await import("../../netlify/functions/vendor-orders-api/storage.mjs");
+  const { openStore } = await import("../../netlify/shared/storage.mjs");
   // Outside Netlify there's no Blobs environment: the app reports demo mode.
   assert.equal(openStore({ deploy: { context: "production" } }), null);
   const mod = await import("../../netlify/functions/vendor-orders-api/vendor-orders-api.mjs");

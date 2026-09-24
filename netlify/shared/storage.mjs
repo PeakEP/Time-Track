@@ -40,10 +40,11 @@ function seed() {
 }
 
 // Production gets its own store; previews and branch deploys share a separate
-// one so testing never touches real orders. Returns null outside Netlify.
-export function openStore(context) {
+// one so testing never touches real data. Returns null outside Netlify.
+// `base` names the app's store (Finish Selections reuses this with "selections").
+export function openStore(context, base = "vendor-orders") {
   const deployContext = context?.deploy?.context || "production";
-  const name = deployContext === "production" ? "vendor-orders" : `vendor-orders-${deployContext}`;
+  const name = deployContext === "production" ? base : `${base}-${deployContext}`;
   try {
     return getStore({ name, consistency: "strong" });
   } catch {
@@ -51,19 +52,21 @@ export function openStore(context) {
   }
 }
 
-export async function readState(store) {
-  const data = await store.get(DOC, { type: "json", consistency: "strong" });
-  return data || seed();
+// `key`/`init` let other documents (e.g. Finish Selections) use the same
+// read / compare-and-swap machinery; the defaults are the Vendor Orders book.
+export async function readState(store, { key = DOC, init = seed } = {}) {
+  const data = await store.get(key, { type: "json", consistency: "strong" });
+  return data || init();
 }
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // Applies fn(state, events) and saves atomically. fn may throw to abort without
 // saving; an error with `commit = true` is thrown after its changes are saved.
-export async function mutate(store, fn) {
+export async function mutate(store, fn, { key = DOC, init = seed } = {}) {
   for (let attempt = 0; attempt < MAX_TRIES; attempt++) {
-    const cur = await store.getWithMetadata(DOC, { type: "json", consistency: "strong" });
-    const state = cur ? cur.data : seed();
+    const cur = await store.getWithMetadata(key, { type: "json", consistency: "strong" });
+    const state = cur ? cur.data : init();
     const events = [];
     let result, deferred;
     try {
@@ -73,8 +76,8 @@ export async function mutate(store, fn) {
       deferred = e;
     }
     const res = cur
-      ? await store.setJSON(DOC, state, { onlyIfMatch: cur.etag })
-      : await store.setJSON(DOC, state, { onlyIfNew: true });
+      ? await store.setJSON(key, state, { onlyIfMatch: cur.etag })
+      : await store.setJSON(key, state, { onlyIfNew: true });
     if (res.modified) {
       await writeEvents(store, events);
       if (deferred) throw deferred;

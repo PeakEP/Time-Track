@@ -22,10 +22,12 @@ Netlify + Vite, so the module is built this way instead:
 
 There's nothing to configure. On Netlify the tool is live as soon as it deploys.
 
-1. **Open `/vendor-orders/` straight away** after the first deploy. The first screen is
-   *First-time setup*: enter your name to become the first Purchaser, and you'll be shown
-   your PIN. Setup only appears while no Purchaser with a PIN exists.
-2. Under **Settings → Team & roles**, add each employee. Each one gets a PIN to hand out.
+1. **Open the suite home page (`/`) straight away** after the first deploy. The first
+   screen is *First-time setup*: enter your name to become the suite Admin (and a
+   Purchaser), and you'll be shown your PIN. Setup only appears while no Admin with a PIN
+   exists.
+2. On **Suite Admin** (`/admin/`), add each employee and choose their Vendor Orders role.
+   Each one gets a PIN to hand out.
 
 **Where the data lives:**
 
@@ -43,12 +45,15 @@ very large, **Clear ordered/received history** trims it.
 
 ## Signing in (name + PIN)
 
-- A Purchaser adds a person under **Settings → Team & roles**, and the system generates a
+Sign-in is shared by the whole JMRC suite. See `admin/README.md`.
+
+- A suite Admin adds a person on **Suite Admin** (`/admin/`), and the system generates a
   random 6-digit PIN. The PIN is shown **once**. Only a salted hash is stored, so nobody can
-  look it up later.
-- The person signs in with their name and PIN. Capitals and extra spaces in the name don't
-  matter. The device remembers the name, so next time only the PIN is needed. A sign-in
-  lasts 30 days on that device, and **switch user** signs out.
+  look it up later. The same page sets each person's Vendor Orders role (Sales rep,
+  Purchaser, or no access) and their other apps.
+- The person signs in once on the suite home page with their name and PIN. Capitals and
+  extra spaces in the name don't matter. A sign-in lasts 30 days on that device and covers
+  every app they can use. **Switch user** signs out of the whole suite.
 - **Reset PIN** issues a new PIN and signs that person out everywhere. Use it for a
   forgotten or leaked PIN. **Deactivate** blocks sign-in and also ends their sessions.
 - Five wrong PINs in a row lock that name for 15 minutes. A PIN reset unlocks it.

@@ -1,12 +1,17 @@
 // Vendor Orders API (Netlify Function). Mounted at /api/vendor-orders/* via netlify.toml.
 // Data lives in Netlify Blobs (storage.mjs), so no database needs setting up.
-// Sign-in is name + a PIN issued by a Purchaser; POST /login returns a session
-// token the browser sends as a Bearer token. Roles live on the server and are
-// checked here on every Purchaser-only route, never taken from the client.
-import { openStore, readState, mutate, DEFAULT_CUTOFFS } from "./storage.mjs";
+// Sign-in is name + a PIN; POST /login returns a session token (sent back as a
+// Bearer token or the suite cookie, see shared/accounts.mjs). Staff accounts
+// are suite-wide; this app needs Vendor Orders access, and roles are checked
+// here on every Purchaser-only route, never taken from the client.
+import { openStore, readState, mutate, DEFAULT_CUTOFFS } from "../../shared/storage.mjs";
 import {
   newPin, hashPin, checkPin, newToken, hashToken, MAX_FAILED, LOCK_MINUTES, SESSION_DAYS,
-} from "./pins.mjs";
+} from "../../shared/pins.mjs";
+import {
+  accessOf, canUse, needsSetup, publicUser, setupFirstAdmin, sessionCookie, clearCookie, tokenOf,
+  createStaff, resetStaffPin, updateStaff,
+} from "../../shared/accounts.mjs";
 import COST_SEED from "../../../vendor-orders/seed/cost_codes.json" with { type: "json" };
 import {
   isPurchaser,
@@ -28,10 +33,10 @@ class HttpError extends Error {
   }
 }
 const bad = (msg) => new HttpError(400, msg);
-const json = (body, status = 200) =>
+const json = (body, status = 200, headers = {}) =>
   new Response(JSON.stringify(body), {
     status,
-    headers: { "content-type": "application/json", "cache-control": "no-store" },
+    headers: { "content-type": "application/json", "cache-control": "no-store", ...headers },
   });
 
 /* ------------------------------ mapping ------------------------------ */
@@ -42,7 +47,7 @@ const outOrder = (state, o) => ({
   createdByName: nameOf(state, o.createdBy),
   orderedByName: nameOf(state, o.orderedBy),
 });
-const mapUser = (u) => ({ id: u.id, name: u.name, role: u.role, active: u.active, hasPin: !!u.pinHash });
+const mapUser = publicUser;
 
 /* ------------------------------ validation ------------------------------ */
 
@@ -105,9 +110,6 @@ const now = () => new Date().toISOString();
 
 const LOGIN_FAILED = "Name or PIN not recognised";
 
-// First-run: until an active Purchaser with a PIN exists, anyone may create one.
-const needsSetup = (state) => !state.users.some((u) => u.role === "purchaser" && u.active && u.pinHash);
-
 function startSession(state, userId) {
   const token = newToken();
   const t = Date.now();
@@ -121,17 +123,8 @@ function startSession(state, userId) {
 }
 
 function setupFirstPurchaser(state, body) {
-  const name = cleanName(body.name);
-  if (name.length < 2) throw bad("Enter your full name");
-  if (!needsSetup(state)) throw new HttpError(409, "Setup is already done — sign in with your PIN.");
-  const pin = newPin();
-  let u = state.users.find((x) => sameName(x.name, name));
-  if (u) Object.assign(u, { role: "purchaser", active: true, pinHash: hashPin(pin), failedAttempts: 0, lockedUntil: "" });
-  else {
-    u = { id: crypto.randomUUID(), name, role: "purchaser", active: true, pinHash: hashPin(pin), failedAttempts: 0, lockedUntil: "", createdAt: now() };
-    state.users.push(u);
-  }
-  return { pin, token: startSession(state, u.id), me: mapUser(u) };
+  const r = setupFirstAdmin(state, body.name);
+  return { pin: r.pin, token: r.token, me: mapUser(r.user) };
 }
 
 function loginUser(state, body) {
@@ -155,9 +148,6 @@ function loginUser(state, body) {
   return { token: startSession(state, u.id), me: mapUser(u) };
 }
 
-function tokenOf(req) {
-  return (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
-}
 function currentUser(state, req) {
   const token = tokenOf(req);
   if (!token) throw new HttpError(401, "Sign in with your name and PIN");
@@ -165,8 +155,12 @@ function currentUser(state, req) {
   const s = state.sessions.find((x) => x.tokenHash === h && new Date(x.expiresAt) > new Date());
   const u = s && state.users.find((x) => x.id === s.userId);
   if (!u) throw new HttpError(401, "Your session has ended — sign in again");
-  if (!u.active) throw new HttpError(403, "Your access has been turned off. Ask a Purchaser.");
+  if (!u.active) throw new HttpError(403, "Your access has been turned off. Ask an Admin.");
+  if (!canUse(u, "vendorOrders")) throw new HttpError(403, "You don't have access to Vendor Orders. Ask an Admin.");
   return u;
+}
+function requireAdmin(user) {
+  if (!accessOf(user).admin) throw new HttpError(403, "Admin access required");
 }
 
 /* ------------------------------ routes ------------------------------ */
@@ -363,49 +357,23 @@ function updateVendor(state, user, id, body) {
 }
 
 function listUsers(state, user) {
-  requirePurchaser(user);
+  requireAdmin(user);
   return { users: [...state.users].sort((a, b) => a.name.localeCompare(b.name)).map(mapUser) };
 }
+// Team management is suite-wide (shared/accounts.mjs); Admins only.
 function createUser(state, user, body) {
-  requirePurchaser(user);
-  const name = cleanName(body.name);
-  if (name.length < 2) throw bad("Enter the person's full name");
-  if (state.users.some((u) => sameName(u.name, name)))
-    throw bad(`${name} is already on the team — use Reset PIN instead.`);
-  const pin = newPin();
-  const u = {
-    id: crypto.randomUUID(), name, role: body.role === "purchaser" ? "purchaser" : "sales_rep",
-    active: true, pinHash: hashPin(pin), failedAttempts: 0, lockedUntil: "", createdAt: now(),
-  };
-  state.users.push(u);
-  return { user: mapUser(u), pin };
+  requireAdmin(user);
+  const r = createStaff(state, body);
+  return { user: mapUser(r.user), pin: r.pin };
 }
-// New PIN for someone who lost theirs; signs them out everywhere.
 function resetPin(state, user, id) {
-  requirePurchaser(user);
-  const u = findUser(state, id);
-  const pin = newPin();
-  Object.assign(u, { pinHash: hashPin(pin), failedAttempts: 0, lockedUntil: "" });
-  state.sessions = state.sessions.filter((s) => s.userId !== id);
-  return { user: mapUser(u), pin };
+  requireAdmin(user);
+  const r = resetStaffPin(state, id);
+  return { user: mapUser(r.user), pin: r.pin };
 }
 function updateUser(state, user, id, body) {
-  requirePurchaser(user);
-  const u = findUser(state, id);
-  const set = {};
-  if ("role" in body) {
-    if (!["sales_rep", "purchaser"].includes(body.role)) throw bad("Unknown role");
-    set.role = body.role;
-  }
-  if ("active" in body) set.active = !!body.active;
-  if (!Object.keys(set).length) return { ok: true };
-  const demotes = set.role === "sales_rep" || set.active === false;
-  if (demotes && u.role === "purchaser" && u.active) {
-    const others = state.users.filter((x) => x.id !== id && x.role === "purchaser" && x.active);
-    if (!others.length) throw bad("That's the only Purchaser — promote someone else first.");
-  }
-  Object.assign(u, set);
-  if (set.active === false) state.sessions = state.sessions.filter((s) => s.userId !== id);
+  requireAdmin(user);
+  updateStaff(state, id, body);
   return { ok: true };
 }
 
@@ -455,8 +423,10 @@ export function createHandler({ store: injected } = {}) {
         ? await req.json().catch(() => ({}))
         : {};
 
-      if (method === "POST" && path === "setup") return json(await mutate(store, (s) => setupFirstPurchaser(s, body)));
-      if (method === "POST" && path === "login") return json(await mutate(store, (s) => loginUser(s, body)));
+      // Signing in sets the suite cookie too, so the other apps know you.
+      const signedIn = (r) => json(r, 200, { "set-cookie": sessionCookie(r.token) });
+      if (method === "POST" && path === "setup") return signedIn(await mutate(store, (s) => setupFirstPurchaser(s, body)));
+      if (method === "POST" && path === "login") return signedIn(await mutate(store, (s) => loginUser(s, body)));
 
       if (method === "GET") {
         const state = await readState(store);
@@ -492,6 +462,7 @@ export function createHandler({ store: injected } = {}) {
       };
       const created = method === "POST" && ["orders", "vendors", "users"].includes(a) && !b;
       const result = await mutate(store, (state, events) => route(state, events, currentUser(state, req)));
+      if (method === "POST" && path === "logout") return json(result, 200, { "set-cookie": clearCookie() });
       return json(result, created ? 201 : 200);
     } catch (e) {
       if (e instanceof HttpError || e.status) return json({ error: e.message }, e.status);
