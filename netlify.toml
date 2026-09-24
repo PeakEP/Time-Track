@@ -16,7 +16,11 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
-# Vendor Orders API → Netlify Function (must come before the SPA fallbacks)
+# All redirects live here, in order: the first matching rule wins. Don't add a
+# _redirects file: Netlify evaluates it BEFORE these rules, so a catch-all
+# there would shadow the API route and the SPA fallbacks.
+
+# Vendor Orders API → Netlify Function
 [[redirects]]
   from = "/api/vendor-orders/*"
   to = "/.netlify/functions/vendor-orders-api/:splat"
@@ -39,6 +43,12 @@
 [[redirects]]
   from = "/vendor-orders/*"
   to = "/vendor-orders/index.html"
+  status = 200
+
+# Friendly fallback: unknown top-level paths land on the launcher. Keep last.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
   status = 200
 
 # Production context

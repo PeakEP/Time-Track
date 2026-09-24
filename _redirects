@@ -1,8 +1,0 @@
-# Redirects for JMRC apps
-# Root (/) serves the app-launcher landing page.
-# Subpath SPA fallbacks (/cabinet-designer/*, /aline-designer/*, /vendor-orders/*)
-# and the /api/vendor-orders/* function route are handled in netlify.toml,
-# which is evaluated first.
-
-# Friendly fallback: unknown top-level paths land on the launcher.
-/*    /index.html   200

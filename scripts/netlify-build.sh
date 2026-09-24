@@ -18,7 +18,7 @@ mkdir -p "${OUT_DIR}"
 echo "==> Copying landing page + static assets"
 cp "${ROOT_DIR}/index.html" "${OUT_DIR}/index.html"
 [[ -f "${ROOT_DIR}/_headers" ]] && cp "${ROOT_DIR}/_headers" "${OUT_DIR}/_headers"
-[[ -f "${ROOT_DIR}/_redirects" ]] && cp "${ROOT_DIR}/_redirects" "${OUT_DIR}/_redirects"
+# (Redirects are all in netlify.toml; there is intentionally no _redirects file.)
 
 build_vite_app() {
   local APP_DIR="$1"
