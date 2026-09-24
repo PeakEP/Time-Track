@@ -1,0 +1,17 @@
+{
+  "source": "OPS-POL-001 Step 1 — Identify the Purchaser",
+  "effective_date": "2026-03-12",
+  "format": "1-digit code",
+  "employees": {
+    "0": "Michael",
+    "1": "Troy",
+    "2": "Adam",
+    "3": "Aleisha",
+    "4": "Mikayla",
+    "5": "Susan",
+    "6": "David",
+    "9": "Krissy"
+  },
+  "default_if_unspecified": "0",
+  "default_reason": "Michael Robins is the owner and default purchaser when no name is given; confirm with Mike before issuing if uncertain."
+}

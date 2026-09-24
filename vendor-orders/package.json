@@ -1,0 +1,15 @@
+{
+  "name": "jmrc-vendor-orders",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Robins Interiors & Design — weekly vendor order consolidation (shared queue, batched POs, OPS-POL-001 cost coding).",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.4.10"
+  }
+}

@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-title" content="JMRC Design Suite" />
     <meta
       name="description"
-      content="J.M Robins Construction — design tools for planning custom-home kitchens and cabinetry."
+      content="J.M Robins Construction — design tools for planning custom-home kitchens and cabinetry, plus purchasing tools."
     />
     <link
       rel="icon"
@@ -147,6 +147,8 @@
         height: 1px;
         background: var(--line-2);
       }
+
+      .tools + .tools-label { margin-top: calc(-1 * clamp(20px, 4vw, 44px)); }
 
       .tools {
         display: grid;
@@ -347,9 +349,9 @@
         <span class="eyebrow reveal d1">Robins Interiors &amp; Design · Custom Homes</span>
         <h1 class="reveal d2">Design the home, down to the <em>finish.</em></h1>
         <p class="lede reveal d3">
-          A working suite of visual tools for planning kitchens and cabinetry — built for
-          the J.M Robins Construction design team and the clients they build for. Choose a
-          tool to begin.
+          A working suite of visual tools for planning kitchens and cabinetry, plus the
+          purchasing tools behind them — built for the J.M Robins Construction team and the
+          clients they build for. Choose a tool to begin.
         </p>
       </section>
 
@@ -372,6 +374,19 @@
           </div>
           <h2>Aline Cabinet Designer</h2>
           <p>The same plan-and-orbit workflow, built around the ALINE cabinet catalog.</p>
+          <span class="tool-open">Open tool</span>
+        </a>
+      </section>
+
+      <div class="tools-label reveal d4">Purchasing &amp; Operations</div>
+      <section class="tools" aria-label="Operations applications">
+        <a class="tool reveal d4" href="/vendor-orders/">
+          <div class="tool-top">
+            <span class="tool-tag">Purchasing · Intercompany</span>
+            <span class="tool-arrow" aria-hidden="true">→</span>
+          </div>
+          <h2>Vendor Orders</h2>
+          <p>One shared weekly queue — batched POs per vendor, coded to OPS-POL-001.</p>
           <span class="tool-open">Open tool</span>
         </a>
       </section>

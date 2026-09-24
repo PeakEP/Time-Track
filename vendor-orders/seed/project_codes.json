@@ -1,0 +1,104 @@
+{
+  "source": "OPS-POL-001 Step 2 — Identify the Project Location",
+  "effective_date": "2026-03-12",
+  "format": "3-4 letters; append unit number for White Pines Blocks A–H when known",
+  "projects": {
+    "WPA": {
+      "name": "White Pines Block A",
+      "type": "residential_block",
+      "notes": "Append unit # if specific (e.g., WPA1, WPA2, WPA3)"
+    },
+    "WPB": {
+      "name": "White Pines Block B",
+      "type": "residential_block",
+      "notes": "Append unit # if specific"
+    },
+    "WPC": {
+      "name": "White Pines Block C",
+      "type": "residential_block",
+      "notes": "Append unit # if specific"
+    },
+    "WPD": {
+      "name": "White Pines Block D",
+      "type": "residential_block",
+      "notes": "Append unit # if specific"
+    },
+    "WPE": {
+      "name": "White Pines Block E",
+      "type": "residential_block",
+      "notes": "Append unit # if specific"
+    },
+    "WPF": {
+      "name": "White Pines Block F",
+      "type": "residential_block",
+      "notes": "Append unit # if specific"
+    },
+    "WPG": {
+      "name": "White Pines Block G",
+      "type": "residential_block",
+      "notes": "Append unit # if specific"
+    },
+    "WPH": {
+      "name": "White Pines Block H",
+      "type": "residential_block",
+      "notes": "Append unit # if specific (e.g., WPH1)"
+    },
+    "WPI": {
+      "name": "White Pines Infrastructure",
+      "type": "infrastructure",
+      "notes": "Roads, pipes, shared site work"
+    },
+    "PARK": {
+      "name": "Park St. Renovation",
+      "type": "renovation",
+      "notes": "Main 160 Park St. renovation work"
+    },
+    "PARKAPT": {
+      "name": "Park St. Apartment Reno",
+      "type": "renovation",
+      "notes": "Apartment unit reno at 160 Park St."
+    },
+    "JMOP": {
+      "name": "JMRC Operations",
+      "type": "overhead",
+      "notes": "General overhead — office, shop, company-use tools, etc."
+    },
+    "RTL": {
+      "name": "Robins Interiors & Design",
+      "type": "retail",
+      "notes": "Resale purchases ONLY — not for project use"
+    }
+  },
+  "keyword_match_hints": {
+    "white pines block a": "WPA",
+    "white pines block b": "WPB",
+    "white pines block c": "WPC",
+    "white pines block d": "WPD",
+    "white pines block e": "WPE",
+    "white pines block f": "WPF",
+    "white pines block g": "WPG",
+    "white pines block h": "WPH",
+    "white pines infrastructure": "WPI",
+    "roads": "WPI",
+    "shared site": "WPI",
+    "park st": "PARK",
+    "park street": "PARK",
+    "park apartment": "PARKAPT",
+    "park apt": "PARKAPT",
+    "office": "JMOP",
+    "shop": "JMOP",
+    "general overhead": "JMOP",
+    "company use": "JMOP",
+    "company vehicle": "JMOP",
+    "retail": "RTL",
+    "showroom": "RTL",
+    "robins interiors": "RTL",
+    "resale": "RTL"
+  },
+  "rules": [
+    "RTL is for inventory bought for resale ONLY. Materials installed on a job site use the project's code (WPA-WPH, PARK, etc.).",
+    "If a White Pines purchase covers multiple blocks or shared infrastructure, use WPI.",
+    "Append the unit number to White Pines block codes when known (e.g., WPH3) — improves cost-tracking granularity.",
+    "If a purchase is for a project not on this list, contact Susan (Accounting) before finalizing — a new project code may need to be assigned."
+  ]
+}

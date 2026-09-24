@@ -2,6 +2,8 @@
 # - App-launcher landing page (static) lives at the site root
 # - Cabinet Designer (Vite + React) builds into /cabinet-designer/
 # - Aline Cabinet Designer builds into /aline-designer/
+# - Vendor Orders builds into /vendor-orders/; its API is a Netlify Function
+#   (netlify/functions/vendor-orders-api) served at /api/vendor-orders/*
 
 [build]
   publish = "_site"
@@ -9,6 +11,17 @@
 
 [build.environment]
   NODE_VERSION = "20"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Vendor Orders API → Netlify Function (must come before the SPA fallbacks)
+[[redirects]]
+  from = "/api/vendor-orders/*"
+  to = "/.netlify/functions/vendor-orders-api/:splat"
+  status = 200
+  force = true
 
 # Cabinet Designer (OPPEIN) SPA fallback
 [[redirects]]
@@ -20,6 +33,12 @@
 [[redirects]]
   from = "/aline-designer/*"
   to = "/aline-designer/index.html"
+  status = 200
+
+# Vendor Orders SPA fallback
+[[redirects]]
+  from = "/vendor-orders/*"
+  to = "/vendor-orders/index.html"
   status = 200
 
 # Production context
