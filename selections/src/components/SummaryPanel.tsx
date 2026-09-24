@@ -1,9 +1,11 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useStore } from "../store";
 import { useCloud } from "../cloud";
 import { computeLines, computeTotals, formatCAD } from "../utils/pricing";
 
 // Right pane: project details, running selection list, and the pricing rollup.
+// On phones it collapses to a bar (count + total) that opens as a bottom sheet,
+// so the finish cards get the screen.
 export function SummaryPanel() {
   const catalog = useStore((s) => s.catalog);
   const project = useStore((s) => s.project);
@@ -16,9 +18,18 @@ export function SummaryPanel() {
 
   const lines = useMemo(() => computeLines(project, catalog), [project, catalog]);
   const totals = useMemo(() => computeTotals(lines, project), [lines, project]);
+  const [open, setOpen] = useState(false);
 
   return (
-    <aside className="summary">
+    <aside className={"summary" + (open ? " is-open" : "")}>
+      <button type="button" className="summary-bar" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
+        <span className="summary-bar-count">
+          {lines.length} selection{lines.length === 1 ? "" : "s"}
+        </span>
+        <strong>{formatCAD(totals.total)}</strong>
+        <span className="summary-bar-hint">{open ? "Hide ▾" : "Details ▴"}</span>
+      </button>
+      <div className="summary-body">
       <section>
         <h3>Project</h3>
         <div className="fields">
@@ -128,6 +139,7 @@ export function SummaryPanel() {
           </div>
         </div>
       </section>
+      </div>
     </aside>
   );
 }
