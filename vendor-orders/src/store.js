@@ -1,7 +1,6 @@
 // Data layer. `remoteStore` talks to the Vendor Orders API (shared Postgres queue).
 // `demoStore` mirrors the same calls in this browser's localStorage so the tool
 // can be reviewed on a deployment that has no database / sign-in configured yet.
-import { getIdToken } from "./auth.js";
 import {
   isPurchaser,
   canModifyLine,
@@ -11,6 +10,22 @@ import {
 } from "./rules.js";
 
 const API = "/api/vendor-orders/";
+const SESSION_KEY = "rid_vo_user";
+
+// Who is signed in on this device (honour system — just a name).
+export function savedUser() {
+  try {
+    return JSON.parse(localStorage.getItem(SESSION_KEY) || "null");
+  } catch {
+    return null;
+  }
+}
+export function saveUser(u) {
+  try {
+    if (u) localStorage.setItem(SESSION_KEY, JSON.stringify({ id: u.id, name: u.name }));
+    else localStorage.removeItem(SESSION_KEY);
+  } catch {}
+}
 
 export async function fetchConfig() {
   try {
@@ -24,17 +39,16 @@ export async function fetchConfig() {
 
 /* ------------------------------ remote ------------------------------ */
 
-async function call(method, path, body, retried = false) {
-  const token = await getIdToken(retried);
+async function call(method, path, body) {
+  const u = savedUser();
   const r = await fetch(API + path, {
     method,
     headers: {
-      authorization: "Bearer " + token,
+      ...(u ? { "x-user-id": u.id } : {}),
       ...(body ? { "content-type": "application/json" } : {}),
     },
     body: body ? JSON.stringify(body) : undefined,
   });
-  if (r.status === 401 && !retried) return call(method, path, body, true);
   const data = await r.json().catch(() => ({}));
   if (!r.ok) {
     const e = new Error(data.error || "Request failed (" + r.status + ")");
@@ -46,6 +60,8 @@ async function call(method, path, body, retried = false) {
 
 export const remoteStore = {
   mode: "live",
+  login: (name) => call("POST", "login", { name }).then((r) => r.me),
+  names: () => call("GET", "names").then((r) => r.names),
   load: () => call("GET", "bootstrap"),
   createOrder: (order) => call("POST", "orders", order),
   patchOrder: (id, patch) => call("PATCH", "orders/" + id, patch),
@@ -120,6 +136,11 @@ function fail(msg) {
 
 export const demoStore = {
   mode: "demo",
+  login: demo((s, name) => {
+    s.me.name = name.trim().replace(/\s+/g, " ");
+    return clone(s.me);
+  }),
+  names: demo((s) => [s.me.name]),
   load: demo((s) => clone({ ...s, orders: [...s.orders].reverse() })),
   // Demo only: lets a reviewer try both roles. Live roles come from the server.
   setDemoIdentity: demo((s, name, role) => {

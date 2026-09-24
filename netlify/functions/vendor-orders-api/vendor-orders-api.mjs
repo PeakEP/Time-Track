@@ -1,8 +1,8 @@
 // Vendor Orders API (Netlify Function). Mounted at /api/vendor-orders/* via netlify.toml.
-// Every route except /config requires a verified Microsoft 365 sign-in; every
-// Purchaser-only route checks the role stored in app_users, never a client flag.
+// Sign-in is by name only (honour system): POST /login returns the user's id,
+// which the browser sends back as X-User-Id. Roles live in app_users and are
+// checked here on every Purchaser-only route, never taken from the client.
 import { getSql, ensureSchema, databaseUrl, DEFAULT_CUTOFFS } from "./db.mjs";
-import { authConfig, verifyMicrosoftToken } from "./auth.mjs";
 import COST_SEED from "../../../vendor-orders/seed/cost_codes.json" with { type: "json" };
 import {
   isPurchaser,
@@ -28,8 +28,8 @@ const json = (body, status = 200) =>
     headers: { "content-type": "application/json", "cache-control": "no-store" },
   });
 
-function purchaserEmails() {
-  return (process.env.PURCHASER_EMAILS || "")
+function purchaserNames() {
+  return (process.env.PURCHASER_NAMES || "")
     .split(",")
     .map((s) => s.trim().toLowerCase())
     .filter(Boolean);
@@ -76,7 +76,6 @@ function mapOrder(r) {
 }
 const mapUser = (u) => ({
   id: u.id,
-  email: u.email,
   name: u.display_name,
   role: u.role,
   active: u.active,
@@ -154,17 +153,37 @@ function requirePurchaser(user) {
 }
 const isUuid = (s) => /^[0-9a-f-]{36}$/i.test(s);
 
-async function upsertUser(sql, ident) {
-  const forcePurchaser = purchaserEmails().includes(ident.email);
-  const [u] = await sql`
-    INSERT INTO app_users (m365_oid, email, display_name, role)
-    VALUES (${ident.oid}, ${ident.email}, ${ident.name}, ${forcePurchaser ? "purchaser" : "sales_rep"})
-    ON CONFLICT (m365_oid) DO UPDATE SET
-      email = EXCLUDED.email,
-      display_name = EXCLUDED.display_name,
-      role = CASE WHEN ${forcePurchaser} THEN 'purchaser' ELSE app_users.role END,
-      updated_at = now()
-    RETURNING *`;
+function cleanName(v) {
+  return str(v, 80).replace(/\s+/g, " ");
+}
+
+// Find-or-create by name. The first person ever to sign in, and anyone listed in
+// PURCHASER_NAMES, is a Purchaser so someone can always manage roles.
+async function loginUser(sql, body) {
+  const name = cleanName(body.name);
+  if (name.length < 2) throw bad("Enter your full name");
+  const forcePurchaser = purchaserNames().includes(name.toLowerCase());
+  return sql.begin(async (tx) => {
+    await tx`LOCK TABLE app_users IN SHARE ROW EXCLUSIVE MODE`;
+    let [u] = await tx`SELECT * FROM app_users WHERE lower(display_name) = lower(${name})`;
+    if (!u) {
+      const [{ n }] = await tx`SELECT count(*)::int AS n FROM app_users`;
+      const role = forcePurchaser || n === 0 ? "purchaser" : "sales_rep";
+      [u] = await tx`INSERT INTO app_users (display_name, role) VALUES (${name}, ${role}) RETURNING *`;
+    } else if (forcePurchaser && u.role !== "purchaser") {
+      [u] = await tx`UPDATE app_users SET role = 'purchaser', updated_at = now() WHERE id = ${u.id} RETURNING *`;
+    }
+    if (!u.active) throw new HttpError(403, "That name has been deactivated. Ask a Purchaser.");
+    return mapUser(u);
+  });
+}
+
+async function currentUser(sql, req) {
+  const id = req.headers.get("x-user-id") || "";
+  if (!isUuid(id)) throw new HttpError(401, "Sign in with your name");
+  const [u] = await sql`SELECT * FROM app_users WHERE id = ${id}`;
+  if (!u) throw new HttpError(401, "Sign in with your name");
+  if (!u.active) throw new HttpError(403, "Your name has been deactivated. Ask a Purchaser.");
   return u;
 }
 
@@ -434,38 +453,26 @@ export function routePath(url) {
   return (m ? m[1] : "").replace(/\/+$/, "");
 }
 
-export function createHandler({ verify = verifyMicrosoftToken } = {}) {
+export function createHandler() {
   return async function handler(req) {
     const path = routePath(req.url);
     const method = req.method;
-    const auth = authConfig();
-    const configured = { db: !!databaseUrl(), auth: !!(auth.clientId && auth.tenantId) };
+    const live = !!databaseUrl();
 
     try {
-      if (path === "config" && method === "GET") {
-        return json({
-          live: configured.db && configured.auth,
-          configured,
-          clientId: auth.clientId,
-          tenantId: auth.tenantId,
-        });
-      }
-      if (!configured.db || !configured.auth)
-        throw new HttpError(503, "Vendor Orders is not configured on this deployment yet.");
-
-      const token = (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
-      if (!token) throw new HttpError(401, "Sign in required");
-      let ident;
-      try {
-        ident = await verify(token);
-      } catch {
-        throw new HttpError(401, "Your sign-in has expired — please sign in again");
-      }
+      if (path === "config" && method === "GET") return json({ live });
+      if (!live) throw new HttpError(503, "Vendor Orders is not configured on this deployment yet.");
 
       await ensureSchema();
       const sql = getSql();
-      const user = await upsertUser(sql, ident);
-      if (!user.active) throw new HttpError(403, "Your account has been deactivated. Ask a Purchaser.");
+      if (method === "POST" && path === "login") {
+        return json({ me: await loginUser(sql, await req.json().catch(() => ({}))) });
+      }
+      if (method === "GET" && path === "names") {
+        const rows = await sql`SELECT display_name FROM app_users WHERE active ORDER BY display_name`;
+        return json({ names: rows.map((r) => r.display_name) });
+      }
+      const user = await currentUser(sql, req);
 
       const body = ["POST", "PUT", "PATCH", "DELETE"].includes(method)
         ? await req.json().catch(() => ({}))

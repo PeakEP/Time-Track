@@ -43,14 +43,14 @@ const DEFAULT_VENDORS = [
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS app_users (
   id            uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  m365_oid      text UNIQUE NOT NULL,
-  email         text UNIQUE NOT NULL,
   display_name  text NOT NULL,
   role          text NOT NULL DEFAULT 'sales_rep' CHECK (role IN ('sales_rep','purchaser')),
   active        boolean NOT NULL DEFAULT true,
   created_at    timestamptz NOT NULL DEFAULT now(),
   updated_at    timestamptz NOT NULL DEFAULT now()
 );
+-- Name sign-in: one account per name, case-insensitive.
+CREATE UNIQUE INDEX IF NOT EXISTS idx_app_users_name ON app_users (lower(display_name));
 CREATE TABLE IF NOT EXISTS vendors (
   id         uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   name       text UNIQUE NOT NULL,

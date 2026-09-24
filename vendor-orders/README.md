@@ -14,34 +14,32 @@ Netlify + Vite, so the module is built this way instead:
 | Next.js route `/tools/vendor-orders` | Vite app → `/vendor-orders/` (same pattern as the other two tools) |
 | Next.js API routes | One Netlify Function, `netlify/functions/vendor-orders-api/`, at `/api/vendor-orders/*` |
 | Postgres + `schema.sql` | Any Postgres through `DATABASE_URL` (Netlify DB / Neon works). The function creates its tables and seeds vendors, cutoffs and cost codes on first use (`db.mjs`) |
-| NextAuth + Entra ID | MSAL in the browser. The function verifies the Microsoft ID token (signature, audience, tenant) on every request. No client secret is needed |
+| NextAuth + Entra ID (M365) | **Dropped for now.** People sign in by typing their name, an honour system like the prototype. Roles are stored on the server, not chosen by the user |
 | `claude.use('downloads')` | A normal browser CSV download (`buildCSV`, ported as-is) |
-| localStorage name/role modal | Removed. Name comes from M365, and the role is stored in `app_users` |
+| localStorage name/role modal | Kept the name part. The role picker was removed, and roles live in `app_users` |
 
 ## Turning it on (one-time)
 
-Until these are set, the page runs in **demo mode**: the full UI works, but data lives only
-in that browser. A banner says so.
+Until a database is connected, the page runs in **demo mode**: the full UI works, but data
+lives only in that browser. A banner says so.
 
 1. **Database.** In Netlify, enable Netlify DB, or set `DATABASE_URL` to any Postgres 13+
    connection string. No migration step is needed.
-2. **Microsoft 365 app registration** (Entra admin center → App registrations → New):
-   - Supported account types: *this organizational directory only*.
-   - Platform: **Single-page application**. Redirect URI:
-     `https://<your-site>/vendor-orders/`. Add one per domain, e.g. the production domain
-     plus any deploy preview you want to test. Entra doesn't accept wildcards here.
-   - Copy the **Application (client) ID** and **Directory (tenant) ID**.
-3. **Netlify environment variables:**
+2. Optional: set `PURCHASER_NAMES` to a comma-separated list of names that are always
+   Purchasers, e.g. `Michael Robins`.
+3. Redeploy.
 
-   | Variable | Value |
-   |---|---|
-   | `MS_CLIENT_ID` | Application (client) ID |
-   | `MS_TENANT_ID` | Directory (tenant) ID. Must be the GUID, not the domain |
-   | `DATABASE_URL` | Postgres connection string. Not needed if you use Netlify DB (`NETLIFY_DATABASE_URL`) |
-   | `PURCHASER_EMAILS` | Comma-separated M365 emails that are always Purchasers, e.g. `michael@robinsinvestments.com` |
+## Signing in
 
-4. Redeploy. Staff sign in with their work accounts and start as **Sales rep**. Purchasers
-   promote others under **Settings → Team & roles**.
+People type their name, and the device remembers it ("switch user" changes it). Names are
+matched without regard to capitals or extra spaces, so "mike robins" and "Mike Robins" are
+the same person. New names start as **Sales rep**. The **first name ever to sign in**
+becomes a Purchaser, so someone can always promote others under **Settings → Team &
+roles**. Purchasers can also deactivate a name.
+
+There is no password. Anyone with the link can use the tool under any name. Roles can't be
+self-assigned, but a person could type a Purchaser's name. If that ever matters,
+Microsoft 365 sign-in can go back in (see git history).
 
 ## Roles (enforced server-side in `src/rules.js` + the function)
 
@@ -84,8 +82,8 @@ To run the UI against the real API locally, use `netlify dev`. Vite proxies `/ap
 
 ## Still open (from the brief)
 
-1. Role source: this uses the `role` column plus `PURCHASER_EMAILS`. An Entra security group
-   could replace it later.
+1. Sign-in is name-only for now (no passwords). Microsoft 365 sign-in was built and then
+   removed at Mike's request. It can be restored if needed.
 2. Vendor categories (Tosca, Marathon, Avide, Richmond, MSI, Sarana, Agua, Maxxmar,
    Dainolite) were partly assumed. They can be fixed in Settings.
 3. Job code is still free text. Linking it to a shared job list is a later step.

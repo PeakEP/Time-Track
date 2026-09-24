@@ -8,17 +8,13 @@ const DB = process.env.TEST_DATABASE_URL;
 const skip = !DB && "TEST_DATABASE_URL not set";
 
 let handler, sql;
-const USERS = {
-  mike: { oid: "oid-mike", email: "mike@example.com", name: "Mike Robins" },
-  rep: { oid: "oid-rep", email: "rep@example.com", name: "Rita Rep" },
-  rep2: { oid: "oid-rep2", email: "rep2@example.com", name: "Sam Rep" },
-};
+const IDS = {}; // name key -> user id, filled by login
 
 async function call(who, method, path, body) {
   const res = await handler(
     new Request("https://x.test/api/vendor-orders/" + path, {
       method,
-      headers: { authorization: who ? "Bearer " + who : "", "content-type": "application/json" },
+      headers: { "x-user-id": (who && (IDS[who] || who)) || "", "content-type": "application/json" },
       body: body ? JSON.stringify(body) : undefined,
     }),
   );
@@ -27,19 +23,12 @@ async function call(who, method, path, body) {
 
 before(async () => {
   if (skip) return;
-  Object.assign(process.env, {
-    DATABASE_URL: DB, MS_CLIENT_ID: "client", MS_TENANT_ID: "tenant", PURCHASER_EMAILS: "mike@example.com",
-  });
+  Object.assign(process.env, { DATABASE_URL: DB, PURCHASER_NAMES: "Mike Robins" });
   const mod = await import("../../netlify/functions/vendor-orders-api/vendor-orders-api.mjs");
   const db = await import("../../netlify/functions/vendor-orders-api/db.mjs");
   sql = db.getSql();
   await sql.unsafe("DROP TABLE IF EXISTS order_events, orders, cost_codes, cutoffs, vendors, app_users CASCADE");
-  handler = mod.createHandler({
-    verify: async (t) => {
-      if (!USERS[t]) throw new Error("bad token");
-      return USERS[t];
-    },
-  });
+  handler = mod.createHandler();
 });
 after(async () => { if (sql) await sql.end(); });
 
@@ -49,12 +38,23 @@ test("config is public and reports live", { skip }, async () => {
   const r = await call(null, "GET", "config");
   assert.equal(r.status, 200);
   assert.equal(r.body.live, true);
-  assert.equal(r.body.clientId, "client");
 });
 
-test("auth required and bad tokens rejected", { skip }, async () => {
+test("name login: first user is Purchaser, names are case-insensitive", { skip }, async () => {
   assert.equal((await call(null, "GET", "bootstrap")).status, 401);
-  assert.equal((await call("nope", "GET", "bootstrap")).status, 401);
+  assert.equal((await call("00000000-0000-0000-0000-000000000000", "GET", "bootstrap")).status, 401);
+  assert.equal((await call(null, "POST", "login", { name: " " })).status, 400);
+  const first = await call(null, "POST", "login", { name: "Rita  Rep" });
+  assert.equal(first.body.me.role, "purchaser"); // first ever sign-in
+  assert.equal(first.body.me.name, "Rita Rep");
+  const again = await call(null, "POST", "login", { name: "rita rep" });
+  assert.equal(again.body.me.id, first.body.me.id);
+  IDS.rep = first.body.me.id;
+  IDS.mike = (await call(null, "POST", "login", { name: "Mike Robins" })).body.me.id; // PURCHASER_NAMES
+  IDS.rep2 = (await call(null, "POST", "login", { name: "Sam Rep" })).body.me.id;
+  assert.deepEqual((await call(null, "GET", "names")).body.names, ["Mike Robins", "Rita Rep", "Sam Rep"]);
+  // demote Rita to a rep for the rest of the suite
+  assert.equal((await call("mike", "PATCH", "users/" + IDS.rep, { role: "sales_rep" })).status, 200);
 });
 
 test("bootstrap seeds vendors/cutoffs and assigns roles", { skip }, async () => {
@@ -65,7 +65,6 @@ test("bootstrap seeds vendors/cutoffs and assigns roles", { skip }, async () => 
   assert.deepEqual(m.body.cutoffs.map((c) => c.cutoff), ["10:00", "10:00"]);
   const r = await call("rep", "GET", "bootstrap");
   assert.equal(r.body.me.role, "sales_rep");
-  await call("rep2", "GET", "bootstrap");
 });
 
 test("full cycle: add → approve → mark ordered → receive", { skip }, async () => {
@@ -140,11 +139,12 @@ test("cutoffs, vendors and team roles are purchaser-only", { skip }, async () =>
 
   const users = (await call("mike", "GET", "users")).body.users;
   assert.equal((await call("rep", "GET", "users")).status, 403);
-  const me = users.find((u) => u.email === "mike@example.com");
+  const me = users.find((u) => u.name === "Mike Robins");
   assert.equal((await call("mike", "PATCH", "users/" + me.id, { role: "sales_rep" })).status, 400);
-  const rep2 = users.find((u) => u.email === "rep2@example.com");
+  const rep2 = users.find((u) => u.name === "Sam Rep");
   assert.equal((await call("mike", "PATCH", "users/" + rep2.id, { active: false })).status, 200);
   assert.equal((await call("rep2", "GET", "bootstrap")).status, 403);
+  assert.equal((await call(null, "POST", "login", { name: "Sam Rep" })).status, 403);
 });
 
 test("clear history and reset need purchaser + typed phrase", { skip }, async () => {

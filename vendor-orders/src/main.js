@@ -1,13 +1,13 @@
 // Vendor Order Consolidation — UI. Ported from docs/artifact-reference.html:
-// same views, workflow and markup; storage/identity swapped for the API + M365.
+// same views, workflow and markup; storage swapped for the API, and the
+// honour-system name sign-in kept (roles are held on the server).
 import "./styles.css";
 import {
   COST, UNITS, STATUSES, esc, money, lineTotal, suggestCoa, nextCutoff, fmtCountdown, fmtDate,
   localDate, todayStr, buildCSV,
 } from "./logic.js";
 import { isPurchaser as isPurchaserUser, canModifyLine, CLEAR_HISTORY_PHRASE, RESET_ALL_PHRASE } from "./rules.js";
-import { fetchConfig, remoteStore, demoStore } from "./store.js";
-import { initAuth, signIn, signOut } from "./auth.js";
+import { fetchConfig, remoteStore, demoStore, savedUser, saveUser } from "./store.js";
 
 const POLL_MS = 30000;
 
@@ -70,6 +70,7 @@ async function refresh() {
     applyData(await store.load());
     state = "ready";
   } catch (e) {
+    if (e.status === 401) return signedOut();
     if (state !== "ready") {
       state = "error";
       errMsg = e.message;
@@ -86,12 +87,44 @@ async function act(promise, okMsg) {
     return r || true;
   } catch (e) {
     toast(e.message || "Save failed");
-    if (e.status === 403 || e.status === 404) {
+    if (e.status === 401) {
+      signedOut();
+      render();
+    } else if (e.status === 403 || e.status === 404) {
       await refresh();
       render();
     }
     return false;
   }
+}
+function signedOut() {
+  saveUser(null);
+  ME = null;
+  state = "signin";
+}
+async function signIn() {
+  const inp = $("si_name");
+  const name = inp.value.trim().replace(/\s+/g, " ");
+  if (name.length < 2) {
+    toast("Enter your full name");
+    inp.focus();
+    return;
+  }
+  $("si_go").disabled = true;
+  try {
+    const me = await store.login(name);
+    saveUser(me);
+    state = "connecting";
+    view = "dashboard";
+    await refresh();
+  } catch (e) {
+    toast(e.message);
+  }
+  render();
+}
+function switchUser() {
+  signedOut();
+  render();
 }
 function vendorLines(name, status) {
   return ORDERS.filter((o) => o.vendor === name && (!status || o.status === status));
@@ -144,7 +177,7 @@ function renderWho() {
       <option value="sales_rep" ${ME.role === "sales_rep" ? "selected" : ""}>Sales rep</option>
       <option value="purchaser" ${ME.role === "purchaser" ? "selected" : ""}>Purchaser</option></select></span>`;
   } else {
-    second += ` <button class="btn sm ghost" data-action="signOut" style="padding:1px 6px">sign out</button>`;
+    second += ` <button class="btn sm ghost" data-action="switchUser" style="padding:1px 6px">switch user</button>`;
   }
   w.innerHTML = `<div><b>${esc(ME.name)}</b></div><div>${second}</div>`;
 }
@@ -166,7 +199,7 @@ function renderSync() {
 function renderBanner() {
   let h = "";
   if (store && store.mode === "demo")
-    h += `<div class="banner info"><b>Demo mode.</b> Microsoft 365 sign-in and the shared database aren't configured on this deployment yet, so entries are saved <b>only in this browser</b> and aren't shared with the team. Use the role picker (top right) to try the Sales rep and Purchaser views.</div>`;
+    h += `<div class="banner info"><b>Demo mode.</b> The shared database isn't connected on this deployment yet, so entries are saved <b>only in this browser</b> and aren't shared with the team. Use the role picker (top right) to try the Sales rep and Purchaser views.</div>`;
   $("statusBanner").innerHTML = h;
 }
 function renderTabs() {
@@ -181,11 +214,21 @@ function renderTabs() {
     .join("");
 }
 function renderSignIn() {
+  const last = savedUser();
   renderApp(`<div class="card signin">
-    <h2>Sign in to Vendor Orders</h2>
-    <p>Use your Robins / Microsoft 365 work account. Your name tags every order you add, and your role (Sales rep or Purchaser) is set by the purchasing team.</p>
-    <button class="btn primary ms-btn" data-action="signIn"><span class="ms-logo"><i style="background:#f25022"></i><i style="background:#7fba00"></i><i style="background:#00a4ef"></i><i style="background:#ffb900"></i></span>Sign in with Microsoft</button>
+    <h2>Who's ordering?</h2>
+    <p>Enter your name. It tags every order you add and is remembered on this device. Your role (Sales rep or Purchaser) is set by the purchasing team.</p>
+    <div class="fld" style="text-align:left;margin-bottom:14px"><label for="si_name">Your name</label>
+      <input id="si_name" list="si_names" placeholder="First Last" autocomplete="name" value="${esc((last && last.name) || "")}"></div>
+    <datalist id="si_names"></datalist>
+    <button class="btn primary" id="si_go" data-action="signIn">Continue</button>
   </div>`);
+  $("si_name").focus();
+  $("si_name").onkeydown = (e) => e.key === "Enter" && signIn();
+  store.names().then((names) => {
+    const dl = $("si_names");
+    if (dl) dl.innerHTML = names.map((n) => `<option value="${esc(n)}"></option>`).join("");
+  }, () => {});
 }
 
 function renderDashboard() {
@@ -448,12 +491,12 @@ function renderSettings() {
   // Team
   h += `<div class="section-title"><h2>Team &amp; roles</h2><span class="rule"></span></div>
    <div class="card" style="padding:20px">
-   <p class="muted small" style="margin-top:0">Everyone who has signed in with Microsoft 365. New people start as <b>Sales rep</b>; promote Purchasers here.</p>`;
+   <p class="muted small" style="margin-top:0">Everyone who has signed in. New names start as <b>Sales rep</b>; promote Purchasers here. Deactivate a name to block it from signing in.</p>`;
   if (!USERS) h += `<div class="muted small">Loading team…</div>`;
   else {
-    h += `<div class="tbl-wrap"><table style="min-width:560px"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Access</th></tr></thead><tbody>`;
+    h += `<div class="tbl-wrap"><table style="min-width:560px"><thead><tr><th>Name</th><th>Role</th><th>Access</th></tr></thead><tbody>`;
     for (const u of USERS) {
-      h += `<tr class="${u.active ? "" : "inactive"}"><td><b>${esc(u.name)}</b>${u.id === ME.id ? ' <span class="muted small">(you)</span>' : ""}</td><td class="small">${esc(u.email)}</td>
+      h += `<tr class="${u.active ? "" : "inactive"}"><td><b>${esc(u.name)}</b>${u.id === ME.id ? ' <span class="muted small">(you)</span>' : ""}</td>
         <td><select data-user-role="${u.id}"><option value="sales_rep" ${u.role === "sales_rep" ? "selected" : ""}>Sales rep</option><option value="purchaser" ${u.role === "purchaser" ? "selected" : ""}>Purchaser</option></select></td>
         <td><button class="btn sm ghost" data-action="toggleUser" data-id="${u.id}">${u.active ? "Deactivate" : "Reactivate"}</button></td></tr>`;
     }
@@ -743,8 +786,7 @@ document.addEventListener("click", (e) => {
   }
   ({
     submitOrder, closeModal, saveSchedule, addVendor,
-    signIn: () => signIn(),
-    signOut: () => signOut(),
+    signIn, switchUser,
     reload: () => location.reload(),
     clearForm: () => renderAddForm(),
     edit: () => edit(id),
@@ -844,18 +886,10 @@ async function boot() {
     store = demoStore;
   } else {
     store = remoteStore;
-    let account = null;
-    try {
-      account = await initAuth(cfg);
-    } catch (e) {
-      state = "error";
-      errMsg = "Microsoft sign-in failed: " + e.message;
-      return render();
-    }
-    if (!account) {
-      state = "signin";
-      return render();
-    }
+  }
+  if (!savedUser()) {
+    state = "signin";
+    return render();
   }
   await refresh();
   render();

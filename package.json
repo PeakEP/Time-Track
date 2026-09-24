@@ -7,7 +7,6 @@
     "test:vendor-orders": "node --test vendor-orders/tests/*.test.mjs"
   },
   "dependencies": {
-    "jose": "^6.2.12",
     "postgres": "^3.4.9"
   }
 }

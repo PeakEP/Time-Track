@@ -140,9 +140,6 @@ tfoot td{font-weight:700;background:var(--surface)!important;border-top:2px soli
 .signin h2{color:var(--indigo);font-size:19px;margin-bottom:8px}
 :root[data-theme="dark"] .signin h2,:root:not([data-theme="light"]) .signin h2{color:#9db4ff}
 .signin p{color:var(--text-2);font-size:13px;margin:0 0 18px}
-.ms-btn{display:inline-flex;align-items:center;gap:10px}
-.ms-logo{display:grid;grid-template-columns:8px 8px;gap:2px}
-.ms-logo i{width:8px;height:8px;display:block}
 .danger-zone{border-color:var(--danger)}
 .btn.danger{color:var(--danger);border-color:var(--danger);background:transparent}
 .btn.danger:hover{background:rgba(178,59,59,.08)}
