@@ -439,9 +439,15 @@ h3 {
   background: var(--panel);
   padding: 16px;
   overflow-y: auto;
+}
+.summary-body {
   display: flex;
   flex-direction: column;
   gap: 18px;
+}
+/* Phone-only summary bar (see the max-width: 900px rules). */
+.summary-bar {
+  display: none;
 }
 .summary h3 {
   font-size: 15px;
@@ -671,22 +677,115 @@ h3 {
     grid-template-columns: 190px 1fr 300px;
   }
 }
+/* Phones and small tablets: categories become one swipeable row, the finish
+   cards get the rest of the screen, and the summary is a bar at the bottom
+   that opens as a sheet. */
 @media (max-width: 900px) {
-  body {
-    overflow: auto;
-  }
   .workspace {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
   }
   .catnav {
+    flex: none;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 6px;
+    padding: 8px 10px;
     border-right: none;
     border-bottom: 1px solid var(--line);
+    scrollbar-width: none;
+  }
+  .catnav::-webkit-scrollbar {
+    display: none;
+  }
+  .catnav-row {
+    flex: none;
+    white-space: nowrap;
+    padding: 7px 12px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+  }
+  .catnav-row.active {
+    box-shadow: none;
+    border-color: var(--cyan);
+    background: var(--panel-2);
+  }
+  .options {
+    flex: 1;
+    min-height: 0;
+    padding: 14px 14px 20px;
+  }
+  .options-head h2 {
+    font-size: 19px;
+  }
+  .card-grid {
+    gap: 12px;
   }
   .summary {
+    flex: none;
+    padding: 0;
+    overflow: visible;
     border-left: none;
     border-top: 1px solid var(--line);
+    box-shadow: 0 -4px 14px rgba(44, 50, 124, 0.08);
+  }
+  .summary-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 11px 16px;
+    border: none;
+    background: var(--panel);
+    color: var(--text);
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .summary-bar strong {
+    font-size: 15px;
+    color: var(--indigo);
+  }
+  .summary-bar-count {
+    color: var(--text-muted);
+  }
+  .summary-bar-hint {
+    margin-left: auto;
+    font-weight: 600;
+    color: var(--steel, var(--indigo));
+  }
+  .summary-body {
+    display: none;
+  }
+  /* Open: a sheet over the lower part of the screen. */
+  .summary.is-open {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    border-radius: 14px 14px 0 0;
+    box-shadow: 0 -10px 30px rgba(20, 22, 40, 0.25);
+    background: var(--panel);
+  }
+  .summary.is-open .summary-bar {
+    border-bottom: 1px solid var(--line);
+    border-radius: 14px 14px 0 0;
+  }
+  .summary.is-open .summary-body {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 16px;
+  }
+  .app-footer {
+    display: none;
   }
 }
 @media (max-width: 640px) {
