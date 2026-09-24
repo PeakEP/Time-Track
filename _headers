@@ -10,21 +10,18 @@
   # Content Security Policy (inline styles/scripts + Google Fonts for the apps)
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' https: data:; font-src 'self' https://fonts.gstatic.com data:;
 
-  # Cache control
-  Cache-Control: public, max-age=3600
-
-# Cache static assets longer
-/*.css
+# Caching: pages and other files keep Netlify's default (always re-check), so
+# an update shows up on the next load. Only the build's hashed bundles, whose
+# names change on every build, are cached long-term. (Pages used to be cached
+# for an hour, which kept serving the old version after a deploy.)
+/cabinet-designer/assets/*
   Cache-Control: public, max-age=31536000, immutable
 
-/*.js
+/aline-designer/assets/*
   Cache-Control: public, max-age=31536000, immutable
 
-/*.png
+/selections/assets/*
   Cache-Control: public, max-age=31536000, immutable
 
-/*.jpg
-  Cache-Control: public, max-age=31536000, immutable
-
-/*.svg
+/vendor-orders/assets/*
   Cache-Control: public, max-age=31536000, immutable
