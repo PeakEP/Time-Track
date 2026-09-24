@@ -5,6 +5,7 @@ set -euo pipefail
 # - App-launcher landing page (static index.html) at the site root.
 # - Cabinet Designer (OPPEIN catalog) → /cabinet-designer/
 # - Aline Cabinet Designer (ALINE catalog) → /aline-designer/
+# - Finish Selections (Robins Interiors & Design) → /selections/
 # - Vendor Orders (weekly vendor order consolidation) → /vendor-orders/
 #   Its API is a Netlify Function in netlify/functions/vendor-orders-api/.
 
@@ -37,6 +38,7 @@ build_vite_app() {
 
 build_vite_app cabinet-designer cabinet-designer
 build_vite_app aline-designer aline-designer
+build_vite_app selections selections
 build_vite_app vendor-orders vendor-orders
 
 echo "==> Build complete. Contents:"
