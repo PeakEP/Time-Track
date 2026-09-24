@@ -5,6 +5,7 @@ set -euo pipefail
 # - App-launcher landing page (static index.html) at the site root.
 # - Cabinet Designer (OPPEIN catalog) → /cabinet-designer/
 # - Aline Cabinet Designer (ALINE catalog) → /aline-designer/
+# - Finish Selections (Robins Interiors & Design) → /selections/
 # - Vendor Orders (weekly vendor order consolidation) → /vendor-orders/
 #   Its API is a Netlify Function in netlify/functions/vendor-orders-api/.
 
@@ -18,7 +19,7 @@ mkdir -p "${OUT_DIR}"
 echo "==> Copying landing page + static assets"
 cp "${ROOT_DIR}/index.html" "${OUT_DIR}/index.html"
 [[ -f "${ROOT_DIR}/_headers" ]] && cp "${ROOT_DIR}/_headers" "${OUT_DIR}/_headers"
-[[ -f "${ROOT_DIR}/_redirects" ]] && cp "${ROOT_DIR}/_redirects" "${OUT_DIR}/_redirects"
+# (Redirects are all in netlify.toml; there is intentionally no _redirects file.)
 
 build_vite_app() {
   local APP_DIR="$1"
@@ -37,6 +38,7 @@ build_vite_app() {
 
 build_vite_app cabinet-designer cabinet-designer
 build_vite_app aline-designer aline-designer
+build_vite_app selections selections
 build_vite_app vendor-orders vendor-orders
 
 echo "==> Build complete. Contents:"
