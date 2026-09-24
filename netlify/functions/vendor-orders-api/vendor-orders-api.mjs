@@ -9,7 +9,7 @@ import {
   newPin, hashPin, checkPin, newToken, hashToken, MAX_FAILED, LOCK_MINUTES, SESSION_DAYS,
 } from "../../shared/pins.mjs";
 import {
-  accessOf, canUse, needsSetup, publicUser, setupFirstAdmin, sessionCookie, clearCookie, tokenOf,
+  accessOf, canUse, ensureOwner, needsSetup, publicUser, setupFirstAdmin, sessionCookie, clearCookie, tokenOf,
   createStaff, resetStaffPin, updateStaff,
 } from "../../shared/accounts.mjs";
 import COST_SEED from "../../../vendor-orders/seed/cost_codes.json" with { type: "json" };
@@ -131,6 +131,7 @@ function loginUser(state, body) {
   const name = cleanName(body.name);
   const pin = str(body.pin, 12);
   if (!name || !pin) throw bad("Enter your name and PIN");
+  ensureOwner(state); // the Netlify-set owner sign-in, if any
   const u = state.users.find((x) => sameName(x.name, name));
   if (!u || !u.pinHash) throw new HttpError(401, LOGIN_FAILED);
   if (u.lockedUntil && new Date(u.lockedUntil) > new Date())

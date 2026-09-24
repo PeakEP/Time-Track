@@ -195,9 +195,10 @@
 
         function teamRow(u, meId) {
           const tags = [];
+          if (u.owner) tags.push(h("span", { className: "tag" }, "owner"));
           if (u.id === meId) tags.push(h("span", { className: "tag" }, "you"));
           if (!u.hasPin) tags.push(h("span", { className: "tag warn" }, "no PIN"));
-          return h("tr", { className: u.active ? "" : "off" },
+          const row = h("tr", { className: u.active ? "" : "off" },
             h("td", { className: "name" }, u.name, tags),
             h("td", { className: "c" }, box(u.active, (e) => save(u, { active: e.target.checked }), `${u.name} active`)),
             h("td", { className: "c" }, box(u.admin, (e) => save(u, { admin: e.target.checked }), `${u.name} admin`)),
@@ -217,6 +218,12 @@
               },
             }, "Reset PIN")),
           );
+          // The owner sign-in is set in Netlify; it always has everything.
+          if (u.owner) row.querySelectorAll("input, select, button").forEach((el) => {
+            el.disabled = true;
+            el.title = "The owner account is set in Netlify";
+          });
+          return row;
         }
 
         function clientRow(c) {

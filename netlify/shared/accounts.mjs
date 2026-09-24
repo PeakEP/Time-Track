@@ -7,7 +7,11 @@
 // Records made before per-app access existed get sensible defaults:
 // Purchasers become Admins, and everyone keeps their Vendor Orders role and
 // gets the other apps.
-import { addSession, findSession, hashPin, hashToken, newPin, SESSION_DAYS } from "./pins.mjs";
+import { addSession, checkPin, findSession, hashPin, hashToken, newPin, SESSION_DAYS } from "./pins.mjs";
+
+const httpError = (status, message) => Object.assign(new Error(message), { status });
+const cleanName = (v) => String(v == null ? "" : v).trim().replace(/\s+/g, " ").slice(0, 80);
+const sameName = (a, b) => a.toLowerCase() === b.toLowerCase();
 
 export const APPS = ["vendorOrders", "selections", "cabinet", "aline"];
 export const VO_ROLES = ["none", "sales_rep", "purchaser"];
@@ -48,11 +52,44 @@ export function canUse(u, app) {
   return v === true || (typeof v === "string" && v !== "none");
 }
 
-// Until an active Admin with a PIN exists, anyone may do first-time setup.
-export const needsSetup = (book) => !book.users.some((u) => u.active && u.pinHash && accessOf(u).admin);
+/* ------------------------------ owner ------------------------------ */
+
+// Master owner sign-in, set in Netlify (Site configuration → Environment
+// variables): OWNER_NAME and OWNER_PIN. Kept out of the code because the
+// repository is public. The owner is always an active Admin with every app,
+// and can't be changed or locked out of Suite Admin.
+export function ownerLogin(env = process.env) {
+  const name = cleanName(env.OWNER_NAME);
+  const pin = String(env.OWNER_PIN ?? "").trim();
+  return name.length >= 2 && /^\d{4,12}$/.test(pin) ? { name, pin } : null;
+}
+
+// Create or update the owner's record so it matches the Netlify settings.
+// Returns the record, or null when no owner is configured.
+export function ensureOwner(book, owner = ownerLogin()) {
+  if (!owner) return null;
+  let u = book.users.find((x) => sameName(x.name, owner.name)) || book.users.find((x) => x.owner);
+  if (!u) {
+    u = { id: crypto.randomUUID(), createdAt: new Date().toISOString() };
+    book.users.push(u);
+  }
+  for (const x of book.users) if (x !== u) delete x.owner;
+  Object.assign(u, { name: owner.name, owner: true, active: true });
+  setAccess(u, FULL_ACCESS);
+  if (!checkPin(owner.pin, u.pinHash)) Object.assign(u, { pinHash: hashPin(owner.pin), failedAttempts: 0, lockedUntil: "" });
+  return u;
+}
+
+const ownerLocked = (u) => {
+  if (u.owner && ownerLogin()) throw httpError(400, "The owner account is set in Netlify and can't be changed here.");
+};
+
+// Until an active Admin with a PIN exists (or an owner is set in Netlify),
+// anyone may do first-time setup.
+export const needsSetup = (book) => !ownerLogin() && !book.users.some((u) => u.active && u.pinHash && accessOf(u).admin);
 
 export function publicUser(u) {
-  return { id: u.id, name: u.name, active: u.active, hasPin: !!u.pinHash, role: u.role, ...accessOf(u) };
+  return { id: u.id, name: u.name, active: u.active, hasPin: !!u.pinHash, role: u.role, owner: !!u.owner, ...accessOf(u) };
 }
 
 /* ------------------------------ cookie ------------------------------ */
@@ -89,8 +126,6 @@ export const dropSession = (doc, token) => {
   doc.sessions = (doc.sessions || []).filter((s) => s.tokenHash !== h);
 };
 
-const httpError = (status, message) => Object.assign(new Error(message), { status });
-
 // First-time setup: the first person becomes an Admin with every app. Used by
 // the suite home page (and Vendor Orders' own setup screen).
 export function setupFirstAdmin(book, name) {
@@ -109,9 +144,6 @@ export function setupFirstAdmin(book, name) {
 }
 
 /* ------------------------------ team (Admins only) ------------------------------ */
-
-const cleanName = (v) => String(v == null ? "" : v).trim().replace(/\s+/g, " ").slice(0, 80);
-const sameName = (a, b) => a.toLowerCase() === b.toLowerCase();
 
 // Parse { admin, apps } from a request body, starting from `current`. A bare
 // { role } (older Vendor Orders screens) sets just the Vendor Orders role.
@@ -155,6 +187,7 @@ export function createStaff(book, body, clientNames = []) {
 export function resetStaffPin(book, id) {
   const u = book.users.find((x) => x.id === id);
   if (!u) throw httpError(404, "User not found");
+  ownerLocked(u);
   const pin = newPin();
   Object.assign(u, { pinHash: hashPin(pin), failedAttempts: 0, lockedUntil: "" });
   book.sessions = book.sessions.filter((s) => s.userId !== id); // signed out everywhere
@@ -166,6 +199,7 @@ export function resetStaffPin(book, id) {
 export function updateStaff(book, id, body) {
   const u = book.users.find((x) => x.id === id);
   if (!u) throw httpError(404, "User not found");
+  ownerLocked(u);
   const next = readAccess(body, accessOf(u));
   const active = "active" in body ? !!body.active : u.active;
   const others = book.users.filter((x) => x.id !== id && x.active);

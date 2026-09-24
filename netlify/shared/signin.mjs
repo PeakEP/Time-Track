@@ -3,7 +3,7 @@
 // Selections sign-ins). Each wrong PIN counts toward that account's lockout.
 import { mutate } from "./storage.mjs";
 import { attemptPin, addSession, newPin, hashPin, LOCK_MINUTES } from "./pins.mjs";
-import { accessOf, canUse } from "./accounts.mjs";
+import { accessOf, canUse, ensureOwner } from "./accounts.mjs";
 
 export const SEL_INDEX = { key: "index", init: () => ({ version: 1, customers: [], sessions: [], projects: [] }) };
 export const LOGIN_FAILED = "Name or PIN not recognised";
@@ -19,6 +19,7 @@ export async function signIn(stores, body, { app } = {}) {
   if (!name || !pin) throw httpError(400, "Enter your name and PIN");
 
   const staff = await mutate(stores.vo, (book) => {
+    ensureOwner(book); // the Netlify-set owner sign-in, if any
     const u = book.users.find((x) => sameName(x.name, name) && x.pinHash);
     if (!u) return null;
     const r = attemptPin(u, pin);

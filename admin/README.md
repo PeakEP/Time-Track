@@ -16,6 +16,19 @@ page (`/`), and Admins manage people and access on **Suite Admin** (`/admin/`).
 Signing in sets an HttpOnly cookie (`jmrc_session`, 30 days). Every app's API and the gate
 accept it, so nobody signs in twice.
 
+## Owner sign-in (set in Netlify)
+
+A master owner sign-in can be set in Netlify, under **Site configuration → Environment
+variables**: `OWNER_NAME` (e.g. `Robins`) and `OWNER_PIN` (4–12 digits). Redeploy after
+changing them. The owner:
+
+- signs in on the home page like anyone else, and is always an active Admin with every app;
+- works on a brand-new site (no first-time setup needed) and can't be changed, turned off
+  or reset from Suite Admin;
+- still gets the 5-wrong-PINs lockout.
+
+These values live only in Netlify, never in the code, because this repository is public.
+
 ## Access per person
 
 - **Admin**: can open Suite Admin. The last active Admin can't be removed or turned off.
