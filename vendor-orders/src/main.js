@@ -970,6 +970,7 @@ document.addEventListener("visibilitychange", () => !document.hidden && poll());
 
 /* ============================ BOOT ============================ */
 async function boot() {
+  $("buildId").textContent = "· build " + __BUILD_ID__;
   render();
   const cfg = await fetchConfig();
   // Demo only when the server says it isn't configured — never on a failed
