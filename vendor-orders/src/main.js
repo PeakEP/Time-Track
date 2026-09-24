@@ -1,6 +1,6 @@
 // Vendor Order Consolidation — UI. Ported from docs/artifact-reference.html:
-// same views, workflow and markup; storage swapped for the API, and the
-// honour-system name sign-in kept (roles are held on the server).
+// same views, workflow and markup; storage swapped for the API, and sign-in
+// is name + a PIN issued by a Purchaser (roles are held on the server).
 import "./styles.css";
 import {
   COST, UNITS, STATUSES, esc, money, lineTotal, suggestCoa, nextCutoff, fmtCountdown, fmtDate,
@@ -18,7 +18,7 @@ let VENDORS = []; // [{id,name,day,cat,active,sortOrder}]
 let DAYS = {}; // {tue:{label,weekday,cutoff,timezone}, ...}
 let ORDERS = [];
 let USERS = null;
-let state = "connecting"; // connecting | signin | ready | error
+let state = "connecting"; // connecting | setup | signin | ready | error
 let errMsg = "";
 let lastSync = null;
 let view = "dashboard",
@@ -97,32 +97,57 @@ async function act(promise, okMsg) {
     return false;
   }
 }
+// Keep the name on the device so the next sign-in only needs the PIN.
 function signedOut() {
-  saveUser(null);
+  const last = savedUser();
+  saveUser(last ? { name: last.name } : null);
   ME = null;
   state = "signin";
 }
+async function startSession(r) {
+  saveUser({ name: r.me.name, token: r.token });
+  state = "connecting";
+  view = "dashboard";
+  await refresh();
+}
 async function signIn() {
-  const inp = $("si_name");
-  const name = inp.value.trim().replace(/\s+/g, " ");
-  if (name.length < 2) {
-    toast("Enter your full name");
-    inp.focus();
-    return;
-  }
+  const name = $("si_name").value.trim().replace(/\s+/g, " ");
+  const pin = $("si_pin").value.trim();
+  if (name.length < 2) return toast("Enter your full name"), $("si_name").focus();
+  if (!pin) return toast("Enter your PIN"), $("si_pin").focus();
   $("si_go").disabled = true;
   try {
-    const me = await store.login(name);
-    saveUser(me);
-    state = "connecting";
-    view = "dashboard";
-    await refresh();
+    await startSession(await store.login(name, pin));
   } catch (e) {
     toast(e.message);
+    $("si_go").disabled = false;
+    $("si_pin").value = "";
+    $("si_pin").focus();
+    return;
   }
   render();
 }
-function switchUser() {
+async function setupFirst() {
+  const name = $("su_name").value.trim().replace(/\s+/g, " ");
+  if (name.length < 2) return toast("Enter your full name"), $("su_name").focus();
+  $("su_go").disabled = true;
+  try {
+    const r = await store.setup(name);
+    await startSession(r);
+    render();
+    openPinModal(r.me.name, r.pin, true);
+  } catch (e) {
+    toast(e.message);
+    if (e.status === 409) {
+      state = "signin";
+      render();
+    } else $("su_go").disabled = false;
+  }
+}
+async function switchUser() {
+  try {
+    await store.logout();
+  } catch (e) {}
   signedOut();
   render();
 }
@@ -145,6 +170,7 @@ function render() {
   renderSync();
   if (state === "connecting") return renderApp(`<div class="empty">Loading…</div>`);
   if (state === "signin") return renderSignIn();
+  if (state === "setup") return renderSetup();
   if (state === "error")
     return renderApp(`<div class="card"><div class="empty">Couldn't load the order queue: ${esc(errMsg)}<br><br><button class="btn" data-action="reload">Try again</button></div></div>`);
   if (view === "settings" && !isPurchaser()) view = "dashboard";
@@ -192,7 +218,7 @@ function renderSync() {
   } else if (state === "error") {
     text = "Sync error";
     color = "var(--danger)";
-  } else if (state === "signin") text = "Signed out";
+  } else if (state === "signin" || state === "setup") text = "Signed out";
   el.textContent = text;
   el.style.color = color;
 }
@@ -215,20 +241,29 @@ function renderTabs() {
 }
 function renderSignIn() {
   const last = savedUser();
+  const demoNote = store.mode === "demo" ? `<p class="small muted" style="margin:12px 0 0">Demo mode: any PIN works.</p>` : "";
   renderApp(`<div class="card signin">
-    <h2>Who's ordering?</h2>
-    <p>Enter your name. It tags every order you add and is remembered on this device. Your role (Sales rep or Purchaser) is set by the purchasing team.</p>
-    <div class="fld" style="text-align:left;margin-bottom:14px"><label for="si_name">Your name</label>
-      <input id="si_name" list="si_names" placeholder="First Last" autocomplete="name" value="${esc((last && last.name) || "")}"></div>
-    <datalist id="si_names"></datalist>
-    <button class="btn primary" id="si_go" data-action="signIn">Continue</button>
+    <h2>Sign in to Vendor Orders</h2>
+    <p>Enter your name and the PIN you were given. Don't have a PIN, or forgot it? Ask a Purchaser.</p>
+    <div class="fld" style="text-align:left;margin-bottom:12px"><label for="si_name">Your name</label>
+      <input id="si_name" placeholder="First Last" autocomplete="username" value="${esc((last && last.name) || "")}"></div>
+    <div class="fld" style="text-align:left;margin-bottom:16px"><label for="si_pin">PIN</label>
+      <input id="si_pin" type="password" inputmode="numeric" autocomplete="current-password" maxlength="12" placeholder="6 digits"></div>
+    <button class="btn primary" id="si_go" data-action="signIn">Sign in</button>${demoNote}
   </div>`);
-  $("si_name").focus();
-  $("si_name").onkeydown = (e) => e.key === "Enter" && signIn();
-  store.names().then((names) => {
-    const dl = $("si_names");
-    if (dl) dl.innerHTML = names.map((n) => `<option value="${esc(n)}"></option>`).join("");
-  }, () => {});
+  (last && last.name ? $("si_pin") : $("si_name")).focus();
+  for (const id of ["si_name", "si_pin"]) $(id).onkeydown = (e) => e.key === "Enter" && signIn();
+}
+function renderSetup() {
+  renderApp(`<div class="card signin">
+    <h2>First-time setup</h2>
+    <p>No one has been set up yet. Enter your name to become the first <b>Purchaser</b>. You'll be given a PIN, and you can then add everyone else and issue their PINs under Settings.</p>
+    <div class="fld" style="text-align:left;margin-bottom:16px"><label for="su_name">Your name</label>
+      <input id="su_name" placeholder="First Last" autocomplete="name"></div>
+    <button class="btn primary" id="su_go" data-action="setupFirst">Create my account</button>
+  </div>`);
+  $("su_name").focus();
+  $("su_name").onkeydown = (e) => e.key === "Enter" && setupFirst();
 }
 
 function renderDashboard() {
@@ -491,17 +526,23 @@ function renderSettings() {
   // Team
   h += `<div class="section-title"><h2>Team &amp; roles</h2><span class="rule"></span></div>
    <div class="card" style="padding:20px">
-   <p class="muted small" style="margin-top:0">Everyone who has signed in. New names start as <b>Sales rep</b>; promote Purchasers here. Deactivate a name to block it from signing in.</p>`;
+   <p class="muted small" style="margin-top:0">Add each person here to issue their sign-in PIN. The PIN is shown <b>once</b>: write it down or pass it on privately. If someone forgets their PIN, or it gets out, use <b>Reset PIN</b> to issue a new one. That also signs them out everywhere. <b>Deactivate</b> blocks sign-in.</p>`;
   if (!USERS) h += `<div class="muted small">Loading team…</div>`;
   else {
-    h += `<div class="tbl-wrap"><table style="min-width:560px"><thead><tr><th>Name</th><th>Role</th><th>Access</th></tr></thead><tbody>`;
+    h += `<div class="tbl-wrap"><table style="min-width:560px"><thead><tr><th>Name</th><th>Role</th><th>PIN</th><th>Access</th></tr></thead><tbody>`;
     for (const u of USERS) {
       h += `<tr class="${u.active ? "" : "inactive"}"><td><b>${esc(u.name)}</b>${u.id === ME.id ? ' <span class="muted small">(you)</span>' : ""}</td>
         <td><select data-user-role="${u.id}"><option value="sales_rep" ${u.role === "sales_rep" ? "selected" : ""}>Sales rep</option><option value="purchaser" ${u.role === "purchaser" ? "selected" : ""}>Purchaser</option></select></td>
+        <td>${u.hasPin ? "" : '<span class="muted small">none</span> '}<button class="btn sm ghost" data-action="resetPin" data-id="${u.id}">${u.hasPin ? "Reset PIN" : "Issue PIN"}</button></td>
         <td><button class="btn sm ghost" data-action="toggleUser" data-id="${u.id}">${u.active ? "Deactivate" : "Reactivate"}</button></td></tr>`;
     }
     h += `</tbody></table></div>`;
   }
+  h += `<div class="inline-form" style="margin-top:14px">
+     <div class="fld"><label>Add person</label><input id="nu_name" placeholder="First Last"></div>
+     <div class="fld"><label>Role</label><select id="nu_role"><option value="sales_rep">Sales rep</option><option value="purchaser">Purchaser</option></select></div>
+     <button class="btn" data-action="addUser">＋ Add &amp; issue PIN</button>
+   </div>`;
   h += `</div>`;
 
   // Danger zone
@@ -583,6 +624,52 @@ function addVendor() {
 function toggleVendor(id) {
   const v = VENDORS.find((x) => x.id === id);
   if (v) act(store.updateVendor(id, { active: !v.active }), v.name + (v.active ? " deactivated" : " reactivated"));
+}
+async function addUser() {
+  const name = $("nu_name").value.trim();
+  if (name.length < 2) return toast("Enter the person's full name");
+  try {
+    const r = await store.createUser({ name, role: $("nu_role").value });
+    USERS = null;
+    renderSettings();
+    openPinModal(r.user.name, r.pin);
+  } catch (e) {
+    toast(e.message);
+  }
+}
+function resetPin(id) {
+  const u = (USERS || []).find((x) => x.id === id);
+  if (!u) return;
+  const self = u.id === ME.id;
+  openConfirm(
+    (u.hasPin ? "Reset PIN for " : "Issue PIN for ") + u.name + "?",
+    u.hasPin
+      ? "Their old PIN stops working right away and they're signed out on every device." +
+        (self ? " <b>This is you</b>: you'll need the new PIN next time you sign in." : "")
+      : "A new PIN will be generated for them.",
+    async () => {
+      try {
+        const r = await store.resetPin(id);
+        USERS = null;
+        renderSettings();
+        openPinModal(r.user.name, r.pin);
+      } catch (e) {
+        toast(e.message);
+      }
+    },
+    u.hasPin ? "Reset PIN" : "Issue PIN",
+  );
+}
+// Shows a freshly issued PIN. It can't be looked up again afterwards.
+function openPinModal(name, pin, isSelf = false) {
+  $("modalRoot").innerHTML = `<div class="overlay"><div class="card modal" style="text-align:center">
+    <h3>${isSelf ? "Your PIN" : "PIN for " + esc(name)}</h3>
+    <p>${isSelf ? "Write this down. You'll need it with your name to sign in." : "Give this to " + esc(name) + " privately. They'll sign in with their name and this PIN."} It <b>won't be shown again</b>. If it's lost, reset it.</p>
+    <div class="pin-show mono">${esc(pin)}</div>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:16px"><button class="btn ghost" id="pin_copy">Copy</button><button class="btn primary" data-action="closeModal">Done</button></div>
+  </div></div>`;
+  $("pin_copy").onclick = () =>
+    navigator.clipboard ? navigator.clipboard.writeText(pin).then(() => toast("PIN copied"), () => toast("Copy failed")) : toast("Copy not available");
 }
 async function toggleUser(id) {
   const u = (USERS || []).find((x) => x.id === id);
@@ -786,7 +873,8 @@ document.addEventListener("click", (e) => {
   }
   ({
     submitOrder, closeModal, saveSchedule, addVendor,
-    signIn, switchUser,
+    signIn, switchUser, setupFirst, addUser,
+    resetPin: () => resetPin(id),
     reload: () => location.reload(),
     clearForm: () => renderAddForm(),
     edit: () => edit(id),
@@ -882,13 +970,10 @@ async function boot() {
     errMsg = "couldn't reach the Vendor Orders service. Check your connection";
     return render();
   }
-  if (!cfg || !cfg.live) {
-    store = demoStore;
-  } else {
-    store = remoteStore;
-  }
-  if (!savedUser()) {
-    state = "signin";
+  store = cfg && cfg.live ? remoteStore : demoStore;
+  const saved = savedUser();
+  if (!saved || !saved.token) {
+    state = cfg && cfg.needsSetup ? "setup" : "signin";
     return render();
   }
   await refresh();

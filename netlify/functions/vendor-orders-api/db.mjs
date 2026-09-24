@@ -49,8 +49,18 @@ CREATE TABLE IF NOT EXISTS app_users (
   created_at    timestamptz NOT NULL DEFAULT now(),
   updated_at    timestamptz NOT NULL DEFAULT now()
 );
--- Name sign-in: one account per name, case-insensitive.
+-- One account per name, case-insensitive. PIN is a salted scrypt hash.
 CREATE UNIQUE INDEX IF NOT EXISTS idx_app_users_name ON app_users (lower(display_name));
+ALTER TABLE app_users ADD COLUMN IF NOT EXISTS pin_hash text;
+ALTER TABLE app_users ADD COLUMN IF NOT EXISTS failed_attempts int NOT NULL DEFAULT 0;
+ALTER TABLE app_users ADD COLUMN IF NOT EXISTS locked_until timestamptz;
+CREATE TABLE IF NOT EXISTS app_sessions (
+  token_hash  text PRIMARY KEY,
+  user_id     uuid NOT NULL REFERENCES app_users(id) ON DELETE CASCADE,
+  created_at  timestamptz NOT NULL DEFAULT now(),
+  expires_at  timestamptz NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_app_sessions_user ON app_sessions (user_id);
 CREATE TABLE IF NOT EXISTS vendors (
   id         uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   name       text UNIQUE NOT NULL,

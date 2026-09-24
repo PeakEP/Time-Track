@@ -8,13 +8,14 @@ const DB = process.env.TEST_DATABASE_URL;
 const skip = !DB && "TEST_DATABASE_URL not set";
 
 let handler, sql;
-const IDS = {}; // name key -> user id, filled by login
+const TOKENS = {}; // who -> session token
+const IDS = {}; // who -> user id
 
 async function call(who, method, path, body) {
   const res = await handler(
     new Request("https://x.test/api/vendor-orders/" + path, {
       method,
-      headers: { "x-user-id": (who && (IDS[who] || who)) || "", "content-type": "application/json" },
+      headers: { authorization: who ? "Bearer " + (TOKENS[who] || who) : "", "content-type": "application/json" },
       body: body ? JSON.stringify(body) : undefined,
     }),
   );
@@ -23,7 +24,7 @@ async function call(who, method, path, body) {
 
 before(async () => {
   if (skip) return;
-  Object.assign(process.env, { DATABASE_URL: DB, PURCHASER_NAMES: "Mike Robins" });
+  Object.assign(process.env, { DATABASE_URL: DB });
   const mod = await import("../../netlify/functions/vendor-orders-api/vendor-orders-api.mjs");
   const db = await import("../../netlify/functions/vendor-orders-api/db.mjs");
   sql = db.getSql();
@@ -40,21 +41,59 @@ test("config is public and reports live", { skip }, async () => {
   assert.equal(r.body.live, true);
 });
 
-test("name login: first user is Purchaser, names are case-insensitive", { skip }, async () => {
+test("PIN sign-in: first-run setup, issued PINs, lockout", { skip }, async () => {
   assert.equal((await call(null, "GET", "bootstrap")).status, 401);
-  assert.equal((await call("00000000-0000-0000-0000-000000000000", "GET", "bootstrap")).status, 401);
-  assert.equal((await call(null, "POST", "login", { name: " " })).status, 400);
-  const first = await call(null, "POST", "login", { name: "Rita  Rep" });
-  assert.equal(first.body.me.role, "purchaser"); // first ever sign-in
-  assert.equal(first.body.me.name, "Rita Rep");
-  const again = await call(null, "POST", "login", { name: "rita rep" });
-  assert.equal(again.body.me.id, first.body.me.id);
-  IDS.rep = first.body.me.id;
-  IDS.mike = (await call(null, "POST", "login", { name: "Mike Robins" })).body.me.id; // PURCHASER_NAMES
-  IDS.rep2 = (await call(null, "POST", "login", { name: "Sam Rep" })).body.me.id;
-  assert.deepEqual((await call(null, "GET", "names")).body.names, ["Mike Robins", "Rita Rep", "Sam Rep"]);
-  // demote Rita to a rep for the rest of the suite
-  assert.equal((await call("mike", "PATCH", "users/" + IDS.rep, { role: "sales_rep" })).status, 200);
+  assert.equal((await call("not-a-token", "GET", "bootstrap")).status, 401);
+  assert.equal((await call(null, "GET", "config")).body.needsSetup, true);
+
+  // first-run creates the first Purchaser and shows their PIN once
+  const setup = await call(null, "POST", "setup", { name: "Mike  Robins" });
+  assert.equal(setup.status, 200);
+  assert.match(setup.body.pin, /^\d{6}$/);
+  assert.equal(setup.body.me.role, "purchaser");
+  assert.equal(setup.body.me.name, "Mike Robins");
+  TOKENS.mike = setup.body.token;
+  IDS.mike = setup.body.me.id;
+  assert.equal((await call(null, "GET", "config")).body.needsSetup, false);
+  assert.equal((await call(null, "POST", "setup", { name: "Intruder" })).status, 409);
+
+  // unknown names can't sign in; Purchaser issues PINs
+  assert.equal((await call(null, "POST", "login", { name: "Rita Rep", pin: "123456" })).status, 401);
+  const rita = await call("mike", "POST", "users", { name: "Rita Rep" });
+  assert.equal(rita.status, 201);
+  assert.equal(rita.body.user.role, "sales_rep");
+  assert.equal((await call("mike", "POST", "users", { name: "rita rep" })).status, 400);
+  const sam = await call("mike", "POST", "users", { name: "Sam Rep" });
+  IDS.rep = rita.body.user.id;
+  IDS.rep2 = sam.body.user.id;
+
+  const wrong = rita.body.pin === "000000" ? "111111" : "000000";
+  assert.equal((await call(null, "POST", "login", { name: "Rita Rep", pin: wrong })).status, 401);
+  const ok = await call(null, "POST", "login", { name: "rita rep", pin: rita.body.pin });
+  assert.equal(ok.status, 200);
+  assert.equal(ok.body.me.id, IDS.rep);
+  TOKENS.rep = ok.body.token;
+  TOKENS.rep2 = (await call(null, "POST", "login", { name: "Sam Rep", pin: sam.body.pin })).body.token;
+
+  // a rep can't issue PINs
+  assert.equal((await call("rep", "POST", "users", { name: "X Y" })).status, 403);
+  assert.equal((await call("rep", "POST", "users/" + IDS.rep2 + "/reset-pin")).status, 403);
+
+  // 5 wrong PINs locks the name, even for the right PIN
+  for (let i = 0; i < 5; i++) await call(null, "POST", "login", { name: "Sam Rep", pin: wrong === sam.body.pin ? "222222" : wrong });
+  assert.equal((await call(null, "POST", "login", { name: "Sam Rep", pin: sam.body.pin })).status, 429);
+  // reset PIN unlocks, issues a new PIN and ends existing sessions
+  const reset = await call("mike", "POST", "users/" + IDS.rep2 + "/reset-pin");
+  assert.match(reset.body.pin, /^\d{6}$/);
+  assert.equal((await call("rep2", "GET", "bootstrap")).status, 401);
+  TOKENS.rep2 = (await call(null, "POST", "login", { name: "Sam Rep", pin: reset.body.pin })).body.token;
+  assert.equal((await call("rep2", "GET", "bootstrap")).status, 200);
+
+  // logout ends that session
+  const extra = (await call(null, "POST", "login", { name: "Rita Rep", pin: rita.body.pin })).body.token;
+  TOKENS.tmp = extra;
+  assert.equal((await call("tmp", "POST", "logout")).status, 200);
+  assert.equal((await call("tmp", "GET", "bootstrap")).status, 401);
 });
 
 test("bootstrap seeds vendors/cutoffs and assigns roles", { skip }, async () => {
@@ -139,12 +178,12 @@ test("cutoffs, vendors and team roles are purchaser-only", { skip }, async () =>
 
   const users = (await call("mike", "GET", "users")).body.users;
   assert.equal((await call("rep", "GET", "users")).status, 403);
+  assert.ok(users.every((u) => u.hasPin && !("pin_hash" in u)));
   const me = users.find((u) => u.name === "Mike Robins");
   assert.equal((await call("mike", "PATCH", "users/" + me.id, { role: "sales_rep" })).status, 400);
   const rep2 = users.find((u) => u.name === "Sam Rep");
   assert.equal((await call("mike", "PATCH", "users/" + rep2.id, { active: false })).status, 200);
-  assert.equal((await call("rep2", "GET", "bootstrap")).status, 403);
-  assert.equal((await call(null, "POST", "login", { name: "Sam Rep" })).status, 403);
+  assert.equal((await call("rep2", "GET", "bootstrap")).status, 401); // sessions ended
 });
 
 test("clear history and reset need purchaser + typed phrase", { skip }, async () => {

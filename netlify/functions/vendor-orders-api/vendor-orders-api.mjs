@@ -1,8 +1,11 @@
 // Vendor Orders API (Netlify Function). Mounted at /api/vendor-orders/* via netlify.toml.
-// Sign-in is by name only (honour system): POST /login returns the user's id,
-// which the browser sends back as X-User-Id. Roles live in app_users and are
+// Sign-in is name + a PIN issued by a Purchaser; POST /login returns a session
+// token the browser sends as a Bearer token. Roles live in app_users and are
 // checked here on every Purchaser-only route, never taken from the client.
 import { getSql, ensureSchema, databaseUrl, DEFAULT_CUTOFFS } from "./db.mjs";
+import {
+  newPin, hashPin, checkPin, newToken, hashToken, MAX_FAILED, LOCK_MINUTES, SESSION_DAYS,
+} from "./pins.mjs";
 import COST_SEED from "../../../vendor-orders/seed/cost_codes.json" with { type: "json" };
 import {
   isPurchaser,
@@ -27,13 +30,6 @@ const json = (body, status = 200) =>
     status,
     headers: { "content-type": "application/json", "cache-control": "no-store" },
   });
-
-function purchaserNames() {
-  return (process.env.PURCHASER_NAMES || "")
-    .split(",")
-    .map((s) => s.trim().toLowerCase())
-    .filter(Boolean);
-}
 
 /* ------------------------------ mapping ------------------------------ */
 
@@ -79,6 +75,7 @@ const mapUser = (u) => ({
   name: u.display_name,
   role: u.role,
   active: u.active,
+  hasPin: !!u.pin_hash,
 });
 const mapVendor = (v) => ({
   id: v.id,
@@ -157,33 +154,69 @@ function cleanName(v) {
   return str(v, 80).replace(/\s+/g, " ");
 }
 
-// Find-or-create by name. The first person ever to sign in, and anyone listed in
-// PURCHASER_NAMES, is a Purchaser so someone can always manage roles.
-async function loginUser(sql, body) {
+const LOGIN_FAILED = "Name or PIN not recognised";
+
+// First-run: until an active Purchaser with a PIN exists, anyone may create one.
+async function needsSetup(sql) {
+  const [{ n }] = await sql`SELECT count(*)::int AS n FROM app_users
+                            WHERE role = 'purchaser' AND active AND pin_hash IS NOT NULL`;
+  return n === 0;
+}
+
+async function startSession(sql, userId) {
+  const token = newToken();
+  await sql`INSERT INTO app_sessions (token_hash, user_id, expires_at)
+            VALUES (${hashToken(token)}, ${userId}, now() + ${SESSION_DAYS + " days"}::interval)`;
+  await sql`DELETE FROM app_sessions WHERE expires_at < now()`;
+  return token;
+}
+
+async function setupFirstPurchaser(sql, body) {
   const name = cleanName(body.name);
   if (name.length < 2) throw bad("Enter your full name");
-  const forcePurchaser = purchaserNames().includes(name.toLowerCase());
-  return sql.begin(async (tx) => {
+  const pin = newPin();
+  const user = await sql.begin(async (tx) => {
     await tx`LOCK TABLE app_users IN SHARE ROW EXCLUSIVE MODE`;
-    let [u] = await tx`SELECT * FROM app_users WHERE lower(display_name) = lower(${name})`;
-    if (!u) {
-      const [{ n }] = await tx`SELECT count(*)::int AS n FROM app_users`;
-      const role = forcePurchaser || n === 0 ? "purchaser" : "sales_rep";
-      [u] = await tx`INSERT INTO app_users (display_name, role) VALUES (${name}, ${role}) RETURNING *`;
-    } else if (forcePurchaser && u.role !== "purchaser") {
-      [u] = await tx`UPDATE app_users SET role = 'purchaser', updated_at = now() WHERE id = ${u.id} RETURNING *`;
-    }
-    if (!u.active) throw new HttpError(403, "That name has been deactivated. Ask a Purchaser.");
-    return mapUser(u);
+    if (!(await needsSetup(tx))) throw new HttpError(409, "Setup is already done — sign in with your PIN.");
+    const [u] = await tx`
+      INSERT INTO app_users (display_name, role, pin_hash) VALUES (${name}, 'purchaser', ${hashPin(pin)})
+      ON CONFLICT ((lower(display_name))) DO UPDATE
+        SET role = 'purchaser', active = true, pin_hash = EXCLUDED.pin_hash, updated_at = now()
+      RETURNING *`;
+    return u;
   });
+  return { pin, token: await startSession(sql, user.id), me: mapUser(user) };
+}
+
+async function loginUser(sql, body) {
+  const name = cleanName(body.name);
+  const pin = str(body.pin, 12);
+  if (!name || !pin) throw bad("Enter your name and PIN");
+  const [u] = await sql`SELECT * FROM app_users WHERE lower(display_name) = lower(${name})`;
+  if (!u || !u.pin_hash) throw new HttpError(401, LOGIN_FAILED);
+  if (u.locked_until && new Date(u.locked_until) > new Date())
+    throw new HttpError(429, `Too many wrong PINs — try again in ${LOCK_MINUTES} minutes, or ask a Purchaser to reset it.`);
+  if (!checkPin(pin, u.pin_hash)) {
+    const fails = u.failed_attempts + 1;
+    const lock = fails >= MAX_FAILED;
+    await sql`UPDATE app_users SET failed_attempts = ${lock ? 0 : fails},
+              locked_until = ${lock ? new Date(Date.now() + LOCK_MINUTES * 60000) : null}
+              WHERE id = ${u.id}`;
+    throw new HttpError(401, LOGIN_FAILED);
+  }
+  if (!u.active) throw new HttpError(403, "Your access has been turned off. Ask a Purchaser.");
+  await sql`UPDATE app_users SET failed_attempts = 0, locked_until = NULL WHERE id = ${u.id}`;
+  return { token: await startSession(sql, u.id), me: mapUser(u) };
 }
 
 async function currentUser(sql, req) {
-  const id = req.headers.get("x-user-id") || "";
-  if (!isUuid(id)) throw new HttpError(401, "Sign in with your name");
-  const [u] = await sql`SELECT * FROM app_users WHERE id = ${id}`;
-  if (!u) throw new HttpError(401, "Sign in with your name");
-  if (!u.active) throw new HttpError(403, "Your name has been deactivated. Ask a Purchaser.");
+  const token = (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
+  if (!token) throw new HttpError(401, "Sign in with your name and PIN");
+  const [u] = await sql`
+    SELECT u.* FROM app_sessions s JOIN app_users u ON u.id = s.user_id
+    WHERE s.token_hash = ${hashToken(token)} AND s.expires_at > now()`;
+  if (!u) throw new HttpError(401, "Your session has ended — sign in again");
+  if (!u.active) throw new HttpError(403, "Your access has been turned off. Ask a Purchaser.");
   return u;
 }
 
@@ -402,6 +435,34 @@ async function listUsers(sql, user) {
   const rows = await sql`SELECT * FROM app_users ORDER BY display_name`;
   return { users: rows.map(mapUser) };
 }
+async function createUser(sql, user, body) {
+  requirePurchaser(user);
+  const name = cleanName(body.name);
+  if (name.length < 2) throw bad("Enter the person's full name");
+  const role = body.role === "purchaser" ? "purchaser" : "sales_rep";
+  const pin = newPin();
+  try {
+    const [u] = await sql`INSERT INTO app_users (display_name, role, pin_hash)
+                          VALUES (${name}, ${role}, ${hashPin(pin)}) RETURNING *`;
+    return { user: mapUser(u), pin };
+  } catch (e) {
+    if (e.code === "23505") throw bad(`${name} is already on the team — use Reset PIN instead.`);
+    throw e;
+  }
+}
+// New PIN for someone who lost theirs; signs them out everywhere.
+async function resetPin(sql, user, id) {
+  requirePurchaser(user);
+  const pin = newPin();
+  return sql.begin(async (tx) => {
+    const [u] = await tx`UPDATE app_users SET pin_hash = ${hashPin(pin)}, failed_attempts = 0,
+                         locked_until = NULL, updated_at = now() WHERE id = ${id} RETURNING *`;
+    if (!u) throw new HttpError(404, "User not found");
+    await tx`DELETE FROM app_sessions WHERE user_id = ${id}`;
+    return { user: mapUser(u), pin };
+  });
+}
+
 async function updateUser(sql, user, id, body) {
   requirePurchaser(user);
   const set = {};
@@ -419,6 +480,7 @@ async function updateUser(sql, user, id, body) {
   set.updated_at = new Date();
   const [row] = await sql`UPDATE app_users SET ${sql(set, Object.keys(set))} WHERE id = ${id} RETURNING id`;
   if (!row) throw new HttpError(404, "User not found");
+  if (set.active === false) await sql`DELETE FROM app_sessions WHERE user_id = ${id}`;
   return { ok: true };
 }
 
@@ -460,19 +522,22 @@ export function createHandler() {
     const live = !!databaseUrl();
 
     try {
-      if (path === "config" && method === "GET") return json({ live });
+      if (path === "config" && method === "GET" && !live) return json({ live });
       if (!live) throw new HttpError(503, "Vendor Orders is not configured on this deployment yet.");
 
       await ensureSchema();
       const sql = getSql();
-      if (method === "POST" && path === "login") {
-        return json({ me: await loginUser(sql, await req.json().catch(() => ({}))) });
-      }
-      if (method === "GET" && path === "names") {
-        const rows = await sql`SELECT display_name FROM app_users WHERE active ORDER BY display_name`;
-        return json({ names: rows.map((r) => r.display_name) });
-      }
+      if (path === "config" && method === "GET") return json({ live, needsSetup: await needsSetup(sql) });
+      if (method === "POST" && path === "setup")
+        return json(await setupFirstPurchaser(sql, await req.json().catch(() => ({}))));
+      if (method === "POST" && path === "login")
+        return json(await loginUser(sql, await req.json().catch(() => ({}))));
       const user = await currentUser(sql, req);
+      if (method === "POST" && path === "logout") {
+        const token = req.headers.get("authorization").replace(/^Bearer\s+/i, "");
+        await sql`DELETE FROM app_sessions WHERE token_hash = ${hashToken(token)}`;
+        return json({ ok: true });
+      }
 
       const body = ["POST", "PUT", "PATCH", "DELETE"].includes(method)
         ? await req.json().catch(() => ({}))
@@ -492,7 +557,10 @@ export function createHandler() {
       if (method === "POST" && a === "vendors" && !b) return json(await createVendor(sql, user, body), 201);
       if (method === "PATCH" && a === "vendors" && isUuid(b)) return json(await updateVendor(sql, user, b, body));
       if (method === "GET" && a === "users") return json(await listUsers(sql, user));
-      if (method === "PATCH" && a === "users" && isUuid(b)) return json(await updateUser(sql, user, b, body));
+      if (method === "POST" && a === "users" && !b) return json(await createUser(sql, user, body), 201);
+      if (method === "POST" && a === "users" && isUuid(b) && c === "reset-pin")
+        return json(await resetPin(sql, user, b));
+      if (method === "PATCH" && a === "users" && isUuid(b) && !c) return json(await updateUser(sql, user, b, body));
       if (method === "POST" && a === "admin" && b === "clear-history")
         return json(await clearHistory(sql, user, body));
       if (method === "POST" && a === "admin" && b === "reset") return json(await resetAll(sql, user, body));

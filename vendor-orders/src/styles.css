@@ -149,3 +149,5 @@ tr.inactive td{opacity:.55}
 .demo-role{display:inline-flex;gap:4px;align-items:center}
 .demo-role select{font-family:inherit;font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text)}
 select[data-user-role]{font-family:inherit;font-size:12px;padding:4px 6px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text)}
+.pin-show{font-size:34px;font-weight:700;letter-spacing:.3em;color:var(--indigo);background:var(--surface-2);border:1px dashed var(--cyan);border-radius:10px;padding:14px 10px 14px 20px;margin:4px auto 0;max-width:260px}
+:root[data-theme="dark"] .pin-show,:root:not([data-theme="light"]) .pin-show{color:#9db4ff}

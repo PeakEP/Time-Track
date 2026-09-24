@@ -10,9 +10,10 @@ import {
 } from "./rules.js";
 
 const API = "/api/vendor-orders/";
-const SESSION_KEY = "rid_vo_user";
+const SESSION_KEY = "rid_vo_session";
 
-// Who is signed in on this device (honour system — just a name).
+// Who is signed in on this device: { name, token }. The token is the session
+// the server issued after a correct name + PIN.
 export function savedUser() {
   try {
     return JSON.parse(localStorage.getItem(SESSION_KEY) || "null");
@@ -22,7 +23,7 @@ export function savedUser() {
 }
 export function saveUser(u) {
   try {
-    if (u) localStorage.setItem(SESSION_KEY, JSON.stringify({ id: u.id, name: u.name }));
+    if (u) localStorage.setItem(SESSION_KEY, JSON.stringify({ name: u.name, token: u.token || "" }));
     else localStorage.removeItem(SESSION_KEY);
   } catch {}
 }
@@ -44,7 +45,7 @@ async function call(method, path, body) {
   const r = await fetch(API + path, {
     method,
     headers: {
-      ...(u ? { "x-user-id": u.id } : {}),
+      ...(u && u.token ? { authorization: "Bearer " + u.token } : {}),
       ...(body ? { "content-type": "application/json" } : {}),
     },
     body: body ? JSON.stringify(body) : undefined,
@@ -60,8 +61,11 @@ async function call(method, path, body) {
 
 export const remoteStore = {
   mode: "live",
-  login: (name) => call("POST", "login", { name }).then((r) => r.me),
-  names: () => call("GET", "names").then((r) => r.names),
+  // -> { token, me }
+  login: (name, pin) => call("POST", "login", { name, pin }),
+  // First-run only -> { token, me, pin }
+  setup: (name) => call("POST", "setup", { name }),
+  logout: () => call("POST", "logout"),
   load: () => call("GET", "bootstrap"),
   createOrder: (order) => call("POST", "orders", order),
   patchOrder: (id, patch) => call("PATCH", "orders/" + id, patch),
@@ -73,6 +77,9 @@ export const remoteStore = {
   updateVendor: (id, v) => call("PATCH", "vendors/" + id, v),
   listUsers: () => call("GET", "users"),
   updateUser: (id, patch) => call("PATCH", "users/" + id, patch),
+  // -> { user, pin }
+  createUser: (u) => call("POST", "users", u),
+  resetPin: (id) => call("POST", "users/" + id + "/reset-pin"),
   clearHistory: (confirm) => call("POST", "admin/clear-history", { confirm }),
   resetAll: (confirm) => call("POST", "admin/reset", { confirm }),
 };
@@ -130,17 +137,24 @@ function demo(fn) {
     return out;
   };
 }
+function demoPin() {
+  const a = new Uint32Array(1);
+  crypto.getRandomValues(a);
+  return String(a[0] % 1000000).padStart(6, "0");
+}
 function fail(msg) {
   throw new Error(msg);
 }
 
 export const demoStore = {
   mode: "demo",
+  // Demo accepts any PIN — nothing is protected in a browser-only demo.
   login: demo((s, name) => {
     s.me.name = name.trim().replace(/\s+/g, " ");
-    return clone(s.me);
+    return { token: "demo", me: clone(s.me) };
   }),
-  names: demo((s) => [s.me.name]),
+  setup: async () => fail("Setup happens on the live deployment."),
+  logout: async () => ({ ok: true }),
   load: demo((s) => clone({ ...s, orders: [...s.orders].reverse() })),
   // Demo only: lets a reviewer try both roles. Live roles come from the server.
   setDemoIdentity: demo((s, name, role) => {
@@ -230,8 +244,26 @@ export const demoStore = {
     Object.assign(row, v);
     return { ok: true };
   }),
-  listUsers: demo((s) => ({ users: [clone(s.me)] })),
-  updateUser: async () => fail("Team roles are managed on the live deployment."),
+  listUsers: demo((s) => ({ users: [{ ...clone(s.me), hasPin: true }, ...(s.team || [])] })),
+  updateUser: demo((s, id, patch) => {
+    const u = (s.team || []).find((x) => x.id === id) || fail("Change your own role with the demo picker.");
+    Object.assign(u, patch);
+    return { ok: true };
+  }),
+  createUser: demo((s, { name, role }) => {
+    name = (name || "").trim().replace(/\s+/g, " ");
+    if (name.length < 2) fail("Enter the person's full name");
+    s.team = s.team || [];
+    if ([s.me, ...s.team].some((u) => u.name.toLowerCase() === name.toLowerCase()))
+      fail(name + " is already on the team — use Reset PIN instead.");
+    const user = { id: uid(), name, role: role === "purchaser" ? "purchaser" : "sales_rep", active: true, hasPin: true };
+    s.team.push(user);
+    return { user, pin: demoPin() };
+  }),
+  resetPin: demo((s, id) => {
+    const u = [s.me, ...(s.team || [])].find((x) => x.id === id) || fail("User not found");
+    return { user: clone(u), pin: demoPin() };
+  }),
   clearHistory: demo((s, confirm) => {
     if (!isPurchaser(s.me)) fail("Purchaser access required");
     if (confirm !== CLEAR_HISTORY_PHRASE) fail("Type " + CLEAR_HISTORY_PHRASE + " to confirm");
