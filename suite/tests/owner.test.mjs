@@ -48,7 +48,7 @@ before(async () => {
 });
 
 test("owner signs in on a fresh site without setup", async () => {
-  assert.equal((await call(null, "GET", "config")).body.needsSetup, false);
+  assert.deepEqual((await call(null, "GET", "config")).body, { live: true, needsSetup: false, ownerSet: true });
   assert.equal((await call(null, "POST", "setup", { name: "Someone" })).status, 409);
   assert.equal((await call(null, "POST", "login", { name: "Robins", pin: "000000" })).status, 401);
   const r = await call(null, "POST", "login", { name: " robins ", pin: "051711" });
