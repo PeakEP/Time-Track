@@ -8,7 +8,7 @@
 // app and the gate accept.
 import { openStore, readState, mutate } from "../../shared/storage.mjs";
 import {
-  canUse, needsSetup, publicUser, setupFirstAdmin, createStaff, resetStaffPin, updateStaff,
+  canUse, needsSetup, ownerLogin, publicUser, setupFirstAdmin, createStaff, resetStaffPin, updateStaff,
   sessionCookie, clearCookie, tokenOf, resolveToken, accessOf, dropSession,
 } from "../../shared/accounts.mjs";
 import { signIn, staffMe, clientMe, SEL_INDEX, resetClientPin, setClientAccess } from "../../shared/signin.mjs";
@@ -69,7 +69,9 @@ export function createHandler({ stores: injected } = {}) {
         if (path === "check") return json({ ok: true, local: true }); // no server storage: nothing to gate
         throw httpError(503, "Suite storage isn't available on this deployment.");
       }
-      if (path === "config" && method === "GET") return json({ live: true, needsSetup: needsSetup(await readState(stores.vo)) });
+      // ownerSet: whether the Netlify owner sign-in settings reached this site (never the values).
+      if (path === "config" && method === "GET")
+        return json({ live: true, needsSetup: needsSetup(await readState(stores.vo)), ownerSet: !!ownerLogin() });
 
       // Page gate: may this visitor open `app`? 200 yes, 401 not signed in, 403 no access.
       if (path === "check" && method === "GET") {

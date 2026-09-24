@@ -56,7 +56,7 @@ before(async () => {
 });
 
 test("first-time setup makes an Admin with every app and signs them in", async () => {
-  assert.deepEqual((await call(null, "GET", "config")).body, { live: true, needsSetup: true });
+  assert.deepEqual((await call(null, "GET", "config")).body, { live: true, needsSetup: true, ownerSet: false });
   const r = await call(null, "POST", "setup", { name: "Mike Robins" });
   assert.equal(r.status, 200);
   assert.match(r.body.pin, /^\d{6}$/);

@@ -58,9 +58,12 @@ export function canUse(u, app) {
 // variables): OWNER_NAME and OWNER_PIN. Kept out of the code because the
 // repository is public. The owner is always an active Admin with every app,
 // and can't be changed or locked out of Suite Admin.
-export function ownerLogin(env = process.env) {
+// Netlify's runtime API first, then process.env (tests, older runtimes).
+const readEnv = (key) => globalThis.Netlify?.env?.get?.(key) ?? process.env[key];
+export function ownerLogin(env = { OWNER_NAME: readEnv("OWNER_NAME"), OWNER_PIN: readEnv("OWNER_PIN") }) {
   const name = cleanName(env.OWNER_NAME);
-  const pin = String(env.OWNER_PIN ?? "").trim();
+  // Tolerate quotes or spaces pasted around the value.
+  const pin = String(env.OWNER_PIN ?? "").replace(/["'\s]/g, "");
   return name.length >= 2 && /^\d{4,12}$/.test(pin) ? { name, pin } : null;
 }
 
