@@ -20,6 +20,10 @@ export function SettingsBar({ onOpenProjects, onExport }: { onOpenProjects: () =
 
   return (
     <header className="topbar">
+      {/* Staff only: clients stay in their project. */}
+      {me?.kind === "staff" && (
+        <a className="suite-link" href="/" title="Back to the JMRC suite">← Suite</a>
+      )}
       <div className="brand">
         <span className="brand-mark">R</span>
         <div className="brand-text">

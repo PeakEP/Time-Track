@@ -907,3 +907,20 @@ input, select, textarea { font-family: inherit; font-size: 13px; }
   .workspace { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; }
   .palette, .schedule { max-height: 35vh; }
 }
+
+/* Back to the JMRC suite home page. */
+.suite-link {
+  flex: none;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  white-space: nowrap;
+}
+.suite-link:hover {
+  background: rgba(255, 255, 255, 0.3);
+}

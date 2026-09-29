@@ -124,6 +124,7 @@ export function SettingsBar() {
 
   return (
     <header className="topbar">
+      <a className="suite-link" href="/" title="Back to the JMRC suite">← Suite</a>
       <div className="brand">
         <span className="brand-mark" aria-hidden />
         <span className="brand-text">

@@ -945,3 +945,20 @@ h3 {
     margin-left: 0;
   }
 }
+
+/* Back to the JMRC suite home page. */
+.suite-link {
+  flex: none;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  white-space: nowrap;
+}
+.suite-link:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
