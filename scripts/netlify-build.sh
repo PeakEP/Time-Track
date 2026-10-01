@@ -31,8 +31,13 @@ build_vite_app() {
   local URL_PATH="$2"
   echo "==> Building ${APP_DIR} (Vite)"
   pushd "${ROOT_DIR}/${APP_DIR}" >/dev/null
-  if [[ ! -d node_modules ]]; then
+  # Reinstall when there are no packages yet or package-lock.json changed since
+  # they were installed (a cached node_modules can be missing new packages).
+  local LOCK_HASH
+  LOCK_HASH="$(sha1sum package-lock.json | cut -d' ' -f1)"
+  if [[ ! -d node_modules || "$(cat node_modules/.lock-hash 2>/dev/null)" != "${LOCK_HASH}" ]]; then
     npm ci --no-audit --no-fund
+    echo "${LOCK_HASH}" > node_modules/.lock-hash
   fi
   npm run build
   popd >/dev/null
