@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { nextCutoff, suggestCoa, buildCSV, fmtCountdown, coaName, phaseName, CSV_COLUMNS } from "../src/logic.js";
+import { nextCutoff, suggestCoa, fmtCountdown, coaName, phaseName, poTotals, COST } from "../src/logic.js";
+import { buildPoPdf, poFileName } from "../src/po-pdf.js";
 
 const tue = { weekday: 2, cutoff: "10:00", timezone: "America/Halifax" };
 
@@ -31,20 +32,43 @@ test("countdown format", () => {
   assert.equal(fmtCountdown((2 * 1440 + 61) * 60000), "2d 1h 1m");
 });
 test("COA suggest: longest keyword wins, no guess on miss", () => {
-  assert.equal(suggestCoa("Oak LVP 7in"), "5540");
-  assert.equal(suggestCoa("Brass pendants"), "5525");
+  assert.equal(suggestCoa("Oak LVP 7in"), "5515");
+  assert.equal(suggestCoa("Brass pendant"), "5525");
+  assert.equal(suggestCoa("Kitchen faucet"), "5526");
+  assert.equal(suggestCoa("Drywall sub for basement"), "5347");
   assert.equal(suggestCoa("Mystery widget"), "");
-  assert.equal(coaName("5540"), "Flooring & Tile Material");
-  assert.equal(phaseName("5540"), "Phase 5 - Interior Finishes & Specialties");
+  assert.equal(coaName("5515"), "Flooring & Tile Material");
+  assert.equal(coaName("5540"), "Sub - Painting");
+  assert.equal(phaseName("5515"), "Phase 5 - Finishes & Specialties");
+  assert.equal(phaseName("1245"), "Inventory - Showroom & Warehouse");
 });
-test("CSV has the agreed columns, escaping and subtotal", () => {
-  const csv = buildCSV("MSI", "Tuesday", [
-    { po: "P1", coa: "5540", productName: 'Tile, "grey"', qty: 2, cost: 10.5, unit: "box" },
-    { po: "P1", coa: "5540", productName: "Grout", qty: 1, cost: 4 },
-  ], "Mike");
-  const lines = csv.trim().split("\n");
-  assert.equal(lines[6], CSV_COLUMNS.join(","));
-  assert.match(lines[7], /"Tile, ""grey"""/);
-  assert.match(lines[7], /,21\.00,$/);
-  assert.match(lines.at(-1), /SUBTOTAL \(ex\. HST\),25\.00,$/);
+test("cost codes come from the chart of accounts: postable accounts only", () => {
+  assert.equal(Object.keys(COST.codes).length, 78);
+  for (const header of ["5000", "5100", "5310", "5501", "5502", "5580", "1240", "1230", "5021", "5031"])
+    assert.equal(COST.codes[header], undefined, header);
+  for (const hint of Object.values(COST.hints)) assert.ok(COST.codes[hint], hint);
+});
+test("PO totals: subtotal, 15% HST, per-code subtotals", () => {
+  const t = poTotals([
+    { coa: "5515", qty: 2, cost: 10.5 },
+    { coa: "5515", qty: 1, cost: 4 },
+    { coa: "5526", qty: 1, cost: 100 },
+  ]);
+  assert.equal(t.subtotal, 125);
+  assert.equal(t.hst, 18.75);
+  assert.equal(t.total, 143.75);
+  assert.deepEqual(t.byCode.map((c) => [c.code, c.amount]), [["5515", 25], ["5526", 100]]);
+});
+test("PO PDF builds with the vendor, lines and totals", () => {
+  const lines = Array.from({ length: 40 }, (_, i) => ({
+    po: "PO-26-104", jobCode: "J-12", coa: "5515", productName: `Oak LVP ${i}`, sku: "FV11-8",
+    description: "Granite Guard 5.5mm", qty: 10, unit: "box", cost: 42.5, neededBy: "2026-10-09",
+  }));
+  const doc = buildPoPdf({ vendor: "Richmond Flooring", dayLabel: "Tuesday", lines, issuedBy: "Mike Robins", now: new Date("2026-10-01T15:00:00Z") });
+  assert.ok(doc.getNumberOfPages() >= 2); // long batches flow onto more pages
+  const pdf = doc.output();
+  assert.match(pdf, /PURCHASE ORDER/);
+  assert.match(pdf, /Richmond Flooring/);
+  assert.match(pdf, /\$19,550\.00/); // 40 x 10 x 42.50 + 15% HST
+  assert.equal(poFileName("Avide Flooring", "2026-10-01"), "PO_Avide_Flooring_2026-10-01.pdf");
 });

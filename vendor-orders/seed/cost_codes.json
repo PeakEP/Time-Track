@@ -1,156 +1,460 @@
 {
-  "source": "OPS-POL-001 Master Cost Code — JMRC Chart of Accounts",
-  "effective_date": "2026-03-12",
-  "format": "4-digit code",
+  "source": "J.M Robins Construction Ltd. — Chart of Accounts (COA 261001), Inventory + COGS accounts",
+  "version": 2,
+  "effective_date": "2026-10-01",
+  "format": "4-digit QuickBooks account number",
   "fallback_rule": "If no code clearly fits the purchase, contact Susan (Accounting) immediately before finalizing the PO. Never invent or guess a code.",
   "phases": {
+    "1240": {
+      "name": "Inventory - Showroom & Warehouse"
+    },
     "5100": {
-      "name": "Phase 1 - Pre-Construction",
-      "is_header": true
+      "name": "Phase 1 - Pre-Construction"
     },
     "5200": {
-      "name": "Phase 2 - Site Work & Infrastructure",
-      "is_header": true
+      "name": "Phase 2 - Site Work & Infrastructure"
     },
     "5300": {
-      "name": "Phase 3 - Structural Shell (Vertical)",
-      "is_header": true
+      "name": "Phase 3 - Structural Shell (Vertical)"
     },
     "5400": {
-      "name": "Phase 4 - Mechanical Rough-Ins",
-      "is_header": true
+      "name": "Phase 4 - Mechanical Rough-Ins"
     },
     "5500": {
-      "name": "Phase 5 - Interior Finishes & Specialties",
-      "is_header": true
+      "name": "Phase 5 - Finishes & Specialties"
     },
     "5600": {
-      "name": "Phase 6 - Exterior & Closeout",
-      "is_header": true
+      "name": "Phase 6 - Closeout"
     },
     "5700": {
-      "name": "Phase 7 - Warranty",
-      "is_header": true
+      "name": "Phase 7 - Warranty"
     },
     "5800": {
-      "name": "Retail Showroom",
-      "is_header": true
+      "name": "Retail Showroom - COGS"
     },
-    "7000": {
-      "name": "General & Admin (G&A)",
-      "is_header": true
+    "5900": {
+      "name": "Residential Site Maintenance COGS"
     }
   },
   "codes": {
-    "5110": {"name": "Design Dept. Labor", "description": "Design Dept. Labor (Internal)", "phase": "5100"},
-    "5120": {"name": "Direct Design Costs", "description": "Direct Design & Drafting (External/Software)", "phase": "5100"},
-    "5130": {"name": "Permits & Project Fees", "description": "Site-specific building permits", "phase": "5100"},
-    "5140": {"name": "Surveys & Engineer Costs", "description": "Land surveys, plot plans, structural engineering stamps, soil testing — required prior to breaking ground", "phase": "5100"},
-
-    "5220": {"name": "On-site Office & Storage Rent", "description": "Rent for temporary on-site offices and storage", "phase": "5200"},
-    "5230": {"name": "On-Site Temp Electrical", "description": "Setup fees for job-site power", "phase": "5200"},
-    "5240": {"name": "Disposal & Tipping Fees (Rough & Final)", "description": "Fees paid to regional solid waste facilities (initial clearing)", "phase": "5200"},
-    "5250": {"name": "Foundation Materials", "description": "Raw materials for footings and walls — rebar, ICF blocks, anchor bolts, crushed stone, weeping tile", "phase": "5200"},
-    "5260": {"name": "Sub - Earth Moving & Roads", "description": "Outsourced civil works", "phase": "5200"},
-    "5270": {"name": "Sub - Foundation & Concrete", "description": "Contracted labor and materials for footings, foundation walls, basement/garage slabs. Includes pump truck fees.", "phase": "5200"},
-
-    "5310": {"name": "Direct materials for projects", "description": "Sub-header account", "phase": "5300", "is_subheader": true},
-    "5311": {"name": "Materials - Framing", "description": "Lumber", "phase": "5300"},
-    "5312": {"name": "Materials - Roofing", "description": "Shingles, underlayment, ice/water shield, flashing", "phase": "5300"},
-    "5313": {"name": "Materials - Siding & External Trim", "description": "Siding panels, J-trim, starter strips, coil stock", "phase": "5300"},
-    "5319": {"name": "Freight & Delivery (Inbound - Projects Only)", "description": "Shipping and offloading charges for structural components delivered to project sites", "phase": "5300"},
-    "5320": {"name": "Sub - Framing", "description": "External framing crews", "phase": "5300"},
-    "5330": {"name": "Sub - Roofing", "description": "External roofing crews", "phase": "5300"},
-    "5340": {"name": "Sub - Siding & Exterior", "description": "External siding crews", "phase": "5300"},
-    "5350": {"name": "WorkSafe NB - Field", "description": "Premiums paid for the construction crew", "phase": "5300"},
-    "5360": {"name": "Field Safety & Apparel", "description": "PPE and safety related expenses", "phase": "5300"},
-
-    "5405": {"name": "Electrical Materials", "description": "Bulk wire, boxes, panels, rough-in components supplied to subcontractors as per agreement", "phase": "5400"},
-    "5410": {"name": "Sub - Electrical", "description": "Electrician sub-contracts", "phase": "5400"},
-    "5420": {"name": "Sub - Plumbing", "description": "Plumber sub-contracts", "phase": "5400"},
-    "5430": {"name": "Sub - HVAC", "description": "Heating/Cooling sub-contracts", "phase": "5400"},
-
-    "5510": {"name": "Drywall & Paint Materials", "description": "Drywall, paint, and finish materials purchased by JMRC", "phase": "5500"},
-    "5515": {"name": "Sub - Drywall & Paint", "description": "Drywall, paint, and finish trade sub-contracts", "phase": "5500"},
-    "5520": {"name": "Kitchen, Cabinetry, & Fixtures", "description": "Cabinets, vanities, countertops, islands, and fixtures", "phase": "5500"},
-    "5525": {"name": "Interior Lighting & Finishes", "description": "Interior lighting & finishes", "phase": "5500"},
-    "5530": {"name": "Interior Finish & Trim", "description": "Baseboards, crown, interior doors, hardware", "phase": "5500"},
-    "5540": {"name": "Flooring & Tile Material", "description": "Hardwood, LVP, tile, underlayment", "phase": "5500"},
-    "5545": {"name": "Sub - Flooring & Tile", "description": "Contracted labor for installation of hardwood, LVP, carpet, custom tile (showers/backsplashes)", "phase": "5500"},
-    "5550": {"name": "Sub - Landscaping", "description": "Outsourced softscape works", "phase": "5500"},
-    "5560": {"name": "Freight & Delivery (Inbound)", "description": "Shipping costs to get materials from suppliers to you", "phase": "5500"},
-
-    "5610": {"name": "Sub: Post-Construction Cleaning", "description": "Professional cleaning to prepare the unit for homeowner walkthrough and closing", "phase": "5600"},
-    "5620": {"name": "Small Tools & Equipment", "description": "Any tool under $500 (drills, saws, levels, hammers)", "phase": "5600"},
-    "5630": {"name": "Shop & Job Consumables", "description": "Job-site consumables: blades, bits, adhesives, etc.", "phase": "5600"},
-    "5640": {"name": "Late Closing Misc Fees", "description": "Late closing, cost of covering new homeowner storage and accommodation fees", "phase": "5600"},
-
-    "5710": {"name": "Warranty: Materials", "description": "Actual warranty cost (post-completion)", "phase": "5700"},
-    "5730": {"name": "Warranty: Subcontractor Backcharge", "description": "Costs to pay a third party to fix a warranty issue; typically tagged to original project for recouping", "phase": "5700"},
-    "5750": {"name": "Warranty Registrations", "description": "Cost of registering warranty with Lux Residential Warranty Program", "phase": "5700"},
-
-    "5810": {"name": "Retail Purchases for Resale", "description": "Inventory bought specifically for the shelves", "phase": "5800"},
-    "5820": {"name": "Retail Freight-IN", "description": "Shipping costs to get products to the store, including customs", "phase": "5800"},
-    "5830": {"name": "Inventory Shrink/Waste", "description": "Breakage or lost warehouse stock", "phase": "5800"},
-
-    "7010": {"name": "Software Subscriptions", "description": "Accounting, scheduling, inventory software", "phase": "7000"},
-    "7120": {"name": "Office / Showroom Cleaning & Supplies", "description": "Janitorial and soap/towels", "phase": "7000"},
-    "7130": {"name": "Office Supplies", "description": "Paper, toner, staplers, pens, markers, etc.", "phase": "7000"},
-    "7135": {"name": "Office / Warehouse Safety Supplies", "description": "Band-aids, first aid kit, etc.", "phase": "7000"},
-    "7140": {"name": "Kitchen & Breakroom", "description": "Coffee, snacks, water cooler", "phase": "7000"},
-    "7240": {"name": "Employee Training", "description": "Employee training and development", "phase": "7000"},
-    "7250": {"name": "Safety Training & Certs", "description": "Dependent on project", "phase": "7000"},
-    "7450": {"name": "IT Support & Managed Services", "description": "Managed IT services", "phase": "7000"},
-    "7470": {"name": "Computer Supplies", "description": "Mice, keyboards, cables, and tech under $500", "phase": "7000"},
-    "7610": {"name": "Advertising & Promotions", "description": "Google/FB ads, local newspapers, signage", "phase": "7000"},
-    "7620": {"name": "Branding & Graphic Design", "description": "Logo updates, vehicle wraps, 160 Main St. signage", "phase": "7000"},
-    "7630": {"name": "Marketing Materials", "description": "Business cards, high-end brochures, etc.", "phase": "7000"},
-    "7640": {"name": "Marketing Subscriptions", "description": "Recurring costs for tools like Mailchimp, Canva, Hootsuite, lead-gen platforms (e.g., Houzz)", "phase": "7000"},
-    "7650": {"name": "Apparel & Swag", "description": "Branded shirts/hats for crew and client giveaways", "phase": "7000"},
-    "7660": {"name": "Sponsorships & Community Promo", "description": "Sports team logos, rink boards, gala advertising", "phase": "7000"},
-    "7670": {"name": "Delivery & Shipping (Outbound)", "description": "Costs to get the final product to your customer", "phase": "7000"},
-    "7680": {"name": "Repairs & Maintenance", "description": "Fixing a broken window, painting, HVAC tuning", "phase": "7000"},
-    "7685": {"name": "Landscaping & Snow Removal", "description": "Monthly contracts or per-visit fees for property upkeep", "phase": "7000"},
-    "7690": {"name": "Website & SEO", "description": "Hosting, domain fees, search ranking services", "phase": "7000"},
-    "7700": {"name": "Travel", "description": "Airfare, taxis, hotels & lodging", "phase": "7000"},
-    "7710": {"name": "Meals & Entertainment", "description": "Meals & entertainment", "phase": "7000"},
-    "7720": {"name": "Meals - Sales & Client Development", "description": "Meals with clients/developers", "phase": "7000"},
-    "7730": {"name": "Internal Meetings / Staff Prep", "description": "Internal strategy sessions, staff training lunches, annual kickoff meetings", "phase": "7000"}
+    "1241": {
+      "name": "Acoustic and Decorative Wall Panels",
+      "phase": "1240",
+      "account": "Inventory - Showroom & Warehouse:Acoustic and Decorative Wall Panels"
+    },
+    "1242": {
+      "name": "Appliances & Range Hoods",
+      "phase": "1240",
+      "account": "Inventory - Showroom & Warehouse:Appliances & Range Hoods"
+    },
+    "1243": {
+      "name": "Kitchens & Cabinetry",
+      "phase": "1240",
+      "account": "Inventory - Showroom & Warehouse:Kitchens & Cabinetry"
+    },
+    "1244": {
+      "name": "Exterior Coverings Inventory",
+      "phase": "1240",
+      "account": "Inventory - Showroom & Warehouse:Exterior Coverings Inventory"
+    },
+    "1245": {
+      "name": "Flooring Inventory",
+      "phase": "1240",
+      "account": "Inventory - Showroom & Warehouse:Flooring Inventory"
+    },
+    "1246": {
+      "name": "Installation Materials",
+      "phase": "1240",
+      "account": "Inventory - Showroom & Warehouse:Installation Materials"
+    },
+    "1247": {
+      "name": "Interior Décor",
+      "phase": "1240",
+      "account": "Inventory - Showroom & Warehouse:Interior Décor"
+    },
+    "1248": {
+      "name": "Passage Doors",
+      "phase": "1240",
+      "account": "Inventory - Showroom & Warehouse:Passage Doors"
+    },
+    "1249": {
+      "name": "Lighting and Fans",
+      "phase": "1240",
+      "account": "Inventory - Showroom & Warehouse:Lighting and Fans"
+    },
+    "1250": {
+      "name": "Paint Inventory",
+      "phase": "1240",
+      "account": "Inventory - Showroom & Warehouse:Paint Inventory"
+    },
+    "1251": {
+      "name": "Plumbing Inventory",
+      "phase": "1240",
+      "account": "Inventory - Showroom & Warehouse:Plumbing Inventory"
+    },
+    "5105": {
+      "name": "External Estimating & Pre-Con Services",
+      "phase": "5100",
+      "account": "COGS - CONSTRUCTION:Phase 1 - Pre-Construction:External Estimating & Pre-Con Services"
+    },
+    "5110": {
+      "name": "Design Dept. Labor",
+      "phase": "5100",
+      "account": "COGS - CONSTRUCTION:Phase 1 - Pre-Construction:Design Dept. Labor"
+    },
+    "5120": {
+      "name": "Direct Design Costs",
+      "phase": "5100",
+      "account": "COGS - CONSTRUCTION:Phase 1 - Pre-Construction:Direct Design Costs"
+    },
+    "5125": {
+      "name": "Concept Design & Rendering",
+      "phase": "5100",
+      "account": "COGS - CONSTRUCTION:Phase 1 - Pre-Construction:Direct Design Costs:Concept Design & Rendering"
+    },
+    "5130": {
+      "name": "Permits & Project Fees",
+      "phase": "5100",
+      "account": "COGS - CONSTRUCTION:Phase 1 - Pre-Construction:Permits & Project Fees"
+    },
+    "5140": {
+      "name": "Surveys & Engineer Costs",
+      "phase": "5100",
+      "account": "COGS - CONSTRUCTION:Phase 1 - Pre-Construction:Surveys & Engineer Costs"
+    },
+    "5215": {
+      "name": "Job Site Signage & Plot Markers",
+      "phase": "5200",
+      "account": "COGS - CONSTRUCTION:Phase 2 - Site Work & Infrastructure:Job Site Signage & Plot Markers"
+    },
+    "5220": {
+      "name": "On-Site Office and Storage Rent",
+      "phase": "5200",
+      "account": "COGS - CONSTRUCTION:Phase 2 - Site Work & Infrastructure:On-Site Office and Storage Rent"
+    },
+    "5221": {
+      "name": "On-Site Facilities Expense",
+      "phase": "5200",
+      "account": "COGS - CONSTRUCTION:Phase 2 - Site Work & Infrastructure:On-Site Facilities Expense"
+    },
+    "5230": {
+      "name": "On-Site Temp Electrical",
+      "phase": "5200",
+      "account": "COGS - CONSTRUCTION:Phase 2 - Site Work & Infrastructure:On-Site Temp Electrical"
+    },
+    "5240": {
+      "name": "Disposal & Tipping Fees (Rough & Final)",
+      "phase": "5200",
+      "account": "COGS - CONSTRUCTION:Phase 2 - Site Work & Infrastructure:Disposal & Tipping Fees (Rough & Final)"
+    },
+    "5250": {
+      "name": "Foundation Materials",
+      "phase": "5200",
+      "account": "COGS - CONSTRUCTION:Phase 2 - Site Work & Infrastructure:Foundation Materials"
+    },
+    "5260": {
+      "name": "Sub - Earth Moving & Roads",
+      "phase": "5200",
+      "account": "COGS - CONSTRUCTION:Phase 2 - Site Work & Infrastructure:Sub - Earth Moving & Roads"
+    },
+    "5270": {
+      "name": "Sub - Foundation & Concrete",
+      "phase": "5200",
+      "account": "COGS - CONSTRUCTION:Phase 2 - Site Work & Infrastructure:Sub - Foundation & Concrete"
+    },
+    "5311": {
+      "name": "Materials - Framing",
+      "phase": "5300",
+      "account": "COGS - CONSTRUCTION:Phase 3 - Structural Shell (Vertical):Direct Materials for Projects:Materials - Framing"
+    },
+    "5312": {
+      "name": "Materials - Roofing & Trusses",
+      "phase": "5300",
+      "account": "COGS - CONSTRUCTION:Phase 3 - Structural Shell (Vertical):Direct Materials for Projects:Materials - Roofing & Trusses"
+    },
+    "5313": {
+      "name": "Materials - Siding & External Trim",
+      "phase": "5300",
+      "account": "COGS - CONSTRUCTION:Phase 3 - Structural Shell (Vertical):Direct Materials for Projects:Materials - Siding & External Trim"
+    },
+    "5314": {
+      "name": "Materials - Windows & Exterior Doors",
+      "phase": "5300",
+      "account": "COGS - CONSTRUCTION:Phase 3 - Structural Shell (Vertical):Direct Materials for Projects:Materials - Windows & Exterior Doors"
+    },
+    "5315": {
+      "name": "Materials - Insulation & Thermals",
+      "phase": "5300",
+      "account": "COGS - CONSTRUCTION:Phase 3 - Structural Shell (Vertical):Direct Materials for Projects:Materials - Insulation & Thermals"
+    },
+    "5316": {
+      "name": "Materials - Drywall & Crackfill",
+      "phase": "5300",
+      "account": "COGS - CONSTRUCTION:Phase 3 - Structural Shell (Vertical):Direct Materials for Projects:Materials - Drywall & Crackfill"
+    },
+    "5319": {
+      "name": "Freight & Delivery (Inbound - Projects Only)",
+      "phase": "5300",
+      "account": "COGS - CONSTRUCTION:Phase 3 - Structural Shell (Vertical):Direct Materials for Projects:Freight & Delivery (Inbound - Projects Only)"
+    },
+    "5320": {
+      "name": "Sub - Framing Crews",
+      "phase": "5300",
+      "account": "COGS - CONSTRUCTION:Phase 3 - Structural Shell (Vertical):Sub - Framing Crews"
+    },
+    "5330": {
+      "name": "Sub - Roofing",
+      "phase": "5300",
+      "account": "COGS - CONSTRUCTION:Phase 3 - Structural Shell (Vertical):Sub - Roofing"
+    },
+    "5340": {
+      "name": "Sub - Siding & Exterior Finish",
+      "phase": "5300",
+      "account": "COGS - CONSTRUCTION:Phase 3 - Structural Shell (Vertical):Sub - Siding & Exterior Finish"
+    },
+    "5345": {
+      "name": "Sub - Windows & Exterior Doors",
+      "phase": "5300",
+      "account": "COGS - CONSTRUCTION:Phase 3 - Structural Shell (Vertical):Sub - Windows & Exterior Doors"
+    },
+    "5346": {
+      "name": "Sub - Insulation",
+      "phase": "5300",
+      "account": "COGS - CONSTRUCTION:Phase 3 - Structural Shell (Vertical):Sub - Insulation"
+    },
+    "5347": {
+      "name": "Sub - Drywall & Crackfill",
+      "phase": "5300",
+      "account": "COGS - CONSTRUCTION:Phase 3 - Structural Shell (Vertical):Sub - Drywall & Crackfill"
+    },
+    "5350": {
+      "name": "Equipment Rental - Shell & Exterior",
+      "phase": "5300",
+      "account": "COGS - CONSTRUCTION:Phase 3 - Structural Shell (Vertical):Equipment Rental - Shell & Exterior"
+    },
+    "5360": {
+      "name": "Field Safety & Apparel",
+      "phase": "5300",
+      "account": "COGS - CONSTRUCTION:Phase 3 - Structural Shell (Vertical):Field Safety & Apparel"
+    },
+    "5405": {
+      "name": "Electrical Materials",
+      "phase": "5400",
+      "account": "COGS - CONSTRUCTION:Phase 4 - Mechanical Rough-Ins:Electrical Materials"
+    },
+    "5407": {
+      "name": "Plumbing Materials",
+      "phase": "5400",
+      "account": "COGS - CONSTRUCTION:Phase 4 - Mechanical Rough-Ins:Plumbing Materials"
+    },
+    "5408": {
+      "name": "HVAC Materials",
+      "phase": "5400",
+      "account": "COGS - CONSTRUCTION:Phase 4 - Mechanical Rough-Ins:HVAC Materials"
+    },
+    "5410": {
+      "name": "Sub - Electrical",
+      "phase": "5400",
+      "account": "COGS - CONSTRUCTION:Phase 4 - Mechanical Rough-Ins:Sub - Electrical"
+    },
+    "5420": {
+      "name": "Sub - Plumbing",
+      "phase": "5400",
+      "account": "COGS - CONSTRUCTION:Phase 4 - Mechanical Rough-Ins:Sub - Plumbing"
+    },
+    "5430": {
+      "name": "Sub - HVAC",
+      "phase": "5400",
+      "account": "COGS - CONSTRUCTION:Phase 4 - Mechanical Rough-Ins:Sub - HVAC"
+    },
+    "5503": {
+      "name": "Appliances & Range Hoods",
+      "phase": "5500",
+      "account": "COGS - CONSTRUCTION:Phase 5 - Finishes & Specialties:Interior Finishes (Sub-Header Account):Direct materials for Interior Finishes:Appliances & Range Hoods"
+    },
+    "5510": {
+      "name": "Paint",
+      "phase": "5500",
+      "account": "COGS - CONSTRUCTION:Phase 5 - Finishes & Specialties:Interior Finishes (Sub-Header Account):Direct materials for Interior Finishes:Paint"
+    },
+    "5515": {
+      "name": "Flooring & Tile Material",
+      "phase": "5500",
+      "account": "COGS - CONSTRUCTION:Phase 5 - Finishes & Specialties:Interior Finishes (Sub-Header Account):Direct materials for Interior Finishes:Flooring & Tile Material"
+    },
+    "5520": {
+      "name": "Kitchen & Cabinetry",
+      "phase": "5500",
+      "account": "COGS - CONSTRUCTION:Phase 5 - Finishes & Specialties:Interior Finishes (Sub-Header Account):Direct materials for Interior Finishes:Kitchen & Cabinetry"
+    },
+    "5525": {
+      "name": "Interior Lighting & Finishes",
+      "phase": "5500",
+      "account": "COGS - CONSTRUCTION:Phase 5 - Finishes & Specialties:Interior Finishes (Sub-Header Account):Direct materials for Interior Finishes:Interior Lighting & Finishes"
+    },
+    "5526": {
+      "name": "Plumbing Fixtures & Finishes",
+      "phase": "5500",
+      "account": "COGS - CONSTRUCTION:Phase 5 - Finishes & Specialties:Interior Finishes (Sub-Header Account):Direct materials for Interior Finishes:Plumbing Fixtures & Finishes"
+    },
+    "5530": {
+      "name": "Interior Finish & Trim",
+      "phase": "5500",
+      "account": "COGS - CONSTRUCTION:Phase 5 - Finishes & Specialties:Interior Finishes (Sub-Header Account):Direct materials for Interior Finishes:Interior Finish & Trim"
+    },
+    "5535": {
+      "name": "Freight & Delivery (Inbound) - Interior Finishes",
+      "phase": "5500",
+      "account": "COGS - CONSTRUCTION:Phase 5 - Finishes & Specialties:Interior Finishes (Sub-Header Account):Direct materials for Interior Finishes:Freight & Delivery (Inbound) - Interior Finishes"
+    },
+    "5540": {
+      "name": "Sub - Painting",
+      "phase": "5500",
+      "account": "COGS - CONSTRUCTION:Phase 5 - Finishes & Specialties:Interior Finishes (Sub-Header Account):Sub - Painting"
+    },
+    "5545": {
+      "name": "Sub - Flooring & Tile",
+      "phase": "5500",
+      "account": "COGS - CONSTRUCTION:Phase 5 - Finishes & Specialties:Interior Finishes (Sub-Header Account):Sub - Flooring & Tile"
+    },
+    "5555": {
+      "name": "Sub - Interior Finish",
+      "phase": "5500",
+      "account": "COGS - CONSTRUCTION:Phase 5 - Finishes & Specialties:Interior Finishes (Sub-Header Account):Sub - Interior Finish"
+    },
+    "5570": {
+      "name": "Equipment Rental - Interior Finishing",
+      "phase": "5500",
+      "account": "COGS - CONSTRUCTION:Phase 5 - Finishes & Specialties:Interior Finishes (Sub-Header Account):Equipment Rental - Interior Finishing"
+    },
+    "5581": {
+      "name": "Landscaping Material",
+      "phase": "5500",
+      "account": "COGS - CONSTRUCTION:Phase 5 - Finishes & Specialties:EXTERIOR FINISHES:Landscaping Material"
+    },
+    "5582": {
+      "name": "Decking and Stairs - Material",
+      "phase": "5500",
+      "account": "COGS - CONSTRUCTION:Phase 5 - Finishes & Specialties:EXTERIOR FINISHES:Decking and Stairs - Material"
+    },
+    "5585": {
+      "name": "Sub - Landscaping, Walkways, Driveways",
+      "phase": "5500",
+      "account": "COGS - CONSTRUCTION:Phase 5 - Finishes & Specialties:EXTERIOR FINISHES:Sub - Landscaping, Walkways, Driveways"
+    },
+    "5590": {
+      "name": "Equipment Rental - Exterior Finishing",
+      "phase": "5500",
+      "account": "COGS - CONSTRUCTION:Phase 5 - Finishes & Specialties:EXTERIOR FINISHES:Equipment Rental - Exterior Finishing"
+    },
+    "5610": {
+      "name": "Post-Construction Cleaning",
+      "phase": "5600",
+      "account": "COGS - CONSTRUCTION:Phase 6 - Closeout:Post-Construction Cleaning"
+    },
+    "5615": {
+      "name": "Water Sampling & Testing",
+      "phase": "5600",
+      "account": "COGS - CONSTRUCTION:Phase 6 - Closeout:Water Sampling & Testing"
+    },
+    "5620": {
+      "name": "Small Tools",
+      "phase": "5600",
+      "account": "COGS - CONSTRUCTION:Phase 6 - Closeout:Small Tools"
+    },
+    "5630": {
+      "name": "Shop & Job Consumables",
+      "phase": "5600",
+      "account": "COGS - CONSTRUCTION:Phase 6 - Closeout:Shop & Job Consumables"
+    },
+    "5631": {
+      "name": "Cleaning Supplies - Job",
+      "phase": "5600",
+      "account": "COGS - CONSTRUCTION:Phase 6 - Closeout:Cleaning Supplies - Job"
+    },
+    "5640": {
+      "name": "Late Closing Misc Fees",
+      "phase": "5600",
+      "account": "COGS - CONSTRUCTION:Phase 6 - Closeout:Late Closing Misc Fees"
+    },
+    "5750": {
+      "name": "Warranty Registrations",
+      "phase": "5700",
+      "account": "COGS - CONSTRUCTION:Phase 7 - Warranty:Warranty Registrations"
+    },
+    "5805": {
+      "name": "Cost of Goods Sold",
+      "phase": "5800",
+      "account": "Retail Showroom - COGS:Cost of Goods Sold"
+    },
+    "5810": {
+      "name": "Cost of Retail Inventory Sold",
+      "phase": "5800",
+      "account": "Retail Showroom - COGS:Cost of Retail Inventory Sold"
+    },
+    "5820": {
+      "name": "Retail Freight-IN",
+      "phase": "5800",
+      "account": "Retail Showroom - COGS:Retail Freight-IN"
+    },
+    "5830": {
+      "name": "Inventory Shrinkage",
+      "phase": "5800",
+      "account": "Retail Showroom - COGS:Inventory Shrinkage"
+    },
+    "5840": {
+      "name": "Mercharnt Processing Fees",
+      "phase": "5800",
+      "account": "Retail Showroom - COGS:Mercharnt Processing Fees"
+    },
+    "5845": {
+      "name": "Cash Shortages and Overages",
+      "phase": "5800",
+      "account": "Retail Showroom - COGS:Cash Shortages and Overages"
+    },
+    "5850": {
+      "name": "Showroom Supplies",
+      "phase": "5800",
+      "account": "Retail Showroom - COGS:Showroom Supplies"
+    },
+    "5920": {
+      "name": "RSM Sub - Specialized Maintenance",
+      "phase": "5900",
+      "account": "Residential Site Maintenance COGS:RSM Sub - Specialized Maintenance"
+    },
+    "5930": {
+      "name": "RSM Utilities",
+      "phase": "5900",
+      "account": "Residential Site Maintenance COGS:RSM Utilities"
+    }
   },
   "keyword_hints": {
-    "framing lumber": "5311",
-    "lumber": "5311",
-    "2x4": "5311",
-    "2x6": "5311",
-    "studs": "5311",
-    "trusses": "5311",
-    "joists": "5311",
-    "sheathing": "5311",
-    "osb": "5311",
-    "plywood": "5311",
-    "shingles": "5312",
-    "roofing material": "5312",
-    "ice and water shield": "5312",
-    "underlayment": "5312",
-    "flashing": "5312",
-    "siding": "5313",
-    "j-trim": "5313",
-    "coil stock": "5313",
-    "starter strips": "5313",
-    "framing crew": "5320",
-    "framers": "5320",
-    "framing sub": "5320",
-    "roofers": "5330",
-    "roofing crew": "5330",
-    "roofing sub": "5330",
-    "siding crew": "5340",
-    "siding sub": "5340",
-    "worksafenb": "5350",
-    "worksafe": "5350",
-    "ppe": "5360",
-    "safety boots": "5360",
-    "hi-vis": "5360",
-    "hard hats": "5360",
+    "estimating": "5105",
+    "pre-con": "5105",
+    "design labor": "5110",
+    "drafting": "5120",
+    "design software": "5120",
+    "rendering": "5125",
+    "concept design": "5125",
+    "permits": "5130",
+    "building permit": "5130",
+    "surveyor": "5140",
+    "survey": "5140",
+    "engineer stamp": "5140",
+    "soil testing": "5140",
+    "signage": "5215",
+    "plot marker": "5215",
+    "site office rental": "5220",
+    "storage rent": "5220",
+    "job trailer": "5220",
+    "porta potty": "5221",
+    "portable toilet": "5221",
+    "temp power": "5230",
+    "temporary electrical": "5230",
+    "dump fees": "5240",
+    "tipping fees": "5240",
+    "dumpster": "5240",
+    "disposal": "5240",
     "rebar": "5250",
     "icf": "5250",
     "anchor bolts": "5250",
@@ -164,42 +468,96 @@
     "concrete sub": "5270",
     "foundation sub": "5270",
     "pump truck": "5270",
-    "permits": "5130",
-    "building permit": "5130",
-    "surveyor": "5140",
-    "engineer stamp": "5140",
-    "soil testing": "5140",
-    "design labor": "5110",
-    "drafting": "5120",
-    "design software": "5120",
-    "site office rental": "5220",
-    "storage rent": "5220",
-    "job trailer": "5220",
-    "temp power": "5230",
-    "temporary electrical": "5230",
-    "dump fees": "5240",
-    "tipping fees": "5240",
-    "dumpster": "5240",
-    "disposal": "5240",
+    "framing lumber": "5311",
+    "lumber": "5311",
+    "2x4": "5311",
+    "2x6": "5311",
+    "studs": "5311",
+    "joists": "5311",
+    "sheathing": "5311",
+    "osb": "5311",
+    "plywood": "5311",
+    "shingles": "5312",
+    "roofing material": "5312",
+    "trusses": "5312",
+    "ice and water shield": "5312",
+    "underlayment": "5312",
+    "flashing": "5312",
+    "siding": "5313",
+    "j-trim": "5313",
+    "coil stock": "5313",
+    "starter strips": "5313",
+    "soffit": "5313",
+    "fascia": "5313",
+    "window": "5314",
+    "windows": "5314",
+    "exterior door": "5314",
+    "patio door": "5314",
+    "insulation": "5315",
+    "vapour barrier": "5315",
+    "spray foam": "5315",
+    "drywall": "5316",
+    "drywall material": "5316",
+    "mud": "5316",
+    "crackfill": "5316",
+    "drywall tape": "5316",
+    "corner bead": "5316",
+    "framing crew": "5320",
+    "framers": "5320",
+    "framing sub": "5320",
+    "roofers": "5330",
+    "roofing crew": "5330",
+    "roofing sub": "5330",
+    "siding crew": "5340",
+    "siding sub": "5340",
+    "window install": "5345",
+    "insulation sub": "5346",
+    "insulators": "5346",
+    "drywall sub": "5347",
+    "drywall crew": "5347",
+    "tapers": "5347",
+    "equipment rental": "5350",
+    "lift rental": "5350",
+    "scaffold": "5350",
+    "ppe": "5360",
+    "safety boots": "5360",
+    "hi-vis": "5360",
+    "hard hats": "5360",
     "electrical wire": "5405",
     "electrical materials": "5405",
-    "panel": "5405",
     "breakers": "5405",
+    "electrical panel": "5405",
+    "pex": "5407",
+    "plumbing materials": "5407",
+    "abs pipe": "5407",
+    "water heater": "5407",
+    "ductwork": "5408",
+    "hvac materials": "5408",
+    "heat pump": "5408",
     "electrician": "5410",
     "electrical sub": "5410",
     "plumber": "5420",
     "plumbing sub": "5420",
     "hvac sub": "5430",
-    "furnace sub": "5430",
     "heat pump install": "5430",
-    "drywall material": "5510",
+    "appliance": "5503",
+    "appliances": "5503",
+    "range hood": "5503",
+    "fridge": "5503",
+    "dishwasher": "5503",
     "paint": "5510",
     "primer": "5510",
-    "mud": "5510",
-    "tape": "5510",
-    "drywall sub": "5515",
-    "painters": "5515",
-    "drywall crew": "5515",
+    "stain": "5510",
+    "hardwood": "5515",
+    "lvp": "5515",
+    "luxury vinyl plank": "5515",
+    "laminate": "5515",
+    "flooring": "5515",
+    "flooring material": "5515",
+    "tile": "5515",
+    "tile material": "5515",
+    "grout": "5515",
+    "carpet": "5515",
     "cabinets": "5520",
     "cabinetry": "5520",
     "vanity": "5520",
@@ -207,170 +565,113 @@
     "countertop": "5520",
     "quartz": "5520",
     "kitchen island": "5520",
-    "fixtures": "5520",
     "interior lighting": "5525",
+    "light fixture": "5525",
     "light fixtures": "5525",
-    "pendants": "5525",
-    "chandeliers": "5525",
+    "pendant": "5525",
+    "chandelier": "5525",
+    "ceiling fan": "5525",
+    "fan": "5525",
+    "faucet": "5526",
+    "toilet": "5526",
+    "sink": "5526",
+    "shower": "5526",
+    "tub": "5526",
+    "plumbing fixture": "5526",
+    "plumbing fixtures": "5526",
+    "baseboard": "5530",
     "baseboards": "5530",
     "crown moulding": "5530",
+    "casing": "5530",
+    "interior door": "5530",
     "interior doors": "5530",
     "door hardware": "5530",
+    "handles": "5530",
     "trim": "5530",
-    "hardwood": "5540",
-    "lvp": "5540",
-    "luxury vinyl plank": "5540",
-    "flooring material": "5540",
-    "tile material": "5540",
-    "carpet material": "5540",
+    "freight": "5535",
+    "inbound shipping": "5535",
+    "delivery from supplier": "5535",
+    "painters": "5540",
+    "painting sub": "5540",
     "flooring installer": "5545",
     "tile installer": "5545",
     "flooring sub": "5545",
     "tile sub": "5545",
-    "landscaping": "5550",
-    "softscape": "5550",
-    "sod": "5550",
-    "freight": "5560",
-    "inbound shipping": "5560",
-    "delivery from supplier": "5560",
+    "finish carpenter": "5555",
+    "interior finish sub": "5555",
+    "landscaping material": "5581",
+    "sod": "5581",
+    "topsoil": "5581",
+    "mulch": "5581",
+    "decking": "5582",
+    "deck boards": "5582",
+    "railing": "5582",
+    "landscaping": "5585",
+    "paving": "5585",
+    "driveway": "5585",
+    "walkway": "5585",
     "post-construction cleaning": "5610",
     "final cleaning": "5610",
     "cleaning sub": "5610",
+    "water testing": "5615",
+    "water sample": "5615",
     "drill": "5620",
     "saw": "5620",
     "level": "5620",
     "hammer": "5620",
     "small tool": "5620",
-    "tool under 500": "5620",
     "blades": "5630",
     "bits": "5630",
+    "adhesive": "5630",
     "adhesives": "5630",
+    "caulking": "5630",
     "consumables": "5630",
     "screws": "5630",
     "fasteners": "5630",
+    "cleaning supplies": "5631",
     "late closing": "5640",
     "homeowner storage": "5640",
-    "warranty material": "5710",
-    "warranty repair": "5710",
-    "warranty backcharge": "5730",
-    "lux warranty": "5750",
     "warranty registration": "5750",
+    "lux warranty": "5750",
     "retail inventory": "5810",
     "resale": "5810",
-    "showroom stock": "5810",
     "retail freight": "5820",
-    "retail customs": "5820",
-    "inventory shrink": "5830",
-    "broken stock": "5830",
-    "software subscription": "7010",
-    "quickbooks": "7010",
-    "buildertrend": "7010",
-    "office cleaning": "7120",
-    "janitorial": "7120",
-    "soap": "7120",
-    "towels": "7120",
-    "office supplies": "7130",
-    "paper": "7130",
-    "toner": "7130",
-    "pens": "7130",
-    "markers": "7130",
-    "first aid": "7135",
-    "office safety": "7135",
-    "band-aids": "7135",
-    "bandaids": "7135",
-    "coffee": "7140",
-    "snacks": "7140",
-    "water cooler": "7140",
-    "breakroom": "7140",
-    "employee training": "7240",
-    "safety cert": "7250",
-    "safety training": "7250",
-    "wsib training": "7250",
-    "it support": "7450",
-    "managed it": "7450",
-    "mouse": "7470",
-    "keyboard": "7470",
-    "cables": "7470",
-    "computer supply": "7470",
-    "monitor under 500": "7470",
-    "google ads": "7610",
-    "facebook ads": "7610",
-    "newspaper ad": "7610",
-    "signage advertising": "7610",
-    "logo design": "7620",
-    "vehicle wrap": "7620",
-    "branding": "7620",
-    "graphic design": "7620",
-    "business cards": "7630",
-    "brochures": "7630",
-    "marketing material": "7630",
-    "mailchimp": "7640",
-    "canva": "7640",
-    "hootsuite": "7640",
-    "houzz": "7640",
-    "marketing subscription": "7640",
-    "crew shirts": "7650",
-    "branded apparel": "7650",
-    "swag": "7650",
-    "client giveaway": "7650",
-    "sponsorship": "7660",
-    "rink board": "7660",
-    "gala": "7660",
-    "outbound shipping": "7670",
-    "shipping to customer": "7670",
-    "delivery to customer": "7670",
-    "repair maintenance": "7680",
-    "broken window": "7680",
-    "hvac tuning": "7680",
-    "snow removal": "7685",
-    "property landscaping": "7685",
-    "website hosting": "7690",
-    "domain": "7690",
-    "seo": "7690",
-    "airfare": "7700",
-    "flight": "7700",
-    "hotel": "7700",
-    "lodging": "7700",
-    "taxi": "7700",
-    "meals entertainment": "7710",
-    "client meal": "7720",
-    "developer lunch": "7720",
-    "internal meeting": "7730",
-    "staff lunch": "7730",
-    "kickoff meeting": "7730"
+    "showroom supplies": "5850"
   },
-  "common_quick_lookups": [
-    {"purchase": "Framing lumber", "code": "5311"},
-    {"purchase": "Roofing materials", "code": "5312"},
-    {"purchase": "Siding & trim", "code": "5313"},
-    {"purchase": "Sub - Framing", "code": "5320"},
-    {"purchase": "Sub - Roofing", "code": "5330"},
-    {"purchase": "Sub - Siding", "code": "5340"},
-    {"purchase": "Foundation materials", "code": "5250"},
-    {"purchase": "Sub - Foundation & Concrete", "code": "5270"},
-    {"purchase": "Sub - Earth Moving & Roads", "code": "5260"},
-    {"purchase": "Electrical materials", "code": "5405"},
-    {"purchase": "Sub - Electrical", "code": "5410"},
-    {"purchase": "Sub - Plumbing", "code": "5420"},
-    {"purchase": "Sub - HVAC", "code": "5430"},
-    {"purchase": "Drywall & paint materials", "code": "5510"},
-    {"purchase": "Sub - Drywall & Paint", "code": "5515"},
-    {"purchase": "Kitchen, cabinetry, fixtures", "code": "5520"},
-    {"purchase": "Interior lighting & finishes", "code": "5525"},
-    {"purchase": "Interior trim, doors, hardware", "code": "5530"},
-    {"purchase": "Flooring/tile materials", "code": "5540"},
-    {"purchase": "Sub - Flooring & Tile", "code": "5545"},
-    {"purchase": "Sub - Landscaping", "code": "5550"},
-    {"purchase": "Small tools < $500", "code": "5620"},
-    {"purchase": "Shop & job consumables", "code": "5630"},
-    {"purchase": "Sub - Post-Construction Cleaning", "code": "5610"},
-    {"purchase": "Permits & project fees", "code": "5130"},
-    {"purchase": "Surveys & engineer costs", "code": "5140"},
-    {"purchase": "Retail resale inventory", "code": "5810"},
-    {"purchase": "Software subscriptions", "code": "7010"},
-    {"purchase": "Office supplies", "code": "7130"},
-    {"purchase": "Advertising / promotions", "code": "7610"},
-    {"purchase": "Branded apparel & swag", "code": "7650"},
-    {"purchase": "Repairs & maintenance", "code": "7680"}
-  ]
+  "legacy_map": {
+    "5310": null,
+    "5312": "5312",
+    "5350": null,
+    "5510": null,
+    "5515": null,
+    "5540": "5515",
+    "5550": "5585",
+    "5560": "5535",
+    "5710": null,
+    "5730": null,
+    "5830": "5830",
+    "7010": null,
+    "7120": null,
+    "7130": null,
+    "7135": null,
+    "7140": null,
+    "7240": null,
+    "7250": null,
+    "7450": null,
+    "7470": null,
+    "7610": null,
+    "7620": null,
+    "7630": null,
+    "7640": null,
+    "7650": null,
+    "7660": null,
+    "7670": null,
+    "7680": null,
+    "7685": null,
+    "7690": null,
+    "7700": null,
+    "7710": null,
+    "7720": null,
+    "7730": null
+  }
 }

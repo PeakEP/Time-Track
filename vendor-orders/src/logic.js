@@ -124,40 +124,25 @@ export function todayStr() {
   return localDate(new Date().toISOString());
 }
 
-/* ---------------- PO export ---------------- */
+/* ---------------- PO totals ---------------- */
 
-export const CSV_COLUMNS = [
-  "PO #", "Cost Code", "Cost Code Name", "Phase", "Job", "Product", "SKU", "Description",
-  "Qty", "Unit", "Needed By", "Unit Cost", "Line Total", "Notes",
-];
+export const HST_RATE = 0.15; // New Brunswick
 
-export function buildCSV(name, dayLabel, lines, generatedBy) {
-  const q = (s) => {
-    s = String(s == null ? "" : s);
-    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+// Subtotal, HST and total for a batch, plus subtotals per cost code (for accounting).
+export function poTotals(lines) {
+  const subtotal = lines.reduce((s, o) => s + lineTotal(o), 0);
+  const byCode = {};
+  for (const o of lines) {
+    const k = o.coa || "";
+    byCode[k] = (byCode[k] || 0) + lineTotal(o);
+  }
+  const hst = Math.round(subtotal * HST_RATE * 100) / 100;
+  return {
+    subtotal,
+    hst,
+    total: subtotal + hst,
+    byCode: Object.entries(byCode)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([code, amount]) => ({ code, name: coaName(code), amount })),
   };
-  const head = [
-    `# Purchase Order — ${name}`,
-    `# Robins Interiors & Design (J.M Robins Construction Ltd.)`,
-    `# Order day: ${dayLabel}`,
-    `# Generated: ${new Date().toLocaleString("en-CA", { timeZone: TZ })} by ${generatedBy}`,
-    `# PO coding per OPS-POL-001`,
-    "",
-  ];
-  const body = lines.map((o) =>
-    [
-      o.po, o.coa, coaName(o.coa), phaseName(o.coa), o.jobCode, o.productName, o.sku, o.description,
-      o.qty, o.unit, o.neededBy, Number(o.cost || 0).toFixed(2), lineTotal(o).toFixed(2), o.notes,
-    ]
-      .map(q)
-      .join(","),
-  );
-  const sub = lines.reduce((s, o) => s + lineTotal(o), 0);
-  const subRow = Array(CSV_COLUMNS.length).fill("");
-  subRow[11] = "SUBTOTAL (ex. HST)";
-  subRow[12] = sub.toFixed(2);
-  return (
-    head.join("\n") + "\n" + CSV_COLUMNS.map(q).join(",") + "\n" + body.join("\n") + "\n" +
-    subRow.map(q).join(",") + "\n"
-  );
 }

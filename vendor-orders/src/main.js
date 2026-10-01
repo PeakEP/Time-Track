@@ -4,8 +4,9 @@
 import "./styles.css";
 import {
   COST, UNITS, STATUSES, esc, money, lineTotal, suggestCoa, nextCutoff, fmtCountdown, fmtDate,
-  localDate, todayStr, buildCSV,
+  localDate, todayStr,
 } from "./logic.js";
+import LOGO_URL from "./assets/jmrc-logo.png";
 import { isPurchaser as isPurchaserUser, canModifyLine, CLEAR_HISTORY_PHRASE, RESET_ALL_PHRASE } from "./rules.js";
 import { fetchConfig, remoteStore, demoStore, savedUser, saveUser } from "./store.js";
 
@@ -54,6 +55,12 @@ function toast(msg) {
 function coaName(code) {
   const c = COST.codes[code];
   return c ? c.name : "";
+}
+// Cost code cell: the code (name on hover), or a flag when the line lost its code
+// in a chart-of-accounts update and needs re-coding.
+function coaCell(o) {
+  if (o.coa) return `<td title="${esc(coaName(o.coa))}">${esc(o.coa)}</td>`;
+  return `<td><span class="chip backordered" title="${o.coaWas ? `Was ${esc(o.coaWas)} — that code changed in the new chart of accounts` : "No cost code"}">Needs code</span></td>`;
 }
 
 /* ============================ DATA ============================ */
@@ -424,7 +431,7 @@ function renderBatch() {
         ? `<button class="btn sm ghost" data-action="edit" data-id="${o.id}">Edit</button><button class="btn sm ghost" data-action="del" data-id="${o.id}">✕</button>`
         : "";
       h += `<tr>
-        <td class="po">${esc(o.po || "")}</td><td>${esc(o.jobCode)}</td><td>${esc(o.productName)}</td><td>${esc(o.sku)}</td><td title="${esc(coaName(o.coa))}">${esc(o.coa || "")}</td><td>${esc(o.description)}</td>
+        <td class="po">${esc(o.po || "")}</td><td>${esc(o.jobCode)}</td><td>${esc(o.productName)}</td><td>${esc(o.sku)}</td>${coaCell(o)}<td>${esc(o.description)}</td>
         <td class="num mono">${esc(o.qty)}</td><td>${esc(o.unit)}</td>
         <td class="num mono">${money(o.cost)}</td><td class="num mono">${money(lineTotal(o))}</td>
         <td>${esc(o.neededBy || "")}</td><td>${esc(o.createdByName)}</td>
@@ -433,7 +440,7 @@ function renderBatch() {
     }
     h += `</tbody><tfoot><tr><td colspan="9" class="num">Batch subtotal (ex. HST)</td><td class="num mono">${money(sub)}</td><td colspan="3"></td></tr></tfoot></table></div>`;
     h += `<div class="row-actions" style="margin-top:14px">
-      <button class="btn cyan" data-action="exportBatch" data-id="${esc(name)}">⭳ Export PO (CSV)</button>`;
+      <button class="btn cyan" data-action="exportBatch" data-id="${esc(name)}">⭳ Export PO (PDF)</button>`;
     if (isPurchaser()) h += `<button class="btn primary" data-action="markOrdered" data-id="${esc(name)}">Mark batch ordered</button>`;
     h += `</div></div>`;
   }
@@ -490,7 +497,7 @@ function renderTrack() {
     if (isPurchaser() && o.status === "ordered") acts += `<button class="btn sm ghost" data-action="backorder" data-id="${o.id}">Backorder</button>`;
     if (canEdit(o)) acts += `<button class="btn sm ghost" data-action="del" data-id="${o.id}">✕</button>`;
     h += `<tr>
-      <td class="small">${esc(localDate(o.createdAt))}</td><td>${esc(o.vendor)}</td><td class="po">${esc(o.po || "")}</td><td title="${esc(coaName(o.coa))}">${esc(o.coa || "")}</td>
+      <td class="small">${esc(localDate(o.createdAt))}</td><td>${esc(o.vendor)}</td><td class="po">${esc(o.po || "")}</td>${coaCell(o)}
       <td>${esc(o.productName || "")}</td><td>${esc(o.description)}</td>
       <td class="num mono">${esc(o.qty)} ${esc(o.unit || "")}</td><td class="small">${esc(o.neededBy || "")}</td><td class="small">${esc(o.createdByName)}</td>
       <td><span class="chip ${o.status}">${o.status}</span></td>
@@ -573,25 +580,45 @@ function deleteOrderGroup(groupId) {
 function markOrdered(name) {
   const lines = batchLines(name);
   if (!lines.length) return;
+  const uncoded = lines.filter((o) => !o.coa).length;
+  if (uncoded) return toast(`${uncoded} line${uncoded > 1 ? "s need" : " needs"} a cost code before ordering`);
   openOrderModal(name, lines.length, (confirmation, eta) =>
     act(store.markOrdered({ vendor: name, ids: lines.map((o) => o.id), confirmation, eta }), (r) =>
       r.ordered + " line" + (r.ordered === 1 ? "" : "s") + " marked ordered"),
   );
 }
-function exportBatch(name) {
+// Branded PDF of the vendor's Ready lines (the PO sent to the vendor).
+async function exportBatch(name) {
   const lines = batchLines(name);
   if (!lines.length) return toast("No ready lines");
-  const csv = buildCSV(name, dayLabel(vendorObj(name).day), lines, ME.name);
-  const fname = "PO_" + name.replace(/[^A-Za-z0-9]+/g, "_") + "_" + todayStr() + ".csv";
-  const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = fname;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-  toast("PO exported");
+  const uncoded = lines.filter((o) => !o.coa).length;
+  if (uncoded) return toast(`${uncoded} line${uncoded > 1 ? "s need" : " needs"} a cost code — edit ${uncoded > 1 ? "them" : "it"} first`);
+  toast("Building PO…");
+  try {
+    const [{ buildPoPdf, poFileName }, logo] = await Promise.all([import("./po-pdf.js"), loadLogo()]);
+    buildPoPdf({ vendor: name, dayLabel: dayLabel(vendorObj(name).day), lines, issuedBy: ME.name, logo })
+      .save(poFileName(name, todayStr()));
+    toast("PO exported");
+  } catch (e) {
+    console.error(e);
+    toast("Couldn't build the PO PDF — try again");
+  }
+}
+let logoData = null;
+async function loadLogo() {
+  if (logoData) return logoData;
+  try {
+    const blob = await (await fetch(LOGO_URL)).blob();
+    logoData = await new Promise((ok, no) => {
+      const r = new FileReader();
+      r.onload = () => ok(r.result);
+      r.onerror = no;
+      r.readAsDataURL(blob);
+    });
+  } catch {
+    logoData = null; // the PDF falls back to the company name in text
+  }
+  return logoData;
 }
 function saveSchedule() {
   const times = {};

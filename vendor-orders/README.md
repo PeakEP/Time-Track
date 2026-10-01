@@ -15,7 +15,7 @@ Netlify + Vite, so the module is built this way instead:
 | Next.js API routes | One Netlify Function, `netlify/functions/vendor-orders-api/`, at `/api/vendor-orders/*` |
 | Postgres + `schema.sql` | **Netlify Blobs**, the storage built into every Netlify site, so there's nothing to set up. Vendors, cutoffs and cost codes seed themselves on first use (`storage.mjs`) |
 | NextAuth + Entra ID (M365) | Replaced by **name + PIN**. A Purchaser issues each person a random 6-digit PIN. Roles are stored on the server, not chosen by the user |
-| `claude.use('downloads')` | A normal browser CSV download (`buildCSV`, ported as-is) |
+| `claude.use('downloads')` | A branded PDF purchase order downloaded in the browser (`src/po-pdf.js`, jsPDF) |
 | localStorage name/role modal | Replaced by the name + PIN sign-in, with a server session token |
 
 ## Turning it on (one-time)
@@ -74,13 +74,21 @@ Microsoft 365 sign-in was built earlier and can be restored from git history if 
 
 - No line joins a batch until "Approved & deposit received" is checked.
 - The PO # is typed in by hand. POs are never auto-generated.
-- A cost code (COA) is required on every line. It is auto-suggested from the product name
-  using the OPS-POL-001 keyword table (`seed/cost_codes.json`). No match means no guess:
-  check with Susan.
+- A cost code (COA) is required on every line. The list is the postable Inventory and COGS
+  accounts from the JMRC chart of accounts (`seed/cost_codes.json`, from COA 261001).
+  Header accounts, payroll/labour accounts and Inventory in Transit are left out. The code
+  is auto-suggested from the product name using the keyword table in the same file. No
+  match means no guess: check with Susan.
+- When the chart of accounts is renumbered, bump `version` in `seed/cost_codes.json` and
+  list the old codes in `legacy_map`. Existing lines move over once: a code with the same
+  meaning maps to its new number, and a code with no clear match shows **Needs code** until
+  someone re-codes the line. A batch can't be exported or marked ordered with uncoded lines.
 - Unit cost is internal. It appears only in the batch view and the PO export, and no page
   is client-facing.
-- The CSV columns are: PO #, Cost Code, Cost Code Name, Phase, Job, Product, SKU,
-  Description, Qty, Unit, Needed By, Unit Cost, Line Total, Notes.
+- **Export PO (PDF)** makes a JMRC-branded purchase order for the vendor's Ready lines:
+  logo and company details, vendor / PO # / order day / issued by, a line table (PO #, Job,
+  Product, SKU, Description + notes, Cost code, Qty, Unit, Need by, Unit cost, Line total),
+  subtotals per cost code, and Subtotal (ex. HST), HST (15%) and Total.
 
 Changes from the prototype:
 
