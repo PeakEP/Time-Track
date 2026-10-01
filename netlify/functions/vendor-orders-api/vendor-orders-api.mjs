@@ -49,6 +49,20 @@ const outOrder = (state, o) => ({
 });
 const mapUser = publicUser;
 
+// Cost codes follow the chart of accounts in seed/cost_codes.json. When that list
+// is renumbered (its `version` goes up), existing lines are moved over once: a
+// code with the same meaning maps to its new number; a code with no clear match
+// is cleared (the old one is kept in coaWas) so the line shows it needs re-coding.
+export function migrateCoa(state) {
+  if ((state.coaVersion || 1) >= COST_SEED.version) return;
+  for (const o of state.orders || []) {
+    if (!o.coa || !Object.hasOwn(COST_SEED.legacy_map, o.coa)) continue;
+    const to = COST_SEED.legacy_map[o.coa] || "";
+    if (to !== o.coa) Object.assign(o, { coaWas: o.coa, coa: to });
+  }
+  state.coaVersion = COST_SEED.version;
+}
+
 /* ------------------------------ validation ------------------------------ */
 
 const str = (v, max = 500) => String(v == null ? "" : v).trim().slice(0, max);
@@ -236,7 +250,7 @@ function patchOrder(state, events, user, id, body) {
     set.orderDay = v.day;
   }
   if ("po" in body) set.po = requireText(body.po, "PO # is required", 100);
-  if ("coa" in body) set.coa = requireCoa(body.coa);
+  if ("coa" in body) Object.assign(set, { coa: requireCoa(body.coa), coaWas: undefined });
   if ("jobCode" in body) set.jobCode = str(body.jobCode, 100);
   if ("client" in body) set.client = str(body.client, 300);
   if ("neededBy" in body) set.neededBy = dateOrEmpty(body.neededBy, "Needed by");
@@ -431,6 +445,7 @@ export function createHandler({ store: injected } = {}) {
 
       if (method === "GET") {
         const state = await readState(store);
+        migrateCoa(state);
         const user = currentUser(state, req);
         if (path === "bootstrap") return json(bootstrap(state, user));
         if (path === "users") return json(listUsers(state, user));
@@ -462,7 +477,10 @@ export function createHandler({ store: injected } = {}) {
         throw new HttpError(404, "Not found");
       };
       const created = method === "POST" && ["orders", "vendors", "users"].includes(a) && !b;
-      const result = await mutate(store, (state, events) => route(state, events, currentUser(state, req)));
+      const result = await mutate(store, (state, events) => {
+        migrateCoa(state);
+        return route(state, events, currentUser(state, req));
+      });
       if (method === "POST" && path === "logout") return json(result, 200, { "set-cookie": clearCookie() });
       return json(result, created ? 201 : 200);
     } catch (e) {

@@ -39,7 +39,7 @@ after(async () => {
   if (dir) await rm(dir, { recursive: true, force: true });
 });
 
-const item = (o = {}) => ({ productName: "Oak LVP", coa: "5540", qty: 10, unit: "box", cost: 42.5, ...o });
+const item = (o = {}) => ({ productName: "Oak LVP", coa: "5515", qty: 10, unit: "box", cost: 42.5, ...o });
 
 test("config is public and reports live", { skip }, async () => {
   const r = await call(null, "GET", "config");
@@ -268,4 +268,20 @@ test("preview deploys use their own storage", async () => {
   const mod = await import("../../netlify/functions/vendor-orders-api/vendor-orders-api.mjs");
   const res = await mod.default(new Request("https://x.test/api/vendor-orders/config"), {});
   assert.deepEqual(await res.json(), { live: false });
+});
+
+test("lines saved under the old cost code list move to the new chart of accounts once", async () => {
+  const mod = await import("../../netlify/functions/vendor-orders-api/vendor-orders-api.mjs");
+  const mk = (coa) => ({ id: crypto.randomUUID(), coa });
+  const state = {
+    orders: [mk("5540"), mk("5560"), mk("5550"), mk("5510"), mk("7130"), mk("5520"), mk("5312")],
+  };
+  mod.migrateCoa(state);
+  assert.deepEqual(state.orders.map((o) => o.coa), ["5515", "5535", "5585", "", "", "5520", "5312"]);
+  assert.deepEqual(state.orders.map((o) => o.coaWas || null), ["5540", "5560", "5550", "5510", "7130", null, null]);
+  assert.equal(state.coaVersion, 2);
+  // runs once: a new 5540 (now Sub - Painting) is left alone
+  state.orders.push(mk("5540"));
+  mod.migrateCoa(state);
+  assert.equal(state.orders.at(-1).coa, "5540");
 });
