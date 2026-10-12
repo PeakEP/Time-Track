@@ -80,7 +80,7 @@
             <thead>
               <tr>
                 <th>Name</th><th class="c">Active</th><th class="c">Admin</th><th>Vendor Orders</th>
-                <th>Finish Selections</th><th class="c">Cabinet Designer</th><th class="c">Aline Designer</th><th></th>
+                <th>Finish Selections</th><th class="c">Cabinet Designer</th><th class="c">Aline Designer</th><th class="c">Quote Builder</th><th></th>
               </tr>
             </thead>
             <tbody id="team"></tbody>
@@ -96,6 +96,7 @@
           </label>
           <label class="inline"><input type="checkbox" id="add-cab" checked /> Cabinet</label>
           <label class="inline"><input type="checkbox" id="add-aline" checked /> Aline</label>
+          <label class="inline"><input type="checkbox" id="add-qb" /> Quote Builder</label>
           <label class="inline"><input type="checkbox" id="add-admin" /> Admin</label>
           <button class="primary" type="submit">Add &amp; issue PIN</button>
         </form>
@@ -206,6 +207,7 @@
             h("td", {}, select(SEL, u.apps.selections, (e) => save(u, { apps: { selections: e.target.value } }))),
             h("td", { className: "c" }, box(u.apps.cabinet, (e) => save(u, { apps: { cabinet: e.target.checked } }), `${u.name} Cabinet Designer`)),
             h("td", { className: "c" }, box(u.apps.aline, (e) => save(u, { apps: { aline: e.target.checked } }), `${u.name} Aline Designer`)),
+            h("td", { className: "c" }, box(u.apps.quoteBuilder, (e) => save(u, { apps: { quoteBuilder: e.target.checked } }), `${u.name} Quote Builder`)),
             h("td", {}, h("button", {
               type: "button",
               onclick: async () => {
@@ -280,7 +282,7 @@
             const r = await api("POST", "team", {
               name: $("add-name").value,
               admin: $("add-admin").checked,
-              apps: { vendorOrders: $("add-vo").value, selections: $("add-sel").value, cabinet: $("add-cab").checked, aline: $("add-aline").checked },
+              apps: { vendorOrders: $("add-vo").value, selections: $("add-sel").value, cabinet: $("add-cab").checked, aline: $("add-aline").checked, quoteBuilder: $("add-qb").checked },
             });
             e.target.reset();
             modal(`PIN for ${r.user.name}`, ["They sign in on the suite home page with their name and this PIN. It won't be shown again."], r.pin);

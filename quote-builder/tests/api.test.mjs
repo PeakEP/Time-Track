@@ -1,0 +1,212 @@
+// Quote Builder API: staff need Quote Builder access; only Admins change the
+// catalog/settings and approve quotes; reps can't approve their own quotes;
+// numbering is atomic; Square costs come from Default Unit Cost; document
+// reader jobs run once with their secret.
+import { test, before } from "node:test";
+import assert from "node:assert/strict";
+
+// In-memory Blobs store with compare-and-swap (as in the other apps' tests),
+// plus binary values for upload chunks.
+function casStore() {
+  const data = new Map();
+  let n = 0;
+  const pause = () => new Promise((r) => setTimeout(r, Math.random() * 3));
+  return {
+    data,
+    async get(key, opts = {}) {
+      await pause();
+      const v = data.get(key);
+      if (!v) return null;
+      if (opts.type === "arrayBuffer") return v.bin;
+      return JSON.parse(v.body);
+    },
+    async getWithMetadata(key) {
+      await pause();
+      const v = data.get(key);
+      return v ? { data: JSON.parse(v.body), etag: v.etag, metadata: {} } : null;
+    },
+    async setJSON(key, value, opts = {}) {
+      await pause();
+      const cur = data.get(key);
+      if (opts.onlyIfNew && cur) return { modified: false };
+      if (opts.onlyIfMatch && (!cur || cur.etag !== opts.onlyIfMatch)) return { modified: false };
+      data.set(key, { body: JSON.stringify(value), etag: `"${++n}"` });
+      return { modified: true };
+    },
+    async set(key, buf) { data.set(key, { bin: buf, etag: `"${++n}"` }); return { modified: true }; },
+    async delete(key) { data.delete(key); },
+    async list() { return { blobs: [], directories: [] }; },
+  };
+}
+
+let suite, qb, stores, read, started = [];
+const T = {};
+const cookie = (who) => (T[who] ? `jmrc_session=${T[who]}` : "");
+
+async function suiteCall(who, method, path, body) {
+  const r = await suite(new Request("https://x.test/api/suite/" + path, {
+    method, headers: { cookie: cookie(who), "content-type": "application/json" }, body: body ? JSON.stringify(body) : undefined,
+  }));
+  const set = r.headers.get("set-cookie") || "";
+  return { status: r.status, body: await r.json(), token: (set.match(/jmrc_session=([^;]*)/) || [])[1] };
+}
+async function call(who, method, path, body, raw) {
+  const r = await qb(new Request("https://x.test/api/quote-builder/" + path, {
+    method, headers: { cookie: cookie(who), "content-type": raw ? "application/octet-stream" : "application/json" },
+    body: raw || (body ? JSON.stringify(body) : undefined),
+  }));
+  return { status: r.status, body: await r.json() };
+}
+
+before(async () => {
+  stores = { vo: casStore(), sel: casStore(), qb: casStore() };
+  const suiteMod = await import("../../netlify/functions/suite-api/suite-api.mjs");
+  const qbMod = await import("../../netlify/functions/quote-builder-api/quote-builder-api.mjs");
+  read = await import("../../netlify/functions/quote-builder-read-background/quote-builder-read-background.mjs");
+  suite = suiteMod.createHandler({ stores });
+  const fetchImpl = async (url, init) => { started.push({ url, body: JSON.parse(init.body) }); return { ok: true, status: 202 }; };
+  qb = qbMod.createHandler({ stores, fetchImpl });
+  const s = await suiteCall(null, "POST", "setup", { name: "Mike Robins" });
+  T.mike = s.token;
+  const rep = await suiteCall("mike", "POST", "team", { name: "Sam Sales", apps: { quoteBuilder: true } });
+  const nobody = await suiteCall("mike", "POST", "team", { name: "Pat Painter" });
+  T.sam = (await suiteCall(null, "POST", "login", { name: "Sam Sales", pin: rep.body.pin })).token;
+  T.pat = (await suiteCall(null, "POST", "login", { name: "Pat Painter", pin: nobody.body.pin })).token;
+});
+
+test("access: owner and enabled reps get in; new staff don't by default", async () => {
+  assert.equal((await call("mike", "GET", "me")).body.me.admin, true);
+  const sam = await call("sam", "GET", "me");
+  assert.equal(sam.status, 200);
+  assert.equal(sam.body.me.admin, false);
+  assert.equal((await call("pat", "GET", "me")).status, 403);
+  assert.equal((await call(null, "GET", "me")).status, 401);
+});
+
+const settings = () => ({ version: 1, components: [{ key: "x" }], rates: [], pricing: { hst: 0.15 }, company: {}, nextNumbers: { REN2026: 99 } });
+
+test("settings and catalog are Admin-only to change, readable by reps", async () => {
+  assert.equal((await call("sam", "PUT", "settings", { settings: settings() })).status, 403);
+  const put = await call("mike", "PUT", "settings", { settings: settings() });
+  assert.equal(put.status, 200);
+  assert.equal(put.body.settings.updatedBy, "Mike Robins");
+  // counters belong to the server, not the client's copy
+  assert.deepEqual(put.body.settings.nextNumbers, {});
+  assert.equal((await call("sam", "GET", "settings")).body.settings.updatedBy, "Mike Robins");
+
+  const items = [{ id: "jmrc:a", name: "Stud", description: "2 x 6 x 8'", unit: "ea", unitCost: "5.50", costCode: "0602 Studs" }, { id: "jmrc:b", name: "Vanity", description: "as per drawings", unit: "EA", unitCost: 0, costCode: "1110" }];
+  assert.equal((await call("sam", "PUT", "catalog/jmrc", { items })).status, 403);
+  assert.equal((await call("mike", "PUT", "catalog/jmrc", { items, fileName: "cost_catalog.csv" })).body.count, 2);
+  const cat = (await call("sam", "GET", "catalog")).body;
+  assert.equal(cat.jmrc.items[0].unit, "EA");
+  assert.equal(cat.jmrc.items[0].unitCost, 5.5);
+  assert.equal(cat.jmrc.items[1].unitCost, null); // $0.00 stays unpriced
+});
+
+test("quote numbers are sequential per prefix, even when requested together", async () => {
+  const got = await Promise.all([1, 2, 3].map(() => call("sam", "POST", "numbers", { prefix: "REN2026" })));
+  assert.deepEqual(got.map((g) => g.body.number).sort(), ["REN2026-01", "REN2026-02", "REN2026-03"]);
+  assert.equal((await call("sam", "POST", "numbers", { prefix: "CUS2026" })).body.number, "CUS2026-01");
+  assert.equal((await call("sam", "POST", "numbers", { prefix: "../x" })).status, 400);
+});
+
+const quote = (over = {}) => ({ id: "11111111-2222-3333-4444-555555555555", type: "renovation", status: "draft", number: "REN2026-01", title: "Smith kitchen", answers: { clientName: "Jo Smith" }, totals: { total: 1150 }, ...over });
+
+test("reps save quotes but can't approve them; Admin approval sticks", async () => {
+  const s = await call("sam", "PUT", `quotes/${quote().id}`, { quote: quote({ status: "approved", approval: { by: "Sam" } }) });
+  assert.equal(s.status, 200);
+  assert.equal(s.body.quote.status, "needs-approval");
+  assert.equal(s.body.quote.approval, undefined);
+  assert.equal(s.body.quote.createdBy, "Sam Sales");
+  assert.equal((await call("sam", "POST", `quotes/${quote().id}/approve`, { total: 1150 })).status, 403);
+  const a = await call("mike", "POST", `quotes/${quote().id}/approve`, { total: 1150, note: "ok" });
+  assert.equal(a.body.quote.approval.by, "Mike Robins");
+  // a later rep save keeps the approval (the app checks it still matches the total)
+  const again = await call("sam", "PUT", `quotes/${quote().id}`, { quote: quote({ title: "Smith kitchen v2", approval: null }), baseUpdatedAt: a.body.quote.updatedAt });
+  assert.equal(again.body.quote.approval.totalAtApproval, 1150);
+  assert.equal(again.body.quote.status, "draft");
+  const list = (await call("mike", "GET", "quotes")).body.quotes;
+  assert.equal(list.length, 1);
+  assert.equal(list[0].title, "Smith kitchen v2");
+  assert.equal(list[0].client, "Jo Smith");
+});
+
+test("saving over someone else's newer save is refused with their copy", async () => {
+  const id = "22222222-2222-3333-4444-555555555555";
+  const first = await call("sam", "PUT", `quotes/${id}`, { quote: quote({ id }) });
+  await call("mike", "PUT", `quotes/${id}`, { quote: quote({ id, title: "Mike's edit" }), baseUpdatedAt: first.body.quote.updatedAt });
+  const stale = await call("sam", "PUT", `quotes/${id}`, { quote: quote({ id, title: "Sam's edit" }), baseUpdatedAt: first.body.quote.updatedAt });
+  assert.equal(stale.status, 409);
+  assert.equal(stale.body.current.title, "Mike's edit");
+  assert.equal((await call("pat", "DELETE", `quotes/${id}`)).status, 403);
+  assert.equal((await call("sam", "DELETE", `quotes/${id}`)).status, 200);
+});
+
+test("Square mapping uses Default Unit Cost, not the retail price", async () => {
+  const { mapSquareObjects } = await import("../../netlify/shared/square-catalog.mjs");
+  const objs = [
+    { type: "MEASUREMENT_UNIT", id: "MU", measurement_unit_data: { measurement_unit: { area_unit: "IMPERIAL_SQUARE_FOOT" } } },
+    { type: "CATEGORY", id: "C", category_data: { name: "SPC Flooring" } },
+    { type: "ITEM", id: "I1", item_data: { name: "SPC Granite Guard, American Oak", reporting_category: { id: "C" }, variations: [
+      { id: "V1", item_variation_data: { name: "Regular", sku: "AMERICAN OAK", price_money: { amount: 300 }, default_unit_cost: { amount: 100 }, measurement_unit_id: "MU" } },
+      { id: "V2", item_variation_data: { name: "Sample", price_money: { amount: 500 } } },
+    ] } },
+    { type: "ITEM", id: "I2", item_data: { name: "Old", is_archived: true, variations: [{ id: "V3", item_variation_data: { default_unit_cost: { amount: 100 } } }] } },
+  ];
+  const { items, skipped } = mapSquareObjects(objs);
+  assert.equal(items.length, 1);
+  assert.equal(skipped, 1);
+  assert.deepEqual(
+    { id: items[0].id, unit: items[0].unit, unitCost: items[0].unitCost, retail: items[0].retail, costCode: items[0].costCode, sku: items[0].sku },
+    { id: "sq:V1", unit: "SF", unitCost: 1, retail: 3, costCode: "SPC Flooring", sku: "AMERICAN OAK" },
+  );
+});
+
+test("Square sync needs the token and is Admin-only", async () => {
+  delete process.env.SQUARE_ACCESS_TOKEN;
+  assert.equal((await call("sam", "POST", "catalog/square-sync")).status, 403);
+  const r = await call("mike", "POST", "catalog/square-sync");
+  assert.equal(r.status, 400);
+  assert.match(r.body.error, /SQUARE_ACCESS_TOKEN/);
+});
+
+test("document reader: chunks upload, job runs once with its secret, uploads are cleaned up", async () => {
+  process.env.ANTHROPIC_API_KEY = "test";
+  const jobId = "job-0001-abcd";
+  const fileId = "file-0001-abcd";
+  const half = (s) => new TextEncoder().encode(s);
+  assert.equal((await call("sam", "PUT", `uploads/${jobId}/${fileId}/0`, null, half("Kitchen 12x10, "))).status, 200);
+  assert.equal((await call("sam", "PUT", `uploads/${jobId}/${fileId}/1`, null, half("remove wall"))).status, 200);
+  const bad = await call("sam", "POST", "read", { jobId, files: [{ id: fileId, name: "plan.dwg", type: "application/acad", size: 10, chunks: 1 }] });
+  assert.equal(bad.status, 400);
+  const go = await call("sam", "POST", "read", {
+    jobId, quoteType: "renovation", notes: "client wants quartz",
+    fields: [{ key: "clientName", label: "Client name", type: "text" }],
+    files: [{ id: fileId, name: "notes.txt", type: "text/plain", size: 26, chunks: 2 }],
+  });
+  assert.equal(go.status, 202);
+  const kick = started.at(-1);
+  assert.match(kick.url, /quote-builder-read-background$/);
+
+  let seen;
+  const fake = async ({ job, files }) => { seen = files[0].data.toString(); return { summary: "Kitchen", answers: [], rooms: [], scopeItems: [], exclusions: [], openQuestions: [], notes: job.notes }; };
+  assert.equal((await read.runJob(stores.qb, { jobId, secret: "wrong" }, { read: fake })).ok, false);
+  assert.equal((await read.runJob(stores.qb, kick.body, { read: fake })).ok, true);
+  assert.equal(seen, "Kitchen 12x10, remove wall");
+  // the secret is spent; a replay does nothing
+  assert.equal((await read.runJob(stores.qb, kick.body, { read: fake })).ok, false);
+  const st = await call("sam", "GET", `read/${jobId}`);
+  assert.equal(st.body.status, "done");
+  assert.equal(st.body.result.summary, "Kitchen");
+  assert.ok(![...stores.qb.data.keys()].some((k) => k.startsWith("uploads/")));
+});
+
+test("reader prompt pieces: schema limits fields to the interview keys", async () => {
+  const { resultSchema, contentBlocks } = await import("../../netlify/shared/quote-reader.mjs");
+  const s = resultSchema(["length", "width"]);
+  assert.deepEqual(s.properties.answers.items.properties.field.enum, ["length", "width"]);
+  assert.equal(s.additionalProperties, false);
+  const blocks = contentBlocks([{ name: "a.pdf", type: "application/pdf", data: Buffer.from("x") }, { name: "p.jpg", type: "image/jpg", data: Buffer.from("y") }]);
+  assert.equal(blocks[0].type, "document");
+  assert.equal(blocks[2].source.media_type, "image/jpeg");
+});

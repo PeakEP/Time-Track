@@ -1,0 +1,84 @@
+import { useMemo } from "react";
+import { useApp } from "../store";
+import { stepsFor } from "../data/questions";
+import { PROJECT_TYPE_LABEL } from "../types";
+import { computeQuote } from "../engine/pricing";
+import { money0, when } from "../utils/format";
+import { FieldGrid } from "./Fields";
+import RoomsStep from "./RoomsStep";
+import ProductsStep from "./ProductsStep";
+import DocumentsStep from "./DocumentsStep";
+import ReviewStep from "./ReviewStep";
+
+export default function QuoteEditor() {
+  const { quote, step, setStep, settings, items, dirty, saving, saveError, conflict, save, takeTheirs, go, duplicateQuote, update, me, notify } = useApp();
+  const steps = quote ? stepsFor(quote.type) : [];
+  const calc = useMemo(() => (quote ? computeQuote(quote, settings, items) : null), [quote, settings, items]);
+  if (!quote || !calc) return null;
+  const s = steps[Math.min(step, steps.length - 1)];
+  const blocks = calc.issues.filter((i) => i.level === "block").length;
+
+  return (
+    <div>
+      <div className="quote-bar">
+        <h2>{quote.answers.clientName || "New quote"}</h2>
+        <span className="pill info">{PROJECT_TYPE_LABEL[quote.type]}</span>
+        {quote.number && <span className="pill">{quote.number} · V{quote.version}</span>}
+        <span className={`pill ${quote.status === "approved" ? "ok" : quote.status === "needs-approval" ? "warn" : ""}`}>{quote.status.replace("-", " ")}</span>
+        <div className="spacer" />
+        <span className={`status-line${saveError ? " bad" : ""}`}>
+          {saveError ? saveError : saving ? "Saving…" : dirty ? "Unsaved changes" : quote.updatedAt ? `Saved ${when(quote.updatedAt)}` : ""}
+        </span>
+        {dirty && !saving && <button className="btn sm" onClick={() => save()}>Save now</button>}
+        <button className="btn sm" onClick={duplicateQuote} title="Start a new quote from this one">Duplicate</button>
+        <button className="btn sm" onClick={() => {
+          update((q) => { q.version += 1; q.status = "draft"; });
+          notify(`Now on V${quote.version + 1}. The approval is kept only if the total doesn't change.`);
+        }} title="Start the next revision (V+1)">New version</button>
+        <button className="btn sm ghost" onClick={() => go("list")}>Close</button>
+      </div>
+
+      {conflict && (
+        <div className="banner bad">
+          {saveError}
+          <button className="btn sm" onClick={takeTheirs}>Load their version</button>
+          <button className="btn sm danger" onClick={() => save(true)}>Keep mine (overwrite)</button>
+        </div>
+      )}
+
+      <div className="wizard">
+        <aside className="steps">
+          {steps.map((x, i) => (
+            <button key={x.id} className={i === step ? "on" : ""} onClick={() => setStep(i)}>
+              <span className="n">{i + 1}</span>{x.title}
+            </button>
+          ))}
+          <div className="totals-mini">
+            <span className="muted">Total incl. HST</span>
+            <b>{money0(calc.totals.total)}</b>
+            {blocks > 0
+              ? <span className="pill bad">{blocks} to fix or approve</span>
+              : <span className="pill ok">ready</span>}
+          </div>
+        </aside>
+
+        <section>
+          <div className="step-head">
+            <h2>{s.title}</h2>
+            <p>{s.intro}</p>
+          </div>
+          {s.fields.length > 0 && <div className="card"><FieldGrid fields={s.fields} /></div>}
+          {s.id === "rooms" && <RoomsStep />}
+          {s.id === "selections" && <ProductsStep />}
+          {s.id === "documents" && <DocumentsStep />}
+          {s.id === "review" && <ReviewStep calc={calc} />}
+          <div className="step-foot">
+            {step > 0 && <button className="btn" onClick={() => setStep(step - 1)}>← Back</button>}
+            <div className="spacer" />
+            {step < steps.length - 1 && <button className="btn primary" onClick={() => setStep(step + 1)}>Next: {steps[step + 1].title} →</button>}
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+}

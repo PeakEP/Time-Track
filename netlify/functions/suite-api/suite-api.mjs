@@ -13,7 +13,7 @@ import {
 } from "../../shared/accounts.mjs";
 import { signIn, staffMe, clientMe, SEL_INDEX, resetClientPin, setClientAccess } from "../../shared/signin.mjs";
 
-const GATED_APPS = ["vendorOrders", "selections", "cabinet", "aline", "admin"];
+const GATED_APPS = ["vendorOrders", "selections", "cabinet", "aline", "quoteBuilder", "admin"];
 
 const json = (body, status = 200, headers = {}) =>
   new Response(JSON.stringify(body), {

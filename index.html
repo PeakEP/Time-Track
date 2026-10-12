@@ -462,6 +462,15 @@
 
       <div class="tools-label reveal d4">Purchasing &amp; Operations</div>
       <section class="tools" aria-label="Operations applications">
+        <a class="tool reveal d4" href="/quote-builder/" data-app="quoteBuilder">
+          <div class="tool-top">
+            <span class="tool-tag">Sales · Estimating</span>
+            <span class="tool-arrow" aria-hidden="true">→</span>
+          </div>
+          <h2>Quote Builder</h2>
+          <p>Answer the job questions, add drawings and notes, and get a priced quote in the standard JMRC format.</p>
+          <span class="tool-open">Open tool</span>
+        </a>
         <a class="tool reveal d4" href="/vendor-orders/" data-app="vendorOrders">
           <div class="tool-top">
             <span class="tool-tag">Purchasing · Intercompany</span>
@@ -590,6 +599,7 @@
           try {
             localStorage.removeItem("rid_vo_session");
             localStorage.removeItem("jmrc.selections.session.v1");
+            localStorage.removeItem("jmrc.qb.draft.v1");
           } catch {}
           location.replace("/");
         });
