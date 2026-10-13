@@ -1,8 +1,10 @@
 import { useMemo, useState } from "react";
 import { useApp } from "../store";
 import { server } from "../api";
-import type { Settings, ToolComponent } from "../types";
-import { itemLabel, parseJmrcCatalog, resolveComponent } from "../engine/catalog";
+import { MARGIN_LABEL, type MarginKey, type Settings, type ToolComponent } from "../types";
+import { itemLabel, marginsFromRetail, parseJmrcCatalog, parseJmrcWorkbook, resolveComponent } from "../engine/catalog";
+import { SUPPLIER_LABEL, validateCabinetFile, identifySupplier } from "../engine/cabinets";
+import { readXlsx } from "../utils/xlsx";
 import CatalogPicker from "./CatalogPicker";
 import { money, when } from "../utils/format";
 
@@ -11,7 +13,7 @@ const pctOut = (s: string) => (s === "" ? null : Number(s) / 100);
 
 export default function SettingsView() {
   const app = useApp();
-  const { catalog, items, byId, notify, loadCatalog } = app;
+  const { catalog, items, byId, notify, loadCatalog, cabinetData, loadCabinets } = app;
   const [s, setS] = useState<Settings>(() => JSON.parse(JSON.stringify(app.settings)));
   const [dirty, setDirty] = useState(false);
   const [pin, setPin] = useState<ToolComponent | null>(null);
@@ -31,12 +33,42 @@ export default function SettingsView() {
   async function importCsv(file: File) {
     setBusy("Reading the catalog…");
     try {
-      const { items: parsed, warnings } = parseJmrcCatalog(await file.text());
+      const xlsx = /\.xlsx$/i.test(file.name);
+      const sheets = xlsx ? await readXlsx(await file.arrayBuffer()) : null;
+      const { items: parsed, warnings } = sheets ? parseJmrcWorkbook(sheets) : parseJmrcCatalog(await file.text());
       const unpriced = parsed.filter((i) => i.unitCost == null).length;
       if (!confirm(`${parsed.length} items found (${unpriced} without a price — "as per drawings" or blank).${warnings.length ? `\n\n${warnings.length} warning(s):\n${warnings.slice(0, 5).join("\n")}` : ""}\n\nReplace the current JMRC catalog with this file?`)) return;
       await server.putJmrc(parsed, file.name);
       await loadCatalog();
       notify(`Catalog loaded: ${parsed.length} items.`);
+      const retail = sheets ? marginsFromRetail(sheets) : null;
+      if (retail?.detail.length && confirm(`The workbook's retail reference gives selling margins for ${retail.detail.length} cost codes (e.g. ${retail.detail.slice(0, 4).map((d) => `${d.code} ${Math.round(d.margin * 100)}%`).join(", ")}).\n\nUse these as the margins for those product codes?`)) {
+        edit((x) => { x.pricing.codeMargins = retail.margins; x.pricing.codeMarginSource = `${file.name} retail reference (${new Date().toLocaleDateString("en-CA")})`; });
+        notify("Product margins filled in — review them under Pricing and save.");
+      }
+    } catch (e) {
+      notify((e as Error).message, true);
+    } finally {
+      setBusy("");
+    }
+  }
+
+  async function importCabinets(files: FileList) {
+    setBusy("Reading cabinet catalogs…");
+    try {
+      const parsed = [];
+      for (const f of Array.from(files)) {
+        let j: any;
+        try { j = JSON.parse(await f.text()); } catch { throw new Error(`${f.name} isn't a JSON catalog file.`); }
+        if (j && !j.supplier && j.discounts) continue; // suppliers.json — discounts are in each file
+        const err = validateCabinetFile(j);
+        if (err) throw new Error(`${f.name}: ${err}`);
+        parsed.push(j);
+      }
+      if (!parsed.length) throw new Error("Pick aline.json, oppein.json and/or divine.json.");
+      await server.putCabinets(parsed);
+      await loadCabinets();
+      notify(`Loaded ${parsed.map((j) => `${SUPPLIER_LABEL[identifySupplier(j)!]} (${j.products.length} items, ${Math.round(j.discount * 100)}% off list)`).join(", ")}.`);
     } catch (e) {
       notify((e as Error).message, true);
     } finally {
@@ -69,8 +101,8 @@ export default function SettingsView() {
         <button className="btn primary" disabled={!dirty || !!busy} onClick={saveAll}>Save settings</button>
       </div>
       <p className="muted">
-        Everything here is yours to set once: the sales team's quotes use it automatically, and anything missing stops a quote
-        from going out until you've looked at it.
+        Set these once and every quote uses them. Anything missing here is asked of the salesperson on the quote instead
+        (and shows on the cost breakdown), so quotes never wait on you unless they're under your minimum margin or over your limit.
       </p>
 
       <div className="grid two">
@@ -81,10 +113,10 @@ export default function SettingsView() {
               ? <>{catalog.jmrc.items.length} items from <b>{catalog.jmrc.fileName || "upload"}</b>, loaded {when(catalog.jmrc.importedAt)} by {catalog.jmrc.importedBy}.</>
               : <span className="pill bad">not loaded</span>}
           </p>
-          <p className="small muted">Upload the master catalog export (CSV with Cost Item Name, Description, Unit, Unit Cost, Cost Code). It's stored on the server, not in the code.</p>
+          <p className="small muted">Upload the master cost catalog workbook (.xlsx) or a CSV export (Cost Item Name, Description, Unit, Unit Cost, Cost Code). It's stored on the server, not in the code.</p>
           <label className="btn" style={{ width: "fit-content" }}>
-            Upload catalog CSV…
-            <input type="file" accept=".csv,text/csv" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) void importCsv(f); e.target.value = ""; }} />
+            Upload catalog (.xlsx or .csv)…
+            <input type="file" accept=".csv,.xlsx,text/csv" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) void importCsv(f); e.target.value = ""; }} />
           </label>
         </div>
         <div className="card stack">
@@ -99,30 +131,82 @@ export default function SettingsView() {
         </div>
       </div>
 
+      <div className="card stack">
+        <h3>Cabinet catalogs — Aline, Oppein, Divine</h3>
+        <div className="row">
+          {(["aline", "oppein", "divine"] as const).map((k) => {
+            const d = (cabinetData as any)[k];
+            return <span key={k} className={`pill ${d ? "ok" : "warn"}`}>{SUPPLIER_LABEL[k]}: {d ? `${d.products.length} items · ${Math.round(d.discount * 100)}% dealer discount` : "not loaded"}</span>;
+          })}
+        </div>
+        <p className="small muted">The same price files the cabinet-quoting skill uses (aline.json, oppein.json, divine.json): supplier list prices; JMRC's cost is list less the dealer discount in each file. Re-upload when a supplier changes pricing.</p>
+        <label className="btn" style={{ width: "fit-content" }}>
+          Upload cabinet catalog files…
+          <input type="file" accept=".json,application/json" multiple hidden onChange={(e) => { if (e.target.files?.length) void importCabinets(e.target.files); e.target.value = ""; }} />
+        </label>
+      </div>
+
       <div className="card">
-        <h3>Pricing</h3>
+        <h3>Margins</h3>
+        <p className="small muted" style={{ marginBottom: 10 }}>
+          Gross margin on the selling price: sell = cost ÷ (1 − margin). 50% margin = cost × 2. Product-code margins (below) win over the category; the salesperson can adjust any quote.
+        </p>
+        <div className="grid three">
+          {(Object.keys(MARGIN_LABEL) as MarginKey[]).map((k) => (
+            <label className="field" key={k}><span>{MARGIN_LABEL[k]}</span>
+              <div className="unit-input">
+                <input type="number" step="0.5" value={pctIn(s.pricing.margins[k])} placeholder="not set"
+                  onChange={(e) => edit((x) => { x.pricing.margins[k] = pctOut(e.target.value); })} />
+                <em>%</em>
+              </div>
+              {s.pricing.margins[k] != null && <span className="help">cost × {(1 / (1 - (s.pricing.margins[k] || 0))).toFixed(2)}</span>}
+            </label>
+          ))}
+        </div>
+        <label className="check" style={{ marginTop: 12 }}>
+          <input type="checkbox" checked={s.pricing.useStoreRetail} onChange={(e) => edit((x) => { x.pricing.useStoreRetail = e.target.checked; })} />
+          Sell Robins Interiors store products at their Square retail price (when it's above cost)
+        </label>
+
+        <h3 style={{ marginTop: 18 }}>Product-code margins</h3>
+        {Object.keys(s.pricing.codeMargins).length === 0 ? (
+          <p className="small muted">None yet — upload the master catalog workbook and they're worked out from its retail reference.</p>
+        ) : (
+          <>
+            <p className="small muted">From {s.pricing.codeMarginSource || "manual entry"}.</p>
+            <div className="grid four" style={{ marginTop: 8 }}>
+              {Object.entries(s.pricing.codeMargins).sort().map(([code, m]) => {
+                const name = items.find((i) => i.costCode.startsWith(code))?.costCode || code;
+                return (
+                  <label className="field" key={code}><span>{name}</span>
+                    <div className="unit-input">
+                      <input type="number" step="0.5" value={pctIn(m)} onChange={(e) => edit((x) => { const v = pctOut(e.target.value); if (v == null) delete x.pricing.codeMargins[code]; else x.pricing.codeMargins[code] = v; })} />
+                      <em>%</em>
+                    </div>
+                  </label>
+                );
+              })}
+            </div>
+          </>
+        )}
+
+        <h3 style={{ marginTop: 18 }}>Fees, tax &amp; approval</h3>
         <div className="grid four">
-          {([
-            ["materialMarkup", "Material markup"], ["labourMarkup", "Labour markup"], ["subMarkup", "Sub-trade & allowance markup"],
-            ["pmFeeNewBuild", "PM fee (shops & homes)"], ["contingency", "Contingency"], ["hst", "HST"], ["minMargin", "Minimum gross margin"],
-          ] as const).map(([k, label]) => (
+          {([["pmFeeNewBuild", "PM fee (shops & homes)"], ["contingency", "Contingency"], ["hst", "HST"], ["minMargin", "Minimum overall margin"]] as const).map(([k, label]) => (
             <label className="field" key={k}><span>{label}</span>
               <div className="unit-input">
                 <input type="number" step="0.1" value={pctIn(s.pricing[k] as number | null)} placeholder="not set"
-                  onChange={(e) => edit((x) => { (x.pricing as unknown as Record<string, number | null>)[k] = k === "pmFeeNewBuild" || k === "contingency" || k === "hst" ? pctOut(e.target.value) ?? 0 : pctOut(e.target.value); })} />
+                  onChange={(e) => edit((x) => { (x.pricing as unknown as Record<string, number | null>)[k] = k === "minMargin" ? pctOut(e.target.value) : pctOut(e.target.value) ?? 0; })} />
                 <em>%</em>
               </div>
             </label>
           ))}
-          <label className="field"><span>Quotes over this always need you</span>
+          <label className="field"><span>Quotes over this need you</span>
             <div className="unit-input"><em>$</em><input type="number" value={s.pricing.autoApproveLimit ?? ""} placeholder="no limit"
               onChange={(e) => edit((x) => { x.pricing.autoApproveLimit = e.target.value === "" ? null : Number(e.target.value); })} /></div>
           </label>
         </div>
-        <label className="check" style={{ marginTop: 12 }}>
-          <input type="checkbox" checked={s.pricing.hideCostsFromSales} onChange={(e) => edit((x) => { x.pricing.hideCostsFromSales = e.target.checked; })} />
-          Hide costs and margins from sales reps (they see sell prices only)
-        </label>
+        <p className="small muted" style={{ marginTop: 8 }}>Only these two stop a quote for your approval. Everything else the salesperson answers in the quote.</p>
       </div>
 
       <div className="card scroll-x">
@@ -130,7 +214,7 @@ export default function SettingsView() {
           <h3>Rates</h3>
           {unsetRates > 0 && <span className="pill warn">{unsetRates} not set</span>}
         </div>
-        <p className="small muted" style={{ marginBottom: 8 }}>Your cost per unit for labour, sub-trades and allowances. Blank means "not set" — quotes that need it will wait for you.</p>
+        <p className="small muted" style={{ marginBottom: 8 }}>Your cost per unit for labour, sub-trades and allowances. Blank means the salesperson is asked for it on each quote that needs it.</p>
         <table className="t">
           <thead><tr><th>Section</th><th>Rate</th><th>Kind</th><th className="num">Cost per unit</th><th>Unit</th><th>Notes</th></tr></thead>
           <tbody>

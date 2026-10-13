@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
 import { useApp } from "../store";
-import type { LineKind, ManualLine, PricedLine, ReviewItem, Totals } from "../types";
-import { approvalValid } from "../engine/pricing";
+import { MARGIN_LABEL, type LineKind, type MarginKey, type ManualLine, type PricedLine, type Question, type ReviewItem, type Totals } from "../types";
+import { approvalValid, canSend, marginBreakdown, type computeQuote } from "../engine/pricing";
+import QuestionsPanel from "./QuestionsPanel";
 import { buildProposal, costCsv, fileName } from "../utils/proposalDocx";
 import { download, loadFolderHandle, writeToFolder } from "../utils/files";
 import { uid } from "../data/questions";
@@ -9,11 +10,11 @@ import CatalogPicker from "./CatalogPicker";
 import { itemLabel } from "../engine/catalog";
 import { money, pct, when } from "../utils/format";
 
-type Calc = { lines: PricedLine[]; totals: Totals; issues: ReviewItem[]; blocked: boolean };
+type Calc = ReturnType<typeof computeQuote>;
 
 const SOURCE: Record<string, [string, string]> = {
   catalog: ["catalog", "ok"], square: ["Square", "ok"], rate: ["rate", "info"], quote: ["supplier quote", "info"],
-  manual: ["typed", "warn"], unpriced: ["no price", "bad"],
+  manual: ["entered", "warn"], repRate: ["entered rate", "warn"], cabinet: ["cabinet catalog", "ok"], unpriced: ["no price", "bad"],
 };
 
 export default function ReviewStep({ calc }: { calc: Calc }) {
@@ -22,16 +23,17 @@ export default function ReviewStep({ calc }: { calc: Calc }) {
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
   const [adding, setAdding] = useState<ManualLine | null>(null);
-  const showCost = !!me?.admin || !settings.pricing.hideCostsFromSales;
+  const showCost = true;
   const sections = useMemo(() => {
     const m = new Map<string, PricedLine[]>();
     for (const l of calc.lines) m.set(l.section, [...(m.get(l.section) || []), l]);
     return [...m.entries()];
   }, [calc.lines]);
   if (!quote) return null;
-  const { totals, issues, blocked } = calc;
+  const { totals, issues } = calc;
   const approved = approvalValid(quote, totals.total);
-  const canExport = !blocked || approved;
+  const canExport = canSend(quote, calc);
+  const mb = marginBreakdown(calc.lines);
   const removed = Object.entries(quote.overrides).filter(([, o]) => o.removed).map(([id]) => id);
   const issueFor = (id: string) => issues.find((i) => i.lineId === id && i.level === "block") ? "blocked" : issues.find((i) => i.lineId === id && i.level === "warn") ? "flagged" : "";
 
@@ -61,9 +63,10 @@ export default function ReviewStep({ calc }: { calc: Calc }) {
       <div className="stack">
         {approved && <div className="banner ok">Approved by {quote.approval!.by} {when(quote.approval!.at)}{quote.approval!.note ? ` — “${quote.approval!.note}”` : ""}.</div>}
         {!approved && quote.approval && <div className="banner warn">The total changed since {quote.approval.by} approved it ({money(quote.approval.totalAtApproval)}) — it needs approving again.</div>}
-        {blocked && !approved && (
+        <QuestionsPanel questions={calc.questions} />
+        {calc.needsOwner && !approved && (
           <div className="banner warn">
-            This quote needs the owner before it can go out.
+            This quote is outside company policy (margin or size) and needs the owner's approval.
             {!me?.admin && quote.status !== "needs-approval" && (
               <button className="btn sm" onClick={() => { update((q) => { q.status = "needs-approval"; }); notify("Sent for approval — it shows on the owner's quote list."); }}>Request approval</button>
             )}
@@ -77,7 +80,7 @@ export default function ReviewStep({ calc }: { calc: Calc }) {
             <ul className="issues">
               {issues.map((i, n) => (
                 <li key={n}>
-                  <span className={`pill ${i.level === "block" ? "bad" : i.level === "warn" ? "warn" : "info"}`}>{i.level === "block" ? "fix / approve" : i.level}</span>
+                  <span className={`pill ${i.level === "block" ? "bad" : i.level === "warn" ? "warn" : "info"}`}>{i.level === "block" ? (i.owner ? "owner" : "to do") : i.level}</span>
                   <span>{i.message}</span>
                   {i.lineId && <button className="btn sm ghost" onClick={() => document.getElementById(`line-${i.lineId}`)?.scrollIntoView({ behavior: "smooth", block: "center" })}>Show</button>}
                 </li>
@@ -98,7 +101,7 @@ export default function ReviewStep({ calc }: { calc: Calc }) {
                 <th>Item</th><th className="num">Qty</th><th>Unit</th>
                 {showCost && <th className="num">Unit cost</th>}
                 {showCost && <th className="num">Cost</th>}
-                <th className="num">Sell</th><th>Source</th><th></th>
+                <th className="num">Margin</th><th className="num">Sell</th><th>Source</th><th></th>
               </tr>
             </thead>
             <tbody>
@@ -107,6 +110,7 @@ export default function ReviewStep({ calc }: { calc: Calc }) {
                   onQty={(l, v) => update((q) => { if (q.manualLines.find((m) => m.id === l.id)) q.manualLines.find((m) => m.id === l.id)!.qty = v; else q.overrides[l.id] = { ...q.overrides[l.id], qty: v }; })}
                   onCost={(l, v) => update((q) => { if (q.manualLines.find((m) => m.id === l.id)) q.manualLines.find((m) => m.id === l.id)!.unitCost = v; else q.overrides[l.id] = { ...q.overrides[l.id], unitCost: v }; })}
                   onPick={(l) => setPicking(l)}
+                  onMargin={(l, v) => update((q) => { const o = { ...q.overrides[l.id] }; if (v == null) delete o.margin; else o.margin = v; q.overrides[l.id] = o; })}
                   onRemove={(l) => update((q) => { if (q.manualLines.some((m) => m.id === l.id)) q.manualLines = q.manualLines.filter((m) => m.id !== l.id); else q.overrides[l.id] = { ...q.overrides[l.id], removed: true }; })}
                   onReset={(l) => update((q) => { delete q.overrides[l.id]; })}
                   edited={(id) => !!quote.overrides[id]}
@@ -133,7 +137,7 @@ export default function ReviewStep({ calc }: { calc: Calc }) {
                 <tr><td>Sub-trades</td><td>{money(totals.sub)}</td></tr>
                 <tr><td>Allowances &amp; quotes</td><td>{money(totals.allowance)}</td></tr>
                 <tr><td><b>Cost</b></td><td><b>{money(totals.cost)}</b></td></tr>
-                <tr><td>With markup</td><td>{money(totals.sellBeforeFees)}</td></tr>
+                <tr><td>Sell before fees</td><td>{money(totals.sellBeforeFees)}</td></tr>
               </>}
               {totals.pmFee > 0 && <tr><td>Project management ({pct(settings.pricing.pmFeeNewBuild)})</td><td>{money(totals.pmFee)}</td></tr>}
               {totals.contingency > 0 && <tr><td>Contingency</td><td>{money(totals.contingency)}</td></tr>}
@@ -145,12 +149,38 @@ export default function ReviewStep({ calc }: { calc: Calc }) {
           </table>
         </div>
 
+        <div className="card">
+          <h3>Margin</h3>
+          <table className="totals">
+            <tbody>
+              {mb.map((m) => {
+                const cur = quote.margins[m.key];
+                return (
+                  <tr key={m.key}>
+                    <td className="small">{MARGIN_LABEL[m.key]}<div className="muted">{money(m.cost)} → {money(m.sell)}</div></td>
+                    <td>
+                      <div className="unit-input" style={{ justifyContent: "flex-end" }}>
+                        <input className="margin-input" type="number" step="0.5" placeholder={(m.margin * 100).toFixed(1)}
+                          value={cur == null ? "" : Math.round(cur * 1000) / 10}
+                          onChange={(e) => update((q) => { if (e.target.value === "") delete q.margins[m.key as MarginKey]; else q.margins[m.key as MarginKey] = Number(e.target.value) / 100; })} />
+                        <em>%</em>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+              <tr className="grand"><td>Overall</td><td>{pct(totals.margin)}</td></tr>
+            </tbody>
+          </table>
+          <p className="small muted" style={{ marginTop: 6 }}>Blank = company margins ({settings.pricing.minMargin != null ? `minimum ${pct(settings.pricing.minMargin)} overall` : "no minimum set"}). Type a % to set this quote's margin for a category; set one line on the line itself.</p>
+        </div>
+
         <div className="card stack">
           <h3>Proposal</h3>
           <button className="btn primary" disabled={!canExport || busy} onClick={exportProposal}>
             {busy ? "Building…" : `Download ${quote.type === "shop" || quote.type === "custom-home" ? "proposal" : "quotation"} (.docx)`}
           </button>
-          {!canExport && <p className="small muted">Fix the red items, or get the owner's approval, to download the client copy.</p>}
+          {!canExport && <p className="small muted">{calc.repBlocks ? "Answer the open questions above to download the client copy." : "Needs the owner's approval (margin or size)."}</p>}
           {canExport && quote.folderName && <p className="small muted">Also saved to {quote.folderName}/Quotes.</p>}
           {showCost && (
             <button className="btn" onClick={() => download(new Blob([costCsv(quote, calc.lines, totals)], { type: "text/csv" }), fileName(quote).replace(/\.docx$/, "_COSTS.csv"))}>
@@ -197,7 +227,8 @@ export default function ReviewStep({ calc }: { calc: Calc }) {
   );
 }
 
-function SectionRows({ name, lines, showCost, cls, onQty, onCost, onPick, onRemove, onReset, edited }: {
+function SectionRows({ name, lines, showCost, cls, onQty, onCost, onPick, onRemove, onReset, edited, onMargin }: {
+  onMargin: (l: PricedLine, v: number | null) => void;
   name: string; lines: PricedLine[]; showCost: boolean; cls: (id: string) => string;
   onQty: (l: PricedLine, v: number) => void; onCost: (l: PricedLine, v: number | null) => void;
   onPick: (l: PricedLine) => void; onRemove: (l: PricedLine) => void; onReset: (l: PricedLine) => void; edited: (id: string) => boolean;
@@ -205,7 +236,7 @@ function SectionRows({ name, lines, showCost, cls, onQty, onCost, onPick, onRemo
   const sell = lines.reduce((a, l) => a + l.sell, 0);
   return (
     <>
-      <tr className="sect"><td colSpan={showCost ? 5 : 3}>{name}</td><td className="num">{money(sell)}</td><td colSpan={2}></td></tr>
+      <tr className="sect"><td colSpan={showCost ? 6 : 4}>{name}</td><td className="num">{money(sell)}</td><td colSpan={2}></td></tr>
       {lines.map((l) => {
         const [srcLabel, srcCls] = SOURCE[l.source] || [l.source, ""];
         return (
@@ -224,6 +255,14 @@ function SectionRows({ name, lines, showCost, cls, onQty, onCost, onPick, onRemo
               </td>
             )}
             {showCost && <td className="num">{l.unitCost == null ? "—" : money(l.extCost)}</td>}
+            <td className="num">
+              <div className="unit-input" style={{ justifyContent: "flex-end" }}>
+                <input className="margin-input" type="number" step="0.5" title={l.marginFrom === "retail" ? "store retail price" : l.marginFrom === "line" ? "set on this line" : `from the ${l.marginFrom} margin`}
+                  value={l.marginFrom === "line" ? Math.round(l.margin * 1000) / 10 : ""} placeholder={(l.margin * 100).toFixed(1)}
+                  onChange={(e) => onMargin(l, e.target.value === "" ? null : Number(e.target.value) / 100)} />
+                <em>%</em>
+              </div>
+            </td>
             <td className="num">{l.unitCost == null ? "—" : money(l.sell)}</td>
             <td><span className={`pill ${srcCls}`}>{srcLabel}</span></td>
             <td style={{ whiteSpace: "nowrap" }}>

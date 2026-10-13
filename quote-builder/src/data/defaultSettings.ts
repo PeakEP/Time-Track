@@ -1,4 +1,4 @@
-import type { Rate, Settings, ToolComponent } from "../types";
+import type { MarginKey, PricingRules, Rate, Settings, ToolComponent } from "../types";
 
 // Pre-configured takeoff tools. Each component says how to find its material
 // in the cost catalog (match terms, or an exact item the owner pins in
@@ -156,15 +156,15 @@ export function defaultSettings(): Settings {
     components: DEFAULT_COMPONENTS.map((x) => ({ ...x })),
     rates: DEFAULT_RATES.map((x) => ({ ...x })),
     pricing: {
-      materialMarkup: null,
-      labourMarkup: null,
-      subMarkup: null,
+      margins: { material: null, finish: null, cabinets: null, labour: null, sub: null, allowance: null },
+      codeMargins: {},
+      codeMarginSource: "",
+      useStoreRetail: false,
       pmFeeNewBuild: 0.15,
       contingency: 0,
       hst: 0.15,
       minMargin: null,
       autoApproveLimit: null,
-      hideCostsFromSales: true,
     },
     company: {
       name: "J.M Robins Construction Ltd.",
@@ -194,9 +194,20 @@ export function mergeSettings(saved: Partial<Settings> | null | undefined): Sett
     ...saved,
     components: byKey(base.components, saved.components),
     rates: byKey(base.rates, saved.rates),
-    pricing: { ...base.pricing, ...(saved.pricing || {}) },
+    pricing: mergePricing(base.pricing, saved.pricing as Partial<PricingRules> & Record<string, unknown>),
     company: { ...base.company, ...(saved.company || {}) },
     terms: { ...base.terms, ...(saved.terms || {}) },
     nextNumbers: { ...(saved.nextNumbers || {}) },
   };
+}
+
+// Settings saved before margins replaced markups: markup m → margin m ÷ (1 + m).
+function mergePricing(base: PricingRules, saved: Partial<PricingRules> & Record<string, unknown> | undefined): PricingRules {
+  const out: PricingRules = { ...base, ...(saved || {}), margins: { ...base.margins, ...(saved?.margins || {}) }, codeMargins: { ...(saved?.codeMargins || {}) } };
+  const legacy = (k: string): number | null => (typeof saved?.[k] === "number" ? (saved[k] as number) / (1 + (saved[k] as number)) : null);
+  const fill = (key: MarginKey, from: string) => { if (out.margins[key] == null && legacy(from) != null) out.margins[key] = Math.round(legacy(from)! * 10000) / 10000; };
+  fill("material", "materialMarkup"); fill("finish", "materialMarkup"); fill("cabinets", "materialMarkup");
+  fill("labour", "labourMarkup"); fill("sub", "subMarkup"); fill("allowance", "subMarkup");
+  for (const k of ["materialMarkup", "labourMarkup", "subMarkup", "hideCostsFromSales"]) delete (out as unknown as Record<string, unknown>)[k];
+  return out;
 }

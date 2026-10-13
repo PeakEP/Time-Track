@@ -13,7 +13,7 @@ export function resultSchema(fieldKeys) {
   return {
     type: "object",
     additionalProperties: false,
-    required: ["summary", "projectType", "answers", "rooms", "scopeItems", "exclusions", "openQuestions"],
+    required: ["summary", "projectType", "answers", "rooms", "cabinets", "scopeItems", "exclusions", "openQuestions"],
     properties: {
       summary: { type: "string", description: "Two to four sentences describing the job as the documents show it." },
       projectType: { type: "string", enum: ["renovation", "remodel", "shop", "custom-home", "unknown"] },
@@ -50,6 +50,22 @@ export function resultSchema(fieldKeys) {
           },
         },
       },
+      cabinets: {
+        type: "array",
+        description: "Every cabinet line on a cabinet design, take-off, cutlist or supplier quote (kitchen, vanity, laundry…). Empty if there is none.",
+        items: {
+          type: "object",
+          additionalProperties: false,
+          required: ["area", "supplier", "sku", "qty", "source"],
+          properties: {
+            area: { type: "string", description: "Room or area, e.g. Kitchen, Ensuite vanity" },
+            supplier: { type: "string", enum: ["aline", "oppein", "divine", "unknown"] },
+            sku: { type: "string", description: "Cabinet code exactly as written, e.g. B24, W3030, SB36, S7-B24" },
+            qty: { type: "number" },
+            source: { type: "string" },
+          },
+        },
+      },
       scopeItems: { type: "array", items: { type: "string" }, description: "Scope of work items stated in the documents, in plain contractor language." },
       exclusions: { type: "array", items: { type: "string" }, description: "Anything the documents say is by the owner, by others, or not included." },
       openQuestions: { type: "array", items: { type: "string" }, description: "What the rep needs to confirm with the client before the quote is right." },
@@ -67,6 +83,7 @@ Rules:
 - Convert dimensions to decimal feet (28'-6" → 28.5). Counts are whole numbers.
 - Confidence: high = stated plainly; medium = measured or counted from drawings; low = inferred from notes or photos.
 - For selects and yes/no questions, answer with one of the listed option values exactly.
+- If there is a cabinet design or cabinet list, copy every cabinet code and quantity into cabinets exactly as written (don't convert codes between suppliers). Name the supplier only if the document does.
 - Drawings are often preliminary and notes are often rough. Put anything that conflicts, or that the rep must confirm, in openQuestions.`;
 
 export function questionText(job) {

@@ -206,3 +206,10 @@ table.t td:first-child { min-width: 300px; }
 
 .product-pick { display: flex; gap: 8px; align-items: center; }
 .product-pick .chosen { flex: 1; border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; background: var(--panel-2); min-height: 32px; font-size: 12.5px; }
+
+/* Open questions */
+.questions { list-style: decimal; padding-left: 22px; }
+.questions li { padding: 8px 0; border-bottom: 1px solid var(--line-soft); }
+.questions li .q { margin-bottom: 6px; }
+.questions li .a { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.margin-input { width: 64px; }

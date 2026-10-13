@@ -17,7 +17,7 @@ export default function ProductsStep() {
   const { quote, update, byId, items, settings, me } = useApp();
   const [open, setOpen] = useState<(typeof PRODUCT_PICKS)[number] | null>(null);
   if (!quote) return null;
-  const showCost = me?.admin || !settings.pricing.hideCostsFromSales;
+  const showCost = true;
   const picks = PRODUCT_PICKS.filter((p) => !p.types || p.types.includes(quote.type));
 
   return (

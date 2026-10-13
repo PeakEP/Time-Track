@@ -5,6 +5,8 @@
 //   settings            owner settings: takeoff tools, rates, markups, numbering
 //   catalog/jmrc        the JMRC master cost catalog (uploaded by an Admin)
 //   catalog/square      Robins Interiors Square catalog (synced by an Admin)
+//   catalog/cabinets/<aline|oppein|divine>  supplier cabinet price files (the
+//                       jmrc-cabinet-quoting data: list prices + dealer discount)
 //   index               quote summaries
 //   quotes/<id>         one document per quote
 //   uploads/<job>/<f>/<n>  document chunks for the document reader
@@ -97,6 +99,30 @@ async function squareSync(stores, who, { fetchImpl } = {}) {
   const doc = { items: cleanItems(items, "square"), syncedAt: new Date().toISOString(), syncedBy: who.name, note: skipped ? `${skipped} variation(s) without a default unit cost were skipped` : "" };
   await stores.qb.setJSON("catalog/square", doc);
   return { count: doc.items.length, skipped, syncedAt: doc.syncedAt };
+}
+
+const SUPPLIERS = ["aline", "oppein", "divine"];
+
+async function getCabinets(stores) {
+  const docs = await Promise.all(SUPPLIERS.map((x) => stores.qb.get(`catalog/cabinets/${x}`, { type: "json" })));
+  return Object.fromEntries(SUPPLIERS.map((x, i) => [x, docs[i]]));
+}
+
+async function putCabinets(stores, who, body) {
+  requireAdmin(who);
+  const files = Array.isArray(body.files) ? body.files : [];
+  if (!files.length) throw new HttpError(400, "No catalog files");
+  const saved = [];
+  for (const f of files) {
+    const sup = SUPPLIERS.find((x) => String(f?.supplier || "").toLowerCase().includes(x));
+    if (!sup) throw new HttpError(400, "Each file must be the Aline, Oppein or Divine catalog (it names its supplier).");
+    if (!(typeof f.discount === "number" && f.discount > 0 && f.discount < 1)) throw new HttpError(400, `${sup}: dealer discount missing`);
+    if (!Array.isArray(f.products) || !f.products.length) throw new HttpError(400, `${sup}: no products`);
+    if (JSON.stringify(f).length > 2_000_000) throw new HttpError(413, `${sup}: file too large`);
+    await stores.qb.setJSON(`catalog/cabinets/${sup}`, { ...f, loadedAt: new Date().toISOString(), loadedBy: who.name });
+    saved.push({ supplier: sup, products: f.products.length, discount: f.discount });
+  }
+  return { saved };
 }
 
 /* ------------------------------ settings ------------------------------ */
@@ -293,6 +319,8 @@ export function createHandler({ stores: injected, fetchImpl } = {}) {
       if (a === "catalog") {
         if (method === "GET" && !b) return json(await getCatalog(stores));
         if (method === "PUT" && b === "jmrc") return json(await putJmrcCatalog(stores, who, body));
+        if (method === "GET" && b === "cabinets") return json(await getCabinets(stores));
+        if (method === "PUT" && b === "cabinets") return json(await putCabinets(stores, who, body));
         if (method === "POST" && b === "square-sync") return json(await squareSync(stores, who, { fetchImpl }));
       }
       if (a === "settings") {

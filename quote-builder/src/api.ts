@@ -38,6 +38,7 @@ const LS = {
   settings: "jmrc.qb.local.settings",
   catalog: "jmrc.qb.local.catalog",
   quotes: "jmrc.qb.local.quotes",
+  cabinets: "jmrc.qb.local.cabinets",
 };
 const lsGet = <T,>(k: string, d: T): T => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } };
 const lsSet = (k: string, v: unknown) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* full */ } };
@@ -88,6 +89,19 @@ export const server = {
       return;
     }
     await api("PUT", "catalog/jmrc", { items, fileName });
+  },
+  async cabinets(): Promise<Record<string, any>> {
+    if (!(await isLive())) return lsGet(LS.cabinets, {});
+    return api("GET", "catalog/cabinets");
+  },
+  async putCabinets(files: any[]): Promise<void> {
+    if (!(await isLive())) {
+      const c = lsGet<Record<string, any>>(LS.cabinets, {});
+      for (const f of files) { const k = String(f.supplier).toLowerCase(); c[k] = { ...f, loadedAt: new Date().toISOString(), loadedBy: "Local user" }; }
+      lsSet(LS.cabinets, c);
+      return;
+    }
+    await api("PUT", "catalog/cabinets", { files });
   },
   async squareSync(): Promise<{ count: number; skipped: number }> {
     if (!(await isLive())) throw new ApiError(400, "Square sync runs on the live site (it needs the Square token set in Netlify).");

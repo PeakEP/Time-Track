@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useApp } from "../store";
 import { server } from "../api";
 import { STEPS, fieldVisible, newRoom, uid, type Field } from "../data/questions";
-import type { AiSuggestion, Attachment, Quote, RoomKind } from "../types";
+import type { AiSuggestion, Attachment, CabinetSupplier, Quote, RoomKind } from "../types";
 import {
   deleteFile, download, ensurePermission, folderSupported, getFile, guessType, listFolder, loadFolderHandle,
   pickFolder, putFile, readableByReader, saveFolderHandle, type FolderFile,
@@ -127,6 +127,15 @@ export default function DocumentsStep() {
     }
     if ((r.rooms || []).length && (quote!.type === "renovation" || quote!.type === "remodel"))
       for (const room of r.rooms) sugg.push({ field: "room", value: room, confidence: room.confidence, source: room.source, status: "pending" });
+    // Cabinet lines, grouped into one order per area.
+    const groups = new Map<string, { area: string; supplier: string; lines: { sku: string; qty: number }[]; source: string }>();
+    for (const c of r.cabinets || []) {
+      const k = `${c.area}|${c.supplier}`;
+      const g = groups.get(k) || { area: c.area, supplier: c.supplier, lines: [] as { sku: string; qty: number }[], source: c.source };
+      g.lines.push({ sku: String(c.sku).toUpperCase(), qty: Math.max(1, Math.round(Number(c.qty) || 1)) });
+      groups.set(k, g);
+    }
+    for (const g of groups.values()) sugg.push({ field: "cabinets", value: g, confidence: "medium", source: g.source, status: "pending" });
     if ((r.scopeItems || []).length) sugg.push({ field: "inclusionsExtra", value: r.scopeItems.join("\n"), confidence: "medium", source: "Scope items read from the documents", status: "pending" });
     if ((r.exclusions || []).length) sugg.push({ field: "exclusionsExtra", value: r.exclusions.join("\n"), confidence: "medium", source: "Exclusions read from the documents", status: "pending" });
     const summary = [r.summary, ...(r.openQuestions?.length ? ["", "To confirm with the client:", ...r.openQuestions.map((x: string) => `• ${x}`)] : [])].join("\n");
@@ -139,7 +148,17 @@ export default function DocumentsStep() {
       s.status = accept ? "accepted" : "rejected";
       if (!accept) return;
       const a = q.answers as unknown as Record<string, unknown>;
-      if (s.field === "room") {
+      if (s.field === "cabinets") {
+        const v = s.value as { area: string; supplier: string; lines: { sku: string; qty: number }[] };
+        const room = q.answers.rooms.find((x) => x.name.toLowerCase() === v.area.toLowerCase() || v.area.toLowerCase().includes(x.name.toLowerCase()));
+        const supplier = (["aline", "oppein", "divine"].includes(v.supplier) ? v.supplier : "oppein") as CabinetSupplier;
+        q.cabinetSets.push({
+          id: uid(), name: v.area, roomId: room?.id || "", supplier, box: "PLY",
+          color: supplier === "oppein" ? "WSS" : supplier === "aline" ? "SW" : "", style: supplier === "aline" ? "shaker" : supplier === "divine" ? "S7" : "",
+          assemble: supplier === "divine", shipping: supplier === "divine" ? 150 : 0,
+          lines: v.lines.map((l) => ({ id: uid(), sku: l.sku, qty: l.qty })), notes: v.supplier === "unknown" ? "Supplier not named in the documents — check." : "",
+        });
+      } else if (s.field === "room") {
         const v = s.value as { name: string; kind: RoomKind; length: number; width: number; height: number; scope: string };
         const room = newRoom(v.kind, v.name);
         if (v.length) room.length = v.length;
@@ -153,8 +172,9 @@ export default function DocumentsStep() {
     });
   }
 
-  const label = (s: AiSuggestion) => s.field === "room" ? "Room" : fieldByKey.get(s.field)?.label || (s.field === "inclusionsExtra" ? "Inclusions" : s.field === "exclusionsExtra" ? "Exclusions" : s.field);
+  const label = (s: AiSuggestion) => s.field === "cabinets" ? "Cabinets" : s.field === "room" ? "Room" : fieldByKey.get(s.field)?.label || (s.field === "inclusionsExtra" ? "Inclusions" : s.field === "exclusionsExtra" ? "Exclusions" : s.field);
   const show = (s: AiSuggestion) => {
+    if (s.field === "cabinets") { const v = s.value as any; return `${v.area} — ${v.supplier === "unknown" ? "supplier not named" : v.supplier}: ${v.lines.map((l: any) => `${l.sku}×${l.qty}`).join(", ")}`; }
     if (s.field === "room") { const v = s.value as any; return `${v.name} (${v.kind}) ${v.length || "?"}' × ${v.width || "?"}' — ${v.scope}`; }
     const f = fieldByKey.get(s.field);
     if (f?.type === "select") return f.options!.find((o) => o.value === s.value)?.label || String(s.value);

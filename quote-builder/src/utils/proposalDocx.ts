@@ -105,7 +105,7 @@ function roomScope(q: Quote): Paragraph[] {
 
 // Client-facing products: finish materials that were selected or matched,
 // not framing lumber and screws.
-const SCHEDULE_SECTIONS = ["Flooring", "Tile", "Kitchen", "Bathroom", "Interior Finish", "Electrical", "Paint"];
+const SCHEDULE_SECTIONS = ["Cabinetry", "Flooring", "Tile", "Kitchen", "Bathroom", "Interior Finish", "Electrical", "Paint"];
 
 function scheduleRows(q: Quote, priced: PricedLine[]) {
   const rooms = new Map(q.answers.rooms.map((r) => [r.id, r.name]));
@@ -115,7 +115,7 @@ function scheduleRows(q: Quote, priced: PricedLine[]) {
     if (/handle|primer|thinset|grout|membrane|underlay|casing|baseboard/i.test(l.toolKey || "")) continue;
     const product = l.description.includes(" — ") ? l.description.split(" — ").slice(1).join(" — ") : l.description;
     const roomId = l.id.split("@")[1]?.split("#")[0];
-    const area = roomId ? rooms.get(roomId) || "" : "Throughout";
+    const area = l.id.startsWith("cab:") ? l.description.split(" — ")[0] : roomId ? rooms.get(roomId) || "" : "Throughout";
     const key = `${product}|${l.unit}`;
     const g = groups.get(key) || { product, areas: new Set<string>(), qty: 0, unit: l.unit };
     g.areas.add(area);
@@ -381,7 +381,7 @@ function allowanceRows(priced: PricedLine[]) {
   const map = new Map<string, number>();
   for (const l of priced) {
     if (!l.allowance && l.kind !== "allowance") continue;
-    const label = l.kind === "material" ? l.section === "Electrical" ? "Lighting Fixtures" : l.section === "Bathroom" ? "Plumbing Fixtures — Bathrooms" : l.section === "Kitchen" ? `Kitchen — ${l.description.split(" — ")[0]}` : `${l.section}` : l.description.split(" — ")[0];
+    const label = l.section === "Cabinetry" ? "Cabinetry & vanities" : l.kind === "material" ? l.section === "Electrical" ? "Lighting Fixtures" : l.section === "Bathroom" ? "Plumbing Fixtures — Bathrooms" : l.section === "Kitchen" ? `Kitchen — ${l.description.split(" — ")[0]}` : `${l.section}` : l.description.split(" — ")[0];
     const clean = label.replace(/\s*\((if no|no )[^)]*\)/gi, "").replace(/\s+allowance\b/i, "").trim();
     map.set(clean, (map.get(clean) || 0) + l.extCost);
   }
@@ -550,8 +550,8 @@ export async function buildProposal(q: Quote, s: Settings, priced: PricedLine[],
 // Internal cost breakdown (never sent to the client).
 export function costCsv(q: Quote, priced: PricedLine[], totals: Totals): string {
   const esc = (v: unknown) => `"${String(v ?? "").replace(/"/g, '""')}"`;
-  const rows = [["Section", "Kind", "Description", "Qty", "Unit", "Unit cost", "Ext. cost", "Markup %", "Sell", "Source", "How the quantity was worked out", "Flags"]];
-  for (const l of priced) rows.push([l.section, l.kind, l.description, String(l.qty), l.unit, l.unitCost == null ? "" : l.unitCost.toFixed(2), l.extCost.toFixed(2), (l.markup * 100).toFixed(1), l.sell.toFixed(2), l.source, l.basis || "", l.flags.join("; ")]);
+  const rows = [["Section", "Kind", "Description", "Qty", "Unit", "Unit cost", "Ext. cost", "Margin %", "Sell", "Source", "How the quantity was worked out", "Flags"]];
+  for (const l of priced) rows.push([l.section, l.kind, l.description, String(l.qty), l.unit, l.unitCost == null ? "" : l.unitCost.toFixed(2), l.extCost.toFixed(2), (l.margin * 100).toFixed(1), l.sell.toFixed(2), l.source, l.basis || "", l.flags.join("; ")]);
   rows.push([]);
   for (const [k, v] of [["Cost", totals.cost], ["Sell before fees", totals.sellBeforeFees], ["PM fee", totals.pmFee], ["Contingency", totals.contingency], ["Subtotal (ex. HST)", totals.subtotal], ["HST", totals.hst], ["Total", totals.total]] as const)
     rows.push(["", "", k, "", "", "", "", "", v.toFixed(2)]);

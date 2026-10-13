@@ -18,7 +18,7 @@ before(async () => {
   await build({
     stdin: {
       contents: `export * from "./src/engine/catalog"; export * from "./src/engine/takeoff"; export * from "./src/engine/pricing";
-                 export * from "./src/data/questions"; export * from "./src/data/defaultSettings";`,
+                 export * from "./src/data/questions"; export * from "./src/data/defaultSettings"; export * from "./src/engine/cabinets";`,
       resolveDir: path.join(here, ".."), loader: "ts",
     },
     bundle: true, format: "esm", platform: "node", outfile: out, logLevel: "silent",
@@ -88,35 +88,75 @@ test("new build takeoff: studs, plates, sheathing and shingles", () => {
   assert.equal(get("shingles").qty, 50);
 });
 
-test("unset rates and markups stay unpriced and block the quote", () => {
+test("missing rates and margins become questions for the salesperson, not owner blocks", () => {
   const { items } = E.parseJmrcCatalog(CSV);
   const s = E.defaultSettings();
-  const r = E.computeQuote(shopQuote(), s, items);
-  assert.ok(r.blocked);
-  assert.ok(r.issues.some((i) => /Markups aren't set/.test(i.message)));
+  const q = shopQuote();
+  q.answers.clientName = "A"; q.answers.siteAddress = "B";
+  let r = E.computeQuote(q, s, items);
   const framing = r.lines.find((l) => l.toolKey === "lab.framing");
   assert.equal(framing.unitCost, null);
-  assert.equal(framing.extCost, 0);
+  assert.ok(r.questions.some((x) => x.kind === "rate" && x.key === "lab.framing"));
+  assert.ok(r.questions.some((x) => x.kind === "margin" && x.key === "material"));
+  assert.equal(r.needsOwner, false);
+  assert.ok(r.repBlocks > 0);
+  assert.equal(E.canSend(q, r), false);
+  // The rep answers on the quote: rates and margins
+  for (const x of r.questions) if (x.kind === "rate") q.rates[x.key] = 1;
+  for (const k of ["material", "labour", "sub", "allowance", "finish", "cabinets"]) q.margins[k] = 0.3;
+  for (const l of r.lines) if (l.unitCost == null && l.kind === "material") q.overrides[l.id] = { unitCost: 5 };
+  r = E.computeQuote(q, s, items);
+  assert.deepEqual(r.questions, []);
+  assert.equal(r.lines.find((l) => l.toolKey === "lab.framing").source, "repRate");
+  assert.equal(E.canSend(q, r), true);
+  // Owner policy: minimum margin
+  s.pricing.minMargin = 0.4;
+  r = E.computeQuote(q, s, items);
+  assert.equal(r.needsOwner, true);
+  assert.equal(E.canSend(q, r), false);
+  q.approval = { by: "Mike", at: "", note: "", totalAtApproval: r.totals.total };
+  assert.equal(E.canSend(q, r), true);
 });
 
-test("pricing: markups, 15% PM fee on new builds, HST", () => {
-  const { items } = E.parseJmrcCatalog(CSV);
+test("pricing: margins by category and code, line override, 15% PM fee, HST", () => {
   const s = E.defaultSettings();
-  s.pricing.materialMarkup = 0.2; s.pricing.labourMarkup = 0.1; s.pricing.subMarkup = 0.1;
+  s.pricing.margins = { material: 0.2, finish: 0.5, cabinets: 0.5, labour: 0.5, sub: 0.2, allowance: 0.2 };
   const q = shopQuote();
   const lines = [
-    { id: "a", section: "x", kind: "material", description: "m", qty: 10, unit: "EA", unitCost: 10, source: "catalog", flags: [] },
+    { id: "a", section: "x", kind: "material", description: "m", qty: 10, unit: "EA", unitCost: 10, source: "catalog", costCode: "0602 Studs", flags: [] },
     { id: "b", section: "x", kind: "labour", description: "l", qty: 1, unit: "EA", unitCost: 100, source: "rate", flags: [] },
+    { id: "c", section: "x", kind: "material", description: "tile", qty: 1, unit: "SF", unitCost: 100, source: "catalog", costCode: "1801 Porcelain Tile", flags: [] },
   ];
-  const { totals } = E.priceLines(q, lines, s);
-  assert.equal(totals.cost, 200);
-  assert.equal(totals.sellBeforeFees, 230); // 120 + 110
-  assert.equal(totals.pmFee, 34.5);
-  assert.equal(totals.subtotal, 264.5);
-  assert.equal(totals.hst, 39.68);
-  assert.equal(totals.total, 304.18);
+  let { totals, lines: pl } = E.priceLines(q, lines, s);
+  assert.equal(pl[0].sell, 125); // 100 ÷ 0.8
+  assert.equal(pl[1].sell, 200); // 100 ÷ 0.5
+  assert.equal(pl[2].marginKey, "finish");
+  assert.equal(pl[2].sell, 200);
+  assert.equal(totals.cost, 300);
+  assert.equal(totals.sellBeforeFees, 525);
+  assert.equal(totals.pmFee, 78.75);
+  assert.equal(totals.subtotal, 603.75);
+  assert.equal(totals.hst, 90.56);
+  // code margin beats the category; quote margin beats the code; line beats all
+  s.pricing.codeMargins = { "1801": 0.6 };
+  assert.equal(E.priceLines(q, lines, s).lines[2].sell, 250);
+  q.margins = { finish: 0.75 };
+  assert.equal(E.priceLines(q, lines, s).lines[2].sell, 400);
+  q.overrides = { c: { margin: 0 } };
+  assert.equal(E.priceLines(q, lines, s).lines[2].sell, 100);
   // renovations carry no PM fee
   assert.equal(E.priceLines({ ...q, type: "renovation" }, lines, s).totals.pmFee, 0);
+});
+
+test("store retail: Square products sell at retail when switched on", () => {
+  const s = E.defaultSettings();
+  s.pricing.margins.finish = 0.3;
+  s.pricing.useStoreRetail = true;
+  const items = new Map([["sq:1", { id: "sq:1", source: "square", name: "SPC", description: "", unit: "SF", unitCost: 1, retail: 3.4, costCode: "1701" }]]);
+  const lines = [{ id: "f", section: "Flooring", kind: "material", description: "SPC", qty: 100, unit: "SF", unitCost: 1, source: "square", catalogItemId: "sq:1", costCode: "1701 SPC", flags: [] }];
+  const r = E.priceLines(E.newQuote("renovation", "t"), lines, s, items);
+  assert.equal(r.lines[0].sell, 340);
+  assert.equal(r.lines[0].marginFrom, "retail");
 });
 
 test("renovation rooms: flooring net of cabinets, paint in 5-gal pails, vanity as per drawings", () => {
@@ -150,16 +190,76 @@ test("overrides: removed lines vanish, a typed price is flagged for review", () 
   const r = E.computeQuote(q, s, items);
   assert.ok(!r.lines.find((l) => l.id === "shingles"));
   assert.equal(r.lines.find((l) => l.id === "plate2x6").source, "manual");
-  assert.ok(r.issues.some((i) => /typed by hand/.test(i.message)));
+  assert.ok(r.issues.some((i) => /entered on this quote/.test(i.message)));
 });
 
 test("mergeSettings keeps owner edits and adds new tools", () => {
-  const saved = { components: [{ key: "shingles", pinnedItemId: "jmrc:x", coverage: 32 }], rates: [{ key: "lab.framing", value: 5 }], pricing: { materialMarkup: 0.25 } };
+  const saved = { components: [{ key: "shingles", pinnedItemId: "jmrc:x", coverage: 32 }], rates: [{ key: "lab.framing", value: 5 }], pricing: { materialMarkup: 0.25, hideCostsFromSales: true } };
   const s = E.mergeSettings(saved);
   assert.equal(s.components.find((c) => c.key === "shingles").pinnedItemId, "jmrc:x");
   assert.equal(s.components.find((c) => c.key === "shingles").coverage, 32);
   assert.ok(s.components.find((c) => c.key === "stud2x6_8"));
   assert.equal(s.rates.find((r) => r.key === "lab.framing").value, 5);
-  assert.equal(s.pricing.materialMarkup, 0.25);
+  // old markup 25% → margin 20%
+  assert.equal(s.pricing.margins.material, 0.2);
+  assert.equal(s.pricing.materialMarkup, undefined);
+  assert.equal(s.pricing.hideCostsFromSales, undefined);
   assert.equal(s.pricing.hst, 0.15);
+});
+
+// Tiny made-up supplier files in the cabinet-quoting skill's format.
+const OPPEIN = { supplier: "Oppein", discount: 0.58, tiers: ["essential", "premium"], tier_names: { essential: "Essential", premium: "Premium" },
+  colors: [{ code: "MPW", name: "Pure White", tier: "essential" }, { code: "BSS", name: "Blue Shaker", tier: "premium" }],
+  products: [{ sku: "B24", desc: "Base 24", dims: "", pb: { essential: 100, premium: 120 }, ply: { essential: 150, premium: 200 } }] };
+const ALINE = { supplier: "Aline", discount: 0.66, door_styles: { shaker: { name: "Shaker", colors: [{ code: "SW", name: "Shaker White" }] } },
+  products: [{ sku: "B24", desc: "Base", dims: "", prices: { shaker: { pb: 300, ply: 400, door: 100 } } }] };
+const DIVINE = { supplier: "Divine", discount: 0.55, style_finish_map: { S7: { finish: "Hudson", profile: "Shaker" } }, assembly_per_unit: { "Base Units": 40 }, shipping_default: 150,
+  products: [{ code: "B24", desc: "Base", cat: "Base Units", base_price: 200, prices: { S7: 200, E9: 210 } }], shared: [{ sku: "SINK1", desc: "Sink", price: 300 }] };
+
+test("cabinet pricing matches the skill: list less each supplier's dealer discount", () => {
+  const op = E.priceCabinet({ supplier: "oppein", box: "PLY", color: "BSS", style: "" }, OPPEIN, "b24");
+  assert.equal(op.list, 200); assert.equal(op.dealer, 84); // 200 × 0.42
+  assert.equal(E.priceCabinet({ supplier: "oppein", box: "PB", color: "MPW", style: "" }, OPPEIN, "B24").dealer, 42);
+  const al = E.priceCabinet({ supplier: "aline", box: "PLY", color: "SW", style: "shaker" }, ALINE, "B24");
+  assert.equal(al.list, 500); assert.equal(al.dealer, 170); // (400 + 100) × 0.34
+  const dv = E.priceCabinet({ supplier: "divine", box: "PLY", color: "", style: "S7" }, DIVINE, "S7-B24");
+  assert.equal(dv.list, 200); assert.equal(dv.dealer, 90); assert.equal(dv.assemblyEach, 40);
+  assert.equal(E.priceCabinet({ supplier: "divine", box: "PLY", color: "", style: "S7" }, DIVINE, "SINK1").dealer, 135);
+  assert.equal(E.priceCabinet({ supplier: "oppein", box: "PLY", color: "BSS", style: "" }, OPPEIN, "W9999"), null);
+  assert.deepEqual(E.parseSkuList("B24:2, W3030 x3\nSB36"), [{ sku: "B24", qty: 2 }, { sku: "W3030", qty: 3 }, { sku: "SB36", qty: 1 }]);
+});
+
+test("a cabinet order replaces the room's allowance and vanity; unknown SKUs become questions", () => {
+  const { items } = E.parseJmrcCatalog(CSV);
+  const s = E.defaultSettings();
+  const q = E.newQuote("renovation", "t");
+  const k = E.newRoom("kitchen"); const b = E.newRoom("bathroom");
+  q.answers.rooms = [k, b];
+  let r = E.computeQuote(q, s, items, { oppein: OPPEIN, divine: DIVINE });
+  assert.ok(r.lines.some((l) => l.id === `cab@${k.id}`));
+  assert.ok(r.questions.some((x) => x.kind === "cabinets" && x.roomId === k.id));
+  q.cabinetSets = [
+    { id: "k1", name: "Kitchen", roomId: k.id, supplier: "oppein", box: "PLY", color: "BSS", style: "", assemble: false, shipping: 0, lines: [{ id: "a", sku: "B24", qty: 2 }, { id: "b", sku: "ZZ99", qty: 1 }], notes: "" },
+    { id: "v1", name: "Bath vanity", roomId: b.id, supplier: "divine", box: "PLY", color: "", style: "S7", assemble: true, shipping: 150, lines: [{ id: "c", sku: "B24", qty: 1 }], notes: "" },
+  ];
+  r = E.computeQuote(q, s, items, { oppein: OPPEIN, divine: DIVINE });
+  assert.ok(!r.lines.some((l) => l.id === `cab@${k.id}`));
+  assert.ok(!r.lines.some((l) => l.id === `vanity@${b.id}`));
+  const line = r.lines.find((l) => l.id === "cab:k1:a");
+  assert.equal(line.unitCost, 84); assert.equal(line.marginKey, "cabinets");
+  assert.equal(r.lines.find((l) => l.id === "cab:v1:assembly").unitCost, 40);
+  assert.equal(r.lines.find((l) => l.id === "cab:v1:freight").unitCost, 150);
+  const qn = r.questions.find((x) => x.kind === "cabinetSku");
+  assert.equal(qn.sku, "ZZ99");
+  assert.ok(!r.questions.some((x) => x.kind === "cabinets"));
+});
+
+test("workbook: margins by cost code from the retail reference", () => {
+  const sheets = { "Retail Reference (JobTread)": [["Cost Code", "Item", "Unit Cost", "JobTread Retail", "Markup x"], [], ["1801 Porcelain Tile", "a", 2, 4, 2], ["1801 Porcelain Tile", "b", 3, 6, 2], ["1801 Porcelain Tile", "c", 1, 1.5, 1.5], ["1009 Fans", "d", 10, 12, 1.2]] };
+  const r = E.marginsFromRetail(sheets);
+  assert.deepEqual(r.margins, { "1801": 0.5 }); // median ×2; 1009 has too few items
+  const wb = { "Master Catalog": [["Parent Group", "Cost Code", "Cost Type", "Brand", "Cost Item Name", "Description", "Unit", "Unit Cost"], ["▸ Framing"], [null, "0602 Studs"], ["Framing", "0602 Studs", "Materials", null, "Stud", "2 x 6 x 8'", "EA", 5.5]] };
+  const p = E.parseJmrcWorkbook(wb);
+  assert.equal(p.items.length, 1);
+  assert.equal(p.items[0].unitCost, 5.5);
 });

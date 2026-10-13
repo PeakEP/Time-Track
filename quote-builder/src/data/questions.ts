@@ -123,6 +123,7 @@ export const STEPS: Step[] = [
       { key: "disposalBins", label: "Disposal bins (0 = estimate)", type: "number", unit: "ea" },
     ],
   },
+  { id: "cabinets", title: "Cabinets", intro: "Price the cabinets and vanities from Aline, Oppein or Divine — type or paste the SKU list from the design.", types: ["renovation", "remodel", "custom-home"], fields: [] },
   { id: "selections", title: "Products", intro: "Pick the products to price from the catalog. Anything left blank uses the default set in Settings.", fields: [] },
   { id: "documents", title: "Notes & drawings", intro: "Upload drawings and notes, or connect the client folder. The document reader suggests answers for you to accept.", fields: [] },
   {
@@ -193,7 +194,7 @@ export function newQuote(type: ProjectType, by: string): Quote {
   const now = new Date().toISOString();
   return {
     id: uid(), number: "", version: 1, type, title: "", status: "draft",
-    answers: blankAnswers(type), manualLines: [], overrides: {}, attachments: [],
+    answers: blankAnswers(type), manualLines: [], overrides: {}, attachments: [], cabinetSets: [], rates: {}, margins: {},
     ai: { suggestions: [], summary: "", ranAt: "" }, folderName: "",
     createdBy: by, createdAt: now, updatedAt: now,
   };
@@ -214,3 +215,16 @@ export const PRODUCT_PICKS: { key: keyof Answers; label: string; codes: string[]
   { key: "faucetItemId", label: "Bathroom faucet", codes: ["1105"] },
   { key: "tubItemId", label: "Tub / shower", codes: ["1107"] },
 ];
+
+// Quotes saved by earlier versions lack the newer fields.
+export function normalizeQuote(q: Quote): Quote {
+  return {
+    ...q,
+    answers: { ...blankAnswers(q.type), ...q.answers },
+    cabinetSets: q.cabinetSets || [],
+    rates: q.rates || {},
+    margins: q.margins || {},
+    overrides: q.overrides || {},
+    manualLines: q.manualLines || [],
+  };
+}

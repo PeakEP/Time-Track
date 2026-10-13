@@ -4,7 +4,7 @@
 //   vendorOrders: "none" | "sales_rep" | "purchaser"
 //   selections:   "none" | "designer"
 //   cabinet, aline: true | false
-//   quoteBuilder: true | false (off unless an Admin turns it on: it shows costs)
+//   quoteBuilder: true | false (on by default: sales reps and estimators quote with it)
 // Records made before per-app access existed get sensible defaults:
 // Purchasers become Admins, and everyone keeps their Vendor Orders role and
 // gets the other apps.
@@ -28,7 +28,7 @@ export function accessOf(u) {
       selections: SEL_ROLES.includes(a.selections) ? a.selections : "designer",
       cabinet: a.cabinet ?? true,
       aline: a.aline ?? true,
-      quoteBuilder: a.quoteBuilder ?? false,
+      quoteBuilder: a.quoteBuilder ?? true,
     },
   };
 }
@@ -174,7 +174,7 @@ function readAccess(body, current) {
   return next;
 }
 
-const DEFAULT_NEW = { admin: false, apps: { vendorOrders: "sales_rep", selections: "designer", cabinet: true, aline: true, quoteBuilder: false } };
+const DEFAULT_NEW = { admin: false, apps: { vendorOrders: "sales_rep", selections: "designer", cabinet: true, aline: true, quoteBuilder: true } };
 
 export function createStaff(book, body, clientNames = []) {
   const name = cleanName(body.name);

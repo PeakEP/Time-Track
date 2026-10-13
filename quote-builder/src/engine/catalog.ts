@@ -49,12 +49,19 @@ const REQUIRED = ["Cost Item Name", "Description", "Unit", "Unit Cost", "Cost Co
 // Parse the JMRC master export (columns: Cost Item Name, Description, Unit,
 // Unit Cost, Cost Code, Cost Type). Blank and $0.00 costs stay unpriced.
 export function parseJmrcCatalog(text: string): { items: CatalogItem[]; warnings: string[] } {
-  const rows = parseCsv(text.replace(/^﻿/, ""));
+  return parseJmrcRows(parseCsv(text.replace(/^\uFEFF/, "")));
+}
+
+// Rows with a header row somewhere near the top (the .xlsx master has a
+// title block and group heading rows; those have no item name and are skipped).
+export function parseJmrcRows(all: string[][]): { items: CatalogItem[]; warnings: string[] } {
+  const start = all.findIndex((r) => r.some((c) => String(c ?? "").trim() === "Cost Item Name"));
+  const rows = start >= 0 ? all.slice(start) : all;
   if (!rows.length) throw new Error("The file is empty.");
-  const head = rows[0].map((h) => h.trim());
+  const head = rows[0].map((h) => String(h ?? "").trim());
   const missing = REQUIRED.filter((h) => !head.includes(h));
   if (missing.length) throw new Error(`Missing column(s): ${missing.join(", ")}. Use the master catalog export.`);
-  const col = (r: string[], h: string) => (r[head.indexOf(h)] ?? "").trim();
+  const col = (r: string[], h: string) => String(r[head.indexOf(h)] ?? "").trim();
   const items: CatalogItem[] = [];
   const warnings: string[] = [];
   const seen = new Map<string, number>();
@@ -154,4 +161,46 @@ export function mergeCatalogs(jmrc: CatalogItem[], square: CatalogItem[]): Catal
     return it;
   });
   return [...merged, ...square.filter((s) => !linked.has(s.id))];
+}
+
+/* ----------------------------- workbook ----------------------------- */
+
+type Sheets = Record<string, (string | number | null)[][]>;
+const asText = (rows: (string | number | null)[][]) => rows.map((r) => r.map((c) => (c == null ? "" : String(c))));
+
+// The master catalog workbook: items from the sheet with a "Cost Item Name"
+// header (the "Master Catalog" tab).
+export function parseJmrcWorkbook(sheets: Sheets) {
+  const name = Object.keys(sheets).find((n) => /master catalog/i.test(n))
+    || Object.keys(sheets).find((n) => sheets[n].slice(0, 10).some((r) => r.some((c) => c === "Cost Item Name")));
+  if (!name) throw new Error("No sheet with a \"Cost Item Name\" column — is this the master cost catalog?");
+  return parseJmrcRows(asText(sheets[name]));
+}
+
+// Margins by cost code from the workbook's retail reference (cost vs. the
+// retail price JMRC sells at): the median markup per code, as gross margin.
+// Codes with fewer than `min` items are skipped.
+export function marginsFromRetail(sheets: Sheets, min = 2): { margins: Record<string, number>; detail: { code: string; n: number; markup: number; margin: number }[] } {
+  const name = Object.keys(sheets).find((n) => /retail/i.test(n));
+  if (!name) return { margins: {}, detail: [] };
+  const rows = sheets[name];
+  const hi = rows.findIndex((r) => r.some((c) => /unit cost/i.test(String(c ?? ""))));
+  if (hi < 0) return { margins: {}, detail: [] };
+  const head = rows[hi].map((c) => String(c ?? "").toLowerCase());
+  const iCode = head.findIndex((h) => h.includes("cost code"));
+  const iCost = head.findIndex((h) => h.includes("unit cost"));
+  const iRetail = head.findIndex((h) => h.includes("retail"));
+  const by = new Map<string, number[]>();
+  for (const r of rows.slice(hi + 1)) {
+    const code = String(r[iCode] ?? "").match(/^\d{4}/)?.[0];
+    const cost = Number(r[iCost]), retail = Number(r[iRetail]);
+    if (!code || !(cost > 0) || !(retail >= cost)) continue;
+    by.set(code, [...(by.get(code) || []), retail / cost]);
+  }
+  const detail = [...by.entries()].filter(([, v]) => v.length >= min).map(([code, v]) => {
+    const s = [...v].sort((a, b) => a - b);
+    const markup = s.length % 2 ? s[(s.length - 1) / 2] : (s[s.length / 2 - 1] + s[s.length / 2]) / 2;
+    return { code, n: v.length, markup, margin: Math.round((1 - 1 / markup) * 1000) / 1000 };
+  }).sort((a, b) => a.code.localeCompare(b.code));
+  return { margins: Object.fromEntries(detail.map((d) => [d.code, d.margin])), detail };
 }

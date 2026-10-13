@@ -9,14 +9,16 @@ import RoomsStep from "./RoomsStep";
 import ProductsStep from "./ProductsStep";
 import DocumentsStep from "./DocumentsStep";
 import ReviewStep from "./ReviewStep";
+import CabinetsStep from "./CabinetsStep";
 
 export default function QuoteEditor() {
-  const { quote, step, setStep, settings, items, dirty, saving, saveError, conflict, save, takeTheirs, go, duplicateQuote, update, me, notify } = useApp();
+  const { quote, step, setStep, settings, items, cabinetData, dirty, saving, saveError, conflict, save, takeTheirs, go, duplicateQuote, update, me, notify } = useApp();
   const steps = quote ? stepsFor(quote.type) : [];
-  const calc = useMemo(() => (quote ? computeQuote(quote, settings, items) : null), [quote, settings, items]);
+  const calc = useMemo(() => (quote ? computeQuote(quote, settings, items, cabinetData) : null), [quote, settings, items, cabinetData]);
   if (!quote || !calc) return null;
   const s = steps[Math.min(step, steps.length - 1)];
-  const blocks = calc.issues.filter((i) => i.level === "block").length;
+  const open = calc.questions.length;
+  const reviewIdx = steps.findIndex((x) => x.id === "review");
 
   return (
     <div>
@@ -56,9 +58,10 @@ export default function QuoteEditor() {
           <div className="totals-mini">
             <span className="muted">Total incl. HST</span>
             <b>{money0(calc.totals.total)}</b>
-            {blocks > 0
-              ? <span className="pill bad">{blocks} to fix or approve</span>
-              : <span className="pill ok">ready</span>}
+            <span className="muted" style={{ display: "block", marginTop: 4 }}>Margin {(calc.totals.margin * 100).toFixed(1)}%</span>
+            {open > 0
+              ? <button className="btn sm" style={{ marginTop: 6 }} onClick={() => setStep(reviewIdx)}>{open} question{open > 1 ? "s" : ""} to answer →</button>
+              : calc.needsOwner ? <span className="pill warn">needs owner approval</span> : <span className="pill ok">ready to send</span>}
           </div>
         </aside>
 
@@ -69,6 +72,7 @@ export default function QuoteEditor() {
           </div>
           {s.fields.length > 0 && <div className="card"><FieldGrid fields={s.fields} /></div>}
           {s.id === "rooms" && <RoomsStep />}
+          {s.id === "cabinets" && <CabinetsStep />}
           {s.id === "selections" && <ProductsStep />}
           {s.id === "documents" && <DocumentsStep />}
           {s.id === "review" && <ReviewStep calc={calc} />}

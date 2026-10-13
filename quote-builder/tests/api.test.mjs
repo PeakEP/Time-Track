@@ -68,13 +68,13 @@ before(async () => {
   qb = qbMod.createHandler({ stores, fetchImpl });
   const s = await suiteCall(null, "POST", "setup", { name: "Mike Robins" });
   T.mike = s.token;
-  const rep = await suiteCall("mike", "POST", "team", { name: "Sam Sales", apps: { quoteBuilder: true } });
-  const nobody = await suiteCall("mike", "POST", "team", { name: "Pat Painter" });
+  const rep = await suiteCall("mike", "POST", "team", { name: "Sam Sales" });
+  const nobody = await suiteCall("mike", "POST", "team", { name: "Pat Painter", apps: { quoteBuilder: false } });
   T.sam = (await suiteCall(null, "POST", "login", { name: "Sam Sales", pin: rep.body.pin })).token;
   T.pat = (await suiteCall(null, "POST", "login", { name: "Pat Painter", pin: nobody.body.pin })).token;
 });
 
-test("access: owner and enabled reps get in; new staff don't by default", async () => {
+test("access: owner and staff get in by default; turned-off staff don't", async () => {
   assert.equal((await call("mike", "GET", "me")).body.me.admin, true);
   const sam = await call("sam", "GET", "me");
   assert.equal(sam.status, 200);
@@ -209,4 +209,16 @@ test("reader prompt pieces: schema limits fields to the interview keys", async (
   const blocks = contentBlocks([{ name: "a.pdf", type: "application/pdf", data: Buffer.from("x") }, { name: "p.jpg", type: "image/jpg", data: Buffer.from("y") }]);
   assert.equal(blocks[0].type, "document");
   assert.equal(blocks[2].source.media_type, "image/jpeg");
+});
+
+test("cabinet catalogs: Admin uploads the supplier files, reps read them", async () => {
+  const file = { supplier: "Oppein", discount: 0.58, products: [{ sku: "B24", pb: { essential: 100 }, ply: { essential: 120 } }] };
+  assert.equal((await call("sam", "PUT", "catalog/cabinets", { files: [file] })).status, 403);
+  assert.equal((await call("mike", "PUT", "catalog/cabinets", { files: [{ supplier: "Ikea", discount: 0.5, products: [{}] }] })).status, 400);
+  assert.equal((await call("mike", "PUT", "catalog/cabinets", { files: [{ ...file, discount: 58 }] })).status, 400);
+  const ok = await call("mike", "PUT", "catalog/cabinets", { files: [file] });
+  assert.deepEqual(ok.body.saved, [{ supplier: "oppein", products: 1, discount: 0.58 }]);
+  const got = (await call("sam", "GET", "catalog/cabinets")).body;
+  assert.equal(got.oppein.products[0].sku, "B24");
+  assert.equal(got.aline, null);
 });

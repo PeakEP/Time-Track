@@ -4,7 +4,8 @@ import { ApiError, isLive, server, type CatalogDoc, type Me, type QuoteSummary }
 import { mergeSettings } from "./data/defaultSettings";
 import { mergeCatalogs } from "./engine/catalog";
 import { computeQuote } from "./engine/pricing";
-import { newQuote, numberPrefix } from "./data/questions";
+import { newQuote, normalizeQuote, numberPrefix } from "./data/questions";
+import type { CabinetData } from "./engine/cabinets";
 
 type View = "list" | "quote" | "settings";
 
@@ -19,6 +20,7 @@ interface State {
   catalog: CatalogDoc;
   items: CatalogItem[];
   byId: Map<string, CatalogItem>;
+  cabinetData: CabinetData;
   quotes: QuoteSummary[];
   quote: Quote | null;
   baseUpdatedAt: string;
@@ -35,6 +37,7 @@ interface State {
   notify(text: string, bad?: boolean): void;
   loadQuotes(): Promise<void>;
   loadCatalog(): Promise<void>;
+  loadCabinets(): Promise<void>;
   openQuote(id: string): Promise<void>;
   startQuote(type: ProjectType): void;
   duplicateQuote(): void;
@@ -55,8 +58,8 @@ const emptyCatalog: CatalogDoc = {
 let saveTimer: ReturnType<typeof setTimeout> | undefined;
 const DRAFT = "jmrc.qb.draft.v1";
 
-function withTotals(q: Quote, s: Settings, items: CatalogItem[]) {
-  const { totals } = computeQuote(q, s, items);
+function withTotals(q: Quote, s: Settings, items: CatalogItem[], cab: CabinetData) {
+  const { totals } = computeQuote(q, s, items, cab);
   return { ...q, totals: { total: totals.total, subtotal: totals.subtotal } };
 }
 
@@ -71,6 +74,7 @@ export const useApp = create<State>((set, get) => ({
   catalog: emptyCatalog,
   items: [],
   byId: new Map(),
+  cabinetData: {},
   quotes: [],
   quote: null,
   baseUpdatedAt: "",
@@ -92,12 +96,12 @@ export const useApp = create<State>((set, get) => ({
         if (e instanceof ApiError && e.status === 401) { set({ status: "signin" }); return; }
         throw e;
       }
-      const [settings] = await Promise.all([server.settings(), get().loadCatalog(), get().loadQuotes()]);
+      const [settings] = await Promise.all([server.settings(), get().loadCatalog(), get().loadQuotes(), get().loadCabinets()]);
       set({ me, settings: mergeSettings(settings), settingsSaved: !!settings, status: "ready" });
       // Pick up an unsaved local draft (e.g. the tab closed before it saved).
       try {
         const d = JSON.parse(localStorage.getItem(DRAFT) || "null");
-        if (d?.quote && d.dirty) set({ quote: d.quote, baseUpdatedAt: d.base || "", dirty: true, view: "quote" });
+        if (d?.quote && d.dirty) set({ quote: normalizeQuote(d.quote), baseUpdatedAt: d.base || "", dirty: true, view: "quote" });
       } catch { /* ignore */ }
     } catch (e) {
       set({ status: "error", error: e instanceof Error ? e.message : String(e) });
@@ -131,9 +135,13 @@ export const useApp = create<State>((set, get) => ({
     set({ catalog, items, byId: new Map(items.map((i) => [i.id, i])) });
   },
 
+  async loadCabinets() {
+    try { set({ cabinetData: (await server.cabinets()) as CabinetData }); } catch { /* not loaded yet */ }
+  },
+
   async openQuote(id) {
     if (get().dirty) await get().save();
-    const q = await server.quote(id);
+    const q = normalizeQuote(await server.quote(id));
     set({ quote: q, baseUpdatedAt: q.updatedAt, dirty: false, conflict: null, saveError: "", step: 0, view: "quote" });
   },
 
@@ -149,6 +157,9 @@ export const useApp = create<State>((set, get) => ({
     q.answers = JSON.parse(JSON.stringify(cur.answers));
     q.manualLines = JSON.parse(JSON.stringify(cur.manualLines));
     q.overrides = JSON.parse(JSON.stringify(cur.overrides));
+    q.cabinetSets = JSON.parse(JSON.stringify(cur.cabinetSets));
+    q.rates = { ...cur.rates };
+    q.margins = { ...cur.margins };
     q.title = `${cur.title || cur.answers.clientName} (copy)`;
     set({ quote: q, baseUpdatedAt: "", dirty: true, conflict: null, step: 0 });
     get().notify("Copied — this is a new quote.");
@@ -167,11 +178,11 @@ export const useApp = create<State>((set, get) => ({
   },
 
   async save(force = false) {
-    const { quote, settings, items, baseUpdatedAt, saving } = get();
+    const { quote, settings, items, baseUpdatedAt, saving, cabinetData } = get();
     if (!quote || saving) return;
     set({ saving: true, saveError: "" });
     try {
-      const saved = await server.saveQuote(withTotals(quote, settings, items), baseUpdatedAt, force);
+      const saved = await server.saveQuote(withTotals(quote, settings, items, cabinetData), baseUpdatedAt, force);
       // Keep edits made while the save was in flight.
       const now = get().quote;
       const changed = now && JSON.stringify(now) !== JSON.stringify(quote);
@@ -194,7 +205,7 @@ export const useApp = create<State>((set, get) => ({
   takeTheirs() {
     const c = get().conflict;
     if (!c) return;
-    set({ quote: c, baseUpdatedAt: c.updatedAt, dirty: false, conflict: null, saveError: "" });
+    set({ quote: normalizeQuote(c), baseUpdatedAt: c.updatedAt, dirty: false, conflict: null, saveError: "" });
     try { localStorage.removeItem(DRAFT); } catch { /* ignore */ }
   },
 
@@ -206,10 +217,10 @@ export const useApp = create<State>((set, get) => ({
   },
 
   async approve(note, revoke = false) {
-    const { quote, settings, items } = get();
+    const { quote, settings, items, cabinetData } = get();
     if (!quote) return;
     if (get().dirty) await get().save();
-    const { totals } = computeQuote(quote, settings, items);
+    const { totals } = computeQuote(quote, settings, items, cabinetData);
     const q = await server.approve(quote.id, totals.total, note, revoke);
     set({ quote: q, baseUpdatedAt: q.updatedAt, dirty: false });
   },

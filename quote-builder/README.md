@@ -12,33 +12,54 @@ and the Robins Interiors Square catalog, and the quote exports in the standard J
   overview, scope of work, numbered allowances, exclusions, terms & conditions (NB CRA holdback, lien,
   trust, exclusive purchasing), acceptance. Lump sum only — no line pricing on the client copy.
 
-## How it keeps the owner out of the loop (safely)
+## How a quote gets finished without the owner
 
-Prices are never guessed. A line is priced only from the catalog, Square, an owner rate, or a supplier
-quote typed on the quote. Anything else stops the quote from being downloaded until the owner approves it:
+Costs, margins and sell prices are visible to everyone with access (sales reps and estimators).
 
-| Blocks the client copy | Warns |
-|---|---|
-| Markups not set · a rate not set · no catalog match · "as per drawings" items with no quote · a price typed by hand · margin under the minimum · total over the auto-approve limit | Coverage per unit not confirmed · lines removed by hand · document-reader suggestions not reviewed |
+Prices are never guessed. A line is priced from the master catalog, Square, the supplier cabinet catalogs
+(list less dealer discount), a company rate, or a supplier quote. Anything missing becomes a question in
+**To finish this quote** that the salesperson answers right there:
 
-The owner approves from the Review step (Admins only, enforced by the API). An approval holds while the
-total stays the same.
+- *What does flooring install cost you per SF?* (rate not set — answered for this quote; an Admin can save it as the company rate)
+- *Kitchen cabinets: XYZ99 isn't in the Oppein catalog* (pick a suggested SKU or enter the cost)
+- *Vanity is priced as per drawings* (pick a priced product or enter the supplier price)
+- *Which cabinets for the Kitchen?* (price them on the Cabinets step)
+- *What margin on labour?* (no company margin yet)
+
+Answers are flagged on the internal cost breakdown. Only two things need the owner: an overall margin under
+the company minimum, or a total over the approval limit (both set in Settings).
+
+## Margins
+
+Pricing is by gross margin on the selling price: sell = cost ÷ (1 − margin). Order of precedence:
+a margin typed on the line → the quote's category margin → the product cost-code margin → the company
+category margin. Categories: building materials, finish products, cabinets & countertops, labour,
+sub-trades, allowances. Uploading the master catalog workbook (.xlsx) offers per-cost-code margins worked out
+from its **Retail Reference** tab (median retail ÷ cost per code). Optionally, Robins Interiors store products
+sell at their Square retail price.
+
+## Cabinets
+
+The Cabinets step prices Aline, Oppein and Divine orders from the same data files as the cabinet-quoting skill
+(`aline.json`, `oppein.json`, `divine.json`, uploaded in Settings): paste the design's SKU list or search the
+catalog, pick colour / door style / box, and each line is priced at list less that supplier's dealer discount
+(read from the file). Divine assembly and freight are added. A room with a cabinet order no longer carries
+the per-LF cabinet allowance or the default vanity. The document reader also pulls cabinet SKU lists out of
+uploaded designs.
 
 ## Owner setup (Settings, Admins only)
 
-1. **Cost catalog** — upload the master catalog CSV (`Cost Item Name, Description, Unit, Unit Cost, Cost Code`).
-   It's stored in Netlify Blobs, not in this repository (the repository is public). Re-upload whenever prices change.
-2. **Square** — set `SQUARE_ACCESS_TOKEN` in Netlify (Site configuration → Environment variables), then
-   *Sync from Square now*. Each variation's **Default Unit Cost** is used (never the retail price); JMRC catalog
-   lines that name a Square SKU take the live Square cost.
-3. **Pricing** — material / labour / sub-trade markups, PM fee (15% on shops & homes), contingency, HST,
-   minimum margin, auto-approve limit.
-4. **Rates** — your cost per unit for labour, sub-trades and allowances (blank = not set).
-5. **Takeoff tools** — pin the exact catalog item each tool uses and confirm the coverage per unit.
-6. **Company & terms** — signer and the new-build payment schedule.
+1. **Cost catalog** — upload the master cost catalog workbook (.xlsx) or a CSV export. Stored in Netlify
+   Blobs, not in this repository (it's public). Accept the product-code margins it offers.
+2. **Cabinet catalogs** — upload `aline.json`, `oppein.json`, `divine.json`.
+3. **Square** — set `SQUARE_ACCESS_TOKEN` in Netlify, then *Sync from Square now* (Default Unit Cost).
+4. **Margins** — the six category margins, PM fee, contingency, HST, minimum overall margin, approval limit.
+5. **Rates** — your cost per unit for labour, sub-trades and allowances. Blank ones are asked on each quote.
+6. **Takeoff tools** — pin the exact catalog item each tool uses and confirm the coverage per unit.
+7. **Company & terms** — signer and the new-build payment schedule.
 
-The document reader needs `ANTHROPIC_API_KEY` in Netlify. Give people access in Suite Admin → Quote Builder
-(off by default, because the app shows costs to whoever can open it).
+The document reader needs `ANTHROPIC_API_KEY` in Netlify. Quote Builder access is on for staff by default
+(Suite Admin → Quote Builder to turn someone off).
 
 ## Documents and client folders
 
@@ -54,7 +75,8 @@ The document reader needs `ANTHROPIC_API_KEY` in Netlify. Give people access in 
 | Path | What |
 |---|---|
 | `src/engine/takeoff.ts` | Answers → quantity lines (JMRC takeoff standard: 16" o.c., 3-stud corners, slope factors, net/gross rules) |
-| `src/engine/pricing.ts` | Overrides, markups, PM fee, HST, and the review rules |
+| `src/engine/pricing.ts` | Overrides, margins, PM fee, HST, open questions and the review rules |
+| `src/engine/cabinets.ts` | Aline / Oppein / Divine pricing (same rules as the cabinet-quoting skill) |
 | `src/engine/catalog.ts` | Catalog CSV import, search, Square merge |
 | `src/data/defaultSettings.ts` | Takeoff tools and the rate list (no dollar figures) |
 | `src/data/questions.ts` | The interview |
@@ -72,6 +94,5 @@ npm run build
 
 API tests run from the repository root with the rest of the suite: `npm run test:vendor-orders`.
 
-Known limits: "Hide costs from sales reps" hides them on screen only (pricing runs in the browser, so the
-catalog costs are sent to everyone with access). Attachments live in the browser that added them; use the
+Known limits: attachments live in the browser that added them; use the
 client folder to share files between people.

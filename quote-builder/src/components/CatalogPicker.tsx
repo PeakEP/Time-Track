@@ -12,7 +12,7 @@ export default function CatalogPicker({ title, codes, initial = "", onPick, onCl
   const [q, setQ] = useState(initial);
   const [all, setAll] = useState(!codes?.length);
   const [src, setSrc] = useState<"" | "jmrc" | "square">("");
-  const showCost = me?.admin || !settings.pricing.hideCostsFromSales;
+  const showCost = true;
   const results = useMemo(
     () => searchCatalog(items, q, { codes: all ? undefined : codes, limit: 300, source: src || undefined }),
     [items, q, all, codes, src],

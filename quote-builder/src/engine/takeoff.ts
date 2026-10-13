@@ -1,4 +1,5 @@
-import type { Answers, CatalogItem, Line, LineKind, ProjectType, Room, Settings, ToolComponent } from "../types";
+import type { Answers, CabinetSet, CatalogItem, Line, LineKind, ProjectType, Room, Settings, ToolComponent } from "../types";
+import { priceCabinet, SUPPLIER_LABEL, type CabinetData } from "./cabinets";
 import { itemLabel, resolveComponent } from "./catalog";
 
 // Takeoff: answers → quantity lines. Methods follow the JMRC takeoff standard
@@ -18,6 +19,9 @@ export interface Ctx {
   settings: Settings;
   items: CatalogItem[];
   byId: Map<string, CatalogItem>;
+  cabinetSets?: CabinetSet[];
+  cabinetData?: CabinetData;
+  quoteRates?: Record<string, number>; // rates the rep entered on this quote
 }
 
 export class Takeoff {
@@ -71,6 +75,7 @@ export class Takeoff {
       unitCost: item?.unitCost ?? null,
       source: item ? (item.unitCost == null ? "unpriced" : item.source === "square" ? "square" : "catalog") : "unpriced",
       catalogItemId: item?.id,
+      costCode: item?.costCode,
       toolKey: key,
       basis: `${basis} = ${fmt(need)}${comp.waste ? ` + ${Math.round(comp.waste * 100)}% waste` : ""}${coverage !== 1 ? ` ÷ ${fmt(coverage)} (${comp.coverageNote})` : ""}`,
       flags,
@@ -84,6 +89,8 @@ export class Takeoff {
     if (!(qty > 0)) return;
     const r = this.ctx.settings.rates.find((x) => x.key === key);
     if (!r) throw new Error(`Unknown rate: ${key}`);
+    const mine = r.value == null ? this.ctx.quoteRates?.[key] : undefined;
+    const value = r.value ?? (mine != null ? mine : null);
     this.lines.push({
       id: this.id(opts.idKey || key),
       section: r.section,
@@ -91,13 +98,49 @@ export class Takeoff {
       description: opts.label || r.label,
       qty,
       unit: r.unit,
-      unitCost: r.value,
-      source: r.value == null ? "unpriced" : "rate",
+      unitCost: value,
+      source: value == null ? "unpriced" : r.value == null ? "repRate" : "rate",
       toolKey: key,
       basis,
-      flags: r.value == null ? ["rate not set"] : [],
+      flags: value == null ? ["rate not set"] : r.value == null ? ["rate entered on this quote"] : [],
       allowance: opts.allowance ?? r.kind === "allowance",
     });
+  }
+
+  // Cabinet orders priced from the supplier catalogs (dealer cost). SKUs the
+  // catalog doesn't have come through as unpriced lines, so they're asked about.
+  private cabDone = false;
+  cabinetLines(): CabinetSet[] {
+    const sets = (this.ctx.cabinetSets || []).filter((x) => x.lines.length);
+    if (this.cabDone) return sets;
+    this.cabDone = true;
+    for (const set of sets) {
+      const data = this.ctx.cabinetData?.[set.supplier];
+      let assembly = 0;
+      for (const ln of set.lines) {
+        if (!(ln.qty > 0)) continue;
+        const p = data ? priceCabinet(set, data, ln.sku) : null;
+        assembly += p && set.assemble && set.supplier === "divine" ? p.assemblyEach * ln.qty : 0;
+        this.lines.push({
+          id: `cab:${set.id}:${ln.id}`,
+          section: "Cabinetry",
+          kind: "material",
+          description: p ? `${set.name} — ${SUPPLIER_LABEL[set.supplier]} ${p.sku} ${p.desc}${p.dims ? ` (${p.dims})` : ""}` : `${set.name} — ${SUPPLIER_LABEL[set.supplier]} ${ln.sku}`,
+          qty: ln.qty,
+          unit: "EA",
+          unitCost: p ? p.dealer : null,
+          source: p ? "cabinet" : "unpriced",
+          costCode: "1901 Kitchen Cabinets",
+          marginKey: "cabinets",
+          basis: p ? `list $${p.list.toFixed(2)} − ${Math.round(p.discount * 100)}% dealer discount · ${p.finish}` : data ? "SKU not in the supplier catalog" : `${SUPPLIER_LABEL[set.supplier]} catalog not loaded`,
+          flags: p ? [] : [data ? "cabinet SKU not found" : "cabinet catalog not loaded"],
+          allowance: true,
+        });
+      }
+      if (assembly > 0) this.lines.push({ id: `cab:${set.id}:assembly`, section: "Cabinetry", kind: "sub", description: `${set.name} — Divine assembly`, qty: 1, unit: "LS", unitCost: Math.round(assembly * 100) / 100, source: "cabinet", marginKey: "cabinets", basis: "per-unit assembly by category", flags: [], allowance: true });
+      if (set.shipping > 0) this.lines.push({ id: `cab:${set.id}:freight`, section: "Cabinetry", kind: "allowance", description: `${set.name} — ${SUPPLIER_LABEL[set.supplier]} freight`, qty: 1, unit: "LS", unitCost: set.shipping, source: "quote", marginKey: "cabinets", basis: "freight", flags: [], allowance: true });
+    }
+    return sets;
   }
 
   // A supplier quote typed on the quote (windows package, trusses, cabinets…).
@@ -312,14 +355,16 @@ export function newBuildTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
 
     // --- Kitchen & baths
     const kLF = pos(a.kitchenCabinetLF);
-    if (a.cabinetQuote > 0) t.quoted("cabinets", "Kitchen", "Cabinetry (Cabinet Designer / supplier quote)", a.cabinetQuote);
+    const sets = t.cabinetLines(); // priced cabinet orders replace the allowance
+    if (sets.length) { /* priced from the supplier catalogs */ }
+    else if (a.cabinetQuote > 0) t.quoted("cabinets", "Kitchen", "Cabinetry (Cabinet Designer / supplier quote)", a.cabinetQuote);
     else t.rate("allow.cabinetsLF", kLF, `${fmt(kLF)} LF cabinet run (no cabinet quote entered)`);
     t.rate("lab.cabinets", kLF, `${fmt(kLF)} LF`);
     t.material("countertop", pos(a.countertopSF), `countertops`, { selectedId: a.countertopItemId || undefined, allowance: true });
     const baths = pos(a.bathroomCount);
     if (baths) {
       t.material("toilet", baths, `${baths} bathrooms`, { selectedId: a.toiletItemId || undefined, allowance: true });
-      t.material("vanity", baths, `${baths} bathrooms`, { selectedId: a.vanityItemId || undefined, allowance: true });
+      if (!sets.some((x) => /vanit/i.test(x.name))) t.material("vanity", baths, `${baths} bathrooms`, { selectedId: a.vanityItemId || undefined, allowance: true });
       t.material("faucet", baths, `${baths} bathrooms`, { selectedId: a.faucetItemId || undefined, allowance: true });
       t.material("tub", baths, `${baths} bathrooms`, { selectedId: a.tubItemId || undefined, allowance: true });
       t.rate("lab.fixtures", baths, `${baths} bathrooms`);
@@ -357,6 +402,7 @@ export function roomGeometry(r: Room) {
 
 export function renovationTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
   const rooms = a.rooms || [];
+  const covered = new Set(t.cabinetLines().map((x) => x.roomId));
   let totalFloor = 0, demoFloor = 0;
   for (const r of rooms) {
     const g = roomGeometry(r);
@@ -434,7 +480,7 @@ export function renovationTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
 
     // Kitchen
     if (pos(r.cabinetLF)) {
-      if (!(a.cabinetQuote > 0)) t.rate("allow.cabinetsLF", r.cabinetLF, `${tag}: ${fmt(r.cabinetLF)} LF (no cabinet quote entered)`, { label: `Cabinetry — ${tag}`, idKey: key("cab") });
+      if (!(a.cabinetQuote > 0) && !covered.has(r.id) && !covered.has("")) t.rate("allow.cabinetsLF", r.cabinetLF, `${tag}: ${fmt(r.cabinetLF)} LF (no cabinet quote entered)`, { label: `Cabinetry — ${tag}`, idKey: key("cab") });
       t.rate("lab.cabinets", r.cabinetLF, `${tag}`, { label: `Cabinet install — ${tag}`, idKey: key("cabl") });
     }
     t.material("countertop", pos(r.countertopSF), `${tag}: countertops`, { selectedId: a.countertopItemId || undefined, idKey: key("ct"), allowance: true });
@@ -448,7 +494,7 @@ export function renovationTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
     if (r.toilet) { fixtures++; t.material("toilet", 1, tag, { selectedId: a.toiletItemId || undefined, idKey: key("toilet"), allowance: true }); }
     if (r.vanity) {
       fixtures++;
-      t.material("vanity", 1, tag, { selectedId: a.vanityItemId || undefined, idKey: key("vanity"), allowance: true });
+      if (!covered.has(r.id)) t.material("vanity", 1, tag, { selectedId: a.vanityItemId || undefined, idKey: key("vanity"), allowance: true });
       t.material("faucet", 1, tag, { selectedId: a.faucetItemId || undefined, idKey: key("faucet"), allowance: true });
     }
     if (r.tubShower !== "none") { fixtures++; t.material("tub", 1, `${tag}: ${r.tubShower}`, { selectedId: a.tubItemId || undefined, idKey: key("tub"), allowance: true }); }
@@ -484,6 +530,7 @@ export function renovationTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
 
 export function runTakeoff(ctx: Ctx): Line[] {
   const t = new Takeoff(ctx);
+  if (ctx.type === "shop") t.cabinetLines();
   if (ctx.type === "shop" || ctx.type === "custom-home") newBuildTakeoff(t, ctx.answers, ctx.type);
   else renovationTakeoff(t, ctx.answers, ctx.type);
   return t.lines;

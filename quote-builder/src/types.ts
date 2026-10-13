@@ -35,6 +35,26 @@ export interface CatalogItem {
   retail?: number | null; // Square retail price (never used as cost)
 }
 
+/* ----------------------------- cabinets ----------------------------- */
+
+export type CabinetSupplier = "aline" | "oppein" | "divine";
+
+// One cabinet order on a quote (e.g. "Kitchen", "Ensuite vanity"), priced
+// from the supplier's list price less JMRC's dealer discount.
+export interface CabinetSet {
+  id: string;
+  name: string;
+  roomId: string; // renovation room it covers ("" = whole job)
+  supplier: CabinetSupplier;
+  box: "PB" | "PLY";
+  color: string; // Oppein colour code (sets the tier) / Aline colour code / Divine finishing colour
+  style: string; // Aline door style / Divine style code (A5, H3, H8, S6, S7, E9)
+  assemble: boolean; // Divine assembly
+  shipping: number; // freight $ (Divine default 150)
+  lines: { id: string; sku: string; qty: number }[];
+  notes: string;
+}
+
 /* ----------------------------- rooms ----------------------------- */
 
 export type RoomKind =
@@ -163,7 +183,9 @@ export type CostSource =
   | "square" // Robins Interiors Square catalog
   | "rate" // owner-configured rate
   | "quote" // supplier quote entered on the quote
-  | "manual" // typed by the rep (needs review)
+  | "manual" // typed by the rep on a line
+  | "repRate" // rate the rep entered on this quote (company rate not set)
+  | "cabinet" // supplier cabinet catalog (list − dealer discount)
   | "unpriced";
 
 export interface Line {
@@ -176,6 +198,8 @@ export interface Line {
   unitCost: number | null; // cost to JMRC per unit (null = unpriced)
   source: CostSource;
   catalogItemId?: string;
+  costCode?: string; // catalog cost code (drives the margin category)
+  marginKey?: MarginKey; // margin category
   toolKey?: string; // which takeoff tool / rate produced it
   basis?: string; // how the quantity was derived (shown in the takeoff)
   flags: string[]; // e.g. "auto-matched", "verify coverage"
@@ -226,7 +250,12 @@ export interface Quote {
   answers: Answers;
   manualLines: ManualLine[];
   // Per-line overrides on generated lines (keyed by line id)
-  overrides: Record<string, { qty?: number; unitCost?: number | null; catalogItemId?: string; removed?: boolean }>;
+  overrides: Record<string, { qty?: number; unitCost?: number | null; catalogItemId?: string; removed?: boolean; margin?: number }>;
+  cabinetSets: CabinetSet[];
+  // Rates the rep entered on this quote where the company rate isn't set
+  rates: Record<string, number>;
+  // Margins for this quote (start from Settings; the rep can adjust)
+  margins: Partial<Record<MarginKey, number>>;
   attachments: Attachment[];
   ai: { suggestions: AiSuggestion[]; summary: string; ranAt: string };
   folderName: string;
@@ -265,16 +294,27 @@ export interface Rate {
   note: string;
 }
 
+// Margins are gross margin on sell: sell = cost ÷ (1 − margin).
+export type MarginKey = "material" | "finish" | "cabinets" | "labour" | "sub" | "allowance";
+export const MARGIN_LABEL: Record<MarginKey, string> = {
+  material: "Building materials",
+  finish: "Finish products (flooring, tile, fixtures, lighting)",
+  cabinets: "Cabinets & countertops",
+  labour: "Labour",
+  sub: "Sub-trades",
+  allowance: "Allowances & supplier quotes",
+};
+
 export interface PricingRules {
-  materialMarkup: number | null; // fraction
-  labourMarkup: number | null;
-  subMarkup: number | null;
+  margins: Record<MarginKey, number | null>;
+  codeMargins: Record<string, number>; // per cost code ("1801") — overrides the category
+  codeMarginSource: string; // where the code margins came from
+  useStoreRetail: boolean; // price Robins Interiors (Square) products at the store's retail price
   pmFeeNewBuild: number; // 0.15 per the custom-home proposal standard
   contingency: number; // fraction of subtotal (0 = none)
   hst: number; // 0.15 NB
-  minMargin: number | null; // gross margin floor for auto-approval
+  minMargin: number | null; // overall gross margin floor — below needs the owner
   autoApproveLimit: number | null; // quotes above this always need the owner
-  hideCostsFromSales: boolean;
 }
 
 export interface Settings {
@@ -301,8 +341,9 @@ export interface Settings {
 
 export interface PricedLine extends Line {
   extCost: number; // qty × unitCost (0 if unpriced)
-  markup: number; // fraction applied
-  sell: number; // extCost × (1 + markup)
+  margin: number; // gross margin applied
+  marginFrom: "line" | "quote" | "code" | "category" | "retail" | "none";
+  sell: number; // extCost ÷ (1 − margin)
 }
 
 export interface Totals {
@@ -324,4 +365,14 @@ export interface ReviewItem {
   level: "block" | "warn" | "info";
   message: string;
   lineId?: string;
+  owner?: boolean; // company policy — needs the owner's approval
 }
+
+// Something the salesperson needs to answer to finish the quote.
+export type Question =
+  | { kind: "rate"; key: string; label: string; unit: string; lineIds: string[] }
+  | { kind: "price"; lineId: string; label: string; unit: string; why: string; codes?: string[] }
+  | { kind: "field"; step: string; field: string; label: string }
+  | { kind: "cabinets"; label: string; roomId: string }
+  | { kind: "cabinetSku"; setId: string; lineId: string; sku: string; label: string; suggestions: string[] }
+  | { kind: "margin"; key: MarginKey; label: string };
