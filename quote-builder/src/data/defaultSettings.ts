@@ -1,4 +1,4 @@
-import type { MarginKey, PricingRules, Rate, Settings, ToolComponent } from "../types";
+import type { LabourTask, MarginKey, PricingRules, Rate, Settings, ToolComponent } from "../types";
 
 // Pre-configured takeoff tools. Each component says how to find its material
 // in the cost catalog (match terms, or an exact item the owner pins in
@@ -101,52 +101,61 @@ export const DEFAULT_COMPONENTS: ToolComponent[] = [
   c("lightFixture", "Electrical", "Light fixture (default)", ["flush mount"], 1, "1 each", true, 0, { codes: ["1003"] }),
 ];
 
+// Labour productivity, seeded from JMRC's estimate worksheets (Brent Smith V9,
+// Bezzant). Hours = quantity ÷ perHour, costed at the hourly rate. Labour is
+// never a "missing" number on a quote — it always prices from the hourly rate.
+const lab = (key: string, section: string, label: string, unit: string, perHour: number, crew: LabourTask["crew"], note = ""): LabourTask =>
+  ({ key, section, label, unit, perHour, crew, note });
+
+export const DEFAULT_LABOUR: LabourTask[] = [
+  lab("lab.demo", "Demolition", "Demolition & tear-out", "SF", 8, "laborer", "per SF of area removed (floor + half wall); bathroom ≈ 18 hr"),
+  lab("lab.foundation", "Foundation", "Foundation / slab forming", "SF", 12, "carpenter", "per SF of footprint"),
+  lab("lab.framing", "Framing", "Framing (shell)", "SF", 8, "carpenter", "per SF of floor area"),
+  lab("lab.partition", "Framing", "Interior wall framing", "LF", 8, "carpenter", "per LF of new wall"),
+  lab("lab.roofing", "Roofing", "Roofing", "SQ", 0.5, "carpenter", "2 hr per square (100 SF)"),
+  lab("lab.windowInstall", "Windows & Doors", "Window / ext. door install", "EA", 1, "carpenter", "1 hr per opening"),
+  lab("lab.siding", "Exterior", "Siding, soffit & fascia", "SF", 20, "carpenter", "per SF of wall cladding"),
+  lab("lab.insulation", "Insulation", "Insulation & vapour barrier", "SF", 35, "carpenter", "Brent: 7.9 hr for ~280 SF"),
+  lab("lab.drywall", "Drywall", "Drywall hang, tape & finish", "SF", 23, "carpenter", "hang + 3-coat finish; Brent ~$1.75/SF cost"),
+  lab("lab.drywallPatch", "Drywall", "Drywall patch & repair", "SF", 10, "carpenter", "per SF of wall area patched"),
+  lab("lab.paint", "Paint", "Painting (prime + 2 coats)", "SF", 67, "carpenter", "200 SF/hr per coat over 3 passes"),
+  lab("lab.trim", "Interior Finish", "Trim install (base & casing)", "LF", 12, "carpenter", "Brent: 32 hr for ~393 LF"),
+  lab("lab.door", "Interior Finish", "Interior door install", "EA", 1.33, "carpenter", "0.75 hr per door incl. hardware"),
+  lab("lab.flooring", "Flooring", "Flooring install", "SF", 23, "carpenter", "Brent: $3.50/SF sell ÷ $80 ≈ 23 SF/hr"),
+  lab("lab.tile", "Tile", "Floor tile install (incl. membrane)", "SF", 6, "carpenter", "Brent: 18.75 hr for ~112 SF with Ditra"),
+  lab("lab.showerTile", "Tile", "Shower / wall tile install", "SF", 4, "carpenter", "Bezzant: 24 hr for 96 SF"),
+  lab("lab.cabinets", "Kitchen", "Cabinet install", "LF", 1, "carpenter", "1 hr per LF of run"),
+  lab("lab.countertop", "Kitchen", "Countertop template & install", "SF", 20, "carpenter", "if not in the stone price"),
+  lab("lab.fixtureInstall", "Electrical", "Light fixture install", "EA", 2, "carpenter", "0.5 hr per fixture"),
+  lab("lab.fixtures", "Bathroom", "Bathroom fixture setting (vanity, toilet, accessories)", "EA", 0.25, "carpenter", "4 hr per bathroom"),
+  lab("lab.cleanup", "General", "Final clean & site cleanup", "SF", 100, "laborer", "per SF of floor area"),
+];
+
 const r = (key: string, section: string, label: string, unit: string, kind: Rate["kind"], note = ""): Rate =>
   ({ key, section, label, unit, kind, value: null, note });
 
-// Owner rates — blank until set. A blank rate shows on the quote as an
-// unpriced line, so a quote can't go out with a missing number.
+// Sub-trade and allowance rates — blank until set. A blank one is asked of the
+// salesperson on each quote that needs it (they have the sub's quote).
 export const DEFAULT_RATES: Rate[] = [
-  r("lab.demo", "Demolition", "Demolition & haul-off labour", "SF", "labour", "per SF of floor area demolished"),
   r("sub.bin", "Demolition", "Disposal bin (each)", "EA", "allowance", "delivered, picked up and dumped"),
   r("allow.permit", "General", "Building permit allowance", "SF", "allowance", "per SF of floor area (new builds)"),
   r("allow.permitReno", "General", "Building permit allowance (renovation)", "EA", "allowance", "flat per renovation that needs one"),
   r("sub.excavation", "Foundation", "Excavation & site prep", "SF", "sub", "per SF of footprint"),
   r("sub.concrete", "Foundation", "Concrete supplied & placed", "m³", "sub", "per m³ — never a lump sum"),
-  r("lab.foundation", "Foundation", "Foundation / slab forming labour", "SF", "labour", "per SF of footprint"),
-  r("lab.framing", "Framing", "Framing labour (shell)", "SF", "labour", "per SF of floor area"),
-  r("lab.partition", "Framing", "Interior wall framing labour", "LF", "labour", "per LF of new wall"),
   r("allow.trusses", "Framing", "Roof trusses (if no supplier quote)", "SF", "allowance", "per SF of footprint"),
   r("allow.floorSystem", "Framing", "Engineered floor system", "SF", "allowance", "per SF of upper floor area"),
   r("allow.beam", "Framing", "Structural beam / LVL for removed bearing wall", "EA", "allowance", "per bearing wall removed, incl. engineering"),
-  r("lab.roofing", "Roofing", "Roofing labour", "SQ", "labour", "per square (100 SF) installed"),
   r("allow.windowsDoors", "Windows & Doors", "Windows (if no supplier quote)", "EA", "allowance", "per window"),
   r("allow.extDoor", "Windows & Doors", "Exterior door (if no supplier quote)", "EA", "allowance", "per door"),
   r("allow.overheadDoor", "Windows & Doors", "Overhead door supplied & installed", "EA", "allowance", "per door (if no quote)"),
-  r("lab.windowInstall", "Windows & Doors", "Window / ext. door install labour", "EA", "labour", "per opening"),
-  r("lab.siding", "Exterior", "Siding, soffit & fascia labour", "SF", "labour", "per SF of wall cladding"),
-  r("lab.insulation", "Insulation", "Insulation & vapour barrier labour", "SF", "labour", "per SF insulated"),
-  r("lab.drywall", "Drywall", "Drywall hang, tape & finish", "SF", "labour", "per SF of board"),
-  r("lab.drywallPatch", "Drywall", "Drywall patch & repair", "SF", "labour", "per SF of room wall area patched"),
-  r("lab.paint", "Paint", "Painting labour (prime + 2 coats)", "SF", "labour", "per SF of painted surface"),
-  r("lab.trim", "Interior Finish", "Trim install (base & casing)", "LF", "labour", "per LF"),
-  r("lab.door", "Interior Finish", "Interior door install", "EA", "labour", "per door incl. hardware"),
-  r("lab.flooring", "Flooring", "Flooring install", "SF", "labour", "per SF"),
-  r("lab.tile", "Tile", "Tile install (floor)", "SF", "labour", "per SF"),
-  r("lab.showerTile", "Tile", "Shower / wall tile install incl. waterproofing", "SF", "labour", "per SF"),
-  r("lab.cabinets", "Kitchen", "Cabinet install", "LF", "labour", "per LF of cabinet run"),
   r("allow.cabinetsLF", "Kitchen", "Cabinetry allowance (if no Cabinet Designer quote)", "LF", "allowance", "per LF of cabinet run — custom homes"),
-  r("lab.countertop", "Kitchen", "Countertop template & install", "SF", "labour", "per SF (if not in stone price)"),
   r("sub.plumbingFixture", "Plumbing", "Plumbing — per fixture (rough-in + finish)", "EA", "sub", "toilet, sink, tub/shower, laundry, etc."),
   r("sub.plumbingRelocate", "Plumbing", "Plumbing relocation (remodel)", "EA", "sub", "per room with relocated plumbing"),
   r("sub.electricalSF", "Electrical", "Electrical — new build", "SF", "sub", "per SF of heated floor area incl. 200A panel"),
   r("sub.electricalRoom", "Electrical", "Electrical — renovated room", "SF", "sub", "per SF of renovated room"),
-  r("lab.fixtureInstall", "Electrical", "Light fixture install", "EA", "sub", "per fixture"),
   r("sub.hvacBaseboard", "HVAC", "Electric baseboard heat", "SF", "sub", "per SF heated"),
   r("sub.hvacMiniSplit", "HVAC", "Mini-split heat pump system", "SF", "sub", "per SF heated incl. HRV"),
   r("sub.hvacForcedAir", "HVAC", "Forced-air system", "SF", "sub", "per SF heated incl. HRV"),
-  r("lab.fixtures", "Bathroom", "Bathroom fixture setting (vanity, toilet, accessories)", "EA", "labour", "per bathroom"),
-  r("lab.cleanup", "General", "Final clean & site cleanup", "SF", "labour", "per SF of floor area"),
   r("allow.occupied", "General", "Occupied-home protection & dust control", "EA", "allowance", "flat per occupied renovation"),
 ];
 
@@ -154,9 +163,15 @@ export function defaultSettings(): Settings {
   return {
     version: 1,
     components: DEFAULT_COMPONENTS.map((x) => ({ ...x })),
+    labour: DEFAULT_LABOUR.map((x) => ({ ...x })),
     rates: DEFAULT_RATES.map((x) => ({ ...x })),
     pricing: {
-      margins: { material: null, finish: null, cabinets: null, labour: null, sub: null, allowance: null },
+      // JMRC standard: labour $40/hr cost → $80/hr sell (50% margin); laborer
+      // $32.50 → $65. Materials cost + 20%; client-selected finishes ~2×;
+      // cabinets ~2×; sub-trades cost + 20%.
+      labourCostPerHour: 40,
+      laborerCostPerHour: 32.5,
+      margins: { material: 0.2, finish: 0.5, cabinets: 0.5, labour: 0.5, sub: 0.17, allowance: 0.2 },
       codeMargins: {},
       codeMarginSource: "",
       useStoreRetail: false,
@@ -193,6 +208,7 @@ export function mergeSettings(saved: Partial<Settings> | null | undefined): Sett
     ...base,
     ...saved,
     components: byKey(base.components, saved.components),
+    labour: byKey(base.labour, saved.labour),
     rates: byKey(base.rates, saved.rates),
     pricing: mergePricing(base.pricing, saved.pricing as Partial<PricingRules> & Record<string, unknown>),
     company: { ...base.company, ...(saved.company || {}) },

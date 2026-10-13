@@ -88,34 +88,34 @@ test("new build takeoff: studs, plates, sheathing and shingles", () => {
   assert.equal(get("shingles").qty, 50);
 });
 
-test("missing rates and margins become questions for the salesperson, not owner blocks", () => {
+test("labour is priced in hours from the hourly rate; only subs and unpriced items are questions", () => {
   const { items } = E.parseJmrcCatalog(CSV);
   const s = E.defaultSettings();
   const q = shopQuote();
   q.answers.clientName = "A"; q.answers.siteAddress = "B";
-  let r = E.computeQuote(q, s, items);
-  const framing = r.lines.find((l) => l.toolKey === "lab.framing");
-  assert.equal(framing.unitCost, null);
-  assert.ok(r.questions.some((x) => x.kind === "rate" && x.key === "lab.framing"));
-  assert.ok(r.questions.some((x) => x.kind === "margin" && x.key === "material"));
+  const r = E.computeQuote(q, s, items);
+  // Framing labour: 1200 SF ÷ 8 SF/hr = 150 hr @ $40/hr
+  const fr = r.lines.find((l) => l.toolKey === "lab.framing");
+  assert.equal(fr.unit, "hr");
+  assert.equal(fr.qty, 150);
+  assert.equal(fr.unitCost, 40);
+  assert.equal(fr.marginKey, "labour");
+  // labour sell at 50% margin = cost / 0.5 = $80/hr
+  const pl = E.priceLines(q, [fr], s).lines[0];
+  assert.equal(pl.sell, fr.qty * 80);
+  // No labour rate questions (labour always prices); no margin questions (defaults set)
+  assert.ok(!r.questions.some((x) => x.kind === "rate" && x.key.startsWith("lab.")));
+  assert.ok(!r.questions.some((x) => x.kind === "margin"));
+  // Subs ARE questions (rep enters the sub's quote)
+  assert.ok(r.questions.some((x) => x.kind === "rate" && x.key.startsWith("sub.")));
   assert.equal(r.needsOwner, false);
-  assert.ok(r.repBlocks > 0);
-  assert.equal(E.canSend(q, r), false);
-  // The rep answers on the quote: rates and margins
+  // Owner policy: a minimum margin can still force approval
+  s.pricing.minMargin = 0.9;
   for (const x of r.questions) if (x.kind === "rate") q.rates[x.key] = 1;
-  for (const k of ["material", "labour", "sub", "allowance", "finish", "cabinets"]) q.margins[k] = 0.3;
-  for (const l of r.lines) if (l.unitCost == null && l.kind === "material") q.overrides[l.id] = { unitCost: 5 };
-  r = E.computeQuote(q, s, items);
-  assert.deepEqual(r.questions, []);
-  assert.equal(r.lines.find((l) => l.toolKey === "lab.framing").source, "repRate");
-  assert.equal(E.canSend(q, r), true);
-  // Owner policy: minimum margin
-  s.pricing.minMargin = 0.4;
-  r = E.computeQuote(q, s, items);
-  assert.equal(r.needsOwner, true);
-  assert.equal(E.canSend(q, r), false);
-  q.approval = { by: "Mike", at: "", note: "", totalAtApproval: r.totals.total };
-  assert.equal(E.canSend(q, r), true);
+  for (const l of r.lines) if (l.unitCost == null && l.kind === "material") q.overrides[l.id] = { unitCost: 1 };
+  const r2 = E.computeQuote(q, s, items);
+  assert.equal(r2.needsOwner, true);
+  assert.equal(E.canSend(q, r2), false);
 });
 
 test("pricing: margins by category and code, line override, 15% PM fee, HST", () => {
@@ -194,12 +194,14 @@ test("overrides: removed lines vanish, a typed price is flagged for review", () 
 });
 
 test("mergeSettings keeps owner edits and adds new tools", () => {
-  const saved = { components: [{ key: "shingles", pinnedItemId: "jmrc:x", coverage: 32 }], rates: [{ key: "lab.framing", value: 5 }], pricing: { materialMarkup: 0.25, hideCostsFromSales: true } };
+  const saved = { components: [{ key: "shingles", pinnedItemId: "jmrc:x", coverage: 32 }], labour: [{ key: "lab.framing", perHour: 10 }], rates: [{ key: "sub.concrete", value: 250 }], pricing: { materialMarkup: 0.25, hideCostsFromSales: true } };
   const s = E.mergeSettings(saved);
   assert.equal(s.components.find((c) => c.key === "shingles").pinnedItemId, "jmrc:x");
   assert.equal(s.components.find((c) => c.key === "shingles").coverage, 32);
   assert.ok(s.components.find((c) => c.key === "stud2x6_8"));
-  assert.equal(s.rates.find((r) => r.key === "lab.framing").value, 5);
+  assert.equal(s.labour.find((l) => l.key === "lab.framing").perHour, 10);
+  assert.ok(s.labour.find((l) => l.key === "lab.drywall")); // new tasks still added
+  assert.equal(s.rates.find((r) => r.key === "sub.concrete").value, 250);
   // old markup 25% → margin 20%
   assert.equal(s.pricing.margins.material, 0.2);
   assert.equal(s.pricing.materialMarkup, undefined);

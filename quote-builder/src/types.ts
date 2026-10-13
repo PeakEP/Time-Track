@@ -283,7 +283,21 @@ export interface ToolComponent {
   waste: number; // fraction, 0.10 = 10%
 }
 
-// Owner rate (labour, sub-trade, allowance) per takeoff unit. null = not set.
+// A labour task: how fast the crew does it (units per hour), so hours =
+// quantity ÷ perHour, costed at the hourly rate above. Seeded from JMRC's
+// estimate worksheets; the owner tunes any of them.
+export interface LabourTask {
+  key: string;
+  section: string;
+  label: string;
+  unit: string; // the takeoff unit the quantity is in (SF, LF, EA, SQ)
+  perHour: number; // units completed per hour (e.g. 23 SF/hr flooring)
+  crew: "carpenter" | "laborer";
+  note: string;
+}
+
+// Owner rate (sub-trade or allowance) per takeoff unit. null = not set, so the
+// salesperson is asked for it on each quote (they have the sub's quote).
 export interface Rate {
   key: string;
   section: string;
@@ -306,6 +320,9 @@ export const MARGIN_LABEL: Record<MarginKey, string> = {
 };
 
 export interface PricingRules {
+  // Labour is estimated in hours; cost per hour → sell via the labour margin.
+  labourCostPerHour: number; // carpenter / tradesperson, e.g. 40 → 80 sell at 50%
+  laborerCostPerHour: number; // general labourer, e.g. 32.50 → 65 sell at 50%
   margins: Record<MarginKey, number | null>;
   codeMargins: Record<string, number>; // per cost code ("1801") — overrides the category
   codeMarginSource: string; // where the code margins came from
@@ -320,6 +337,7 @@ export interface PricingRules {
 export interface Settings {
   version: number;
   components: ToolComponent[];
+  labour: LabourTask[];
   rates: Rate[];
   pricing: PricingRules;
   company: {

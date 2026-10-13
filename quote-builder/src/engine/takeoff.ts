@@ -83,7 +83,35 @@ export class Takeoff {
     });
   }
 
-  // A line priced by an owner rate (labour, sub-trade, allowance).
+  // A labour line, estimated in hours. The quantity (SF/LF/EA) is converted to
+  // hours with the task's productivity and costed at JMRC's hourly rate — so
+  // labour always prices (never a "missing number") straight from $40/hr.
+  labour(key: string, units: number, basis: string, opts: { label?: string; idKey?: string; perHour?: number } = {}) {
+    units = round2(units);
+    if (!(units > 0)) return;
+    const t = this.ctx.settings.labour.find((x) => x.key === key);
+    if (!t) throw new Error(`Unknown labour task: ${key}`);
+    const per = opts.perHour ?? t.perHour;
+    const hours = per > 0 ? Math.round((units / per) * 10) / 10 : units;
+    const p = this.ctx.settings.pricing;
+    const rate = t.crew === "laborer" ? p.laborerCostPerHour : p.labourCostPerHour;
+    this.lines.push({
+      id: this.id(opts.idKey || key),
+      section: t.section,
+      kind: "labour",
+      description: `${opts.label || t.label} (labour)`,
+      qty: hours,
+      unit: "hr",
+      unitCost: rate,
+      source: "rate",
+      marginKey: "labour",
+      toolKey: key,
+      basis: `${basis} ÷ ${fmt(per)} ${t.unit}/hr = ${fmt(hours)} hr${t.crew === "laborer" ? " (labourer)" : ""}`,
+      flags: [],
+    });
+  }
+
+  // A line priced by an owner rate (sub-trade, allowance).
   rate(key: string, qty: number, basis: string, opts: { label?: string; idKey?: string; allowance?: boolean } = {}) {
     qty = round2(qty);
     if (!(qty > 0)) return;
@@ -210,7 +238,7 @@ export function newBuildTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
     const wallM3 = a.foundation === "frost-wall" ? P * 4 * (8 / 12) * 0.0283168 : a.foundation === "basement-icf" ? P * 8 * (6 / 12) * 0.0283168 : 0;
     const m3 = slabM3 + footingM3 + wallM3;
     t.rate("sub.concrete", m3, `slab ${fmt(A)} SF × ${slabIn}" = ${fmt(slabM3)} m³ + footings ${fmt(footingM3)} m³${wallM3 ? ` + walls ${fmt(wallM3)} m³` : ""} (estimate — confirm against the foundation drawing)`);
-    t.rate("lab.foundation", A, `footprint ${fmt(A)} SF`);
+    t.labour("lab.foundation", A, `footprint ${fmt(A)} SF`);
     t.material("anchorBolt", ceil(P / 6) + 4 * 2, `perimeter ${fmt(P)} LF ÷ 6' + 2 per corner`);
     t.material("sillGasket", P, `perimeter ${fmt(P)} LF`);
     t.material("rebar10", (L / 1.5 + 1) * W + (W / 1.5 + 1) * L, `slab grid @ 18" o.c. both ways`);
@@ -238,10 +266,10 @@ export function newBuildTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
   if (Li) {
     t.material(h <= 8 ? "stud2x4_8" : "stud2x4_9", ceil((Li * 12) / 16) + ceil(Li / 12) * 2, `${fmt(Li)} LF @ 16" o.c. + 2 per 12' (ends/tees)`);
     t.material("plate2x4", Li * 3, `${fmt(Li)} LF × 3 plates`);
-    t.rate("lab.partition", Li, `${fmt(Li)} LF partitions`);
+    t.labour("lab.partition", Li, `${fmt(Li)} LF partitions`);
   }
   t.material("framingNails", (studsPerFloor * n + ceil((Li * 12) / 16)) * 8 + (wallSheathSF / 32) * 40, `~8 per stud + ~40 per sheet`);
-  t.rate("lab.framing", floorArea, `${fmt(floorArea)} SF floor area`);
+  t.labour("lab.framing", floorArea, `${fmt(floorArea)} SF floor area`);
   if (a.trussQuote > 0) t.quoted("trusses", "Framing", "Roof truss package (supplier quote)", a.trussQuote, "material");
   else t.rate("allow.trusses", A, `footprint ${fmt(A)} SF (no truss quote entered)`);
 
@@ -255,7 +283,7 @@ export function newBuildTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
   t.material("ridgeVent", L + 2 * rake - 2, `ridge less 1' each end`);
   t.material("dripEdge", eaveLF + rakeLF, `eaves ${fmt(eaveLF)} + rakes ${fmt(rakeLF)} LF`);
   t.material("roofNails", squares * 320, `${fmt(squares)} squares × 320 nails`);
-  t.rate("lab.roofing", squares * 1.1, `${fmt(squares)} squares + 10%`);
+  t.labour("lab.roofing", squares * 1.1, `${fmt(squares)} squares + 10%`);
 
   // --- Windows & doors
   const wd = pos(a.windowsDoorsQuote);
@@ -264,7 +292,7 @@ export function newBuildTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
     t.rate("allow.windowsDoors", wins, `${wins} windows (no supplier quote entered)`);
     t.rate("allow.extDoor", extDoors, `${extDoors} exterior doors (no supplier quote entered)`);
   }
-  t.rate("lab.windowInstall", wins + extDoors, `${wins + extDoors} openings`);
+  t.labour("lab.windowInstall", wins + extDoors, `${wins + extDoors} openings`);
   if (ohd) {
     if (a.overheadDoorQuote > 0) t.quoted("overheadDoors", "Windows & Doors", `Overhead doors (${ohd}) — supplier quote`, a.overheadDoorQuote);
     else t.rate("allow.overheadDoor", ohd, `${ohd} × ${ohW}'×${ohH}' overhead doors`);
@@ -279,7 +307,7 @@ export function newBuildTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
   t.material("soffit", (eaveLF + rakeLF) * Math.max(eave, rake, 0.5), `eaves + rakes × overhang`);
   t.material("fChannel", eaveLF + rakeLF, `soffit return`);
   t.material("fascia", eaveLF + rakeLF, `eaves + rakes`);
-  t.rate("lab.siding", cladSF, `${fmt(cladSF)} SF cladding`);
+  t.labour("lab.siding", cladSF, `${fmt(cladSF)} SF cladding`);
 
   // --- Insulation & vapour barrier
   const insulated = !shop || a.insulated;
@@ -291,7 +319,7 @@ export function newBuildTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
     t.material("poly", P * h * n + A, `ext. walls gross + ceiling`);
     t.material("tuckTape", P * h * n + A, `poly area`);
     t.material("acousticSealant", P * h * n + A, `poly area`);
-    t.rate("lab.insulation", netWall + A, `walls + ceiling`);
+    t.labour("lab.insulation", netWall + A, `walls + ceiling`);
   }
 
   // --- Drywall / interior lining
@@ -306,10 +334,10 @@ export function newBuildTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
     t.material("tape", board, `board area`);
     t.material("dwScrews", board, `board area`);
     t.material("cornerBead", 4 * h * n + wins * 2 * (winW + winH), `corners + window returns`);
-    t.rate("lab.drywall", board, `${fmt(board)} SF board`);
+    t.labour("lab.drywall", board, `${fmt(board)} SF board`);
   } else if (lining === "osb") {
     t.material("wallSheathing", wallBoard, `interior walls lined with OSB`, { label: "Interior OSB liner", section: "Interior Finish", idKey: "osbLiner" });
-    t.rate("lab.drywall", wallBoard, `${fmt(wallBoard)} SF OSB liner hung`, { label: "Interior liner install" });
+    t.labour("lab.drywall", wallBoard, `${fmt(wallBoard)} SF OSB liner hung`, { label: "Interior liner install" });
   }
 
   // --- Interior finish & paint (houses, and shops with drywall)
@@ -320,17 +348,17 @@ export function newBuildTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
       t.material("baseboard", baseLF, `wall faces at floor − doors − cabinets`);
       const casingLF = intDoors * 2 * (2 * 7 + 3.5) + wins * (2 * (winW + winH) + 1);
       t.material("casing", casingLF, `doors both sides + window casing`);
-      t.rate("lab.trim", baseLF + casingLF, `${fmt(baseLF + casingLF)} LF trim`);
+      t.labour("lab.trim", baseLF + casingLF, `${fmt(baseLF + casingLF)} LF trim`);
       t.material("interiorDoor", intDoors, `${intDoors} doors`, { selectedId: a.interiorDoorItemId || undefined });
       t.material("passageHandle", intDoors, `${intDoors} doors`);
-      t.rate("lab.door", intDoors, `${intDoors} doors`);
+      t.labour("lab.door", intDoors, `${intDoors} doors`);
     }
     const paintWalls = wallBoard;
     const paintCeil = ceilingBoard;
     t.material("primer", paintWalls + paintCeil, `walls + ceilings, 1 coat`);
     t.material("wallPaint", paintWalls * 2, `walls ${fmt(paintWalls)} SF × 2 coats`, { selectedId: a.paintItemId || undefined });
     t.material("ceilingPaint", paintCeil, `ceilings, 1 finish coat`);
-    t.rate("lab.paint", paintWalls + paintCeil, `walls + ceilings`);
+    t.labour("lab.paint", paintWalls + paintCeil, `walls + ceilings`);
   }
 
   // --- Flooring & tile
@@ -338,19 +366,19 @@ export function newBuildTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
     const tileSF = pos(a.tileFloorSF);
     const floorSF = Math.max(0, floorArea - tileSF - pos(a.kitchenCabinetLF) * 2);
     t.material("flooring", floorSF, `floor area − tile − cabinets`, { selectedId: a.flooringItemId || undefined, allowance: true });
-    t.rate("lab.flooring", floorSF, `${fmt(floorSF)} SF`);
+    t.labour("lab.flooring", floorSF, `${fmt(floorSF)} SF`);
     if (tileSF) {
       t.material("tile", tileSF, `tile floors`, { selectedId: a.tileItemId || undefined, allowance: true });
       t.material("thinset", tileSF, `tile floors`);
       t.material("grout", tileSF, `tile floors`);
-      t.rate("lab.tile", tileSF, `${fmt(tileSF)} SF`);
+      t.labour("lab.tile", tileSF, `${fmt(tileSF)} SF`);
     }
     const showerSF = pos(a.showerTileSF);
     if (showerSF) {
       t.material("tile", showerSF, `shower walls`, { selectedId: a.showerTileItemId || a.tileItemId || undefined, label: "Shower wall tile", idKey: "showerTile", allowance: true });
       t.material("showerMembrane", showerSF, `shower walls`);
       t.material("thinset", showerSF, `shower walls`, { idKey: "showerThinset" });
-      t.rate("lab.showerTile", showerSF, `${fmt(showerSF)} SF`);
+      t.labour("lab.showerTile", showerSF, `${fmt(showerSF)} SF`);
     }
 
     // --- Kitchen & baths
@@ -359,7 +387,7 @@ export function newBuildTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
     if (sets.length) { /* priced from the supplier catalogs */ }
     else if (a.cabinetQuote > 0) t.quoted("cabinets", "Kitchen", "Cabinetry (Cabinet Designer / supplier quote)", a.cabinetQuote);
     else t.rate("allow.cabinetsLF", kLF, `${fmt(kLF)} LF cabinet run (no cabinet quote entered)`);
-    t.rate("lab.cabinets", kLF, `${fmt(kLF)} LF`);
+    t.labour("lab.cabinets", kLF, `${fmt(kLF)} LF`);
     t.material("countertop", pos(a.countertopSF), `countertops`, { selectedId: a.countertopItemId || undefined, allowance: true });
     const baths = pos(a.bathroomCount);
     if (baths) {
@@ -367,7 +395,7 @@ export function newBuildTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
       if (!sets.some((x) => /vanit/i.test(x.name))) t.material("vanity", baths, `${baths} bathrooms`, { selectedId: a.vanityItemId || undefined, allowance: true });
       t.material("faucet", baths, `${baths} bathrooms`, { selectedId: a.faucetItemId || undefined, allowance: true });
       t.material("tub", baths, `${baths} bathrooms`, { selectedId: a.tubItemId || undefined, allowance: true });
-      t.rate("lab.fixtures", baths, `${baths} bathrooms`);
+      t.labour("lab.fixtures", baths, `${baths} bathrooms`);
     }
     // Fixtures: toilet + sink per bath, tub/shower per bath, kitchen sink, laundry, hose bibs (2)
     t.rate("sub.plumbingFixture", baths * 3 + 1 + 1 + 2, `${baths} baths × 3 + kitchen + laundry + 2 hose bibs`);
@@ -380,12 +408,12 @@ export function newBuildTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
   const lights = pos(a.lightFixtureCount);
   if (lights) {
     t.material("lightFixture", lights, `${lights} fixtures`, { selectedId: a.lightFixtureItemId || undefined, allowance: true });
-    t.rate("lab.fixtureInstall", lights, `${lights} fixtures`);
+    t.labour("lab.fixtureInstall", lights, `${lights} fixtures`);
   }
   const heatKey = { baseboard: "sub.hvacBaseboard", "mini-split": "sub.hvacMiniSplit", "forced-air": "sub.hvacForcedAir", none: "" }[a.heating];
   if (heatKey && insulated) t.rate(heatKey, floorArea, `${fmt(floorArea)} SF heated`);
 
-  t.rate("lab.cleanup", floorArea, `${fmt(floorArea)} SF`);
+  t.labour("lab.cleanup", floorArea, `${fmt(floorArea)} SF`);
   t.rate("sub.bin", Math.max(pos(a.disposalBins), ceil(floorArea / 800)), `≈ 1 bin per 800 SF (or as entered)`, { label: "Waste disposal bins" });
 }
 
@@ -412,23 +440,23 @@ export function renovationTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
 
     // Demo
     const demo = (r.demoFloor ? g.floor : 0) + (r.demoWalls ? g.walls / 2 : 0);
-    if (demo) { demoFloor += demo; t.rate("lab.demo", demo, `${tag}: ${r.demoFloor ? `floor ${fmt(g.floor)} SF` : ""}${r.demoWalls ? ` + walls (${fmt(g.walls)} SF ÷ 2)` : ""}`, { label: `Demolition — ${tag}`, idKey: key("demo") }); }
+    if (demo) { demoFloor += demo; t.labour("lab.demo", demo, `${tag}: ${r.demoFloor ? `floor ${fmt(g.floor)} SF` : ""}${r.demoWalls ? ` + walls (${fmt(g.walls)} SF ÷ 2)` : ""}`, { label: `Demolition — ${tag}`, idKey: key("demo") }); }
 
     // Remodel: walls
     if (pos(r.wallsRemovedLF)) {
-      t.rate("lab.demo", r.wallsRemovedLF * g.H, `${tag}: ${fmt(r.wallsRemovedLF)} LF wall × ${g.H}'`, { label: `Wall removal — ${tag}`, idKey: key("wallDemo") });
+      t.labour("lab.demo", r.wallsRemovedLF * g.H, `${tag}: ${fmt(r.wallsRemovedLF)} LF wall × ${g.H}'`, { label: `Wall removal — ${tag}`, idKey: key("wallDemo") });
       if (r.loadBearingRemoved) t.rate("allow.beam", 1, `${tag}: bearing wall removed`, { label: `Structural beam & engineering — ${tag}`, idKey: key("beam") });
     }
     const nw = pos(r.newWallsLF);
     if (nw) {
       t.material(g.H <= 8 ? "stud2x4_8" : "stud2x4_9", ceil((nw * 12) / 16) + 2, `${tag}: ${fmt(nw)} LF new wall @ 16"`, { idKey: key("studs") });
       t.material("plate2x4", nw * 3, `${tag}: ${fmt(nw)} LF × 3`, { idKey: key("plates") });
-      t.rate("lab.partition", nw, `${tag}: new walls`, { label: `Wall framing — ${tag}`, idKey: key("frame") });
+      t.labour("lab.partition", nw, `${tag}: new walls`, { label: `Wall framing — ${tag}`, idKey: key("frame") });
     }
 
     // Drywall
     const extraBoard = nw * g.H * 2;
-    if (r.drywall === "patch") t.rate("lab.drywallPatch", g.walls * 0.15, `${tag}: 15% of ${fmt(g.walls)} SF walls`, { label: `Drywall repair — ${tag}`, idKey: key("patch") });
+    if (r.drywall === "patch") t.labour("lab.drywallPatch", g.walls * 0.15, `${tag}: 15% of ${fmt(g.walls)} SF walls`, { label: `Drywall repair — ${tag}`, idKey: key("patch") });
     else if (r.drywall !== "none" || extraBoard) {
       const board = (r.drywall === "walls" || r.drywall === "walls+ceiling" ? g.walls : 0) + (r.drywall === "walls+ceiling" ? g.ceiling : 0) + extraBoard;
       const wet = r.kind === "bathroom" || r.kind === "ensuite" || r.kind === "laundry";
@@ -436,7 +464,7 @@ export function renovationTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
       t.material("mud", board, `${tag}`, { idKey: key("mud") });
       t.material("tape", board, `${tag}`, { idKey: key("tape") });
       t.material("dwScrews", board, `${tag}`, { idKey: key("screws") });
-      t.rate("lab.drywall", board, `${tag}: ${fmt(board)} SF`, { label: `Drywall — ${tag}`, idKey: key("dwl") });
+      t.labour("lab.drywall", board, `${tag}: ${fmt(board)} SF`, { label: `Drywall — ${tag}`, idKey: key("dwl") });
     }
 
     // Paint
@@ -446,7 +474,7 @@ export function renovationTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
       t.material("primer", r.drywall !== "none" ? pw + pc : 0, `${tag}: new board`, { idKey: key("primer") });
       if (pw) t.material("wallPaint", pw * 2, `${tag}: walls ${fmt(pw)} SF × 2 coats`, { selectedId: a.paintItemId || undefined, idKey: key("paint") });
       if (pc) t.material("ceilingPaint", pc, `${tag}: ceiling`, { idKey: key("cpaint") });
-      t.rate("lab.paint", pw + pc, `${tag}`, { label: `Painting — ${tag}`, idKey: key("paintl") });
+      t.labour("lab.paint", pw + pc, `${tag}`, { label: `Painting — ${tag}`, idKey: key("paintl") });
     }
 
     // Floors
@@ -455,38 +483,38 @@ export function renovationTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
       const sf = Math.max(0, g.floor - cabinetFloor);
       t.material("flooring", sf, `${tag}: ${fmt(g.L)}' × ${fmt(g.W)}'${cabinetFloor ? " − cabinets" : ""}`, { selectedId: a.flooringItemId || undefined, idKey: key("floor"), allowance: true });
       t.material("underlay", sf, `${tag}`, { idKey: key("underlay") });
-      t.rate("lab.flooring", sf, `${tag}: ${fmt(sf)} SF`, { label: `Flooring install — ${tag}`, idKey: key("floorl") });
+      t.labour("lab.flooring", sf, `${tag}: ${fmt(sf)} SF`, { label: `Flooring install — ${tag}`, idKey: key("floorl") });
     } else if (r.floor === "tile") {
       const sf = Math.max(0, g.floor - cabinetFloor - (r.tubShower !== "none" ? 15 : 0) - (r.vanity ? 4 : 0));
       t.material("tile", sf, `${tag}: floor`, { selectedId: a.tileItemId || undefined, idKey: key("tile"), allowance: true });
       t.material("thinset", sf, `${tag}`, { idKey: key("thinset") });
       t.material("grout", sf, `${tag}`, { idKey: key("grout") });
-      t.rate("lab.tile", sf, `${tag}: ${fmt(sf)} SF`, { label: `Tile install — ${tag}`, idKey: key("tilel") });
+      t.labour("lab.tile", sf, `${tag}: ${fmt(sf)} SF`, { label: `Tile install — ${tag}`, idKey: key("tilel") });
     }
 
     // Trim & doors
     if (r.baseboard) {
       const lf = Math.max(0, g.perim - pos(r.doors) * 2.67 - pos(r.cabinetLF) - (r.vanity ? 3 : 0) - (r.tubShower !== "none" ? 5 : 0));
       t.material("baseboard", lf, `${tag}: perimeter − doors − cabinets`, { idKey: key("base") });
-      t.rate("lab.trim", lf, `${tag}`, { label: `Trim — ${tag}`, idKey: key("trim") });
+      t.labour("lab.trim", lf, `${tag}`, { label: `Trim — ${tag}`, idKey: key("trim") });
     }
     if (pos(r.newInteriorDoors)) {
       const d = r.newInteriorDoors;
       t.material("interiorDoor", d, `${tag}`, { selectedId: a.interiorDoorItemId || undefined, idKey: key("door") });
       t.material("passageHandle", d, `${tag}`, { idKey: key("handle") });
       t.material("casing", d * 2 * (2 * 7 + 3.5), `${tag}: both sides`, { idKey: key("casing") });
-      t.rate("lab.door", d, `${tag}`, { label: `Door install — ${tag}`, idKey: key("doorl") });
+      t.labour("lab.door", d, `${tag}`, { label: `Door install — ${tag}`, idKey: key("doorl") });
     }
 
     // Kitchen
     if (pos(r.cabinetLF)) {
       if (!(a.cabinetQuote > 0) && !covered.has(r.id) && !covered.has("")) t.rate("allow.cabinetsLF", r.cabinetLF, `${tag}: ${fmt(r.cabinetLF)} LF (no cabinet quote entered)`, { label: `Cabinetry — ${tag}`, idKey: key("cab") });
-      t.rate("lab.cabinets", r.cabinetLF, `${tag}`, { label: `Cabinet install — ${tag}`, idKey: key("cabl") });
+      t.labour("lab.cabinets", r.cabinetLF, `${tag}`, { label: `Cabinet install — ${tag}`, idKey: key("cabl") });
     }
     t.material("countertop", pos(r.countertopSF), `${tag}: countertops`, { selectedId: a.countertopItemId || undefined, idKey: key("ct"), allowance: true });
     if (pos(r.backsplashSF)) {
       t.material("backsplash", r.backsplashSF, `${tag}`, { selectedId: a.backsplashItemId || undefined, idKey: key("bs"), allowance: true });
-      t.rate("lab.showerTile", r.backsplashSF, `${tag}: backsplash`, { label: `Backsplash install — ${tag}`, idKey: key("bsl") });
+      t.labour("lab.showerTile", r.backsplashSF, `${tag}: backsplash`, { label: `Backsplash install — ${tag}`, idKey: key("bsl") });
     }
 
     // Bath
@@ -502,12 +530,12 @@ export function renovationTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
       t.material("tile", r.showerWallTileSF, `${tag}: shower walls`, { selectedId: a.showerTileItemId || a.tileItemId || undefined, label: "Shower wall tile", idKey: key("stile"), allowance: true });
       t.material("showerMembrane", r.showerWallTileSF, `${tag}`, { idKey: key("membrane") });
       t.material("thinset", r.showerWallTileSF, `${tag}: shower walls`, { idKey: key("sthinset") });
-      t.rate("lab.showerTile", r.showerWallTileSF, `${tag}`, { label: `Shower tile — ${tag}`, idKey: key("stilel") });
+      t.labour("lab.showerTile", r.showerWallTileSF, `${tag}`, { label: `Shower tile — ${tag}`, idKey: key("stilel") });
     }
     if (pos(r.cabinetLF) && (r.kind === "kitchen")) fixtures++; // kitchen sink
     if (fixtures) {
       t.rate("sub.plumbingFixture", fixtures, `${tag}: ${fixtures} fixture(s)`, { label: `Plumbing — ${tag}`, idKey: key("plumb") });
-      if (r.toilet || r.vanity) t.rate("lab.fixtures", 1, tag, { label: `Fixture setting — ${tag}`, idKey: key("fix") });
+      if (r.toilet || r.vanity) t.labour("lab.fixtures", 1, tag, { label: `Fixture setting — ${tag}`, idKey: key("fix") });
     }
     if (r.plumbingRelocated) t.rate("sub.plumbingRelocate", 1, tag, { label: `Plumbing relocation — ${tag}`, idKey: key("reloc") });
 
@@ -516,14 +544,14 @@ export function renovationTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
       t.rate("sub.electricalRoom", g.floor, `${tag}: ${fmt(g.floor)} SF`, { label: `Electrical — ${tag}`, idKey: key("elec") });
     if (pos(r.lightFixtures)) {
       t.material("lightFixture", r.lightFixtures, tag, { selectedId: a.lightFixtureItemId || undefined, idKey: key("light"), allowance: true });
-      t.rate("lab.fixtureInstall", r.lightFixtures, tag, { label: `Fixture install — ${tag}`, idKey: key("lightl") });
+      t.labour("lab.fixtureInstall", r.lightFixtures, tag, { label: `Fixture install — ${tag}`, idKey: key("lightl") });
     }
   }
   if (!rooms.length) return;
   if (a.occupied) t.rate("allow.occupied", 1, "occupied home");
   const bins = pos(a.disposalBins) || (demoFloor ? Math.max(1, ceil(demoFloor / 600)) : 0);
   t.rate("sub.bin", bins, a.disposalBins ? "as entered" : `≈ 1 bin per 600 SF demolished`, { label: "Waste disposal bins" });
-  t.rate("lab.cleanup", totalFloor, `${fmt(totalFloor)} SF of rooms in scope`);
+  t.labour("lab.cleanup", totalFloor, `${fmt(totalFloor)} SF of rooms in scope`);
   if (type === "remodel" || rooms.some((r) => r.wallsRemovedLF || r.newWallsLF || r.plumbingRelocated))
     t.rate("allow.permitReno", 1, "structural / layout changes need a permit");
 }

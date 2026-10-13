@@ -29,14 +29,19 @@ Prices are never guessed. A line is priced from the master catalog, Square, the 
 Answers are flagged on the internal cost breakdown. Only two things need the owner: an overall margin under
 the company minimum, or a total over the approval limit (both set in Settings).
 
-## Margins
+## Labour (hours) and margins
 
-Pricing is by gross margin on the selling price: sell = cost ÷ (1 − margin). Order of precedence:
-a margin typed on the line → the quote's category margin → the product cost-code margin → the company
-category margin. Categories: building materials, finish products, cabinets & countertops, labour,
-sub-trades, allowances. Uploading the master catalog workbook (.xlsx) offers per-cost-code margins worked out
-from its **Retail Reference** tab (median retail ÷ cost per code). Optionally, Robins Interiors store products
-sell at their Square retail price.
+Labour is estimated in **hours** and billed at your hourly rate — JMRC standard **$40/hr cost → $80/hr sell**
+(50% margin), labourer **$32.50 → $65**. Each takeoff quantity (SF/LF/EA) is turned into hours with a
+per-task productivity (seeded from the Brent Smith and Bezzant worksheets — e.g. shower tile 4 SF/hr, flooring
+23 SF/hr, drywall 23 SF/hr, painting 200 SF/hr/coat), so labour always prices and is never a question. The
+owner tunes the hourly rate and any productivity in Settings → Labour.
+
+Everything else is priced by gross margin on the selling price: sell = cost ÷ (1 − margin). Order of
+precedence: a margin typed on the line → the quote's category margin → the product cost-code margin → the
+company category margin. Company defaults, from JMRC's jobs: building materials 20%, finish products 50%,
+cabinets 50%, labour 50%, sub-trades 17%, allowances 20%. Uploading the master catalog workbook (.xlsx)
+offers per-cost-code margins worked out from its **Retail Reference** tab (median retail ÷ cost per code).
 
 ## Cabinets
 
@@ -49,12 +54,18 @@ uploaded designs.
 
 ## Owner setup (Settings, Admins only)
 
-1. **Cost catalog** — upload the master cost catalog workbook (.xlsx) or a CSV export. Stored in Netlify
-   Blobs, not in this repository (it's public). Accept the product-code margins it offers.
-2. **Cabinet catalogs** — upload `aline.json`, `oppein.json`, `divine.json`.
-3. **Square** — set `SQUARE_ACCESS_TOKEN` in Netlify, then *Sync from Square now* (Default Unit Cost).
-4. **Margins** — the six category margins, PM fee, contingency, HST, minimum overall margin, approval limit.
-5. **Rates** — your cost per unit for labour, sub-trades and allowances. Blank ones are asked on each quote.
+The company defaults (labour rate, margins, productivity) are built in, so the tool works once the catalog
+is loaded. To set up or tune:
+
+1. **Cost catalog** — upload the master cost catalog workbook (.xlsx) or a CSV export. This is the **single
+   source** for material and finish costs (the Robins Interiors store items are already merged into it — no
+   Square sync needed). Stored in Netlify Blobs, not in this repository (it's public). Accept the
+   product-code margins it offers from the workbook's Retail Reference tab.
+2. **Cabinet catalogs** — upload `aline.json`, `oppein.json`, `divine.json` from the cabinet-quoting skill.
+3. **Labour** — confirm the hourly rate ($40/$80, labourer $65) and tune any task's productivity.
+4. **Margins** — the six category defaults, PM fee, contingency, HST, optional minimum margin and approval limit.
+5. **Sub-trade & allowance rates** — optional; blank ones are asked of the salesperson on each quote (they
+   have the sub's quote), which is usually what you want.
 6. **Takeoff tools** — pin the exact catalog item each tool uses and confirm the coverage per unit.
 7. **Company & terms** — signer and the new-build payment schedule.
 
@@ -77,6 +88,7 @@ The document reader needs `ANTHROPIC_API_KEY` in Netlify. Quote Builder access i
 | `src/engine/takeoff.ts` | Answers → quantity lines (JMRC takeoff standard: 16" o.c., 3-stud corners, slope factors, net/gross rules) |
 | `src/engine/pricing.ts` | Overrides, margins, PM fee, HST, open questions and the review rules |
 | `src/engine/cabinets.ts` | Aline / Oppein / Divine pricing (same rules as the cabinet-quoting skill) |
+| `src/data/defaultSettings.ts` | Company defaults: labour rate, margins, labour productivity, takeoff tools |
 | `src/engine/catalog.ts` | Catalog CSV import, search, Square merge |
 | `src/data/defaultSettings.ts` | Takeoff tools and the rate list (no dollar figures) |
 | `src/data/questions.ts` | The interview |

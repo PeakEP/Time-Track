@@ -76,19 +76,6 @@ export default function SettingsView() {
     }
   }
 
-  async function squareSync() {
-    setBusy("Syncing Square…");
-    try {
-      const r = await server.squareSync();
-      await loadCatalog();
-      notify(`Square synced: ${r.count} items${r.skipped ? ` (${r.skipped} skipped — no default unit cost)` : ""}.`);
-    } catch (e) {
-      notify((e as Error).message, true);
-    } finally {
-      setBusy("");
-    }
-  }
-
   const comps = s.components.filter((c) => !filter || `${c.label} ${c.section}`.toLowerCase().includes(filter.toLowerCase()));
 
   return (
@@ -105,30 +92,18 @@ export default function SettingsView() {
         (and shows on the cost breakdown), so quotes never wait on you unless they're under your minimum margin or over your limit.
       </p>
 
-      <div className="grid two">
-        <div className="card stack">
-          <h3>JMRC cost catalog</h3>
-          <p className="small">
-            {catalog.jmrc.items.length
-              ? <>{catalog.jmrc.items.length} items from <b>{catalog.jmrc.fileName || "upload"}</b>, loaded {when(catalog.jmrc.importedAt)} by {catalog.jmrc.importedBy}.</>
-              : <span className="pill bad">not loaded</span>}
-          </p>
-          <p className="small muted">Upload the master cost catalog workbook (.xlsx) or a CSV export (Cost Item Name, Description, Unit, Unit Cost, Cost Code). It's stored on the server, not in the code.</p>
-          <label className="btn" style={{ width: "fit-content" }}>
-            Upload catalog (.xlsx or .csv)…
-            <input type="file" accept=".csv,.xlsx,text/csv" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) void importCsv(f); e.target.value = ""; }} />
-          </label>
-        </div>
-        <div className="card stack">
-          <h3>Square — Robins Interiors catalog</h3>
-          <p className="small">
-            {catalog.square.items.length
-              ? <>{catalog.square.items.length} items, synced {when(catalog.square.syncedAt)} by {catalog.square.syncedBy}. {catalog.square.note}</>
-              : <span className="pill warn">not synced</span>}
-          </p>
-          <p className="small muted">Pulls every item's <b>Default Unit Cost</b> (your cost, not the shelf price). Where a catalog line names a Square SKU, the live Square cost is used. Needs SQUARE_ACCESS_TOKEN in Netlify.</p>
-          <button className="btn" style={{ width: "fit-content" }} onClick={squareSync} disabled={!!busy}>Sync from Square now</button>
-        </div>
+      <div className="card stack">
+        <h3>Cost catalog</h3>
+        <p className="small">
+          {catalog.jmrc.items.length
+            ? <>{catalog.jmrc.items.length} items from <b>{catalog.jmrc.fileName || "upload"}</b>, loaded {when(catalog.jmrc.importedAt)} by {catalog.jmrc.importedBy}.</>
+            : <span className="pill bad">not loaded</span>}
+        </p>
+        <p className="small muted">Upload the master cost catalog workbook (.xlsx) or a CSV export (Cost Item Name, Description, Unit, Unit Cost, Cost Code). This is the single source for material and finish costs (the Robins Interiors store items are already in it). Stored on the server, not in the code.</p>
+        <label className="btn" style={{ width: "fit-content" }}>
+          Upload catalog (.xlsx or .csv)…
+          <input type="file" accept=".csv,.xlsx,text/csv" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) void importCsv(f); e.target.value = ""; }} />
+        </label>
       </div>
 
       <div className="card stack">
@@ -144,6 +119,42 @@ export default function SettingsView() {
           Upload cabinet catalog files…
           <input type="file" accept=".json,application/json" multiple hidden onChange={(e) => { if (e.target.files?.length) void importCabinets(e.target.files); e.target.value = ""; }} />
         </label>
+      </div>
+
+      <div className="card">
+        <h3>Labour</h3>
+        <p className="small muted" style={{ marginBottom: 10 }}>
+          Labour is estimated in hours and billed at your hourly rate. Sell = cost ÷ (1 − the labour margin below).
+        </p>
+        <div className="grid three">
+          <label className="field"><span>Carpenter / tradesperson — cost per hour</span>
+            <div className="unit-input"><em>$</em><input type="number" step="0.5" value={s.pricing.labourCostPerHour} onChange={(e) => edit((x) => { x.pricing.labourCostPerHour = Number(e.target.value) || 0; })} /><em>/hr</em></div>
+            <span className="help">sell ≈ ${(s.pricing.labourCostPerHour / (1 - (s.pricing.margins.labour ?? 0.5))).toFixed(0)}/hr</span>
+          </label>
+          <label className="field"><span>Labourer — cost per hour</span>
+            <div className="unit-input"><em>$</em><input type="number" step="0.5" value={s.pricing.laborerCostPerHour} onChange={(e) => edit((x) => { x.pricing.laborerCostPerHour = Number(e.target.value) || 0; })} /><em>/hr</em></div>
+            <span className="help">sell ≈ ${(s.pricing.laborerCostPerHour / (1 - (s.pricing.margins.labour ?? 0.5))).toFixed(0)}/hr</span>
+          </label>
+        </div>
+        <details style={{ marginTop: 12 }}>
+          <summary className="small" style={{ cursor: "pointer" }}>How fast each task goes (productivity) — tune if your crews differ</summary>
+          <div className="scroll-x" style={{ marginTop: 8 }}>
+            <table className="t">
+              <thead><tr><th>Task</th><th>Section</th><th className="num">Units / hour</th><th>Unit</th><th>Crew</th></tr></thead>
+              <tbody>
+                {s.labour.map((t, i) => (
+                  <tr key={t.key}>
+                    <td>{t.label}<div className="basis">{t.note}</div></td>
+                    <td className="small">{t.section}</td>
+                    <td className="num"><input type="number" step="any" min={0} style={{ width: 80 }} value={t.perHour} onChange={(e) => edit((x) => { x.labour[i].perHour = Number(e.target.value) || 0; })} /></td>
+                    <td>{t.unit}/hr</td>
+                    <td><select value={t.crew} onChange={(e) => edit((x) => { x.labour[i].crew = e.target.value as "carpenter" | "laborer"; })}><option value="carpenter">Carpenter</option><option value="laborer">Labourer</option></select></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </details>
       </div>
 
       <div className="card">
@@ -163,11 +174,6 @@ export default function SettingsView() {
             </label>
           ))}
         </div>
-        <label className="check" style={{ marginTop: 12 }}>
-          <input type="checkbox" checked={s.pricing.useStoreRetail} onChange={(e) => edit((x) => { x.pricing.useStoreRetail = e.target.checked; })} />
-          Sell Robins Interiors store products at their Square retail price (when it's above cost)
-        </label>
-
         <h3 style={{ marginTop: 18 }}>Product-code margins</h3>
         {Object.keys(s.pricing.codeMargins).length === 0 ? (
           <p className="small muted">None yet — upload the master catalog workbook and they're worked out from its retail reference.</p>
@@ -211,7 +217,7 @@ export default function SettingsView() {
 
       <div className="card scroll-x">
         <div className="card-head">
-          <h3>Rates</h3>
+          <h3>Sub-trade &amp; allowance rates</h3>
           {unsetRates > 0 && <span className="pill warn">{unsetRates} not set</span>}
         </div>
         <p className="small muted" style={{ marginBottom: 8 }}>Your cost per unit for labour, sub-trades and allowances. Blank means the salesperson is asked for it on each quote that needs it.</p>
