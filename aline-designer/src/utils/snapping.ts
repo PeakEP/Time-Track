@@ -29,23 +29,51 @@ export function snapToAdjacent(
     const bR = b.x + b.w;
     const bT = b.y;
     const bB = b.y + b.d;
-    // consider X alignment when the two share a vertical run (side-by-side)
-    // or their back edges are close (uppers over bases)
-    if ((aT < bB && aB > bT) || Math.min(Math.abs(aT - bT), Math.abs(aB - bB)) <= threshold) {
-      for (const cx of [bL - a.w, bR, bL, bR - a.w]) {
+    // X-axis snaps.
+    //   Side-by-side candidates (bL - a.w, bR): put A's edge touching B's edge.
+    //   Alignment candidates (bL, bR - a.w): share the same left or right edge.
+    // Alignment is correct when the two cabinets are STACKED along Y (one above
+    // the other on the same wall run) — but if their Y ranges OVERLAP, snapping
+    // to the same edge places A directly on top of B. Previously this is how
+    // dragging a cabinet near another produced the "⚠ overlap" stack. Guard
+    // alignment candidates to the stacked case only.
+    const yOverlap = aT < bB && aB > bT;
+    const yEdgeClose = Math.min(Math.abs(aT - bT), Math.abs(aB - bB)) <= threshold;
+    if (yOverlap || yEdgeClose) {
+      for (const cx of [bL - a.w, bR]) {
         const diff = Math.abs(cx - a.x);
         if (diff < dX) {
           dX = diff;
           bestX = cx;
         }
       }
+      if (!yOverlap) {
+        for (const cx of [bL, bR - a.w]) {
+          const diff = Math.abs(cx - a.x);
+          if (diff < dX) {
+            dX = diff;
+            bestX = cx;
+          }
+        }
+      }
     }
-    if ((aL < bR && aR > bL) || Math.min(Math.abs(aL - bL), Math.abs(aR - bR)) <= threshold) {
-      for (const cy of [bT - a.d, bB, bT, bB - a.d]) {
+    const xOverlap = aL < bR && aR > bL;
+    const xEdgeClose = Math.min(Math.abs(aL - bL), Math.abs(aR - bR)) <= threshold;
+    if (xOverlap || xEdgeClose) {
+      for (const cy of [bT - a.d, bB]) {
         const diff = Math.abs(cy - a.y);
         if (diff < dY) {
           dY = diff;
           bestY = cy;
+        }
+      }
+      if (!xOverlap) {
+        for (const cy of [bT, bB - a.d]) {
+          const diff = Math.abs(cy - a.y);
+          if (diff < dY) {
+            dY = diff;
+            bestY = cy;
+          }
         }
       }
     }
@@ -111,8 +139,16 @@ export function snapToNearestWall(
     const centroid = polygonCentroid(room.points);
     const centroidPerp = (centroid.x - ax) * nx + (centroid.y - ay) * ny;
     const interiorSign = Math.sign(centroidPerp) || 1;
-    // place flush: center should be d/2 from wall, on interior side
-    const flushPerp = (d / 2) * interiorSign;
+    // Place flush with the INTERIOR WALL SURFACE, not the wall centerline.
+    // room.points define wall centerlines, but walls have real thickness
+    // (room.wallThickness, typically 4.5"). The back face of the cabinet
+    // belongs at wallThickness/2 on the interior side of the centerline —
+    // otherwise the cabinet back sits HALF A WALL deep inside the drywall,
+    // which (a) looked like the snap "goes into the wall", and (b) made
+    // some cabinets fall off the Elevation view because the back corner
+    // registered too far negative into the wall.
+    const halfWall = (room.wallThickness ?? 0) / 2;
+    const flushPerp = (d / 2 + halfWall) * interiorSign;
     const newCx = ax + tx * clampedAlong + nx * flushPerp;
     const newCy = ay + ty * clampedAlong + ny * flushPerp;
     // Item rotation so width follows wall direction
