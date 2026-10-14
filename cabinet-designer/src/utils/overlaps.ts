@@ -10,14 +10,13 @@ const VERTICAL_OVERLAP_TOL_IN = 2;
  */
 export function findOverlappingIds(items: Item[]): Set<string> {
   const bad = new Set<string>();
+  // Include panels/fillers in overlap detection — the OVERLAP_TOL_IN of 0.5"
+  // already allows a 0.75" panel to sit flush against a cabinet without
+  // tripping the warning (edges share a line, not an overlap). What we WANT
+  // to catch is e.g. two panels landing on top of each other during drag,
+  // which was previously silently permitted.
   const candidates = items.filter(
-    (i) =>
-      !i.scheduleOnly &&
-      i.kind !== "window" &&
-      i.kind !== "door" &&
-      // panels/fillers are meant to sit flush against cabinets
-      i.kind !== "panel" &&
-      i.kind !== "filler",
+    (i) => !i.scheduleOnly && i.kind !== "window" && i.kind !== "door",
   );
   for (let i = 0; i < candidates.length; i++) {
     for (let j = i + 1; j < candidates.length; j++) {
