@@ -157,25 +157,15 @@ export function Plan2D() {
       const grid = free || item.kind === "panel" || item.kind === "filler" ? 0.25 : SNAP_IN;
       let newX = snap(pos.x - dragging.offsetX, grid);
       let newY = snap(pos.y - dragging.offsetY, grid);
-      let rotation = item.rotation;
-      const snapsToWall = !free && !item.scheduleOnly && item.kind !== "panel" && item.kind !== "filler";
-      if (snapsToWall) {
-        const wallSnap = snapToNearestWall(room, {
-          x: newX,
-          y: newY,
-          width: item.width,
-          depth: item.depth,
-        });
-        if (wallSnap) {
-          newX = wallSnap.x;
-          newY = wallSnap.y;
-          rotation = wallSnap.rotation;
-        }
-      }
+      // DRAG PRESERVES ROTATION. Wall snap on initial placement sets rotation,
+      // but on drag we only adjust position — otherwise nudging a manually
+      // rotated cabinet near a different wall snaps it back to that wall's
+      // default rotation and the user loses their intentional orientation.
+      // The adjacency snap below still keeps cabinets flush with neighbours.
       // auto-attach: snap edges flush to nearby objects (unless Alt held)
       if (!free) {
-        const fw = rotation === 90 || rotation === 270 ? item.depth : item.width;
-        const fd = rotation === 90 || rotation === 270 ? item.width : item.depth;
+        const fw = item.rotation === 90 || item.rotation === 270 ? item.depth : item.width;
+        const fd = item.rotation === 90 || item.rotation === 270 ? item.width : item.depth;
         const others = items
           .filter(
             (o) =>
@@ -193,7 +183,7 @@ export function Plan2D() {
         newX = adj.x;
         newY = adj.y;
       }
-      updateItem(dragging.id, { x: newX, y: newY, rotation }, { snapshot: false });
+      updateItem(dragging.id, { x: newX, y: newY }, { snapshot: false });
     }
   }
 

@@ -68,6 +68,16 @@ export function assignItemsToWalls(items: Item[], points: Point[]): Map<number, 
   for (const it of items) {
     if (it.scheduleOnly) continue;
     const fp = footprint(it);
+    // Panels/fillers are thin (~0.75") and typically land at the END of a
+    // cabinet run — sometimes a hair past the wall's along-range, sometimes
+    // nowhere near a wall at all (they sit against the cabinet, not the wall).
+    // The tight slacks used for cabinets were silently dropping them from
+    // elevation. Grow the slacks for panels/fillers so they ride the same
+    // wall as the cabinets they're installed with.
+    const isPanel = it.kind === "panel" || it.kind === "filler";
+    const alongSlack = isPanel ? 24 : 6;
+    const perpBack = isPanel ? 12 : 3;
+    const flushTol = isPanel ? 36 : FLUSH_TOL_IN;
     const corners: [number, number][] = [
       [it.x, it.y],
       [it.x + fp.w, it.y],
@@ -85,14 +95,14 @@ export function assignItemsToWalls(items: Item[], points: Point[]): Map<number, 
         const ry = py - w.a.y;
         const along = rx * w.tx + ry * w.ty;
         const perp = rx * w.nx + ry * w.ny;
-        if (along < -6 || along > w.len + 6) continue;
-        if (perp < -3) continue;
+        if (along < -alongSlack || along > w.len + alongSlack) continue;
+        if (perp < -perpBack) continue;
         if (perp < minPerp) minPerp = perp;
       }
       if (Number.isFinite(minPerp)) perpByWall.set(w.index, minPerp);
     }
     // Walls the item is flush against (any corner within tolerance).
-    const flushWalls = walls.filter((w) => (perpByWall.get(w.index) ?? Infinity) <= FLUSH_TOL_IN);
+    const flushWalls = walls.filter((w) => (perpByWall.get(w.index) ?? Infinity) <= flushTol);
     let targets: WallGeom[];
     if (flushWalls.length >= 2) {
       // Sitting in/near a room corner — show on every wall it's flush against.
