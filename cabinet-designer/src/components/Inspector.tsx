@@ -1,15 +1,20 @@
+import { useEffect, useRef, useState } from "react";
 import { RotateCw, Copy, Trash2, X, GripHorizontal } from "lucide-react";
 import { useStore } from "../store";
 import type { Item, Rotation } from "../types";
 import { renderFinishOptions } from "../utils/finishOptions";
 
 /**
- * Docked inspector for the selected item — pinned to the bottom-left of the
- * canvas, resizable, scrollable. Previously draggable by its header, but the
- * drag used viewport-relative pointer coords against an absolutely-positioned
- * panel and could fling it off-screen with no way back. Docking it removes the
- * whole class of bug.
+ * Inspector panel for the selected item. Docked at the canvas's bottom-left
+ * by default, resizable from the bottom-right corner, and draggable by its
+ * header — but clamped against the canvas rect so the header handle can
+ * NEVER leave the viewport. (The old uncapped drag kept flinging the panel
+ * off-screen with no way back.) Position is remembered across selection
+ * changes via a module-level cache so re-selecting an item doesn't jump the
+ * panel back to its dock each time.
  */
+const posMemory = { dx: 0, dy: 0 };
+
 export function Inspector() {
   const selectedId = useStore((s) => s.selectedId);
   const items = useStore((s) => s.project.items);
@@ -19,6 +24,63 @@ export function Inspector() {
   const select = useStore((s) => s.select);
   const settings = useStore((s) => s.project.settings);
   const catalog = useStore((s) => s.catalog);
+
+  const panelRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<{ cx: number; cy: number; dx: number; dy: number } | null>(null);
+  const [pos, setPos] = useState(posMemory);
+
+  useEffect(() => {
+    function clamp(dx: number, dy: number) {
+      const el = panelRef.current;
+      const parent = el?.offsetParent as HTMLElement | null;
+      if (!el || !parent) return { dx, dy };
+      const pr = parent.getBoundingClientRect();
+      const er = el.getBoundingClientRect();
+      // Base rect (translate(0,0)) sits at bottom:12 left:12. Convert to top-left:
+      const baseLeft = 12;
+      const baseTop = pr.height - 12 - er.height;
+      const margin = 24;
+      const minDx = margin - baseLeft;
+      const maxDx = pr.width - margin - er.width - baseLeft;
+      const minDy = margin - baseTop;
+      const maxDy = pr.height - margin - er.height - baseTop;
+      return {
+        dx: Math.max(minDx, Math.min(maxDx, dx)),
+        dy: Math.max(minDy, Math.min(maxDy, dy)),
+      };
+    }
+    function onMove(e: MouseEvent) {
+      const d = dragRef.current;
+      if (!d) return;
+      const next = clamp(d.dx + (e.clientX - d.cx), d.dy + (e.clientY - d.cy));
+      posMemory.dx = next.dx;
+      posMemory.dy = next.dy;
+      setPos(next);
+    }
+    function onUp() {
+      dragRef.current = null;
+      document.body.style.userSelect = "";
+    }
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+    };
+  }, []);
+
+  function onHeadMouseDown(e: React.MouseEvent) {
+    if ((e.target as HTMLElement).closest(".inspector-close")) return;
+    dragRef.current = { cx: e.clientX, cy: e.clientY, dx: pos.dx, dy: pos.dy };
+    document.body.style.userSelect = "none";
+    e.preventDefault();
+  }
+
+  function resetPos() {
+    posMemory.dx = 0;
+    posMemory.dy = 0;
+    setPos({ dx: 0, dy: 0 });
+  }
 
   if (!selectedId) return null;
   const item = items.find((i) => i.id === selectedId);
@@ -35,8 +97,18 @@ export function Inspector() {
   }
 
   return (
-    <div className="inspector">
-      <header className="inspector-head">
+    <div
+      className="inspector"
+      ref={panelRef}
+      style={{ transform: `translate(${pos.dx}px, ${pos.dy}px)` }}
+    >
+      <header
+        className="inspector-head"
+        onMouseDown={onHeadMouseDown}
+        onDoubleClick={resetPos}
+        style={{ cursor: "grab" }}
+        title="Drag to move · double-click to reset to bottom-left"
+      >
         <div className="inspector-grab">
           <GripHorizontal size={13} />
           <div>

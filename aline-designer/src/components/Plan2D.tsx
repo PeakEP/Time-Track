@@ -1094,12 +1094,15 @@ function ItemNode({
               {label}
             </text>
             <text x={w / 2} y={labelY + 2.5} textAnchor="middle" fontSize={1.9} fill="#4a5364" fontFamily="Inter">
-              {/* Cabinets: show the on-screen width so a rotated cabinet reads
-                  correctly along the wall. Panels/fillers: always show the
-                  catalog face width — a 24" panel is a 24" panel no matter
-                  which wall it's turned to. Rotating it to fit sideways
-                  shouldn't relabel it as its 3/4" thickness. */}
-              {fmtInch(isPanelPiece ? item.width : w)}
+              {/* Identity label is ALWAYS the catalog width (what the SKU is
+                  called in the catalog): a B24 is a "24-inch cabinet", a SB36
+                  is a "36-inch sink base", a B09FH is a "9-inch filler", no
+                  matter which wall it's turned to. Previously this used the
+                  on-screen w, which equals the DEPTH when the cabinet is
+                  rotated against a side wall — so every cabinet on a side
+                  wall subtitled "24" (the depth), and adding them up gave
+                  nonsense. */}
+              {fmtInch(item.width)}
               {isAppliance ? " appl" : isWall ? " up" : ""}
             </text>
           </g>
