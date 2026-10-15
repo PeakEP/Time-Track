@@ -68,13 +68,13 @@ before(async () => {
   qb = qbMod.createHandler({ stores, fetchImpl });
   const s = await suiteCall(null, "POST", "setup", { name: "Mike Robins" });
   T.mike = s.token;
-  const rep = await suiteCall("mike", "POST", "team", { name: "Sam Sales" });
-  const nobody = await suiteCall("mike", "POST", "team", { name: "Pat Painter", apps: { quoteBuilder: false } });
+  const rep = await suiteCall("mike", "POST", "team", { name: "Sam Sales", apps: { quoteBuilder: true } }); // beta tester
+  const nobody = await suiteCall("mike", "POST", "team", { name: "Pat Painter" }); // not granted — beta off by default
   T.sam = (await suiteCall(null, "POST", "login", { name: "Sam Sales", pin: rep.body.pin })).token;
   T.pat = (await suiteCall(null, "POST", "login", { name: "Pat Painter", pin: nobody.body.pin })).token;
 });
 
-test("access: owner and staff get in by default; turned-off staff don't", async () => {
+test("access: owner and granted beta testers get in; ungranted staff don't", async () => {
   assert.equal((await call("mike", "GET", "me")).body.me.admin, true);
   const sam = await call("sam", "GET", "me");
   assert.equal(sam.status, 200);
