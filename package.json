@@ -2,11 +2,12 @@
   "name": "jmrc-design-suite",
   "private": true,
   "type": "module",
-  "description": "JMRC app suite — root package holds Netlify Function dependencies (Vendor Orders API). Each app has its own package.json.",
+  "description": "JMRC app suite — root package holds Netlify Function dependencies (Vendor Orders, Finish Selections, Suite and Quote Builder APIs). Each app has its own package.json.",
   "scripts": {
-    "test:vendor-orders": "node --test --test-concurrency=1 vendor-orders/tests/*.test.mjs selections/tests/*.test.mjs suite/tests/*.test.mjs"
+    "test:vendor-orders": "node --test --test-concurrency=1 vendor-orders/tests/*.test.mjs selections/tests/*.test.mjs suite/tests/*.test.mjs quote-builder/tests/api.test.mjs"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.133.0",
     "@netlify/blobs": "^11.1.1"
   }
 }

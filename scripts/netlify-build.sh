@@ -8,6 +8,8 @@ set -euo pipefail
 # - Finish Selections (Robins Interiors & Design) → /selections/
 # - Vendor Orders (weekly vendor order consolidation) → /vendor-orders/
 #   Its API is a Netlify Function in netlify/functions/vendor-orders-api/.
+# - Quote Builder (guided quoting) → /quote-builder/
+#   Its API is netlify/functions/quote-builder-api/.
 # - Suite Admin (static) → /admin/. Sign-in and access: netlify/functions/suite-api/,
 #   enforced on every app page by netlify/edge-functions/suite-gate.js.
 
@@ -45,6 +47,7 @@ build_vite_app cabinet-designer cabinet-designer
 build_vite_app aline-designer aline-designer
 build_vite_app selections selections
 build_vite_app vendor-orders vendor-orders
+build_vite_app quote-builder quote-builder
 
 echo "==> Build complete. Contents:"
 ls -la "${OUT_DIR}"

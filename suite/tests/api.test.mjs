@@ -62,7 +62,7 @@ test("first-time setup makes an Admin with every app and signs them in", async (
   assert.match(r.body.pin, /^\d{6}$/);
   assert.match(r.cookie, /^jmrc_session=.+/);
   assert.equal(r.body.me.admin, true);
-  assert.deepEqual(r.body.me.apps, { vendorOrders: "purchaser", selections: "designer", cabinet: true, aline: true });
+  assert.deepEqual(r.body.me.apps, { vendorOrders: "purchaser", selections: "designer", cabinet: true, aline: true, quoteBuilder: true });
   T.mike = r.cookie;
   T.mikePin = r.body.pin;
   assert.equal((await call(null, "POST", "setup", { name: "Someone Else" })).status, 409);
@@ -144,7 +144,7 @@ test("clients: only their project, listed and managed in Admin", async () => {
   assert.equal(j.body.me.projectId, projectId);
   T.jane = j.cookie;
   assert.equal((await call("jane", "GET", "check?app=selections")).status, 200);
-  for (const app of ["cabinet", "aline", "vendorOrders", "admin"])
+  for (const app of ["cabinet", "aline", "vendorOrders", "quoteBuilder", "admin"])
     assert.equal((await call("jane", "GET", "check?app=" + app)).status, 403, app);
   assert.equal((await call("jane", "GET", "team")).status, 403);
   assert.equal((await selCall("jane", "GET", "projects/" + projectId)).status, 200); // cookie works in the app
@@ -218,5 +218,5 @@ test("gate: lets in, sends to sign-in, or shows no access", async () => {
   assert.ok(other.passed);
   assert.equal(other.calls.length, 0);
   assert.equal(gateMod.appFor("/selections-old"), null);
-  assert.deepEqual(gateMod.config.path.length, 10);
+  assert.deepEqual(gateMod.config.path.length, 12);
 });

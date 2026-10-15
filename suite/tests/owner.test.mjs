@@ -54,7 +54,7 @@ test("owner signs in on a fresh site without setup", async () => {
   const r = await call(null, "POST", "login", { name: " robins ", pin: "051711" });
   assert.equal(r.status, 200);
   assert.equal(r.body.me.admin, true);
-  assert.deepEqual(r.body.me.apps, { vendorOrders: "purchaser", selections: "designer", cabinet: true, aline: true });
+  assert.deepEqual(r.body.me.apps, { vendorOrders: "purchaser", selections: "designer", cabinet: true, aline: true, quoteBuilder: true });
   T.owner = r.cookie;
   assert.equal((await call("owner", "GET", "check?app=admin")).status, 200);
 });
