@@ -103,6 +103,27 @@ test("settings and catalog are Admin-only to change, readable by reps", async ()
   assert.equal(cat.jmrc.items[1].unitCost, null); // $0.00 stays unpriced
 });
 
+test("Admins add custom products that survive a master re-import; reps can't", async () => {
+  assert.equal((await call("sam", "POST", "catalog/custom", { name: "Custom trim" })).status, 403);
+  assert.equal((await call("mike", "POST", "catalog/custom", { unit: "EA" })).status, 400); // name required
+  const add = await call("mike", "POST", "catalog/custom", { name: "Custom trim", unit: "lf", unitCost: "2.25", costCode: "1706" });
+  assert.equal(add.status, 200);
+  const id = add.body.item.id;
+  assert.match(id, /^cust_/);
+  assert.equal(add.body.item.source, "custom");
+  assert.equal(add.body.item.unit, "LF");
+  assert.equal(add.body.item.unitCost, 2.25);
+  // Reps see it in the catalog
+  assert.ok((await call("sam", "GET", "catalog")).body.custom.items.some((x) => x.id === id));
+  // Re-importing the master JMRC catalog leaves custom products alone
+  const items = [{ id: "jmrc:a", name: "Stud", description: "2 x 6 x 8'", unit: "ea", unitCost: "5.50", costCode: "0602 Studs" }, { id: "jmrc:b", name: "Vanity", description: "as per drawings", unit: "EA", unitCost: 0, costCode: "1110" }];
+  await call("mike", "PUT", "catalog/jmrc", { items, fileName: "cost_catalog.csv" });
+  assert.ok((await call("mike", "GET", "catalog")).body.custom.items.some((x) => x.id === id));
+  // Delete it
+  assert.equal((await call("mike", "DELETE", `catalog/custom/${id}`)).status, 200);
+  assert.ok(!(await call("mike", "GET", "catalog")).body.custom.items.some((x) => x.id === id));
+});
+
 test("quote numbers are sequential per prefix, even when requested together", async () => {
   const got = await Promise.all([1, 2, 3].map(() => call("sam", "POST", "numbers", { prefix: "REN2026" })));
   assert.deepEqual(got.map((g) => g.body.number).sort(), ["REN2026-01", "REN2026-02", "REN2026-03"]);

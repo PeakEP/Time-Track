@@ -37,6 +37,8 @@ interface State {
   notify(text: string, bad?: boolean): void;
   loadQuotes(): Promise<void>;
   loadCatalog(): Promise<void>;
+  addCustomProduct(item: Partial<CatalogItem>): Promise<CatalogItem>;
+  deleteCustomProduct(id: string): Promise<void>;
   loadCabinets(): Promise<void>;
   openQuote(id: string): Promise<void>;
   startQuote(type: ProjectType): void;
@@ -53,6 +55,7 @@ interface State {
 const emptyCatalog: CatalogDoc = {
   jmrc: { items: [], importedAt: "", importedBy: "", fileName: "" },
   square: { items: [], syncedAt: "", syncedBy: "", note: "" },
+  custom: { items: [], updatedAt: "", updatedBy: "" },
 };
 
 let saveTimer: ReturnType<typeof setTimeout> | undefined;
@@ -131,8 +134,19 @@ export const useApp = create<State>((set, get) => ({
 
   async loadCatalog() {
     const catalog = await server.catalog();
-    const items = mergeCatalogs(catalog.jmrc.items, catalog.square.items);
+    const items = [...mergeCatalogs(catalog.jmrc.items, catalog.square.items), ...(catalog.custom?.items || [])];
     set({ catalog, items, byId: new Map(items.map((i) => [i.id, i])) });
+  },
+
+  async addCustomProduct(item) {
+    const it = await server.addCustomProduct(item);
+    await get().loadCatalog();
+    return it;
+  },
+
+  async deleteCustomProduct(id) {
+    await server.deleteCustomProduct(id);
+    await get().loadCatalog();
   },
 
   async loadCabinets() {

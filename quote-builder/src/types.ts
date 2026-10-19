@@ -21,7 +21,7 @@ export const PROJECT_TYPE_LABEL: Record<ProjectType, string> = {
 
 /* ----------------------------- catalog ----------------------------- */
 
-export type CatalogSource = "jmrc" | "square";
+export type CatalogSource = "jmrc" | "square" | "custom";
 
 export interface CatalogItem {
   id: string; // stable: "jmrc:<hash>" or "sq:<variation id>"

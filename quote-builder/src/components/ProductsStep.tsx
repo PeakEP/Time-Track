@@ -4,6 +4,7 @@ import { floorType, PRODUCT_PICKS } from "../data/questions";
 import { EXCLUDED, type Answers } from "../types";
 import { itemLabel, resolveComponent, searchCatalog } from "../engine/catalog";
 import CatalogPicker from "./CatalogPicker";
+import NewProductModal from "./NewProductModal";
 import { money } from "../utils/format";
 
 // Which takeoff tool each product pick replaces (to show the default).
@@ -14,9 +15,10 @@ const TOOL_FOR: Partial<Record<keyof Answers, string>> = {
 };
 
 export default function ProductsStep() {
-  const { quote, update, byId, items, settings } = useApp();
+  const { quote, update, byId, items, settings, me, addCustomProduct } = useApp();
   const [openPick, setOpenPick] = useState<(typeof PRODUCT_PICKS)[number] | null>(null);
   const [openFloor, setOpenFloor] = useState<string | null>(null);
+  const [creating, setCreating] = useState<{ name: string; costCode: string; assign: (id: string) => void } | null>(null);
   if (!quote) return null;
   const a = quote.answers;
   const picks = PRODUCT_PICKS.filter((p) => !p.types || p.types.includes(quote.type));
@@ -43,7 +45,7 @@ export default function ProductsStep() {
               const def = searchCatalog(items, "", { codes: ft.codes, limit: 1 })[0];
               return (
                 <div className="field" key={type}>
-                  <span>{ft.label}{ft.tile ? " tile" : " flooring"}</span>
+                  <span>{ft.tile ? ft.label : `${ft.label} flooring`}</span>
                   <div className="product-pick">
                     <div className="chosen">
                       {it ? <>{itemLabel(it)} <span className="muted">· {it.unit}{it.unitCost != null ? ` · ${money(it.unitCost)}` : ""}</span></>
@@ -92,9 +94,14 @@ export default function ProductsStep() {
 
       {openFloor && (
         <CatalogPicker
-          title={`Choose ${floorType(openFloor).label}${floorType(openFloor).tile ? " tile" : " flooring"}`}
+          title={`Choose ${floorType(openFloor).tile ? floorType(openFloor).label : floorType(openFloor).label + " flooring"}`}
           codes={floorType(openFloor).codes}
           allowClear
+          onManual={me?.admin ? (query) => {
+            const type = openFloor;
+            setOpenFloor(null);
+            setCreating({ name: query, costCode: floorType(type).codes[0] || "", assign: (id) => update((q) => { const m = { ...(q.answers.floorItemIds || {}) }; m[type] = id; q.answers.floorItemIds = m; }) });
+          } : undefined}
           onClose={() => setOpenFloor(null)}
           onPick={(it) => {
             update((q) => {
@@ -112,8 +119,22 @@ export default function ProductsStep() {
           codes={openPick.codes}
           allowClear
           onExclude={() => { update((q) => { (q.answers as unknown as Record<string, string>)[openPick.key] = EXCLUDED; }); setOpenPick(null); }}
+          onManual={me?.admin ? (query) => {
+            const key = openPick.key as string;
+            const codes = openPick.codes;
+            setOpenPick(null);
+            setCreating({ name: query, costCode: codes[0] || "", assign: (id) => update((q) => { (q.answers as unknown as Record<string, string>)[key] = id; }) });
+          } : undefined}
           onClose={() => setOpenPick(null)}
           onPick={(it) => { update((q) => { (q.answers as unknown as Record<string, string>)[openPick.key] = it?.id || ""; }); setOpenPick(null); }}
+        />
+      )}
+      {creating && (
+        <NewProductModal
+          initialName={creating.name}
+          initialCostCode={creating.costCode}
+          onClose={() => setCreating(null)}
+          onSave={async (item) => { const it = await addCustomProduct(item); creating.assign(it.id); }}
         />
       )}
     </div>
