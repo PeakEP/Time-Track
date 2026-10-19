@@ -5,8 +5,9 @@ import type { CatalogItem } from "../types";
 import { money } from "../utils/format";
 
 // Search the merged JMRC + Square catalog and pick an item.
-export default function CatalogPicker({ title, codes, initial = "", onPick, onClose, allowClear }: {
-  title: string; codes?: string[]; initial?: string; onPick: (it: CatalogItem | null) => void; onClose: () => void; allowClear?: boolean;
+export default function CatalogPicker({ title, codes, initial = "", onPick, onClose, allowClear, onExclude, onManual }: {
+  title: string; codes?: string[]; initial?: string; onPick: (it: CatalogItem | null) => void; onClose: () => void;
+  allowClear?: boolean; onExclude?: () => void; onManual?: (q: string) => void;
 }) {
   const { items, me, settings } = useApp();
   const [q, setQ] = useState(initial);
@@ -44,11 +45,15 @@ export default function CatalogPicker({ title, codes, initial = "", onPick, onCl
               <div className="num">{showCost ? (it.unitCost == null ? <span className="pill warn">no price</span> : money(it.unitCost)) : ""}</div>
             </div>
           ))}
-          {items.length > 0 && results.length === 0 && <p className="muted">Nothing matches.</p>}
+          {items.length > 0 && results.length === 0 && (
+            <p className="muted">Nothing matches.{onManual ? <> <button className="btn sm" onClick={() => onManual(q)}>Enter it manually</button></> : null}</p>
+          )}
         </div>
-        {allowClear && (
+        {(allowClear || onExclude || onManual) && (
           <footer>
-            <button className="btn" onClick={() => onPick(null)}>Use the default</button>
+            {onManual && <button className="btn ghost" onClick={() => onManual(q)}>Enter manually / new product</button>}
+            {onExclude && <button className="btn" onClick={onExclude}>Not included</button>}
+            {allowClear && <button className="btn" onClick={() => onPick(null)}>Use the default</button>}
           </footer>
         )}
       </div>

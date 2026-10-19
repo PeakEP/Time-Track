@@ -61,6 +61,14 @@ export type RoomKind =
   | "kitchen" | "bathroom" | "ensuite" | "bedroom" | "living" | "dining"
   | "basement" | "laundry" | "hallway" | "office" | "mudroom" | "other";
 
+// Floor finish by type (maps to a catalog cost code — see FLOOR_TYPES). "none"
+// means the floor isn't being changed in that room.
+export type FloorType = "none" | "spc" | "laminate" | "hardwood" | "lvt" | "tile" | "other";
+
+// A product pick set to this is "not included in this quote" — its line is
+// dropped, rather than falling back to the default product.
+export const EXCLUDED = "__none__";
+
 export interface Room {
   id: string;
   name: string;
@@ -73,7 +81,7 @@ export interface Room {
   // Scope switches for the room
   demoFloor: boolean;
   demoWalls: boolean; // gut to studs
-  floor: "none" | "flooring" | "tile";
+  floor: FloorType;
   paintWalls: boolean;
   paintCeiling: boolean;
   drywall: "none" | "patch" | "walls" | "walls+ceiling";
@@ -149,9 +157,10 @@ export interface Answers {
   occupied: boolean;
   disposalBins: number;
 
-  // Selections (catalog item ids) — chosen in the Selections step
-  flooringItemId: string;
-  tileItemId: string;
+  // Selections (catalog item ids) — chosen in the Selections step. Empty = the
+  // default product for that category; EXCLUDED = not included in this quote.
+  flooringType: FloorType; // new builds: the main floor finish (rooms carry their own)
+  floorItemIds: Record<string, string>; // chosen flooring product per floor type
   showerTileItemId: string;
   backsplashItemId: string;
   countertopItemId: string;

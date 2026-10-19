@@ -1,5 +1,5 @@
 import { useApp } from "../store";
-import { newRoom, ROOM_KINDS } from "../data/questions";
+import { FLOOR_TYPES, newRoom, ROOM_KINDS } from "../data/questions";
 import type { Room, RoomKind } from "../types";
 import { roomGeometry } from "../engine/takeoff";
 import { qty } from "../utils/format";
@@ -61,7 +61,7 @@ export default function RoomsStep() {
                 <div className="grid four">
                   <label className="field"><span>Floor</span>
                     <select value={r.floor} onChange={(e) => set(i, { floor: e.target.value as Room["floor"] })}>
-                      <option value="none">No change</option><option value="flooring">New flooring</option><option value="tile">New tile</option>
+                      {FLOOR_TYPES.map((t) => <option key={t.value} value={t.value}>{t.value === "none" ? "No change" : t.label}</option>)}
                     </select>
                   </label>
                   <label className="field"><span>Drywall</span>

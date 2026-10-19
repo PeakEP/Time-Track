@@ -1,4 +1,4 @@
-import type { Answers, ProjectType, Quote, Room, RoomKind } from "../types";
+import type { Answers, FloorType, ProjectType, Quote, Room, RoomKind } from "../types";
 
 // The guided interview. Each field is an Answers key; `types` limits it to
 // project types, `show` hides it until it applies. The same list feeds the
@@ -29,6 +29,22 @@ export interface Step {
 
 const NEW: ProjectType[] = ["shop", "custom-home"];
 const RENO: ProjectType[] = ["renovation", "remodel"];
+
+// Floor finishes, each mapped to its JMRC cost code. Pick the type, then only
+// that type's products show. `tile` floors are set with thinset/grout; the rest
+// are floating/plank floors. "none" = floor not changed in that room.
+export const FLOOR_TYPES: { value: FloorType; label: string; codes: string[]; tile?: boolean }[] = [
+  { value: "none", label: "No change", codes: [] },
+  { value: "spc", label: "SPC", codes: ["1701"] },
+  { value: "laminate", label: "Laminate", codes: ["1702"] },
+  { value: "hardwood", label: "Engineered hardwood", codes: ["1703"] },
+  { value: "lvt", label: "LVP / LVT", codes: ["1704"] },
+  { value: "tile", label: "Tile", codes: ["1801"], tile: true },
+  { value: "other", label: "Other flooring", codes: ["1705"] },
+];
+export const floorType = (v: string) => FLOOR_TYPES.find((t) => t.value === v) || FLOOR_TYPES[0];
+// Floor types a build/room can actually be finished in (everything but "none").
+export const REAL_FLOOR_TYPES = FLOOR_TYPES.filter((t) => t.value !== "none");
 
 export const STEPS: Step[] = [
   {
@@ -103,6 +119,7 @@ export const STEPS: Step[] = [
       { key: "kitchenCabinetLF", label: "Kitchen cabinet run", type: "number", unit: "LF", types: ["custom-home"] },
       { key: "cabinetQuote", label: "Cabinet quote (Cabinet Designer / supplier)", type: "money", types: ["custom-home"], help: "Leave 0 to carry the owner's $/LF cabinet allowance" },
       { key: "countertopSF", label: "Countertops", type: "number", unit: "SF", types: ["custom-home"] },
+      { key: "flooringType", label: "Main floor type", type: "select", options: REAL_FLOOR_TYPES.map((t) => ({ value: t.value, label: t.label })), help: "The rest of the floor area (not tiled) uses this. Pick the product on the Products step." },
       { key: "tileFloorSF", label: "Tile floors (baths, laundry, entry)", type: "number", unit: "SF", types: ["custom-home"] },
       { key: "showerTileSF", label: "Shower wall tile (all showers)", type: "number", unit: "SF", types: ["custom-home"] },
       { key: "lightFixtureCount", label: "Light fixtures", type: "number", unit: "ea" },
@@ -159,7 +176,7 @@ export function newRoom(kind: RoomKind = "bedroom", name = ""): Room {
     id: uid(), name: name || ROOM_KINDS.find((k) => k.value === kind)?.label || "Room", kind,
     length: wet ? 8 : 12, width: wet ? 5 : 11, height: 8, doors: 1, windows: wet ? 0 : 1,
     demoFloor: true, demoWalls: false,
-    floor: wet || kind === "laundry" ? "tile" : "flooring",
+    floor: wet || kind === "laundry" ? "tile" : "spc",
     paintWalls: true, paintCeiling: true, drywall: "patch", baseboard: true,
     newInteriorDoors: 0, lightFixtures: wet || kitchen ? 1 : 0,
     cabinetLF: kitchen ? 16 : 0, countertopSF: kitchen ? 30 : 0, backsplashSF: kitchen ? 25 : 0,
@@ -181,7 +198,7 @@ export function blankAnswers(type: ProjectType): Answers {
     tileFloorSF: 0, showerTileSF: 0, finishLevel: "standard", insulated: !shop, interiorFinish: shop ? "osb" : "drywall",
     siding: shop ? "steel" : "vinyl", heating: shop ? "none" : "mini-split", lightFixtureCount: 0,
     rooms: [], occupied: true, disposalBins: 0,
-    flooringItemId: "", tileItemId: "", showerTileItemId: "", backsplashItemId: "", countertopItemId: "", paintItemId: "",
+    flooringType: "spc", floorItemIds: {}, showerTileItemId: "", backsplashItemId: "", countertopItemId: "", paintItemId: "",
     interiorDoorItemId: "", lightFixtureItemId: "", toiletItemId: "", vanityItemId: "", faucetItemId: "", tubItemId: "",
     windowsDoorsQuote: 0, trussQuote: 0, cabinetQuote: 0, overheadDoorQuote: 0,
     inclusionsExtra: "", exclusionsExtra: "", notes: "",
@@ -200,10 +217,9 @@ export function newQuote(type: ProjectType, by: string): Quote {
   };
 }
 
-// Product pickers on the Selections step.
+// Product pickers on the Selections step. Flooring is handled separately (by
+// floor type) in the Products step; these are the rest.
 export const PRODUCT_PICKS: { key: keyof Answers; label: string; codes: string[]; types?: ProjectType[] }[] = [
-  { key: "flooringItemId", label: "Flooring", codes: ["1701", "1702", "1703", "1704", "1705"] },
-  { key: "tileItemId", label: "Floor tile", codes: ["1801"] },
   { key: "showerTileItemId", label: "Shower wall tile", codes: ["1801", "1802"] },
   { key: "backsplashItemId", label: "Backsplash", codes: ["1802", "1801"], types: ["renovation", "remodel", "custom-home"] },
   { key: "countertopItemId", label: "Countertop", codes: ["2001", "2002"] },
@@ -218,9 +234,21 @@ export const PRODUCT_PICKS: { key: keyof Answers; label: string; codes: string[]
 
 // Quotes saved by earlier versions lack the newer fields.
 export function normalizeQuote(q: Quote): Quote {
+  const answers = { ...blankAnswers(q.type), ...q.answers } as Answers & { flooringItemId?: string; tileItemId?: string };
+  // Migrate the old single Flooring / Floor-tile picks to the per-type map.
+  if (!answers.floorItemIds || typeof answers.floorItemIds !== "object") answers.floorItemIds = {};
+  if (answers.flooringItemId && !answers.floorItemIds.spc) answers.floorItemIds.spc = answers.flooringItemId;
+  if (answers.tileItemId && !answers.floorItemIds.tile) answers.floorItemIds.tile = answers.tileItemId;
+  delete answers.flooringItemId;
+  delete answers.tileItemId;
+  // Old rooms used floor "flooring" | "tile"; map the generic one to SPC.
+  for (const r of answers.rooms || []) {
+    if ((r.floor as string) === "flooring") r.floor = "spc";
+    else if (!FLOOR_TYPES.some((t) => t.value === r.floor)) r.floor = "none";
+  }
   return {
     ...q,
-    answers: { ...blankAnswers(q.type), ...q.answers },
+    answers,
     cabinetSets: q.cabinetSets || [],
     rates: q.rates || {},
     margins: q.margins || {},
