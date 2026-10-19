@@ -162,6 +162,27 @@ test("clients: only their project, listed and managed in Admin", async () => {
   assert.equal(j2.status, 200); // reissuing turns access back on
 });
 
+test("Admins edit a team member: rename (collisions refused) and grant an app", async () => {
+  const r = await call("mike", "POST", "team", { name: "Olde Name" });
+  const id = r.body.user.id;
+  // rename sticks and is tidied up
+  const up = await call("mike", "PATCH", "team/" + id, { name: "  New  Name  " });
+  assert.equal(up.status, 200);
+  assert.equal(up.body.user.name, "New Name");
+  assert.ok((await call("mike", "GET", "team")).body.users.some((u) => u.name === "New Name"));
+  // can't collide with another staff member or a client, and must be a real name
+  assert.equal((await call("mike", "PATCH", "team/" + id, { name: "Mike Robins" })).status, 400);
+  assert.equal((await call("mike", "PATCH", "team/" + id, { name: "Jane Smith" })).status, 400);
+  assert.equal((await call("mike", "PATCH", "team/" + id, { name: "x" })).status, 400);
+  // name + access in one edit (what the Edit dialog sends)
+  const both = await call("mike", "PATCH", "team/" + id, { name: "New Name", admin: true, apps: { quoteBuilder: true } });
+  assert.equal(both.status, 200);
+  assert.equal(both.body.user.name, "New Name");
+  assert.equal(both.body.user.admin, true);
+  assert.equal(both.body.user.apps.quoteBuilder, true);
+  await call("mike", "DELETE", "team/" + id); // tidy up
+});
+
 test("Admins permanently delete staff and clients; guards hold", async () => {
   // A throwaway staff member Mike can delete
   const t = await call("mike", "POST", "team", { name: "Temp Worker" });

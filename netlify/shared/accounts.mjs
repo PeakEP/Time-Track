@@ -19,7 +19,16 @@ export const VO_ROLES = ["none", "sales_rep", "purchaser"];
 export const SEL_ROLES = ["none", "designer"];
 export const COOKIE = "jmrc_session";
 
+export const FULL_ACCESS = {
+  admin: true,
+  apps: { vendorOrders: "purchaser", selections: "designer", cabinet: true, aline: true, quoteBuilder: true },
+};
+
 export function accessOf(u) {
+  // The owner (set in Netlify) always has everything. Compute it instead of
+  // trusting the stored record, so an owner who signed in before a new app
+  // shipped still gets that app without having to sign in again.
+  if (u.owner) return { admin: true, apps: { ...FULL_ACCESS.apps } };
   const a = u.apps || {};
   return {
     admin: u.admin ?? u.role === "purchaser",
@@ -32,11 +41,6 @@ export function accessOf(u) {
     },
   };
 }
-
-export const FULL_ACCESS = {
-  admin: true,
-  apps: { vendorOrders: "purchaser", selections: "designer", cabinet: true, aline: true, quoteBuilder: true },
-};
 
 // Write access onto a record. `role` mirrors the Vendor Orders setting (kept
 // for the Vendor Orders code, which predates per-app access).
@@ -218,12 +222,22 @@ export function deleteStaff(book, id, byId) {
   return { name: u.name };
 }
 
-// Change access and/or active. Always keeps at least one active Admin and one
-// active Purchaser (someone must be able to manage the team and place orders).
-export function updateStaff(book, id, body) {
+// Change name, access and/or active. Always keeps at least one active Admin and
+// one active Purchaser (someone must be able to manage the team and place
+// orders). `clientNames` guards against reusing a client's sign-in name.
+export function updateStaff(book, id, body, clientNames = []) {
   const u = book.users.find((x) => x.id === id);
   if (!u) throw httpError(404, "User not found");
   ownerLocked(u);
+  if ("name" in body) {
+    const name = cleanName(body.name);
+    if (name.length < 2) throw httpError(400, "Enter the person's full name");
+    if (book.users.some((x) => x.id !== id && sameName(x.name, name)))
+      throw httpError(400, `${name} is already on the team.`);
+    if (clientNames.some((n) => sameName(n, name)))
+      throw httpError(400, `A client signs in as "${name}" — use a different name.`);
+    u.name = name;
+  }
   const next = readAccess(body, accessOf(u));
   const active = "active" in body ? !!body.active : u.active;
   const others = book.users.filter((x) => x.id !== id && x.active);
