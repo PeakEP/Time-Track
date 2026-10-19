@@ -58,6 +58,15 @@
       .del { color: #c0392b; border-color: #e3b4ad; margin-left: 6px; }
       .del:disabled { color: #bbb; border-color: var(--line, #ddd); }
       .beta { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 0 6px; border-radius: 9px; background: #fdf2dc; color: #8a5a12; margin-left: 4px; }
+      .edit { margin-right: 6px; }
+      .modal .box.wide { max-width: 460px; }
+      .fields { display: grid; gap: 0; margin: 2px 0 18px; text-align: left; }
+      .field { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 10px 0; border-top: 1px solid var(--line); }
+      .field > span { color: var(--ink-2); font-weight: 600; }
+      .field select { min-width: 140px; }
+      .field.full { display: block; }
+      .field.full > span { display: block; margin-bottom: 5px; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+      .field.full input[type="text"] { width: 100%; }
     </style>
   </head>
   <body>
@@ -131,7 +140,7 @@
         function h(tag, props = {}, ...kids) {
           const el = document.createElement(tag);
           for (const [k, v] of Object.entries(props)) {
-            if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+            if (k.startsWith("on")) { if (v) el.addEventListener(k.slice(2), v); }
             else if (k in el) el[k] = v;
             else el.setAttribute(k, v);
           }
@@ -197,6 +206,65 @@
         }
         const box = (checked, onchange, label) => h("input", { type: "checkbox", checked, onchange, "aria-label": label });
 
+        // Edit one person in a dialog: name + every app in one place. The owner
+        // is set in Netlify and can't be changed, so it shows a note instead.
+        function editUser(u) {
+          const close = () => m.remove();
+          let boxEl;
+          if (u.owner) {
+            boxEl = h("div", { className: "box" },
+              h("h3", {}, u.name),
+              h("p", {}, "This is the owner account. Its name, PIN and access are set in Netlify, so they can't be changed here."),
+              h("p", {}, "The owner always has every app, including Quote Builder. To change the owner, update OWNER_NAME and OWNER_PIN in your Netlify environment variables."),
+              h("div", { className: "row" }, h("button", { type: "button", className: "primary", onclick: close }, "Close")),
+            );
+          } else {
+            const name = h("input", { type: "text", value: u.name, maxLength: 80, required: true, autocomplete: "off" });
+            const admin = h("input", { type: "checkbox", checked: u.admin });
+            const vo = select(VO, u.apps.vendorOrders);
+            const sel = select(SEL, u.apps.selections);
+            const cab = h("input", { type: "checkbox", checked: u.apps.cabinet });
+            const aline = h("input", { type: "checkbox", checked: u.apps.aline });
+            const qb = h("input", { type: "checkbox", checked: u.apps.quoteBuilder });
+            const field = (label, control, full) => h("label", { className: "field" + (full ? " full" : "") }, h("span", {}, label), control);
+            const saveBtn = h("button", { type: "submit", className: "primary" }, "Save changes");
+            const form = h("form", {
+              onsubmit: async (e) => {
+                e.preventDefault();
+                saveBtn.disabled = true;
+                try {
+                  const r = await api("PATCH", "team/" + u.id, {
+                    name: name.value,
+                    admin: admin.checked,
+                    apps: { vendorOrders: vo.value, selections: sel.value, cabinet: cab.checked, aline: aline.checked, quoteBuilder: qb.checked },
+                  });
+                  toast(`Saved ${r.user.name}`);
+                  close();
+                  load();
+                } catch (err) {
+                  toast(err.message, true);
+                  saveBtn.disabled = false;
+                }
+              },
+            },
+              h("div", { className: "fields" },
+                field("Full name", name, true),
+                field("Admin — can open Suite Admin", admin),
+                field("Vendor Orders", vo),
+                field("Finish Selections", sel),
+                field("Cabinet Designer", cab),
+                field("Aline Designer", aline),
+                field(["Quote Builder ", h("span", { className: "beta" }, "Beta")], qb),
+              ),
+              h("div", { className: "row" }, h("button", { type: "button", onclick: close }, "Cancel"), saveBtn),
+            );
+            boxEl = h("div", { className: "box wide" }, h("h3", {}, `Edit ${u.name}`), form);
+          }
+          const m = h("div", { className: "modal", role: "dialog", "aria-modal": "true", onclick: (e) => e.target === m && close() }, boxEl);
+          document.body.append(m);
+          (m.querySelector("input[type=text]") || m.querySelector("button.primary")).focus();
+        }
+
         function teamRow(u, meId) {
           const tags = [];
           if (u.owner) tags.push(h("span", { className: "tag" }, "owner"));
@@ -212,6 +280,7 @@
             h("td", { className: "c" }, box(u.apps.aline, (e) => save(u, { apps: { aline: e.target.checked } }), `${u.name} Aline Designer`)),
             h("td", { className: "c" }, box(u.apps.quoteBuilder, (e) => save(u, { apps: { quoteBuilder: e.target.checked } }), `${u.name} Quote Builder`)),
             h("td", {},
+              h("button", { type: "button", className: "edit", onclick: () => editUser(u) }, "Edit"),
               h("button", {
                 type: "button",
                 onclick: async () => {
@@ -239,8 +308,10 @@
               }, "Delete"),
             ),
           );
-          // The owner sign-in is set in Netlify; it always has everything.
+          // The owner sign-in is set in Netlify; it always has everything. The
+          // inline controls are locked, but Edit still opens the owner note.
           if (u.owner) row.querySelectorAll("input, select, button").forEach((el) => {
+            if (el.classList.contains("edit")) return;
             el.disabled = true;
             el.title = "The owner account is set in Netlify";
           });

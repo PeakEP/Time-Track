@@ -74,3 +74,11 @@ test("owner PIN still locks after 5 wrong tries", async () => {
   for (let i = 0; i < 5; i++) await call(null, "POST", "login", { name: "Robins", pin: "999999" });
   assert.equal((await call(null, "POST", "login", { name: "Robins", pin: "051711" })).status, 429);
 });
+
+test("accessOf gives the owner every app, even on a record saved before it shipped", async () => {
+  const { accessOf } = await import("../../netlify/shared/accounts.mjs");
+  // An owner record saved before Quote Builder existed (no quoteBuilder key).
+  const stale = { owner: true, apps: { vendorOrders: "purchaser", selections: "designer", cabinet: true, aline: true } };
+  assert.equal(accessOf(stale).admin, true);
+  assert.equal(accessOf(stale).apps.quoteBuilder, true);
+});

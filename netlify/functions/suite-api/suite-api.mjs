@@ -116,7 +116,8 @@ export function createHandler({ stores: injected } = {}) {
         return json({ user: publicUser(r.user), pin: r.pin }, 201);
       }
       if (a === "team" && isId(b) && !c && method === "PATCH") {
-        const u = await mutate(stores.vo, (book) => updateStaff(book, b, body));
+        const idx = await readState(stores.sel, SEL_INDEX);
+        const u = await mutate(stores.vo, (book) => updateStaff(book, b, body, idx.customers.map((x) => x.name)));
         return json({ user: publicUser(u) });
       }
       if (a === "team" && isId(b) && c === "reset-pin" && method === "POST") {
