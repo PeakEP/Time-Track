@@ -14,6 +14,7 @@ const APPS = [
   ["/aline-designer", "aline", "Aline Cabinet Designer"],
   ["/selections", "selections", "Finish Selections"],
   ["/vendor-orders", "vendorOrders", "Vendor Orders"],
+  ["/quote-builder", "quoteBuilder", "Quote Builder"],
   ["/admin", "admin", "Suite Admin"],
 ];
 const COOKIE = "jmrc_session";
@@ -96,6 +97,7 @@ export const config = {
     "/aline-designer", "/aline-designer/*",
     "/selections", "/selections/*",
     "/vendor-orders", "/vendor-orders/*",
+    "/quote-builder", "/quote-builder/*",
     "/admin", "/admin/*",
   ],
 };

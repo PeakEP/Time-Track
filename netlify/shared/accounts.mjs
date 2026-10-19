@@ -4,6 +4,7 @@
 //   vendorOrders: "none" | "sales_rep" | "purchaser"
 //   selections:   "none" | "designer"
 //   cabinet, aline: true | false
+//   quoteBuilder: true | false (BETA — off by default; an Admin turns it on per person to test it)
 // Records made before per-app access existed get sensible defaults:
 // Purchasers become Admins, and everyone keeps their Vendor Orders role and
 // gets the other apps.
@@ -13,7 +14,7 @@ const httpError = (status, message) => Object.assign(new Error(message), { statu
 const cleanName = (v) => String(v == null ? "" : v).trim().replace(/\s+/g, " ").slice(0, 80);
 const sameName = (a, b) => a.toLowerCase() === b.toLowerCase();
 
-export const APPS = ["vendorOrders", "selections", "cabinet", "aline"];
+export const APPS = ["vendorOrders", "selections", "cabinet", "aline", "quoteBuilder"];
 export const VO_ROLES = ["none", "sales_rep", "purchaser"];
 export const SEL_ROLES = ["none", "designer"];
 export const COOKIE = "jmrc_session";
@@ -27,13 +28,14 @@ export function accessOf(u) {
       selections: SEL_ROLES.includes(a.selections) ? a.selections : "designer",
       cabinet: a.cabinet ?? true,
       aline: a.aline ?? true,
+      quoteBuilder: a.quoteBuilder ?? false,
     },
   };
 }
 
 export const FULL_ACCESS = {
   admin: true,
-  apps: { vendorOrders: "purchaser", selections: "designer", cabinet: true, aline: true },
+  apps: { vendorOrders: "purchaser", selections: "designer", cabinet: true, aline: true, quoteBuilder: true },
 };
 
 // Write access onto a record. `role` mirrors the Vendor Orders setting (kept
@@ -44,7 +46,7 @@ export function setAccess(u, { admin, apps }) {
   if (apps.vendorOrders !== "none") u.role = apps.vendorOrders;
 }
 
-// Can this staff member use the app? (app: vendorOrders|selections|cabinet|aline|admin)
+// Can this staff member use the app? (app: vendorOrders|selections|cabinet|aline|quoteBuilder|admin)
 export function canUse(u, app) {
   const { admin, apps } = accessOf(u);
   if (app === "admin") return admin;
@@ -168,10 +170,11 @@ function readAccess(body, current) {
   }
   if ("cabinet" in a) next.apps.cabinet = !!a.cabinet;
   if ("aline" in a) next.apps.aline = !!a.aline;
+  if ("quoteBuilder" in a) next.apps.quoteBuilder = !!a.quoteBuilder;
   return next;
 }
 
-const DEFAULT_NEW = { admin: false, apps: { vendorOrders: "sales_rep", selections: "designer", cabinet: true, aline: true } };
+const DEFAULT_NEW = { admin: false, apps: { vendorOrders: "sales_rep", selections: "designer", cabinet: true, aline: true, quoteBuilder: false } };
 
 export function createStaff(book, body, clientNames = []) {
   const name = cleanName(body.name);
@@ -195,6 +198,24 @@ export function resetStaffPin(book, id) {
   Object.assign(u, { pinHash: hashPin(pin), failedAttempts: 0, lockedUntil: "" });
   book.sessions = book.sessions.filter((s) => s.userId !== id); // signed out everywhere
   return { user: u, pin };
+}
+
+// Permanently remove a team member. The owner can't be deleted (it's set in
+// Netlify); you can't delete yourself; and you can't remove the last active
+// Admin or the last active Purchaser.
+export function deleteStaff(book, id, byId) {
+  const u = book.users.find((x) => x.id === id);
+  if (!u) throw httpError(404, "User not found");
+  ownerLocked(u);
+  if (byId && u.id === byId) throw httpError(400, "You can't delete your own account.");
+  const others = book.users.filter((x) => x.id !== id && x.active);
+  if (u.active && accessOf(u).admin && !others.some((x) => accessOf(x).admin))
+    throw httpError(400, "That's the only Admin — make someone else an Admin first.");
+  if (u.active && accessOf(u).apps.vendorOrders === "purchaser" && !others.some((x) => accessOf(x).apps.vendorOrders === "purchaser"))
+    throw httpError(400, "That's the only Purchaser — make someone else a Purchaser first.");
+  book.users = book.users.filter((x) => x.id !== id);
+  book.sessions = book.sessions.filter((s) => s.userId !== id);
+  return { name: u.name };
 }
 
 // Change access and/or active. Always keeps at least one active Admin and one

@@ -71,3 +71,18 @@ export async function setClientAccess(stores, projectId, active) {
   }, SEL_INDEX);
   return { ok: true };
 }
+
+// Permanently remove a client sign-in and their project (selections). Can't be
+// undone. Deletes the index entry, their sessions, and the project document.
+export async function deleteClient(stores, projectId) {
+  const name = await mutate(stores.sel, (idx) => {
+    const c = idx.customers.find((x) => x.projectId === projectId);
+    const nm = c ? c.name : null;
+    if (c) idx.sessions = idx.sessions.filter((s) => s.customerId !== c.id);
+    idx.customers = idx.customers.filter((x) => x.projectId !== projectId);
+    idx.projects = idx.projects.filter((p) => p.id !== projectId);
+    return nm;
+  }, SEL_INDEX);
+  if (stores.sel?.delete) await stores.sel.delete(`projects/${projectId}`).catch(() => {});
+  return { ok: true, name };
+}

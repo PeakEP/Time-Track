@@ -62,7 +62,7 @@ test("first-time setup makes an Admin with every app and signs them in", async (
   assert.match(r.body.pin, /^\d{6}$/);
   assert.match(r.cookie, /^jmrc_session=.+/);
   assert.equal(r.body.me.admin, true);
-  assert.deepEqual(r.body.me.apps, { vendorOrders: "purchaser", selections: "designer", cabinet: true, aline: true });
+  assert.deepEqual(r.body.me.apps, { vendorOrders: "purchaser", selections: "designer", cabinet: true, aline: true, quoteBuilder: true });
   T.mike = r.cookie;
   T.mikePin = r.body.pin;
   assert.equal((await call(null, "POST", "setup", { name: "Someone Else" })).status, 409);
@@ -144,7 +144,7 @@ test("clients: only their project, listed and managed in Admin", async () => {
   assert.equal(j.body.me.projectId, projectId);
   T.jane = j.cookie;
   assert.equal((await call("jane", "GET", "check?app=selections")).status, 200);
-  for (const app of ["cabinet", "aline", "vendorOrders", "admin"])
+  for (const app of ["cabinet", "aline", "vendorOrders", "quoteBuilder", "admin"])
     assert.equal((await call("jane", "GET", "check?app=" + app)).status, 403, app);
   assert.equal((await call("jane", "GET", "team")).status, 403);
   assert.equal((await selCall("jane", "GET", "projects/" + projectId)).status, 200); // cookie works in the app
@@ -160,6 +160,47 @@ test("clients: only their project, listed and managed in Admin", async () => {
   assert.equal(re.body.customerName, "Jane Smith");
   const j2 = await call(null, "POST", "login", { name: "Jane Smith", pin: re.body.pin });
   assert.equal(j2.status, 200); // reissuing turns access back on
+});
+
+test("Admins permanently delete staff and clients; guards hold", async () => {
+  // A throwaway staff member Mike can delete
+  const t = await call("mike", "POST", "team", { name: "Temp Worker" });
+  assert.equal(t.status, 201);
+  const tempId = t.body.user.id;
+  const tc = await call(null, "POST", "login", { name: "Temp Worker", pin: t.body.pin });
+  assert.equal(tc.status, 200);
+  T.temp = tc.cookie;
+
+  // Can't delete yourself
+  const team = (await call("mike", "GET", "team")).body.users;
+  const mikeId = team.find((u) => u.name === "Mike Robins").id;
+  assert.equal((await call("mike", "DELETE", "team/" + mikeId)).status, 400);
+  // A sales rep can't delete anyone
+  assert.equal((await call("sam", "DELETE", "team/" + tempId)).status, 403);
+
+  // Delete the staff member — gone from the list, signed out, can't sign in
+  assert.equal((await call("mike", "DELETE", "team/" + tempId)).body.name, "Temp Worker");
+  assert.ok(!(await call("mike", "GET", "team")).body.users.some((u) => u.id === tempId));
+  assert.equal((await call("temp", "GET", "me")).status, 401);
+  assert.equal((await call(null, "POST", "login", { name: "Temp Worker", pin: t.body.pin })).status, 401);
+  assert.equal((await call("mike", "DELETE", "team/" + tempId)).status, 404); // already gone
+
+  // A client + their project
+  const p = await selCall("mike", "POST", "projects", { client: "Delete Me Co", title: "Delete — 1 Gone Rd" });
+  const pid = p.body.project.id;
+  const dc = await call(null, "POST", "login", { name: "Delete Me Co", pin: p.body.pin });
+  T.del = dc.cookie;
+  assert.equal((await selCall("del", "GET", "projects/" + pid)).status, 200);
+  // A sales rep can't delete a client
+  assert.equal((await call("sam", "DELETE", "clients/" + pid)).status, 403);
+
+  // Delete the client — gone from the list, signed out, project removed
+  assert.equal((await call("mike", "DELETE", "clients/" + pid)).body.name, "Delete Me Co");
+  assert.ok(!(await call("mike", "GET", "team")).body.clients.some((c) => c.projectId === pid));
+  assert.equal((await call(null, "POST", "login", { name: "Delete Me Co", pin: p.body.pin })).status, 401);
+  assert.equal((await selCall("del", "GET", "projects/" + pid)).status, 401);
+  // The name is free to reuse now
+  assert.equal((await call("mike", "POST", "team", { name: "Delete Me Co" })).status, 201);
 });
 
 test("sign out ends the session and clears the cookie", async () => {
@@ -218,5 +259,5 @@ test("gate: lets in, sends to sign-in, or shows no access", async () => {
   assert.ok(other.passed);
   assert.equal(other.calls.length, 0);
   assert.equal(gateMod.appFor("/selections-old"), null);
-  assert.deepEqual(gateMod.config.path.length, 10);
+  assert.deepEqual(gateMod.config.path.length, 12);
 });

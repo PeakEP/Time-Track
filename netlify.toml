@@ -5,6 +5,9 @@
 # - Finish Selections builds into /selections/
 # - Vendor Orders builds into /vendor-orders/; its API is a Netlify Function
 #   (netlify/functions/vendor-orders-api) served at /api/vendor-orders/*
+# - Quote Builder builds into /quote-builder/; its API is netlify/functions/
+#   quote-builder-api at /api/quote-builder/*, and its document reader is the
+#   background function quote-builder-read-background
 
 [build]
   publish = "_site"
@@ -36,6 +39,13 @@
 [[redirects]]
   from = "/api/selections/*"
   to = "/.netlify/functions/selections-api/:splat"
+  status = 200
+  force = true
+
+# Quote Builder API → Netlify Function
+[[redirects]]
+  from = "/api/quote-builder/*"
+  to = "/.netlify/functions/quote-builder-api/:splat"
   status = 200
   force = true
 
@@ -74,6 +84,12 @@
 [[redirects]]
   from = "/vendor-orders/*"
   to = "/vendor-orders/index.html"
+  status = 200
+
+# Quote Builder SPA fallback
+[[redirects]]
+  from = "/quote-builder/*"
+  to = "/quote-builder/index.html"
   status = 200
 
 # Friendly fallback: unknown top-level paths land on the launcher. Keep last.
