@@ -30,6 +30,7 @@ export interface QuoteSummary {
 export interface CatalogDoc {
   jmrc: { items: CatalogItem[]; importedAt: string; importedBy: string; fileName: string };
   square: { items: CatalogItem[]; syncedAt: string; syncedBy: string; note: string };
+  custom: { items: CatalogItem[]; updatedAt: string; updatedBy: string };
 }
 
 /* ------------------------------ local mode ------------------------------ */
@@ -59,6 +60,7 @@ export async function isLive(): Promise<boolean> {
 const emptyCatalog = (): CatalogDoc => ({
   jmrc: { items: [], importedAt: "", importedBy: "", fileName: "" },
   square: { items: [], syncedAt: "", syncedBy: "", note: "" },
+  custom: { items: [], updatedAt: "", updatedBy: "" },
 });
 
 export const server = {
@@ -89,6 +91,31 @@ export const server = {
       return;
     }
     await api("PUT", "catalog/jmrc", { items, fileName });
+  },
+  async addCustomProduct(item: Partial<CatalogItem>): Promise<CatalogItem> {
+    if (!(await isLive())) {
+      const c = lsGet(LS.catalog, emptyCatalog());
+      c.custom = c.custom || { items: [], updatedAt: "", updatedBy: "" };
+      const it: CatalogItem = {
+        id: item.id || "cust_" + Math.random().toString(36).slice(2) + Date.now().toString(36),
+        source: "custom", name: item.name || "", description: item.description || "",
+        unit: (item.unit || "EA").toUpperCase(), unitCost: item.unitCost ?? null, costCode: item.costCode || "",
+      };
+      const i = c.custom.items.findIndex((x) => x.id === it.id);
+      if (i >= 0) c.custom.items[i] = it; else c.custom.items.push(it);
+      lsSet(LS.catalog, c);
+      return it;
+    }
+    return (await api<{ item: CatalogItem }>("POST", "catalog/custom", item)).item;
+  },
+  async deleteCustomProduct(id: string): Promise<void> {
+    if (!(await isLive())) {
+      const c = lsGet(LS.catalog, emptyCatalog());
+      if (c.custom) c.custom.items = c.custom.items.filter((x) => x.id !== id);
+      lsSet(LS.catalog, c);
+      return;
+    }
+    await api("DELETE", `catalog/custom/${encodeURIComponent(id)}`);
   },
   async cabinets(): Promise<Record<string, any>> {
     if (!(await isLive())) return lsGet(LS.cabinets, {});

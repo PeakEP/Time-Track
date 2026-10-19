@@ -1,6 +1,7 @@
-import type { Answers, CabinetSet, CatalogItem, Line, LineKind, ProjectType, Room, Settings, ToolComponent } from "../types";
+import { EXCLUDED, type Answers, type CabinetSet, type CatalogItem, type FloorType, type Line, type LineKind, type ProjectType, type Room, type Settings, type ToolComponent } from "../types";
 import { priceCabinet, SUPPLIER_LABEL, type CabinetData } from "./cabinets";
 import { itemLabel, resolveComponent } from "./catalog";
+import { floorType } from "../data/questions";
 
 // Takeoff: answers → quantity lines. Methods follow the JMRC takeoff standard
 // (jmrc-material-takeoff): 16" o.c., 3-stud corners, 2 king + 2 jack per
@@ -44,9 +45,10 @@ export class Takeoff {
   // A material from a takeoff tool. `need` is in takeoff units (SF, LF, EA…);
   // it's converted to catalog units with the tool's coverage and waste.
   // `selectedId` (from the Selections step) overrides the tool's catalog item.
-  material(key: string, need: number, basis: string, opts: { selectedId?: string; label?: string; section?: string; allowance?: boolean; idKey?: string } = {}) {
+  material(key: string, need: number, basis: string, opts: { selectedId?: string; label?: string; section?: string; allowance?: boolean; idKey?: string; codes?: string[]; match?: string[] } = {}) {
     need = round2(need);
     if (!(need > 0)) return;
+    if (opts.selectedId === EXCLUDED) return; // "not included" — drop the line
     const comp = this.comp(key);
     const flags: string[] = [];
     let item: CatalogItem | null = null;
@@ -54,7 +56,9 @@ export class Takeoff {
     const sel = opts.selectedId ? this.ctx.byId.get(opts.selectedId) : undefined;
     if (sel) { item = sel; how = "selected"; }
     else {
-      const r = resolveComponent(comp, this.ctx.byId, this.ctx.items);
+      // `codes` narrows the default product to a floor type's cost code.
+      const rc = opts.codes ? { ...comp, codes: opts.codes, match: opts.match ?? comp.match } : comp;
+      const r = resolveComponent(rc, this.ctx.byId, this.ctx.items);
       item = r.item; how = r.how;
       if (r.how === "matched" && r.alternatives > 0) flags.push("auto-matched");
     }
@@ -81,6 +85,27 @@ export class Takeoff {
       flags,
       allowance: opts.allowance,
     });
+  }
+
+  // A finished floor of the given type: the right material (priced within the
+  // type's cost code, or the product picked on the Products step) plus its
+  // install labour. Tile floors also get thinset + grout; the rest get underlay.
+  floor(type: FloorType, sf: number, basis: string, idKey: string, tag = "") {
+    sf = round2(sf);
+    if (!(sf > 0) || type === "none") return;
+    const ft = floorType(type);
+    const sel = this.ctx.answers.floorItemIds?.[type] || undefined;
+    const suffix = tag ? ` — ${tag}` : "";
+    if (ft.tile) {
+      this.material("tile", sf, basis, { selectedId: sel, codes: ft.codes, match: [], label: `Tile${suffix}`, idKey, allowance: true });
+      this.material("thinset", sf, basis, { idKey: idKey + "T" });
+      this.material("grout", sf, basis, { idKey: idKey + "G" });
+      this.labour("lab.tile", sf, basis, { label: `Tile install${suffix}`, idKey: idKey + "L" });
+    } else {
+      this.material("flooring", sf, basis, { selectedId: sel, codes: ft.codes, match: [], label: `${ft.label} flooring${suffix}`, idKey, allowance: true });
+      this.material("underlay", sf, basis, { idKey: idKey + "U" });
+      this.labour("lab.flooring", sf, basis, { label: `Flooring install${suffix}`, idKey: idKey + "L" });
+    }
   }
 
   // A labour line, estimated in hours. The quantity (SF/LF/EA) is converted to
@@ -365,17 +390,11 @@ export function newBuildTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
   if (!shop) {
     const tileSF = pos(a.tileFloorSF);
     const floorSF = Math.max(0, floorArea - tileSF - pos(a.kitchenCabinetLF) * 2);
-    t.material("flooring", floorSF, `floor area − tile − cabinets`, { selectedId: a.flooringItemId || undefined, allowance: true });
-    t.labour("lab.flooring", floorSF, `${fmt(floorSF)} SF`);
-    if (tileSF) {
-      t.material("tile", tileSF, `tile floors`, { selectedId: a.tileItemId || undefined, allowance: true });
-      t.material("thinset", tileSF, `tile floors`);
-      t.material("grout", tileSF, `tile floors`);
-      t.labour("lab.tile", tileSF, `${fmt(tileSF)} SF`);
-    }
+    t.floor(a.flooringType, floorSF, `floor area − tile − cabinets`, "floor");
+    if (tileSF) t.floor("tile", tileSF, `tile floors`, "tilefloor");
     const showerSF = pos(a.showerTileSF);
     if (showerSF) {
-      t.material("tile", showerSF, `shower walls`, { selectedId: a.showerTileItemId || a.tileItemId || undefined, label: "Shower wall tile", idKey: "showerTile", allowance: true });
+      t.material("tile", showerSF, `shower walls`, { selectedId: a.showerTileItemId || a.floorItemIds?.tile || undefined, label: "Shower wall tile", idKey: "showerTile", allowance: true });
       t.material("showerMembrane", showerSF, `shower walls`);
       t.material("thinset", showerSF, `shower walls`, { idKey: "showerThinset" });
       t.labour("lab.showerTile", showerSF, `${fmt(showerSF)} SF`);
@@ -477,19 +496,13 @@ export function renovationTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
       t.labour("lab.paint", pw + pc, `${tag}`, { label: `Painting — ${tag}`, idKey: key("paintl") });
     }
 
-    // Floors
+    // Floors — the room's floor type sets the product (by cost code) and install
     const cabinetFloor = pos(r.cabinetLF) * 2;
-    if (r.floor === "flooring") {
-      const sf = Math.max(0, g.floor - cabinetFloor);
-      t.material("flooring", sf, `${tag}: ${fmt(g.L)}' × ${fmt(g.W)}'${cabinetFloor ? " − cabinets" : ""}`, { selectedId: a.flooringItemId || undefined, idKey: key("floor"), allowance: true });
-      t.material("underlay", sf, `${tag}`, { idKey: key("underlay") });
-      t.labour("lab.flooring", sf, `${tag}: ${fmt(sf)} SF`, { label: `Flooring install — ${tag}`, idKey: key("floorl") });
-    } else if (r.floor === "tile") {
-      const sf = Math.max(0, g.floor - cabinetFloor - (r.tubShower !== "none" ? 15 : 0) - (r.vanity ? 4 : 0));
-      t.material("tile", sf, `${tag}: floor`, { selectedId: a.tileItemId || undefined, idKey: key("tile"), allowance: true });
-      t.material("thinset", sf, `${tag}`, { idKey: key("thinset") });
-      t.material("grout", sf, `${tag}`, { idKey: key("grout") });
-      t.labour("lab.tile", sf, `${tag}: ${fmt(sf)} SF`, { label: `Tile install — ${tag}`, idKey: key("tilel") });
+    if (r.floor !== "none") {
+      const sf = floorType(r.floor).tile
+        ? Math.max(0, g.floor - cabinetFloor - (r.tubShower !== "none" ? 15 : 0) - (r.vanity ? 4 : 0))
+        : Math.max(0, g.floor - cabinetFloor);
+      t.floor(r.floor, sf, `${tag}: ${fmt(g.L)}' × ${fmt(g.W)}'${cabinetFloor ? " − cabinets" : ""}`, key("floor"), tag);
     }
 
     // Trim & doors
@@ -527,7 +540,7 @@ export function renovationTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
     }
     if (r.tubShower !== "none") { fixtures++; t.material("tub", 1, `${tag}: ${r.tubShower}`, { selectedId: a.tubItemId || undefined, idKey: key("tub"), allowance: true }); }
     if (pos(r.showerWallTileSF)) {
-      t.material("tile", r.showerWallTileSF, `${tag}: shower walls`, { selectedId: a.showerTileItemId || a.tileItemId || undefined, label: "Shower wall tile", idKey: key("stile"), allowance: true });
+      t.material("tile", r.showerWallTileSF, `${tag}: shower walls`, { selectedId: a.showerTileItemId || a.floorItemIds?.tile || undefined, label: "Shower wall tile", idKey: key("stile"), allowance: true });
       t.material("showerMembrane", r.showerWallTileSF, `${tag}`, { idKey: key("membrane") });
       t.material("thinset", r.showerWallTileSF, `${tag}: shower walls`, { idKey: key("sthinset") });
       t.labour("lab.showerTile", r.showerWallTileSF, `${tag}`, { label: `Shower tile — ${tag}`, idKey: key("stilel") });

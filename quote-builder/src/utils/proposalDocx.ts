@@ -5,6 +5,7 @@ import {
 import type { PricedLine, Quote, Settings, Totals } from "../types";
 import { PROJECT_TYPE_LABEL } from "../types";
 import { roomGeometry } from "../engine/takeoff";
+import { floorType } from "../data/questions";
 
 // Exports a quote in JMRC's standard document formats:
 //  - Renovations / remodels → the REN "RENOVATION QUOTATION" (Munana format,
@@ -79,8 +80,7 @@ function roomScope(q: Quote): Paragraph[] {
     if (r.drywall === "walls+ceiling") bits.push("new drywall on walls and ceiling");
     else if (r.drywall === "walls") bits.push("new drywall on walls");
     else if (r.drywall === "patch") bits.push("drywall repairs");
-    if (r.floor === "flooring") bits.push("supply & install new flooring");
-    if (r.floor === "tile") bits.push("supply & install floor tile");
+    if (r.floor !== "none") bits.push(floorType(r.floor).tile ? "supply & install floor tile" : `supply & install new ${floorType(r.floor).label} flooring`);
     if (r.cabinetLF) bits.push(`${r.cabinetLF} LF of cabinetry`);
     if (r.countertopSF) bits.push("countertops");
     if (r.backsplashSF) bits.push("tile backsplash");

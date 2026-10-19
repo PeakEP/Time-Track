@@ -6,6 +6,7 @@ import { itemLabel, marginsFromRetail, parseJmrcCatalog, parseJmrcWorkbook, reso
 import { SUPPLIER_LABEL, validateCabinetFile, identifySupplier } from "../engine/cabinets";
 import { readXlsx } from "../utils/xlsx";
 import CatalogPicker from "./CatalogPicker";
+import NewProductModal from "./NewProductModal";
 import { money, when } from "../utils/format";
 
 const pctIn = (v: number | null) => (v == null ? "" : String(Math.round(v * 10000) / 100));
@@ -19,6 +20,7 @@ export default function SettingsView() {
   const [pin, setPin] = useState<ToolComponent | null>(null);
   const [busy, setBusy] = useState("");
   const [filter, setFilter] = useState("");
+  const [newProduct, setNewProduct] = useState(false);
   const edit = (fn: (x: Settings) => void) => { const n = JSON.parse(JSON.stringify(s)); fn(n); setS(n); setDirty(true); };
   const resolved = useMemo(() => new Map(s.components.map((c) => [c.key, resolveComponent(c, byId, items)])), [s.components, byId, items]);
   const unsetRates = s.rates.filter((r) => r.value == null).length;
@@ -104,6 +106,26 @@ export default function SettingsView() {
           Upload catalog (.xlsx or .csv)…
           <input type="file" accept=".csv,.xlsx,text/csv" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) void importCsv(f); e.target.value = ""; }} />
         </label>
+      </div>
+
+      <div className="card stack">
+        <h3>Custom products</h3>
+        <p className="small muted">Products you add by hand, for anything not in the master catalog. They stay when the master catalog is re-imported, and appear in the catalog everywhere — the Products step, line pickers and takeoff defaults.</p>
+        {catalog.custom?.items.length ? (
+          <ul className="file-list">
+            {catalog.custom.items.map((it) => (
+              <li key={it.id}>
+                <span className="name">{itemLabel(it)}</span>
+                <span className="small muted">{it.costCode || "—"} · {it.unit}{it.unitCost != null ? ` · ${money(it.unitCost)}` : " · no price"}</span>
+                <button className="btn sm ghost danger" onClick={async () => {
+                  if (!confirm(`Remove "${it.name}" from the catalog? Quotes that used it keep their line, repriced by hand.`)) return;
+                  try { await app.deleteCustomProduct(it.id); notify("Removed."); } catch (e) { notify((e as Error).message, true); }
+                }}>Remove</button>
+              </li>
+            ))}
+          </ul>
+        ) : <p className="small">None yet.</p>}
+        <button className="btn" style={{ width: "fit-content" }} onClick={() => setNewProduct(true)}>+ New product</button>
       </div>
 
       <div className="card stack">
@@ -303,6 +325,12 @@ export default function SettingsView() {
             if (it) edit((x) => { const c = x.components.find((y) => y.key === pin.key)!; c.pinnedItemId = it.id; });
             setPin(null);
           }}
+        />
+      )}
+      {newProduct && (
+        <NewProductModal
+          onClose={() => setNewProduct(false)}
+          onSave={async (item) => { await app.addCustomProduct(item); notify("Product added to the catalog."); }}
         />
       )}
     </div>

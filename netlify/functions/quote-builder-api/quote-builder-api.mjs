@@ -72,14 +72,45 @@ function cleanItems(items, source) {
 }
 
 async function getCatalog(stores) {
-  const [jmrc, square] = await Promise.all([
+  const [jmrc, square, custom] = await Promise.all([
     stores.qb.get("catalog/jmrc", { type: "json" }),
     stores.qb.get("catalog/square", { type: "json" }),
+    stores.qb.get("catalog/custom", { type: "json" }),
   ]);
   return {
     jmrc: jmrc || { items: [], importedAt: "", importedBy: "", fileName: "" },
     square: square || { items: [], syncedAt: "", syncedBy: "", note: "" },
+    custom: custom || { items: [], updatedAt: "", updatedBy: "" },
   };
+}
+
+// Products an Admin adds by hand. Kept in their own blob so re-importing the
+// master cost catalog never wipes them. Ids are path-safe (no colon) so the
+// delete route can carry one.
+const CUSTOM = { key: "catalog/custom", init: () => ({ items: [], updatedAt: "", updatedBy: "" }) };
+
+async function addCustomItem(stores, who, body) {
+  requireAdmin(who);
+  const id = str(body.id, 80) || "cust_" + crypto.randomUUID().replace(/-/g, "");
+  const [it] = cleanItems([{ ...body, id, source: "custom" }], "custom");
+  if (!it || !(it.name || it.description)) throw new HttpError(400, "Enter a name for the product.");
+  if (!it.unit) throw new HttpError(400, "Enter a unit (EA, SF, LF…).");
+  const count = await mutate(stores.qb, (cur) => {
+    cur.items = Array.isArray(cur.items) ? cur.items : [];
+    const i = cur.items.findIndex((x) => x.id === it.id);
+    if (i >= 0) cur.items[i] = it;
+    else { if (cur.items.length >= 5000) throw new HttpError(400, "Too many custom products."); cur.items.push(it); }
+    cur.updatedAt = new Date().toISOString();
+    cur.updatedBy = who.name;
+    return cur.items.length;
+  }, CUSTOM);
+  return { item: it, count };
+}
+
+async function deleteCustomItem(stores, who, id) {
+  requireAdmin(who);
+  await mutate(stores.qb, (cur) => { cur.items = (cur.items || []).filter((x) => x.id !== id); }, CUSTOM);
+  return { ok: true };
 }
 
 async function putJmrcCatalog(stores, who, body) {
@@ -322,6 +353,8 @@ export function createHandler({ stores: injected, fetchImpl } = {}) {
         if (method === "GET" && b === "cabinets") return json(await getCabinets(stores));
         if (method === "PUT" && b === "cabinets") return json(await putCabinets(stores, who, body));
         if (method === "POST" && b === "square-sync") return json(await squareSync(stores, who, { fetchImpl }));
+        if (method === "POST" && b === "custom") return json(await addCustomItem(stores, who, body));
+        if (method === "DELETE" && b === "custom" && c) return json(await deleteCustomItem(stores, who, c));
       }
       if (a === "settings") {
         if (method === "GET") {

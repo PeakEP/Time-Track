@@ -18,7 +18,8 @@ before(async () => {
   await build({
     stdin: {
       contents: `export * from "./src/engine/catalog"; export * from "./src/engine/takeoff"; export * from "./src/engine/pricing";
-                 export * from "./src/data/questions"; export * from "./src/data/defaultSettings"; export * from "./src/engine/cabinets";`,
+                 export * from "./src/data/questions"; export * from "./src/data/defaultSettings"; export * from "./src/engine/cabinets";
+                 export { EXCLUDED } from "./src/types";`,
       resolveDir: path.join(here, ".."), loader: "ts",
     },
     bundle: true, format: "esm", platform: "node", outfile: out, logLevel: "silent",
@@ -167,7 +168,7 @@ test("renovation rooms: flooring net of cabinets, paint in 5-gal pails, vanity a
   Object.assign(k, { length: 12, width: 10, cabinetLF: 10 });
   const b = E.newRoom("bathroom");
   q.answers.rooms = [k, b];
-  q.answers.flooringItemId = items.find((i) => i.name === "SPC A").id;
+  q.answers.floorItemIds = { spc: items.find((i) => i.name === "SPC A").id };
   q.answers.paintItemId = items.find((i) => i.name === "Paint").id;
   const lines = E.buildLines(q, s, items);
   const floor = lines.find((l) => l.id === `floor@${k.id}`);
@@ -180,6 +181,34 @@ test("renovation rooms: flooring net of cabinets, paint in 5-gal pails, vanity a
   const vanity = lines.find((l) => l.id === `vanity@${b.id}`);
   assert.equal(vanity.unitCost, null);
   assert.ok(vanity.flags.includes("priced as per drawings"));
+});
+
+test("floor type prices from its own cost code by default", () => {
+  const { items } = E.parseJmrcCatalog(CSV);
+  const s = E.defaultSettings();
+  const q = E.newQuote("renovation", "t");
+  const r = E.newRoom("bedroom"); // non-wet rooms default to SPC
+  Object.assign(r, { length: 10, width: 10, cabinetLF: 0 });
+  assert.equal(r.floor, "spc");
+  q.answers.rooms = [r];
+  const floor = E.buildLines(q, s, items).find((l) => l.id === `floor@${r.id}`);
+  // Resolves within the SPC code (1701) with no product chosen, 100 SF + 10%
+  assert.match(floor.costCode, /^1701/);
+  assert.equal(floor.unitCost, 1.25);
+  assert.equal(floor.qty, 110);
+});
+
+test("a product marked Not included is dropped from the takeoff", () => {
+  const { items } = E.parseJmrcCatalog(CSV);
+  const s = E.defaultSettings();
+  const q = E.newQuote("renovation", "t");
+  const k = E.newRoom("kitchen");
+  Object.assign(k, { countertopSF: 30 });
+  q.answers.rooms = [k];
+  const has = (ls) => ls.some((l) => /countertop/i.test(l.description));
+  assert.ok(has(E.buildLines(q, s, items)));
+  q.answers.countertopItemId = E.EXCLUDED;
+  assert.ok(!has(E.buildLines(q, s, items)));
 });
 
 test("overrides: removed lines vanish, a typed price is flagged for review", () => {
