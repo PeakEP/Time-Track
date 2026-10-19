@@ -161,3 +161,48 @@ export function buildCSV(name, dayLabel, lines, generatedBy) {
     subRow.map(q).join(",") + "\n"
   );
 }
+
+/* ---------------- Square purchase-order import ---------------- */
+
+// M/D/YYYY, Square's "Expected On" format. Accepts YYYY-MM-DD or anything Date parses.
+export function mdy(d) {
+  if (!d) return "";
+  const m = String(d).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (m) return `${+m[2]}/${+m[3]}/${m[1]}`;
+  const dt = new Date(d);
+  return Number.isNaN(dt.getTime()) ? "" : `${dt.getMonth() + 1}/${dt.getDate()}/${dt.getFullYear()}`;
+}
+
+// Square's PO-import spreadsheet layout (matches their template exactly): an
+// instructions row, a Vendor / Ship to / Expected On / Notes block, then line
+// items under the header row (row 9). One file per vendor batch = one Square PO.
+export const SQUARE_SHEET = "Sheet0";
+export const SQUARE_INSTRUCTIONS =
+  "Fill out the purchase order starting with the line items - then add in the vendor and destination name below. Each line item requires at least one of the following: item name, SKU, or GTIN. Quantity is also required for each item.";
+export const SQUARE_HEADERS = ["Item Name", "Variation Name", "SKU", "GTIN", "Vendor Code", "Notes", "Qty", "Unit Cost"];
+
+export function squareMatrix({ vendor = "", shipTo = "", expectedOn = "", notes = "", lines = [] }) {
+  const rows = [
+    [SQUARE_INSTRUCTIONS], // 1
+    [], // 2
+    [], // 3
+    ["Vendor", vendor], // 4
+    ["Ship to", shipTo], // 5
+    ["Expected On", expectedOn], // 6
+    ["Notes", notes], // 7
+    [], // 8
+    SQUARE_HEADERS.slice(), // 9
+  ];
+  for (const o of lines) {
+    rows.push([
+      o.productName || "", "", o.sku || "", "", "",
+      o.description || "",
+      o.qty == null || o.qty === "" ? "" : String(o.qty),
+      o.cost == null || o.cost === "" ? "" : (Number(o.cost) || 0).toFixed(2),
+    ]);
+  }
+  return rows;
+}
+
+export const poFilename = (vendor, ext) =>
+  "PO_" + String(vendor).replace(/[^A-Za-z0-9]+/g, "_") + "_" + todayStr() + "." + ext;

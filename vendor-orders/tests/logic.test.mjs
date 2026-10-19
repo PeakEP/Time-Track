@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { nextCutoff, suggestCoa, buildCSV, fmtCountdown, coaName, phaseName, CSV_COLUMNS } from "../src/logic.js";
+import { nextCutoff, suggestCoa, buildCSV, fmtCountdown, coaName, phaseName, CSV_COLUMNS, squareMatrix, mdy, poFilename, SQUARE_HEADERS } from "../src/logic.js";
 
 const tue = { weekday: 2, cutoff: "10:00", timezone: "America/Halifax" };
 
@@ -56,4 +56,25 @@ test("CSV has the agreed columns, escaping and subtotal", () => {
   assert.match(lines[7], /"Tile, ""grey"""/);
   assert.match(lines[7], /,21\.00,$/);
   assert.match(lines.at(-1), /SUBTOTAL \(ex\. HST\),25\.00,$/);
+});
+test("Square import matrix matches the template layout", () => {
+  const lines = [
+    { productName: "Oak LVP", sku: "NC045", description: "7in plank", qty: 10, cost: 3.5, neededBy: "2026-02-01" },
+    { productName: "Grout", sku: "", description: "", qty: 2, cost: 4 },
+  ];
+  const m = squareMatrix({ vendor: "MSI", shipTo: "", expectedOn: mdy("2026-02-01"), notes: "JMRC PO(s): A1", lines });
+  assert.deepEqual(m[3], ["Vendor", "MSI"]); // row 4
+  assert.deepEqual(m[4], ["Ship to", ""]); // row 5
+  assert.deepEqual(m[5], ["Expected On", "2/1/2026"]); // row 6
+  assert.deepEqual(m[6], ["Notes", "JMRC PO(s): A1"]); // row 7
+  assert.deepEqual(m[8], SQUARE_HEADERS); // row 9 header
+  assert.deepEqual(m[9], ["Oak LVP", "", "NC045", "", "", "7in plank", "10", "3.50"]); // row 10
+  assert.deepEqual(m[10], ["Grout", "", "", "", "", "", "2", "4.00"]);
+});
+test("mdy formats dates for Square; poFilename is safe", () => {
+  assert.equal(mdy("2026-02-01"), "2/1/2026");
+  assert.equal(mdy(""), "");
+  assert.equal(mdy("not a date"), "");
+  assert.ok(poFilename("MSI Inc.", "xlsx").startsWith("PO_MSI_Inc"));
+  assert.ok(poFilename("MSI", "pdf").endsWith(".pdf"));
 });

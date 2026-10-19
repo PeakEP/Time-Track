@@ -4,8 +4,9 @@
 import "./styles.css";
 import {
   COST, UNITS, STATUSES, esc, money, lineTotal, suggestCoa, nextCutoff, fmtCountdown, fmtDate,
-  localDate, todayStr, buildCSV,
+  localDate, todayStr, buildCSV, squareMatrix, mdy, poFilename, SQUARE_SHEET,
 } from "./logic.js";
+import { xlsxBlob, poPdfBlob } from "./export.js";
 import { isPurchaser as isPurchaserUser, canModifyLine, CLEAR_HISTORY_PHRASE, RESET_ALL_PHRASE } from "./rules.js";
 import { fetchConfig, remoteStore, demoStore, savedUser, saveUser } from "./store.js";
 
@@ -433,7 +434,9 @@ function renderBatch() {
     }
     h += `</tbody><tfoot><tr><td colspan="9" class="num">Batch subtotal (ex. HST)</td><td class="num mono">${money(sub)}</td><td colspan="3"></td></tr></tfoot></table></div>`;
     h += `<div class="row-actions" style="margin-top:14px">
-      <button class="btn cyan" data-action="exportBatch" data-id="${esc(name)}">⭳ Export PO (CSV)</button>`;
+      <button class="btn cyan" data-action="exportPdf" data-id="${esc(name)}">⭳ Download PDF (vendor)</button>
+      <button class="btn cyan" data-action="exportXlsx" data-id="${esc(name)}">⭳ Square PO (.xlsx)</button>
+      <button class="btn ghost" data-action="exportBatch" data-id="${esc(name)}">⭳ Cost CSV (QuickBooks)</button>`;
     if (isPurchaser()) h += `<button class="btn primary" data-action="markOrdered" data-id="${esc(name)}">Mark batch ordered</button>`;
     h += `</div></div>`;
   }
@@ -578,12 +581,8 @@ function markOrdered(name) {
       r.ordered + " line" + (r.ordered === 1 ? "" : "s") + " marked ordered"),
   );
 }
-function exportBatch(name) {
-  const lines = batchLines(name);
-  if (!lines.length) return toast("No ready lines");
-  const csv = buildCSV(name, dayLabel(vendorObj(name).day), lines, ME.name);
-  const fname = "PO_" + name.replace(/[^A-Za-z0-9]+/g, "_") + "_" + todayStr() + ".csv";
-  const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+function downloadBlob(blob, fname) {
+  const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
   a.download = fname;
@@ -591,7 +590,45 @@ function exportBatch(name) {
   a.click();
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
-  toast("PO exported");
+}
+
+// Order-level fields for the Square sheet / PDF, derived from the vendor batch.
+function batchMeta(name) {
+  const lines = batchLines(name);
+  const expectedOn = mdy(lines.map((o) => o.neededBy).filter(Boolean).sort().at(-1) || "");
+  const poRefs = [...new Set(lines.map((o) => o.po).filter(Boolean))].join(", ");
+  return { lines, orderDay: dayLabel(vendorObj(name)?.day), dateStr: mdy(todayStr()), expectedOn, poRefs };
+}
+
+function exportBatch(name) {
+  const lines = batchLines(name);
+  if (!lines.length) return toast("No ready lines");
+  const csv = buildCSV(name, dayLabel(vendorObj(name).day), lines, ME.name);
+  downloadBlob(new Blob([csv], { type: "text/csv;charset=utf-8" }), poFilename(name, "csv"));
+  toast("Cost CSV exported");
+}
+
+async function exportBatchXlsx(name) {
+  const { lines, expectedOn, poRefs } = batchMeta(name);
+  if (!lines.length) return toast("No ready lines");
+  try {
+    const rows = squareMatrix({ vendor: name, shipTo: "", expectedOn, notes: poRefs ? `JMRC PO(s): ${poRefs}` : "", lines });
+    downloadBlob(await xlsxBlob(rows, SQUARE_SHEET), poFilename(name, "xlsx"));
+    toast("Square PO exported (.xlsx)");
+  } catch (e) {
+    toast("Couldn't build the .xlsx — " + (e?.message || e), true);
+  }
+}
+
+function exportBatchPdf(name) {
+  const { lines, orderDay, dateStr, poRefs } = batchMeta(name);
+  if (!lines.length) return toast("No ready lines");
+  try {
+    downloadBlob(poPdfBlob({ vendor: name, orderDay, dateStr, poRefs, shipTo: "", notes: "", lines, generatedBy: ME.name }), poFilename(name, "pdf"));
+    toast("PO PDF downloaded");
+  } catch (e) {
+    toast("Couldn't build the PDF — " + (e?.message || e), true);
+  }
 }
 function saveSchedule() {
   const times = {};
@@ -803,6 +840,7 @@ document.addEventListener("click", (e) => {
     edit: () => edit(id),
     approve: () => approve(id), receive: () => receive(id), backorder: () => backorder(id), del: () => del(id),
     markOrdered: () => markOrdered(id), exportBatch: () => exportBatch(id),
+    exportXlsx: () => exportBatchXlsx(id), exportPdf: () => exportBatchPdf(id),
     editVendor: () => { const v = VENDORS.find((x) => x.id === id); if (v) openVendorModal(v); },
     toggleVendor: () => toggleVendor(id),
     clearHistory: () => openTypeConfirm("Clear history",
