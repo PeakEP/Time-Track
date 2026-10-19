@@ -31,16 +31,22 @@ test("countdown format", () => {
   assert.equal(fmtCountdown((2 * 1440 + 61) * 60000), "2d 1h 1m");
 });
 test("COA suggest: longest keyword wins, no guess on miss", () => {
-  assert.equal(suggestCoa("Oak LVP 7in"), "5540");
+  assert.equal(suggestCoa("Oak LVP 7in"), "5515"); // flooring material now 5515
   assert.equal(suggestCoa("Brass pendants"), "5525");
+  assert.equal(suggestCoa("Painting crew deposit"), "5540"); // "painting" → Sub - Painting
   assert.equal(suggestCoa("Mystery widget"), "");
-  assert.equal(coaName("5540"), "Flooring & Tile Material");
-  assert.equal(phaseName("5540"), "Phase 5 - Interior Finishes & Specialties");
+  assert.equal(coaName("5515"), "Flooring & Tile Material");
+  assert.equal(coaName("5540"), "Sub - Painting"); // same code, new meaning in the 2026-10 COA
+  assert.equal(phaseName("5515"), "Phase 5 - Finishes & Specialties");
+  // non-postable / dropped accounts never appear in the picker
+  assert.equal(coaName("7130"), ""); // 7000-series G&A dropped
+  assert.equal(coaName("5020"), ""); // payroll / labour burden excluded
+  assert.equal(coaName("5000"), ""); // header rollup excluded
 });
 test("CSV has the agreed columns, escaping and subtotal", () => {
   const csv = buildCSV("MSI", "Tuesday", [
-    { po: "P1", coa: "5540", productName: 'Tile, "grey"', qty: 2, cost: 10.5, unit: "box" },
-    { po: "P1", coa: "5540", productName: "Grout", qty: 1, cost: 4 },
+    { po: "P1", coa: "5515", productName: 'Tile, "grey"', qty: 2, cost: 10.5, unit: "box" },
+    { po: "P1", coa: "5515", productName: "Grout", qty: 1, cost: 4 },
   ], "Mike");
   const lines = csv.trim().split("\n");
   assert.equal(lines[6], CSV_COLUMNS.join(","));

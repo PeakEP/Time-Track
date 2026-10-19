@@ -39,7 +39,7 @@ after(async () => {
   if (dir) await rm(dir, { recursive: true, force: true });
 });
 
-const item = (o = {}) => ({ productName: "Oak LVP", coa: "5540", qty: 10, unit: "box", cost: 42.5, ...o });
+const item = (o = {}) => ({ productName: "Oak LVP", coa: "5515", qty: 10, unit: "box", cost: 42.5, ...o });
 
 test("config is public and reports live", { skip }, async () => {
   const r = await call(null, "GET", "config");
