@@ -55,6 +55,8 @@
       .row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
       .empty { color: var(--muted); padding: 10px 0; }
       #msg { padding: 24px 0; color: var(--ink-2); }
+      .del { color: #c0392b; border-color: #e3b4ad; margin-left: 6px; }
+      .del:disabled { color: #bbb; border-color: var(--line, #ddd); }
       .beta { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 0 6px; border-radius: 9px; background: #fdf2dc; color: #8a5a12; margin-left: 4px; }
     </style>
   </head>
@@ -209,17 +211,33 @@
             h("td", { className: "c" }, box(u.apps.cabinet, (e) => save(u, { apps: { cabinet: e.target.checked } }), `${u.name} Cabinet Designer`)),
             h("td", { className: "c" }, box(u.apps.aline, (e) => save(u, { apps: { aline: e.target.checked } }), `${u.name} Aline Designer`)),
             h("td", { className: "c" }, box(u.apps.quoteBuilder, (e) => save(u, { apps: { quoteBuilder: e.target.checked } }), `${u.name} Quote Builder`)),
-            h("td", {}, h("button", {
-              type: "button",
-              onclick: async () => {
-                if (!confirm(`Issue a new PIN for ${u.name}? Their old PIN stops working and they're signed out everywhere.`)) return;
-                try {
-                  const r = await api("POST", `team/${u.id}/reset-pin`);
-                  modal(`PIN for ${u.name}`, ["Give them this PIN. It won't be shown again."], r.pin);
-                } catch (e) { toast(e.message, true); }
-                load();
-              },
-            }, "Reset PIN")),
+            h("td", {},
+              h("button", {
+                type: "button",
+                onclick: async () => {
+                  if (!confirm(`Issue a new PIN for ${u.name}? Their old PIN stops working and they're signed out everywhere.`)) return;
+                  try {
+                    const r = await api("POST", `team/${u.id}/reset-pin`);
+                    modal(`PIN for ${u.name}`, ["Give them this PIN. It won't be shown again."], r.pin);
+                  } catch (e) { toast(e.message, true); }
+                  load();
+                },
+              }, "Reset PIN"),
+              h("button", {
+                type: "button",
+                className: "del",
+                disabled: u.id === meId,
+                title: u.id === meId ? "You can't delete your own account" : "",
+                onclick: async () => {
+                  if (!confirm(`Permanently delete ${u.name}? This removes their sign-in and access for good and can't be undone.`)) return;
+                  try {
+                    await api("DELETE", `team/${u.id}`);
+                    toast(`${u.name} deleted`);
+                  } catch (e) { toast(e.message, true); }
+                  load();
+                },
+              }, "Delete"),
+            ),
           );
           // The owner sign-in is set in Netlify; it always has everything.
           if (u.owner) row.querySelectorAll("input, select, button").forEach((el) => {
@@ -242,17 +260,31 @@
               load();
             }, `${c.name} access`)),
             h("td", {}, when),
-            h("td", {}, h("button", {
-              type: "button",
-              onclick: async () => {
-                if (!confirm(`Issue a new PIN for ${c.name}? Their old PIN stops working. This also turns their access on.`)) return;
-                try {
-                  const r = await api("POST", `clients/${c.projectId}/reset-pin`);
-                  modal(`PIN for ${r.customerName}`, ["Send them the link and this PIN. It won't be shown again."], r.pin, shareLink(r.customerName));
-                } catch (e) { toast(e.message, true); }
-                load();
-              },
-            }, "Reissue PIN")),
+            h("td", {},
+              h("button", {
+                type: "button",
+                onclick: async () => {
+                  if (!confirm(`Issue a new PIN for ${c.name}? Their old PIN stops working. This also turns their access on.`)) return;
+                  try {
+                    const r = await api("POST", `clients/${c.projectId}/reset-pin`);
+                    modal(`PIN for ${r.customerName}`, ["Send them the link and this PIN. It won't be shown again."], r.pin, shareLink(r.customerName));
+                  } catch (e) { toast(e.message, true); }
+                  load();
+                },
+              }, "Reissue PIN"),
+              h("button", {
+                type: "button",
+                className: "del",
+                onclick: async () => {
+                  if (!confirm(`Permanently delete ${c.name} and their selections project? This can't be undone.`)) return;
+                  try {
+                    await api("DELETE", `clients/${c.projectId}`);
+                    toast(`${c.name} deleted`);
+                  } catch (e) { toast(e.message, true); }
+                  load();
+                },
+              }, "Delete"),
+            ),
           );
         }
 

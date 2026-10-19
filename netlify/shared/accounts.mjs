@@ -200,6 +200,24 @@ export function resetStaffPin(book, id) {
   return { user: u, pin };
 }
 
+// Permanently remove a team member. The owner can't be deleted (it's set in
+// Netlify); you can't delete yourself; and you can't remove the last active
+// Admin or the last active Purchaser.
+export function deleteStaff(book, id, byId) {
+  const u = book.users.find((x) => x.id === id);
+  if (!u) throw httpError(404, "User not found");
+  ownerLocked(u);
+  if (byId && u.id === byId) throw httpError(400, "You can't delete your own account.");
+  const others = book.users.filter((x) => x.id !== id && x.active);
+  if (u.active && accessOf(u).admin && !others.some((x) => accessOf(x).admin))
+    throw httpError(400, "That's the only Admin — make someone else an Admin first.");
+  if (u.active && accessOf(u).apps.vendorOrders === "purchaser" && !others.some((x) => accessOf(x).apps.vendorOrders === "purchaser"))
+    throw httpError(400, "That's the only Purchaser — make someone else a Purchaser first.");
+  book.users = book.users.filter((x) => x.id !== id);
+  book.sessions = book.sessions.filter((s) => s.userId !== id);
+  return { name: u.name };
+}
+
 // Change access and/or active. Always keeps at least one active Admin and one
 // active Purchaser (someone must be able to manage the team and place orders).
 export function updateStaff(book, id, body) {

@@ -8,10 +8,10 @@
 // app and the gate accept.
 import { openStore, readState, mutate } from "../../shared/storage.mjs";
 import {
-  canUse, needsSetup, ownerLogin, publicUser, setupFirstAdmin, createStaff, resetStaffPin, updateStaff,
+  canUse, needsSetup, ownerLogin, publicUser, setupFirstAdmin, createStaff, resetStaffPin, updateStaff, deleteStaff,
   sessionCookie, clearCookie, tokenOf, resolveToken, accessOf, dropSession,
 } from "../../shared/accounts.mjs";
-import { signIn, staffMe, clientMe, SEL_INDEX, resetClientPin, setClientAccess } from "../../shared/signin.mjs";
+import { signIn, staffMe, clientMe, SEL_INDEX, resetClientPin, setClientAccess, deleteClient } from "../../shared/signin.mjs";
 
 const GATED_APPS = ["vendorOrders", "selections", "cabinet", "aline", "quoteBuilder", "admin"];
 
@@ -108,7 +108,7 @@ export function createHandler({ stores: injected } = {}) {
 
       // ---- Admin ----
       const [a, b, c] = path.split("/");
-      if (a === "team" || a === "clients") await requireAdmin(stores, req);
+      const admin = a === "team" || a === "clients" ? await requireAdmin(stores, req) : null;
       if (method === "GET" && a === "team" && !b) return json(await team(stores));
       if (method === "POST" && a === "team" && !b) {
         const idx = await readState(stores.sel, SEL_INDEX);
@@ -123,8 +123,13 @@ export function createHandler({ stores: injected } = {}) {
         const r = await mutate(stores.vo, (book) => resetStaffPin(book, b));
         return json({ user: publicUser(r.user), pin: r.pin });
       }
+      if (a === "team" && isId(b) && !c && method === "DELETE") {
+        const r = await mutate(stores.vo, (book) => deleteStaff(book, b, admin?.user?.id));
+        return json({ ok: true, name: r.name });
+      }
       if (a === "clients" && isId(b) && c === "reset-pin" && method === "POST") return json(await resetClientPin(stores, b));
       if (a === "clients" && isId(b) && !c && method === "PATCH") return json(await setClientAccess(stores, b, body.active));
+      if (a === "clients" && isId(b) && !c && method === "DELETE") return json(await deleteClient(stores, b));
 
       throw httpError(404, "Not found");
     } catch (e) {
