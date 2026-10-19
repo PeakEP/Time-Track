@@ -2,9 +2,10 @@
   "source": "J.M Robins Construction Ltd. — QuickBooks Chart of Accounts (COGS), 2026-10-01",
   "effective_date": "2026-10-01",
   "format": "4-digit code",
-  "scope": "Postable construction, retail and site-maintenance COGS accounts only. Header/sub-header rollups, payroll & union-burden labour accounts, and balance-sheet inventory accounts are not pickable on a PO.",
+  "scope": "Postable showroom/warehouse inventory, construction, retail and site-maintenance accounts. Header/sub-header rollups, payroll & union-burden labour accounts, and the 7000-series G&A accounts are not pickable on a PO.",
   "fallback_rule": "If no code clearly fits the purchase, contact Susan (Accounting) immediately before finalizing the PO. Never invent or guess a code.",
   "phases": {
+    "1200": {"name": "Showroom & Warehouse Inventory", "is_header": true},
     "5100": {"name": "Phase 1 - Pre-Construction", "is_header": true},
     "5200": {"name": "Phase 2 - Site Work & Infrastructure", "is_header": true},
     "5300": {"name": "Phase 3 - Structural Shell (Vertical)", "is_header": true},
@@ -16,6 +17,19 @@
     "5900": {"name": "Residential Site Maintenance", "is_header": true}
   },
   "codes": {
+    "1230": {"name": "Inventory in Transit", "description": "Purchased stock in transit, not yet received into the showroom/warehouse", "phase": "1200"},
+    "1241": {"name": "Acoustic & Decorative Wall Panels", "description": "Showroom/warehouse resale stock", "phase": "1200"},
+    "1242": {"name": "Appliances & Range Hoods", "description": "Showroom/warehouse resale stock", "phase": "1200"},
+    "1243": {"name": "Kitchens & Cabinetry", "description": "Showroom/warehouse resale stock", "phase": "1200"},
+    "1244": {"name": "Exterior Coverings", "description": "Showroom/warehouse resale stock", "phase": "1200"},
+    "1245": {"name": "Flooring", "description": "Showroom/warehouse resale stock", "phase": "1200"},
+    "1246": {"name": "Installation Materials", "description": "Showroom/warehouse resale stock", "phase": "1200"},
+    "1247": {"name": "Interior Décor", "description": "Showroom/warehouse resale stock", "phase": "1200"},
+    "1248": {"name": "Passage Doors", "description": "Showroom/warehouse resale stock", "phase": "1200"},
+    "1249": {"name": "Lighting & Fans", "description": "Showroom/warehouse resale stock", "phase": "1200"},
+    "1250": {"name": "Paint", "description": "Showroom/warehouse resale stock", "phase": "1200"},
+    "1251": {"name": "Plumbing", "description": "Showroom/warehouse resale stock", "phase": "1200"},
+
     "5105": {"name": "External Estimating & Pre-Con Services", "description": "Outsourced estimating and pre-construction services", "phase": "5100"},
     "5120": {"name": "Direct Design Costs", "description": "External design & drafting, design software", "phase": "5100"},
     "5125": {"name": "Concept Design & Rendering", "description": "Concept design and 3D rendering", "phase": "5100"},

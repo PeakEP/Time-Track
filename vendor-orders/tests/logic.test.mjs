@@ -38,6 +38,9 @@ test("COA suggest: longest keyword wins, no guess on miss", () => {
   assert.equal(coaName("5515"), "Flooring & Tile Material");
   assert.equal(coaName("5540"), "Sub - Painting"); // same code, new meaning in the 2026-10 COA
   assert.equal(phaseName("5515"), "Phase 5 - Finishes & Specialties");
+  // showroom/warehouse inventory accounts are pickable, grouped on their own
+  assert.equal(coaName("1245"), "Flooring");
+  assert.equal(phaseName("1245"), "Showroom & Warehouse Inventory");
   // non-postable / dropped accounts never appear in the picker
   assert.equal(coaName("7130"), ""); // 7000-series G&A dropped
   assert.equal(coaName("5020"), ""); // payroll / labour burden excluded
