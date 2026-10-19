@@ -310,6 +310,14 @@ test("a cabinet package allowance prices as one lump-sum line (no per-LF)", () =
   assert.ok(!r.questions.some((x) => x.kind === "cabinets"));
 });
 
+test("Takeoff (notes & drawings) is step 2 for every project type", () => {
+  for (const t of ["renovation", "remodel", "shop", "custom-home"]) {
+    const steps = E.stepsFor(t);
+    assert.equal(steps[0].id, "client", `${t}: step 1 is client & project`);
+    assert.equal(steps[1].id, "documents", `${t}: step 2 is the takeoff`);
+  }
+});
+
 test("workbook: margins by cost code from the retail reference", () => {
   const sheets = { "Retail Reference (JobTread)": [["Cost Code", "Item", "Unit Cost", "JobTread Retail", "Markup x"], [], ["1801 Porcelain Tile", "a", 2, 4, 2], ["1801 Porcelain Tile", "b", 3, 6, 2], ["1801 Porcelain Tile", "c", 1, 1.5, 1.5], ["1009 Fans", "d", 10, 12, 1.2]] };
   const r = E.marginsFromRetail(sheets);

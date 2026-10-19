@@ -245,14 +245,20 @@ test("document reader: chunks upload, job runs once with its secret, uploads are
   assert.ok(![...stores.qb.data.keys()].some((k) => k.startsWith("uploads/")));
 });
 
-test("reader prompt pieces: schema limits fields to the interview keys", async () => {
-  const { resultSchema, contentBlocks } = await import("../../netlify/shared/quote-reader.mjs");
+test("reader prompt pieces: schema limits fields to the interview keys; scope notes govern", async () => {
+  const { resultSchema, contentBlocks, questionText, SYSTEM } = await import("../../netlify/shared/quote-reader.mjs");
   const s = resultSchema(["length", "width"]);
   assert.deepEqual(s.properties.answers.items.properties.field.enum, ["length", "width"]);
   assert.equal(s.additionalProperties, false);
   const blocks = contentBlocks([{ name: "a.pdf", type: "application/pdf", data: Buffer.from("x") }, { name: "p.jpg", type: "image/jpg", data: Buffer.from("y") }]);
   assert.equal(blocks[0].type, "document");
   assert.equal(blocks[2].source.media_type, "image/jpeg");
+  // The rep's notes reach the reader and are framed as what's in scope.
+  const qt = questionText({ quoteType: "renovation", fields: [{ key: "length", label: "Length", type: "number" }], answers: {}, notes: "Plans show 4 rooms — kitchen only." });
+  assert.match(qt, /kitchen only/);
+  assert.match(qt, /in scope/i);
+  // And the system prompt makes the notes win over the drawings on scope.
+  assert.match(SYSTEM, /notes set the scope|notes win/i);
 });
 
 test("cabinet catalogs: Admin uploads the supplier files, reps read them", async () => {

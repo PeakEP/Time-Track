@@ -70,6 +70,7 @@ export const STEPS: Step[] = [
       { key: "scopeSummary", label: "One-line scope", type: "text", help: "e.g. \"Main bath and kitchen renovation\" — appears on the quote" },
     ],
   },
+  { id: "documents", title: "Takeoff", intro: "The basis of the quote. Scan the plans, SOW, photos and site notes — then say what's actually in scope. The reader fills in the rooms, scope, cabinets and selections for you to confirm.", fields: [] },
   {
     id: "building",
     title: "Building",
@@ -147,7 +148,6 @@ export const STEPS: Step[] = [
   },
   { id: "cabinets", title: "Cabinets", intro: "Price each package (kitchen, vanity, ensuite…) from Aline, Oppein or Divine — scan a plan, upload or paste the SKU list, or enter a lump-sum allowance.", types: ["renovation", "remodel", "custom-home"], fields: [] },
   { id: "selections", title: "Products", intro: "Pick the products to price from the catalog. Anything left blank uses the default set in Settings.", fields: [] },
-  { id: "documents", title: "Notes & drawings", intro: "Upload drawings and notes, or connect the client folder. The document reader suggests answers for you to accept.", fields: [] },
   {
     id: "wrap",
     title: "Inclusions & exclusions",
