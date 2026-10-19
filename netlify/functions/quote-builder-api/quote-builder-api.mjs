@@ -201,6 +201,10 @@ const summary = (q) => ({
   total: q.totals?.total ?? null, createdBy: q.createdBy, updatedAt: q.updatedAt, updatedBy: q.updatedBy || "",
 });
 
+// A quote is finalized once it's been exported/sent (or marked won/lost).
+// Finalized quotes are locked: only an Admin can edit or reopen them.
+const FINALIZED = (s) => s === "sent" || s === "won" || s === "lost";
+
 async function saveQuote(stores, who, id, body) {
   const q = body.quote;
   if (!q || typeof q !== "object" || q.id !== id) throw new HttpError(400, "Quote id doesn't match");
@@ -210,6 +214,12 @@ async function saveQuote(stores, who, id, body) {
     const prev = cur.id ? { ...cur } : null;
     if (prev && body.baseUpdatedAt && prev.updatedAt !== body.baseUpdatedAt && !body.force)
       throw Object.assign(new HttpError(409, `${prev.updatedBy || "Someone"} saved this quote since you opened it.`), { current: prev });
+    // Locked once finalized: a rep may only change the outcome status (sent →
+    // won/lost), never the content, and can't reopen it. An Admin edits freely.
+    if (prev && FINALIZED(prev.status) && !who.admin) {
+      const st = FINALIZED(q.status) ? q.status : prev.status;
+      return replaceDoc(cur, { ...prev, status: st, updatedAt: now, updatedBy: who.name });
+    }
     // Approval is only ever set by an Admin through /approve; a rep can't
     // write it, and 'approved' can't be set by hand.
     const approval = prev?.approval;
@@ -260,7 +270,10 @@ async function approveQuote(stores, who, id, body) {
 
 async function deleteQuote(stores, who, id) {
   const q = await stores.qb.get(`quotes/${id}`, { type: "json" });
-  if (q && !who.admin && q.createdBy !== who.name) throw new HttpError(403, "Only the person who made it or an Admin can delete a quote.");
+  if (q && !who.admin) {
+    if (FINALIZED(q.status)) throw new HttpError(403, "This quote is finalized — only an Admin can delete it.");
+    if (q.createdBy !== who.name) throw new HttpError(403, "Only the person who made it or an Admin can delete a quote.");
+  }
   await stores.qb.delete(`quotes/${id}`);
   await mutate(stores.qb, (idx) => { idx.quotes = idx.quotes.filter((x) => x.id !== id); }, INDEX);
   return { ok: true };

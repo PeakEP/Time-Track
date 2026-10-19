@@ -163,6 +163,29 @@ test("saving over someone else's newer save is refused with their copy", async (
   assert.equal((await call("sam", "DELETE", `quotes/${id}`)).status, 200);
 });
 
+test("finalized quotes lock: reps can't edit content or delete, only move the outcome; Admin can", async () => {
+  const id = "33333333-2222-3333-4444-555555555555";
+  // Sam drafts it, then exporting sends it (status "sent").
+  const draft = await call("sam", "PUT", `quotes/${id}`, { quote: quote({ id, title: "Lake reno" }) });
+  assert.equal(draft.body.quote.status, "draft");
+  const sent = await call("sam", "PUT", `quotes/${id}`, { quote: quote({ id, title: "Lake reno", status: "sent" }), baseUpdatedAt: draft.body.quote.updatedAt });
+  assert.equal(sent.body.quote.status, "sent");
+  // A rep's attempt to change the content of a sent quote is ignored.
+  const edit = await call("sam", "PUT", `quotes/${id}`, { quote: quote({ id, title: "Changed title", status: "sent" }), baseUpdatedAt: sent.body.quote.updatedAt });
+  assert.equal(edit.status, 200);
+  assert.equal(edit.body.quote.title, "Lake reno");
+  // A rep can still move the outcome (sent → won).
+  const won = await call("sam", "PUT", `quotes/${id}`, { quote: quote({ id, title: "ignored", status: "won" }), baseUpdatedAt: edit.body.quote.updatedAt });
+  assert.equal(won.body.quote.status, "won");
+  assert.equal(won.body.quote.title, "Lake reno");
+  // A rep can't delete a finalized quote...
+  assert.equal((await call("sam", "DELETE", `quotes/${id}`)).status, 403);
+  // ...but an Admin edits the content freely and can delete it.
+  const fixed = await call("mike", "PUT", `quotes/${id}`, { quote: quote({ id, title: "Admin fixed", status: "won" }), baseUpdatedAt: won.body.quote.updatedAt });
+  assert.equal(fixed.body.quote.title, "Admin fixed");
+  assert.equal((await call("mike", "DELETE", `quotes/${id}`)).status, 200);
+});
+
 test("Square mapping uses Default Unit Cost, not the retail price", async () => {
   const { mapSquareObjects } = await import("../../netlify/shared/square-catalog.mjs");
   const objs = [

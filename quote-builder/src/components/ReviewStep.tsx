@@ -5,7 +5,7 @@ import { approvalValid, canSend, marginBreakdown, type computeQuote } from "../e
 import QuestionsPanel from "./QuestionsPanel";
 import { buildProposal, costCsv, fileName } from "../utils/proposalDocx";
 import { download, loadFolderHandle, writeToFolder } from "../utils/files";
-import { uid } from "../data/questions";
+import { uid, unitOptions } from "../data/questions";
 import CatalogPicker from "./CatalogPicker";
 import { itemLabel } from "../engine/catalog";
 import { money, pct, when } from "../utils/format";
@@ -294,7 +294,11 @@ function AddLine({ line, onClose, onAdd }: { line: ManualLine; onClose: () => vo
                 <option value="material">Material</option><option value="labour">Labour</option><option value="sub">Sub-trade</option><option value="allowance">Allowance</option>
               </select>
             </label>
-            <label className="field"><span>Unit</span><input value={l.unit} onChange={(e) => setL({ ...l, unit: e.target.value.toUpperCase() })} /></label>
+            <label className="field"><span>Unit</span>
+              <select value={l.unit} onChange={(e) => setL({ ...l, unit: e.target.value })}>
+                {unitOptions(l.unit).map((u) => <option key={u} value={u}>{u}</option>)}
+              </select>
+            </label>
             <label className="field"><span>Qty</span><input type="number" step="any" value={l.qty} onChange={(e) => setL({ ...l, qty: Number(e.target.value) || 0 })} /></label>
             <label className="field"><span>Unit cost</span><input type="number" step="0.01" value={l.unitCost ?? ""} onChange={(e) => setL({ ...l, unitCost: e.target.value === "" ? null : Number(e.target.value), catalogItemId: undefined })} /></label>
           </div>

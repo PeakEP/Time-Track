@@ -140,7 +140,7 @@ export function questions(q: Quote, priced: PricedLine[], s: Settings, cabinetDa
   if (!isNewBuild(q) && !q.answers.rooms.length) out.push({ kind: "field", step: "rooms", field: "rooms", label: "Which rooms are in the job? Add each room and tick what's being done." });
 
   // Cabinets: rooms with cabinets that aren't priced from a supplier yet.
-  const covered = new Set((q.cabinetSets || []).filter((c) => c.lines.length).map((c) => c.roomId));
+  const covered = new Set((q.cabinetSets || []).filter((c) => c.lines.length || (c.allowance || 0) > 0).map((c) => c.roomId));
   if (!(q.answers.cabinetQuote > 0)) {
     if (isNewBuild(q) && q.type === "custom-home" && q.answers.kitchenCabinetLF > 0 && !covered.size)
       out.push({ kind: "cabinets", roomId: "", label: "Which cabinets? Price the kitchen and vanities from Aline, Oppein or Divine (Cabinets step), or enter the cabinet quote." });

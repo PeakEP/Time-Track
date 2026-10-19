@@ -52,6 +52,8 @@ export interface CabinetSet {
   assemble: boolean; // Divine assembly
   shipping: number; // freight $ (Divine default 150)
   lines: { id: string; sku: string; qty: number }[];
+  allowance?: number; // lump-sum package allowance (used when there's no priced SKU list)
+  unit?: string; // unit shown for the allowance line (default PKG)
   notes: string;
 }
 

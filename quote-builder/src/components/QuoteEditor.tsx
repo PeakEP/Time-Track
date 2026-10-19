@@ -19,6 +19,8 @@ export default function QuoteEditor() {
   const s = steps[Math.min(step, steps.length - 1)];
   const open = calc.questions.length;
   const reviewIdx = steps.findIndex((x) => x.id === "review");
+  const finalized = quote.status === "sent" || quote.status === "won" || quote.status === "lost";
+  const locked = finalized && !me?.admin; // reps can't edit a finalized quote
 
   return (
     <div>
@@ -36,7 +38,7 @@ export default function QuoteEditor() {
         <button className="btn sm" onClick={() => {
           update((q) => { q.version += 1; q.status = "draft"; });
           notify(`Now on V${quote.version + 1}. The approval is kept only if the total doesn't change.`);
-        }} title="Start the next revision (V+1)">New version</button>
+        }} title="Start the next revision (V+1)" disabled={locked}>New version</button>
         <button className="btn sm ghost" onClick={() => go("list")}>Close</button>
       </div>
 
@@ -45,6 +47,17 @@ export default function QuoteEditor() {
           {saveError}
           <button className="btn sm" onClick={takeTheirs}>Load their version</button>
           <button className="btn sm danger" onClick={() => save(true)}>Keep mine (overwrite)</button>
+        </div>
+      )}
+
+      {finalized && (
+        <div className="banner info">
+          This quote is finalized ({quote.status.replace("-", " ")}).{" "}
+          {me?.admin ? (
+            <>Editing is locked for the sales team.{" "}
+              <button className="btn sm" onClick={() => { update((q) => { q.status = "draft"; }); notify("Reopened for editing — it's a draft again."); }}>Unlock for editing</button>
+            </>
+          ) : "Only an Admin can reopen it for editing or delete it."}
         </div>
       )}
 
@@ -70,12 +83,14 @@ export default function QuoteEditor() {
             <h2>{s.title}</h2>
             <p>{s.intro}</p>
           </div>
-          {s.fields.length > 0 && <div className="card"><FieldGrid fields={s.fields} /></div>}
-          {s.id === "rooms" && <RoomsStep />}
-          {s.id === "cabinets" && <CabinetsStep />}
-          {s.id === "selections" && <ProductsStep />}
-          {s.id === "documents" && <DocumentsStep />}
-          {s.id === "review" && <ReviewStep calc={calc} />}
+          <fieldset className="lockwrap" disabled={locked}>
+            {s.fields.length > 0 && <div className="card"><FieldGrid fields={s.fields} /></div>}
+            {s.id === "rooms" && <RoomsStep />}
+            {s.id === "cabinets" && <CabinetsStep />}
+            {s.id === "selections" && <ProductsStep />}
+            {s.id === "documents" && <DocumentsStep />}
+            {s.id === "review" && <ReviewStep calc={calc} />}
+          </fieldset>
           <div className="step-foot">
             {step > 0 && <button className="btn" onClick={() => setStep(step - 1)}>← Back</button>}
             <div className="spacer" />

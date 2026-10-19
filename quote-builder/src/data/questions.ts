@@ -43,6 +43,11 @@ export const FLOOR_TYPES: { value: FloorType; label: string; codes: string[]; ti
   { value: "other", label: "Other flooring", codes: ["1705"] },
 ];
 export const floorType = (v: string) => FLOOR_TYPES.find((t) => t.value === v) || FLOOR_TYPES[0];
+
+// Units a rep can pick for a line or a cabinet package. LS = lump sum, PKG = package.
+export const UNITS = ["EA", "LS", "PKG", "SF", "LF", "HR", "SET", "PR", "ROLL", "BOX", "SHEET", "GAL", "DAY"];
+// Put the current value first if it isn't one of the standard units (e.g. from the catalog).
+export const unitOptions = (current = "") => (current && !UNITS.includes(current) ? [current, ...UNITS] : UNITS);
 // Floor types a build/room can actually be finished in (everything but "none").
 export const REAL_FLOOR_TYPES = FLOOR_TYPES.filter((t) => t.value !== "none");
 
@@ -136,11 +141,11 @@ export const STEPS: Step[] = [
     types: RENO,
     fields: [
       { key: "occupied", label: "Home is lived in during the work", type: "bool" },
-      { key: "cabinetQuote", label: "Cabinet quote (Cabinet Designer / supplier)", type: "money", help: "Leave 0 to carry the owner's $/LF cabinet allowance" },
+      { key: "cabinetQuote", label: "Cabinet quote (Cabinet Designer / supplier)", type: "money", help: "Leave 0 to price cabinets per package on the Cabinets step" },
       { key: "disposalBins", label: "Disposal bins (0 = estimate)", type: "number", unit: "ea" },
     ],
   },
-  { id: "cabinets", title: "Cabinets", intro: "Price the cabinets and vanities from Aline, Oppein or Divine — type or paste the SKU list from the design.", types: ["renovation", "remodel", "custom-home"], fields: [] },
+  { id: "cabinets", title: "Cabinets", intro: "Price each package (kitchen, vanity, ensuite…) from Aline, Oppein or Divine — scan a plan, upload or paste the SKU list, or enter a lump-sum allowance.", types: ["renovation", "remodel", "custom-home"], fields: [] },
   { id: "selections", title: "Products", intro: "Pick the products to price from the catalog. Anything left blank uses the default set in Settings.", fields: [] },
   { id: "documents", title: "Notes & drawings", intro: "Upload drawings and notes, or connect the client folder. The document reader suggests answers for you to accept.", fields: [] },
   {

@@ -15,7 +15,8 @@ const STATUS: Record<string, string> = {
 };
 
 export default function QuoteList() {
-  const { quotes, startQuote, openQuote, me, settingsSaved, items, notify } = useApp();
+  const { quotes, startQuote, openQuote, deleteQuote, me, settingsSaved, items, notify } = useApp();
+  const finalized = (st: string) => st === "sent" || st === "won" || st === "lost";
   const [q, setQ] = useState("");
   const [mine, setMine] = useState(false);
   const rows = useMemo(() => {
@@ -67,10 +68,12 @@ export default function QuoteList() {
           <div className="scroll-x">
             <table className="t">
               <thead>
-                <tr><th>No.</th><th>Client / project</th><th>Type</th><th>Status</th><th className="num">Total</th><th>Updated</th><th>By</th></tr>
+                <tr><th>No.</th><th>Client / project</th><th>Type</th><th>Status</th><th className="num">Total</th><th>Updated</th><th>By</th><th></th></tr>
               </thead>
               <tbody>
-                {rows.map((x) => (
+                {rows.map((x) => {
+                  const canDelete = me?.admin || (x.createdBy === me?.name && !finalized(x.status));
+                  return (
                   <tr key={x.id} className="quote-row" onClick={() => openQuote(x.id).catch((e) => notify(e.message, true))}>
                     <td>{x.number || <span className="muted">draft</span>}{x.version > 1 ? ` V${x.version}` : ""}</td>
                     <td><b>{x.client || "(no client yet)"}</b><div className="muted small">{x.title !== x.client ? x.title : ""} {x.address}</div></td>
@@ -79,8 +82,19 @@ export default function QuoteList() {
                     <td className="num">{money0(x.total)}</td>
                     <td className="small">{when(x.updatedAt)}</td>
                     <td className="small">{x.updatedBy || x.createdBy}</td>
+                    <td>
+                      {canDelete && (
+                        <button className="btn sm ghost danger" title="Delete this quote" onClick={(e) => {
+                          e.stopPropagation();
+                          const fin = finalized(x.status);
+                          if (!confirm(`Delete ${x.number || "this draft"}${x.client ? ` for ${x.client}` : ""}? This can't be undone.${fin ? " It's a finalized quote." : ""}`)) return;
+                          deleteQuote(x.id).then(() => notify("Quote deleted.")).catch((err) => notify(err.message, true));
+                        }}>Delete</button>
+                      )}
+                    </td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
           </div>

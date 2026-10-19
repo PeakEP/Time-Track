@@ -41,6 +41,7 @@ interface State {
   deleteCustomProduct(id: string): Promise<void>;
   loadCabinets(): Promise<void>;
   openQuote(id: string): Promise<void>;
+  deleteQuote(id: string): Promise<void>;
   startQuote(type: ProjectType): void;
   duplicateQuote(): void;
   update(fn: (q: Quote) => void): void;
@@ -157,6 +158,15 @@ export const useApp = create<State>((set, get) => ({
     if (get().dirty) await get().save();
     const q = normalizeQuote(await server.quote(id));
     set({ quote: q, baseUpdatedAt: q.updatedAt, dirty: false, conflict: null, saveError: "", step: 0, view: "quote" });
+  },
+
+  async deleteQuote(id) {
+    await server.deleteQuote(id);
+    set({ quotes: get().quotes.filter((x) => x.id !== id) });
+    if (get().quote?.id === id) {
+      try { localStorage.removeItem(DRAFT); } catch { /* ignore */ }
+      set({ quote: null, dirty: false, view: "list" });
+    }
   },
 
   startQuote(type) {
