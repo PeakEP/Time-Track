@@ -187,7 +187,7 @@ export default function DocumentsStep() {
     <div className="stack">
       <div className="grid two">
         <div className="card">
-          <h3>Drawings, photos &amp; notes</h3>
+          <h3>Plans, SOW &amp; photos</h3>
           <div
             className={`drop${over ? " over" : ""}`}
             onDragOver={(e) => { e.preventDefault(); setOver(true); }}
@@ -197,7 +197,7 @@ export default function DocumentsStep() {
             Drop files here, or{" "}
             <button className="btn sm" onClick={() => input.current?.click()}>choose files</button>
             <input ref={input} type="file" multiple hidden accept=".pdf,.png,.jpg,.jpeg,.gif,.webp,.txt,.md,.csv,image/*,application/pdf" onChange={(e) => { void addFiles([...(e.target.files || [])], "upload"); e.target.value = ""; }} />
-            <div className="small" style={{ marginTop: 6 }}>PDF drawings, photos and text notes. Kept in this browser with the quote.</div>
+            <div className="small" style={{ marginTop: 6 }}>PDF plans &amp; scope of work, photos, cabinet lists and text notes. Kept in this browser with the quote.</div>
           </div>
         </div>
         <div className="card">
@@ -234,12 +234,19 @@ export default function DocumentsStep() {
 
       <div className="card">
         <div className="card-head">
-          <h3>On this quote</h3>
+          <h3>Takeoff</h3>
           <div className="spacer" />
           <button className="btn primary" disabled={!!busy} onClick={runReader}>Read documents &amp; suggest answers</button>
         </div>
         {busy && <div className="banner info">{busy}</div>}
-        {quote.attachments.length === 0 ? <p className="muted">No files yet.</p> : (
+        <label className="field">
+          <span>What's in scope &amp; notes for the reader — this steers the takeoff over the drawings</span>
+          <textarea style={{ minHeight: 88 }}
+            placeholder={`e.g. "Plans show 4 rooms — we're only doing the kitchen and main bath. Keep the existing hall flooring. Quartz counters, Oppein cabinets."`}
+            value={quote.answers.notes} onChange={(e) => update((q) => { q.answers.notes = e.target.value; })} />
+        </label>
+        <div className="small muted" style={{ margin: "12px 0 4px" }}>Files sent to the reader — tick the ones to include</div>
+        {quote.attachments.length === 0 ? <p className="muted">No files yet — drop plans, the SOW or photos in the box above.</p> : (
           <ul className="file-list">
             {quote.attachments.map((a) => {
               const ok = readableByReader(a.type, a.name);
@@ -257,10 +264,6 @@ export default function DocumentsStep() {
             })}
           </ul>
         )}
-        <label className="field" style={{ marginTop: 12 }}>
-          <span>Notes for the reader — site-visit notes, the client's email, anything typed</span>
-          <textarea value={quote.answers.notes} onChange={(e) => update((q) => { q.answers.notes = e.target.value; })} />
-        </label>
       </div>
 
       {(quote.ai.ranAt || quote.ai.suggestions.length > 0) && (

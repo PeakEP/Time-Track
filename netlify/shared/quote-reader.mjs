@@ -78,6 +78,7 @@ export const SYSTEM = `You help the sales team at J.M Robins Construction Ltd. (
 You are given a client's drawings, photos and notes, and the list of interview questions the quote needs. Read everything and answer the questions the documents actually answer.
 
 Rules:
+- The rep's notes set the scope of this quote. Quote only what the rep says they are doing. If the drawings show more than that — e.g. the plan has four rooms but the notes say "kitchen only" — return only the in-scope rooms, scope items and cabinets, and leave the rest out. When the notes and the drawings disagree about what's included, the notes win; put the difference in openQuestions so the rep can confirm.
 - Only report what the documents state or what can be measured from a dimensioned drawing. If something isn't there, leave it out — a missing answer is fine, a guessed one is not. Never estimate prices.
 - Give every answer a source: the file name, the sheet number or page, and what you read (e.g. "A101 floor plan, overall dimensions 40'-0\\" x 28'-0\\""). If you worked a number out (e.g. counted windows on the elevations, added up wall lengths), say how.
 - Convert dimensions to decimal feet (28'-6" → 28.5). Counts are whole numbers.
@@ -97,13 +98,13 @@ export function questionText(job) {
   return [
     `Project type selected by the rep: ${job.quoteType || "unknown"}.`,
     "",
+    job.notes ? `The rep's scope notes — these set what's in scope; follow them over the drawings:\n${job.notes}` : "",
+    "",
     "Interview questions (use these field keys):",
     ...lines,
     "",
     known.length ? "Already answered by the rep (only suggest a change if the documents clearly disagree):" : "",
     ...known,
-    "",
-    job.notes ? `Rep's notes:\n${job.notes}` : "",
   ].filter((x) => x !== "").join("\n");
 }
 

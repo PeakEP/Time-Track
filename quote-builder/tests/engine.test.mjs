@@ -267,7 +267,8 @@ test("a cabinet order replaces the room's allowance and vanity; unknown SKUs bec
   const k = E.newRoom("kitchen"); const b = E.newRoom("bathroom");
   q.answers.rooms = [k, b];
   let r = E.computeQuote(q, s, items, { oppein: OPPEIN, divine: DIVINE });
-  assert.ok(r.lines.some((l) => l.id === `cab@${k.id}`));
+  // No cabinets are priced per linear foot: an uncovered kitchen is a question, not a line.
+  assert.ok(!r.lines.some((l) => l.id.startsWith("cab:")));
   assert.ok(r.questions.some((x) => x.kind === "cabinets" && x.roomId === k.id));
   q.cabinetSets = [
     { id: "k1", name: "Kitchen", roomId: k.id, supplier: "oppein", box: "PLY", color: "BSS", style: "", assemble: false, shipping: 0, lines: [{ id: "a", sku: "B24", qty: 2 }, { id: "b", sku: "ZZ99", qty: 1 }], notes: "" },
@@ -283,6 +284,38 @@ test("a cabinet order replaces the room's allowance and vanity; unknown SKUs bec
   const qn = r.questions.find((x) => x.kind === "cabinetSku");
   assert.equal(qn.sku, "ZZ99");
   assert.ok(!r.questions.some((x) => x.kind === "cabinets"));
+});
+
+test("a cabinet package allowance prices as one lump-sum line (no per-LF)", () => {
+  const { items } = E.parseJmrcCatalog(CSV);
+  const s = E.defaultSettings();
+  const q = E.newQuote("renovation", "t");
+  const k = E.newRoom("kitchen");
+  q.answers.rooms = [k];
+  q.cabinetSets = [
+    { id: "pk1", name: "Kitchen", roomId: k.id, supplier: "oppein", box: "PLY", color: "", style: "", assemble: false, shipping: 0, lines: [], allowance: 9000, unit: "PKG", notes: "" },
+  ];
+  const r = E.computeQuote(q, s, items, { oppein: OPPEIN, divine: DIVINE });
+  const line = r.lines.find((l) => l.id === "cab:pk1:allow");
+  assert.ok(line, "the allowance line exists");
+  assert.equal(line.qty, 1);
+  assert.equal(line.unit, "PKG");
+  assert.equal(line.unitCost, 9000);
+  assert.equal(line.extCost, 9000);
+  assert.equal(line.kind, "allowance");
+  assert.equal(line.marginKey, "cabinets");
+  // Nothing is priced per linear foot of cabinet.
+  assert.ok(!r.lines.some((l) => l.unit === "LF" && /cabinet/i.test(l.description)));
+  // The kitchen is covered by the allowance, so there's no "which cabinets?" question.
+  assert.ok(!r.questions.some((x) => x.kind === "cabinets"));
+});
+
+test("Takeoff (notes & drawings) is step 2 for every project type", () => {
+  for (const t of ["renovation", "remodel", "shop", "custom-home"]) {
+    const steps = E.stepsFor(t);
+    assert.equal(steps[0].id, "client", `${t}: step 1 is client & project`);
+    assert.equal(steps[1].id, "documents", `${t}: step 2 is the takeoff`);
+  }
 });
 
 test("workbook: margins by cost code from the retail reference", () => {

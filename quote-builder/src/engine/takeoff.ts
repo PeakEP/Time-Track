@@ -163,37 +163,60 @@ export class Takeoff {
   // Cabinet orders priced from the supplier catalogs (dealer cost). SKUs the
   // catalog doesn't have come through as unpriced lines, so they're asked about.
   private cabDone = false;
+  // Each cabinet set is a package (kitchen, vanity, ensuite…). It's priced
+  // from the supplier catalog when it has a SKU list, otherwise it carries a
+  // lump-sum allowance the rep entered. Returns every set that's covered
+  // (priced or allowance) so rooms with cabinets aren't double-counted.
   cabinetLines(): CabinetSet[] {
-    const sets = (this.ctx.cabinetSets || []).filter((x) => x.lines.length);
-    if (this.cabDone) return sets;
+    const all = this.ctx.cabinetSets || [];
+    const covered = all.filter((x) => x.lines.length || (x.allowance || 0) > 0);
+    if (this.cabDone) return covered;
     this.cabDone = true;
-    for (const set of sets) {
-      const data = this.ctx.cabinetData?.[set.supplier];
-      let assembly = 0;
-      for (const ln of set.lines) {
-        if (!(ln.qty > 0)) continue;
-        const p = data ? priceCabinet(set, data, ln.sku) : null;
-        assembly += p && set.assemble && set.supplier === "divine" ? p.assemblyEach * ln.qty : 0;
+    for (const set of all) {
+      if (set.lines.length) {
+        const data = this.ctx.cabinetData?.[set.supplier];
+        let assembly = 0;
+        for (const ln of set.lines) {
+          if (!(ln.qty > 0)) continue;
+          const p = data ? priceCabinet(set, data, ln.sku) : null;
+          assembly += p && set.assemble && set.supplier === "divine" ? p.assemblyEach * ln.qty : 0;
+          this.lines.push({
+            id: `cab:${set.id}:${ln.id}`,
+            section: "Cabinetry",
+            kind: "material",
+            description: p ? `${set.name} — ${SUPPLIER_LABEL[set.supplier]} ${p.sku} ${p.desc}${p.dims ? ` (${p.dims})` : ""}` : `${set.name} — ${SUPPLIER_LABEL[set.supplier]} ${ln.sku}`,
+            qty: ln.qty,
+            unit: "EA",
+            unitCost: p ? p.dealer : null,
+            source: p ? "cabinet" : "unpriced",
+            costCode: "1901 Kitchen Cabinets",
+            marginKey: "cabinets",
+            basis: p ? `list $${p.list.toFixed(2)} − ${Math.round(p.discount * 100)}% dealer discount · ${p.finish}` : data ? "SKU not in the supplier catalog" : `${SUPPLIER_LABEL[set.supplier]} catalog not loaded`,
+            flags: p ? [] : [data ? "cabinet SKU not found" : "cabinet catalog not loaded"],
+            allowance: true,
+          });
+        }
+        if (assembly > 0) this.lines.push({ id: `cab:${set.id}:assembly`, section: "Cabinetry", kind: "sub", description: `${set.name} — Divine assembly`, qty: 1, unit: "LS", unitCost: Math.round(assembly * 100) / 100, source: "cabinet", marginKey: "cabinets", basis: "per-unit assembly by category", flags: [], allowance: true });
+        if (set.shipping > 0) this.lines.push({ id: `cab:${set.id}:freight`, section: "Cabinetry", kind: "allowance", description: `${set.name} — ${SUPPLIER_LABEL[set.supplier]} freight`, qty: 1, unit: "LS", unitCost: set.shipping, source: "quote", marginKey: "cabinets", basis: "freight", flags: [], allowance: true });
+      } else if ((set.allowance || 0) > 0) {
         this.lines.push({
-          id: `cab:${set.id}:${ln.id}`,
+          id: `cab:${set.id}:allow`,
           section: "Cabinetry",
-          kind: "material",
-          description: p ? `${set.name} — ${SUPPLIER_LABEL[set.supplier]} ${p.sku} ${p.desc}${p.dims ? ` (${p.dims})` : ""}` : `${set.name} — ${SUPPLIER_LABEL[set.supplier]} ${ln.sku}`,
-          qty: ln.qty,
-          unit: "EA",
-          unitCost: p ? p.dealer : null,
-          source: p ? "cabinet" : "unpriced",
+          kind: "allowance",
+          description: `${set.name} — cabinetry allowance`,
+          qty: 1,
+          unit: set.unit || "PKG",
+          unitCost: set.allowance!,
+          source: "quote",
           costCode: "1901 Kitchen Cabinets",
           marginKey: "cabinets",
-          basis: p ? `list $${p.list.toFixed(2)} − ${Math.round(p.discount * 100)}% dealer discount · ${p.finish}` : data ? "SKU not in the supplier catalog" : `${SUPPLIER_LABEL[set.supplier]} catalog not loaded`,
-          flags: p ? [] : [data ? "cabinet SKU not found" : "cabinet catalog not loaded"],
+          basis: "package allowance entered on this quote",
+          flags: [],
           allowance: true,
         });
       }
-      if (assembly > 0) this.lines.push({ id: `cab:${set.id}:assembly`, section: "Cabinetry", kind: "sub", description: `${set.name} — Divine assembly`, qty: 1, unit: "LS", unitCost: Math.round(assembly * 100) / 100, source: "cabinet", marginKey: "cabinets", basis: "per-unit assembly by category", flags: [], allowance: true });
-      if (set.shipping > 0) this.lines.push({ id: `cab:${set.id}:freight`, section: "Cabinetry", kind: "allowance", description: `${set.name} — ${SUPPLIER_LABEL[set.supplier]} freight`, qty: 1, unit: "LS", unitCost: set.shipping, source: "quote", marginKey: "cabinets", basis: "freight", flags: [], allowance: true });
     }
-    return sets;
+    return covered;
   }
 
   // A supplier quote typed on the quote (windows package, trusses, cabinets…).
@@ -400,13 +423,11 @@ export function newBuildTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
       t.labour("lab.showerTile", showerSF, `${fmt(showerSF)} SF`);
     }
 
-    // --- Kitchen & baths
-    const kLF = pos(a.kitchenCabinetLF);
-    const sets = t.cabinetLines(); // priced cabinet orders replace the allowance
-    if (sets.length) { /* priced from the supplier catalogs */ }
-    else if (a.cabinetQuote > 0) t.quoted("cabinets", "Kitchen", "Cabinetry (Cabinet Designer / supplier quote)", a.cabinetQuote);
-    else t.rate("allow.cabinetsLF", kLF, `${fmt(kLF)} LF cabinet run (no cabinet quote entered)`);
-    t.labour("lab.cabinets", kLF, `${fmt(kLF)} LF`);
+    // --- Kitchen & baths. Cabinetry is priced per package on the Cabinets step
+    // (supplier SKUs or a lump-sum allowance); a whole-job cabinet quote is a
+    // fallback. Nothing here is per linear foot.
+    const sets = t.cabinetLines();
+    if (!sets.length && a.cabinetQuote > 0) t.quoted("cabinets", "Kitchen", "Cabinetry (Cabinet Designer / supplier quote)", a.cabinetQuote);
     t.material("countertop", pos(a.countertopSF), `countertops`, { selectedId: a.countertopItemId || undefined, allowance: true });
     const baths = pos(a.bathroomCount);
     if (baths) {
@@ -519,11 +540,9 @@ export function renovationTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
       t.labour("lab.door", d, `${tag}`, { label: `Door install — ${tag}`, idKey: key("doorl") });
     }
 
-    // Kitchen
-    if (pos(r.cabinetLF)) {
-      if (!(a.cabinetQuote > 0) && !covered.has(r.id) && !covered.has("")) t.rate("allow.cabinetsLF", r.cabinetLF, `${tag}: ${fmt(r.cabinetLF)} LF (no cabinet quote entered)`, { label: `Cabinetry — ${tag}`, idKey: key("cab") });
-      t.labour("lab.cabinets", r.cabinetLF, `${tag}`, { label: `Cabinet install — ${tag}`, idKey: key("cabl") });
-    }
+    // Kitchen — cabinetry is priced per package on the Cabinets step (SKUs or a
+    // lump-sum allowance); rooms with cabinets that aren't covered become a
+    // question. Nothing per linear foot.
     t.material("countertop", pos(r.countertopSF), `${tag}: countertops`, { selectedId: a.countertopItemId || undefined, idKey: key("ct"), allowance: true });
     if (pos(r.backsplashSF)) {
       t.material("backsplash", r.backsplashSF, `${tag}`, { selectedId: a.backsplashItemId || undefined, idKey: key("bs"), allowance: true });
