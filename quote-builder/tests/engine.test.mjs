@@ -322,7 +322,7 @@ test("Products show only what's in scope: a kitchen has no bath fixtures", () =>
   const q = E.newQuote("renovation", "t");
   q.answers.rooms = [E.newRoom("kitchen")];
   const keys = E.productsInScope(q.answers, "renovation").map((p) => p.key);
-  for (const k of ["countertopItemId", "backsplashItemId", "paintItemId", "lightFixtureItemId"]) assert.ok(keys.includes(k), `kitchen should include ${k}`);
+  for (const k of ["countertopItemId", "backsplashItemId", "paintItemId", "lightFixtureItemId", "kitchenSinkItemId", "kitchenFaucetItemId", "cabinetHardwareItemId", "underCabinetLightItemId"]) assert.ok(keys.includes(k), `kitchen should include ${k}`);
   for (const k of ["toiletItemId", "vanityItemId", "faucetItemId", "tubItemId", "showerTileItemId"]) assert.ok(!keys.includes(k), `kitchen should NOT include ${k}`);
   assert.deepEqual(E.floorTypesInScope(q.answers, "renovation"), ["spc"]);
 });
@@ -332,8 +332,25 @@ test("Products show bath fixtures for a bathroom, with a tile floor", () => {
   q.answers.rooms = [E.newRoom("bathroom")];
   const keys = E.productsInScope(q.answers, "renovation").map((p) => p.key);
   for (const k of ["toiletItemId", "vanityItemId", "faucetItemId", "tubItemId", "showerTileItemId", "paintItemId", "lightFixtureItemId"]) assert.ok(keys.includes(k), `bathroom should include ${k}`);
-  for (const k of ["countertopItemId", "backsplashItemId"]) assert.ok(!keys.includes(k), `bathroom should NOT include ${k}`);
+  for (const k of ["countertopItemId", "backsplashItemId", "kitchenSinkItemId", "kitchenFaucetItemId", "cabinetHardwareItemId", "underCabinetLightItemId"]) assert.ok(!keys.includes(k), `bathroom should NOT include ${k}`);
   assert.deepEqual(E.floorTypesInScope(q.answers, "renovation"), ["tile"]);
+});
+
+test("a kitchen emits sink, faucet, cabinet hardware and under-cabinet lighting lines", () => {
+  const { items } = E.parseJmrcCatalog(CSV);
+  const s = E.defaultSettings();
+  const q = E.newQuote("renovation", "t");
+  const k = E.newRoom("kitchen"); // 16 LF of cabinets by default
+  q.answers.rooms = [k];
+  const r = E.computeQuote(q, s, items, {});
+  const ids = r.lines.map((l) => l.id);
+  for (const p of ["ksink", "kfaucet", "cabhw", "ucl"]) assert.ok(ids.includes(`${p}@${k.id}`), `missing ${p} line`);
+  const hw = r.lines.find((l) => l.id === `cabhw@${k.id}`);
+  assert.ok(hw.qty >= 32, `cabinet hardware should be ~2 per LF (got ${hw.qty})`); // 16 LF × 2 + waste
+  // A bathroom-only job has none of them.
+  q.answers.rooms = [E.newRoom("bathroom")];
+  const r2 = E.computeQuote(q, s, items, {});
+  for (const p of ["ksink", "kfaucet", "cabhw", "ucl"]) assert.ok(!r2.lines.some((l) => l.id.startsWith(`${p}@`)), `bathroom should not emit ${p}`);
 });
 
 test("custom-home products follow the interior answers", () => {

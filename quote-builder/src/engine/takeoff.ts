@@ -429,6 +429,13 @@ export function newBuildTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
     const sets = t.cabinetLines();
     if (!sets.length && a.cabinetQuote > 0) t.quoted("cabinets", "Kitchen", "Cabinetry (Cabinet Designer / supplier quote)", a.cabinetQuote);
     t.material("countertop", pos(a.countertopSF), `countertops`, { selectedId: a.countertopItemId || undefined, allowance: true });
+    const kLF = pos(a.kitchenCabinetLF);
+    if (kLF > 0) {
+      t.material("kitchenSink", 1, `kitchen`, { selectedId: a.kitchenSinkItemId || undefined, allowance: true });
+      t.material("kitchenFaucet", 1, `kitchen`, { selectedId: a.kitchenFaucetItemId || undefined, allowance: true });
+      t.material("cabinetHardware", kLF * 2, `≈ 2 per LF of cabinet`, { selectedId: a.cabinetHardwareItemId || undefined, allowance: true });
+      t.material("underCabinetLight", kLF, `${fmt(kLF)} LF of cabinet run`, { selectedId: a.underCabinetLightItemId || undefined, allowance: true });
+    }
     const baths = pos(a.bathroomCount);
     if (baths) {
       t.material("toilet", baths, `${baths} bathrooms`, { selectedId: a.toiletItemId || undefined, allowance: true });
@@ -547,6 +554,14 @@ export function renovationTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
     if (pos(r.backsplashSF)) {
       t.material("backsplash", r.backsplashSF, `${tag}`, { selectedId: a.backsplashItemId || undefined, idKey: key("bs"), allowance: true });
       t.labour("lab.showerTile", r.backsplashSF, `${tag}: backsplash`, { label: `Backsplash install — ${tag}`, idKey: key("bsl") });
+    }
+    // Kitchen products the rep sets on the Products step (cabinet boxes are on
+    // the Cabinets step): sink, faucet, pulls/knobs and under-cabinet lighting.
+    if (r.kind === "kitchen" && pos(r.cabinetLF) > 0) {
+      t.material("kitchenSink", 1, tag, { selectedId: a.kitchenSinkItemId || undefined, idKey: key("ksink"), allowance: true });
+      t.material("kitchenFaucet", 1, tag, { selectedId: a.kitchenFaucetItemId || undefined, idKey: key("kfaucet"), allowance: true });
+      t.material("cabinetHardware", pos(r.cabinetLF) * 2, `${tag}: ≈ 2 per LF of cabinet`, { selectedId: a.cabinetHardwareItemId || undefined, idKey: key("cabhw"), allowance: true });
+      t.material("underCabinetLight", pos(r.cabinetLF), `${tag}: ${fmt(pos(r.cabinetLF))} LF of cabinet run`, { selectedId: a.underCabinetLightItemId || undefined, idKey: key("ucl"), allowance: true });
     }
 
     // Bath
