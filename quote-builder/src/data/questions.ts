@@ -205,6 +205,7 @@ export function blankAnswers(type: ProjectType): Answers {
     rooms: [], occupied: true, disposalBins: 0,
     flooringType: "spc", floorItemIds: {}, showerTileItemId: "", backsplashItemId: "", countertopItemId: "", paintItemId: "",
     interiorDoorItemId: "", lightFixtureItemId: "", toiletItemId: "", vanityItemId: "", faucetItemId: "", tubItemId: "",
+    kitchenSinkItemId: "", kitchenFaucetItemId: "", cabinetHardwareItemId: "", underCabinetLightItemId: "",
     windowsDoorsQuote: 0, trussQuote: 0, cabinetQuote: 0, overheadDoorQuote: 0,
     inclusionsExtra: "", exclusionsExtra: "", notes: "",
   };
@@ -228,6 +229,10 @@ export const PRODUCT_PICKS: { key: keyof Answers; label: string; codes: string[]
   { key: "showerTileItemId", label: "Shower wall tile", codes: ["1801", "1802"] },
   { key: "backsplashItemId", label: "Backsplash", codes: ["1802", "1801"], types: ["renovation", "remodel", "custom-home"] },
   { key: "countertopItemId", label: "Countertop", codes: ["2001", "2002"] },
+  { key: "kitchenSinkItemId", label: "Kitchen sink", codes: ["1102"] },
+  { key: "kitchenFaucetItemId", label: "Kitchen faucet", codes: ["1104"] },
+  { key: "cabinetHardwareItemId", label: "Cabinet hardware (pulls & knobs)", codes: ["1903", "1902"] },
+  { key: "underCabinetLightItemId", label: "Under-cabinet lighting", codes: ["1008"] },
   { key: "paintItemId", label: "Wall paint", codes: ["2301"] },
   { key: "interiorDoorItemId", label: "Interior door", codes: ["1501"] },
   { key: "lightFixtureItemId", label: "Light fixture", codes: ["1001", "1002", "1003", "1004", "1005", "1009"] },
@@ -252,6 +257,10 @@ export function productInScope(key: keyof Answers, a: Answers, type: ProjectType
       case "showerTileItemId": return any((r) => gt0(r.showerWallTileSF));
       case "backsplashItemId": return any((r) => gt0(r.backsplashSF));
       case "countertopItemId": return any((r) => gt0(r.countertopSF));
+      case "kitchenSinkItemId":
+      case "kitchenFaucetItemId":
+      case "cabinetHardwareItemId":
+      case "underCabinetLightItemId": return any((r) => r.kind === "kitchen" && gt0(r.cabinetLF));
       case "paintItemId": return any((r) => r.paintWalls);
       case "interiorDoorItemId": return any((r) => gt0(r.newInteriorDoors));
       case "lightFixtureItemId": return any((r) => gt0(r.lightFixtures));
@@ -272,6 +281,10 @@ export function productInScope(key: keyof Answers, a: Answers, type: ProjectType
       case "tubItemId": return gt0(a.bathroomCount);
       case "lightFixtureItemId": return gt0(a.lightFixtureCount);
       case "interiorDoorItemId": return gt0(a.interiorDoorCount);
+      case "kitchenSinkItemId":
+      case "kitchenFaucetItemId":
+      case "cabinetHardwareItemId":
+      case "underCabinetLightItemId": return gt0(a.kitchenCabinetLF);
       case "paintItemId": return true; // custom homes are always painted
       default: return false; // backsplash isn't itemized on new builds
     }

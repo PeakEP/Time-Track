@@ -12,6 +12,8 @@ const TOOL_FOR: Partial<Record<keyof Answers, string>> = {
   showerTileItemId: "tile", backsplashItemId: "backsplash", countertopItemId: "countertop",
   paintItemId: "wallPaint", interiorDoorItemId: "interiorDoor", lightFixtureItemId: "lightFixture",
   toiletItemId: "toilet", vanityItemId: "vanity", faucetItemId: "faucet", tubItemId: "tub",
+  kitchenSinkItemId: "kitchenSink", kitchenFaucetItemId: "kitchenFaucet",
+  cabinetHardwareItemId: "cabinetHardware", underCabinetLightItemId: "underCabinetLight",
 };
 
 export default function ProductsStep() {

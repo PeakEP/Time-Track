@@ -99,6 +99,10 @@ export const DEFAULT_COMPONENTS: ToolComponent[] = [
   c("faucet", "Bathroom", "Bathroom faucet", ["faucet"], 1, "1 each", true, 0, { codes: ["1105"] }),
   c("tub", "Bathroom", "Tub / shower base", ["bathtub", "alcove"], 1, "1 each", true, 0, { codes: ["1107"] }),
   c("lightFixture", "Electrical", "Light fixture (default)", ["flush mount"], 1, "1 each", true, 0, { codes: ["1003"] }),
+  c("kitchenSink", "Kitchen", "Kitchen sink", ["sink"], 1, "1 each", true, 0, { codes: ["1102"] }),
+  c("kitchenFaucet", "Kitchen", "Kitchen faucet", ["faucet"], 1, "1 each", true, 0, { codes: ["1104"] }),
+  c("cabinetHardware", "Kitchen", "Cabinet pulls & knobs", ["pull"], 1, "≈ 2 pulls per LF of cabinet", true, 0.05, { codes: ["1903"] }),
+  c("underCabinetLight", "Electrical", "Under-cabinet lighting", ["under cabinet"], 1, "per LF of cabinet run", true, 0, { codes: ["1008"], unit: "LF" }),
 ];
 
 // Labour productivity, seeded from JMRC's estimate worksheets (Brent Smith V9,

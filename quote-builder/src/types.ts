@@ -173,6 +173,10 @@ export interface Answers {
   vanityItemId: string;
   faucetItemId: string;
   tubItemId: string;
+  kitchenSinkItemId: string;
+  kitchenFaucetItemId: string;
+  cabinetHardwareItemId: string;
+  underCabinetLightItemId: string;
 
   // Allowances the rep can enter from a supplier quote (0 = not entered)
   windowsDoorsQuote: number; // supplier quote $ (windows + ext doors)
