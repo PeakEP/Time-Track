@@ -587,7 +587,7 @@ export function renovationTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
     if (r.plumbingRelocated) t.rate("sub.plumbingRelocate", 1, tag, { label: `Plumbing relocation — ${tag}`, idKey: key("reloc") });
 
     // Electrical & lighting
-    if (r.demoWalls || nw || pos(r.cabinetLF) || r.kind === "bathroom" || r.kind === "ensuite" || type === "remodel")
+    if (r.demoWalls || nw || pos(r.cabinetLF) || r.kind === "bathroom" || r.kind === "ensuite")
       t.rate("sub.electricalRoom", g.floor, `${tag}: ${fmt(g.floor)} SF`, { label: `Electrical — ${tag}`, idKey: key("elec") });
     if (pos(r.lightFixtures)) {
       t.material("lightFixture", r.lightFixtures, tag, { selectedId: a.lightFixtureItemId || undefined, idKey: key("light"), allowance: true });
@@ -599,7 +599,7 @@ export function renovationTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
   const bins = pos(a.disposalBins) || (demoFloor ? Math.max(1, ceil(demoFloor / 600)) : 0);
   t.rate("sub.bin", bins, a.disposalBins ? "as entered" : `≈ 1 bin per 600 SF demolished`, { label: "Waste disposal bins" });
   t.labour("lab.cleanup", totalFloor, `${fmt(totalFloor)} SF of rooms in scope`);
-  if (type === "remodel" || rooms.some((r) => r.wallsRemovedLF || r.newWallsLF || r.plumbingRelocated))
+  if (rooms.some((r) => r.wallsRemovedLF || r.newWallsLF || r.plumbingRelocated))
     t.rate("allow.permitReno", 1, "structural / layout changes need a permit");
 }
 

@@ -24,7 +24,6 @@ export default function RoomsStep() {
   const { quote, update } = useApp();
   if (!quote) return null;
   const rooms = quote.answers.rooms;
-  const remodel = quote.type === "remodel";
   const set = (i: number, patch: Partial<Room>) => update((q) => { Object.assign(q.answers.rooms[i], patch); });
 
   return (
@@ -110,19 +109,17 @@ export default function RoomsStep() {
                 </div>
               )}
 
-              {(remodel || r.wallsRemovedLF > 0 || r.newWallsLF > 0 || r.plumbingRelocated) && (
-                <div className="room-section">
-                  <h4>Layout changes</h4>
-                  <div className="grid four">
-                    <Num label="Walls removed" unit="LF" value={r.wallsRemovedLF} onChange={(n) => set(i, { wallsRemovedLF: n })} />
-                    <Num label="New walls" unit="LF" value={r.newWallsLF} onChange={(n) => set(i, { newWallsLF: n })} />
-                    <div className="checks" style={{ alignItems: "end" }}>
-                      <Check label="A removed wall is load-bearing" value={r.loadBearingRemoved} onChange={(b) => set(i, { loadBearingRemoved: b })} />
-                      <Check label="Plumbing relocated" value={r.plumbingRelocated} onChange={(b) => set(i, { plumbingRelocated: b })} />
-                    </div>
+              <div className="room-section">
+                <h4>Layout changes</h4>
+                <div className="grid four">
+                  <Num label="Walls removed" unit="LF" value={r.wallsRemovedLF} onChange={(n) => set(i, { wallsRemovedLF: n })} />
+                  <Num label="New walls" unit="LF" value={r.newWallsLF} onChange={(n) => set(i, { newWallsLF: n })} />
+                  <div className="checks" style={{ alignItems: "end" }}>
+                    <Check label="A removed wall is load-bearing" value={r.loadBearingRemoved} onChange={(b) => set(i, { loadBearingRemoved: b })} />
+                    <Check label="Plumbing relocated" value={r.plumbingRelocated} onChange={(b) => set(i, { plumbingRelocated: b })} />
                   </div>
                 </div>
-              )}
+              </div>
               <div className="room-section">
                 <label className="field"><span>Notes for this room (shown on the quote)</span>
                   <input value={r.notes} onChange={(e) => set(i, { notes: e.target.value })} />
