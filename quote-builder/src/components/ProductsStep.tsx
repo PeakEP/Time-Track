@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useApp } from "../store";
-import { floorType, PRODUCT_PICKS } from "../data/questions";
+import { floorType, PRODUCT_PICKS, productsInScope, floorTypesInScope } from "../data/questions";
 import { EXCLUDED, type Answers } from "../types";
 import { itemLabel, resolveComponent, searchCatalog } from "../engine/catalog";
 import CatalogPicker from "./CatalogPicker";
@@ -21,16 +21,14 @@ export default function ProductsStep() {
   const [creating, setCreating] = useState<{ name: string; costCode: string; assign: (id: string) => void } | null>(null);
   if (!quote) return null;
   const a = quote.answers;
-  const picks = PRODUCT_PICKS.filter((p) => !p.types || p.types.includes(quote.type));
+  // Only the products that are actually in scope for this job — derived from the
+  // rooms and what's ticked on each, so a kitchen doesn't show vanity/toilet/tub.
+  const picks = productsInScope(a, quote.type);
   const pick = (id: string) => (id && id !== EXCLUDED ? byId.get(id) : undefined);
 
   // The floor types actually used in the job — one product each, filtered to type.
-  const floorsUsed: string[] = (() => {
-    const s = new Set<string>();
-    if (quote.type === "custom-home") { if (a.flooringType) s.add(a.flooringType); if (Number(a.tileFloorSF) > 0) s.add("tile"); }
-    else if (quote.type !== "shop") for (const r of a.rooms) if (r.floor && r.floor !== "none") s.add(r.floor);
-    return [...s];
-  })();
+  const floorsUsed = floorTypesInScope(a, quote.type);
+  const nothingInScope = picks.length === 0 && floorsUsed.length === 0;
 
   return (
     <div className="stack">
@@ -61,8 +59,16 @@ export default function ProductsStep() {
         </div>
       )}
 
+      {nothingInScope && (
+        <div className="card">
+          <h3>Products</h3>
+          <p className="muted">Nothing to select yet. Add the rooms and tick what's being done on the <b>Rooms &amp; scope</b> step (or fill in the <b>Interior</b> step for a new home) — only the products for what's in scope show up here.</p>
+        </div>
+      )}
+      {picks.length > 0 && (
       <div className="card">
         <h3>Products</h3>
+        <p className="muted small" style={{ marginTop: -4, marginBottom: 12 }}>Only the products for what's in scope. Each is an allowance — set it now or leave the default; "Not included" drops it.</p>
         <div className="grid two">
           {picks.map((p) => {
             const id = quote.answers[p.key] as string;
@@ -87,10 +93,10 @@ export default function ProductsStep() {
           })}
         </div>
         <p className="muted small" style={{ marginTop: 12 }}>
-          For custom homes these become the allowance amounts. "Not included" leaves the item off this quote. The client makes
-          their final colour and finish selections with Robins Interiors &amp; Design.
+          For custom homes these are the allowance amounts. The client makes their final colour and finish selections with Robins Interiors &amp; Design.
         </p>
       </div>
+      )}
 
       {openFloor && (
         <CatalogPicker

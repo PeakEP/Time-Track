@@ -318,6 +318,34 @@ test("Takeoff (notes & drawings) is step 2 for every project type", () => {
   }
 });
 
+test("Products show only what's in scope: a kitchen has no bath fixtures", () => {
+  const q = E.newQuote("renovation", "t");
+  q.answers.rooms = [E.newRoom("kitchen")];
+  const keys = E.productsInScope(q.answers, "renovation").map((p) => p.key);
+  for (const k of ["countertopItemId", "backsplashItemId", "paintItemId", "lightFixtureItemId"]) assert.ok(keys.includes(k), `kitchen should include ${k}`);
+  for (const k of ["toiletItemId", "vanityItemId", "faucetItemId", "tubItemId", "showerTileItemId"]) assert.ok(!keys.includes(k), `kitchen should NOT include ${k}`);
+  assert.deepEqual(E.floorTypesInScope(q.answers, "renovation"), ["spc"]);
+});
+
+test("Products show bath fixtures for a bathroom, with a tile floor", () => {
+  const q = E.newQuote("renovation", "t");
+  q.answers.rooms = [E.newRoom("bathroom")];
+  const keys = E.productsInScope(q.answers, "renovation").map((p) => p.key);
+  for (const k of ["toiletItemId", "vanityItemId", "faucetItemId", "tubItemId", "showerTileItemId", "paintItemId", "lightFixtureItemId"]) assert.ok(keys.includes(k), `bathroom should include ${k}`);
+  for (const k of ["countertopItemId", "backsplashItemId"]) assert.ok(!keys.includes(k), `bathroom should NOT include ${k}`);
+  assert.deepEqual(E.floorTypesInScope(q.answers, "renovation"), ["tile"]);
+});
+
+test("custom-home products follow the interior answers", () => {
+  const q = E.newQuote("custom-home", "t");
+  Object.assign(q.answers, { bathroomCount: 2, countertopSF: 40, showerTileSF: 0, lightFixtureCount: 10, flooringType: "lvt", tileFloorSF: 60, interiorDoorCount: 8 });
+  const keys = E.productsInScope(q.answers, "custom-home").map((p) => p.key);
+  for (const k of ["toiletItemId", "vanityItemId", "faucetItemId", "tubItemId", "countertopItemId", "lightFixtureItemId", "paintItemId", "interiorDoorItemId"]) assert.ok(keys.includes(k), `custom-home should include ${k}`);
+  assert.ok(!keys.includes("showerTileItemId"), "no shower tile when showerTileSF is 0");
+  assert.ok(!keys.includes("backsplashItemId"), "backsplash isn't itemized on new builds");
+  assert.deepEqual(E.floorTypesInScope(q.answers, "custom-home").sort(), ["lvt", "tile"]);
+});
+
 test("workbook: margins by cost code from the retail reference", () => {
   const sheets = { "Retail Reference (JobTread)": [["Cost Code", "Item", "Unit Cost", "JobTread Retail", "Markup x"], [], ["1801 Porcelain Tile", "a", 2, 4, 2], ["1801 Porcelain Tile", "b", 3, 6, 2], ["1801 Porcelain Tile", "c", 1, 1.5, 1.5], ["1009 Fans", "d", 10, 12, 1.2]] };
   const r = E.marginsFromRetail(sheets);

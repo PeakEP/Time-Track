@@ -147,7 +147,7 @@ export const STEPS: Step[] = [
     ],
   },
   { id: "cabinets", title: "Cabinets", intro: "Price each package (kitchen, vanity, ensuite…) from Aline, Oppein or Divine — scan a plan, upload or paste the SKU list, or enter a lump-sum allowance.", types: ["renovation", "remodel", "custom-home"], fields: [] },
-  { id: "selections", title: "Products", intro: "Pick the products to price from the catalog. Anything left blank uses the default set in Settings.", fields: [] },
+  { id: "selections", title: "Products", intro: "Pick the exact products for what's in scope — flooring by type, plus the finishes and fixtures ticked on your rooms. Only in-scope items show; anything left on the default uses the Settings allowance.", fields: [] },
   {
     id: "wrap",
     title: "Inclusions & exclusions",
@@ -236,6 +236,65 @@ export const PRODUCT_PICKS: { key: keyof Answers; label: string; codes: string[]
   { key: "faucetItemId", label: "Bathroom faucet", codes: ["1105"] },
   { key: "tubItemId", label: "Tub / shower", codes: ["1107"] },
 ];
+
+const gt0 = (n: unknown) => Number(n) > 0;
+
+// Is this product category actually part of the job? Mirrors the scope flags /
+// new-build answers the takeoff uses to emit each line, so the Products step
+// shows only what's really being quoted — no vanity/toilet/tub on a kitchen,
+// no bath tile on a job with no shower. Independent of the product pick itself
+// (an in-scope item stays in scope even when set to "Not included").
+export function productInScope(key: keyof Answers, a: Answers, type: ProjectType): boolean {
+  const rooms = a.rooms || [];
+  const any = (fn: (r: Room) => boolean) => rooms.some(fn);
+  if (type === "renovation" || type === "remodel") {
+    switch (key) {
+      case "showerTileItemId": return any((r) => gt0(r.showerWallTileSF));
+      case "backsplashItemId": return any((r) => gt0(r.backsplashSF));
+      case "countertopItemId": return any((r) => gt0(r.countertopSF));
+      case "paintItemId": return any((r) => r.paintWalls);
+      case "interiorDoorItemId": return any((r) => gt0(r.newInteriorDoors));
+      case "lightFixtureItemId": return any((r) => gt0(r.lightFixtures));
+      case "toiletItemId": return any((r) => r.toilet);
+      case "vanityItemId": return any((r) => r.vanity);
+      case "faucetItemId": return any((r) => r.vanity);
+      case "tubItemId": return any((r) => r.tubShower !== "none");
+      default: return false;
+    }
+  }
+  if (type === "custom-home") {
+    switch (key) {
+      case "countertopItemId": return gt0(a.countertopSF);
+      case "showerTileItemId": return gt0(a.showerTileSF);
+      case "toiletItemId":
+      case "vanityItemId":
+      case "faucetItemId":
+      case "tubItemId": return gt0(a.bathroomCount);
+      case "lightFixtureItemId": return gt0(a.lightFixtureCount);
+      case "interiorDoorItemId": return gt0(a.interiorDoorCount);
+      case "paintItemId": return true; // custom homes are always painted
+      default: return false; // backsplash isn't itemized on new builds
+    }
+  }
+  // shop
+  switch (key) {
+    case "lightFixtureItemId": return gt0(a.lightFixtureCount);
+    case "paintItemId": return a.interiorFinish === "drywall";
+    default: return false;
+  }
+}
+
+// The product picks to show for this quote: allowed for the type AND in scope.
+export const productsInScope = (a: Answers, type: ProjectType) =>
+  PRODUCT_PICKS.filter((p) => (!p.types || p.types.includes(type)) && productInScope(p.key, a, type));
+
+// The floor types actually used in the job (one product pick per type).
+export function floorTypesInScope(a: Answers, type: ProjectType): string[] {
+  const s = new Set<string>();
+  if (type === "custom-home") { if (a.flooringType && a.flooringType !== "none") s.add(a.flooringType); if (gt0(a.tileFloorSF)) s.add("tile"); }
+  else if (type !== "shop") for (const r of a.rooms || []) if (r.floor && r.floor !== "none") s.add(r.floor);
+  return [...s];
+}
 
 // Quotes saved by earlier versions lack the newer fields.
 export function normalizeQuote(q: Quote): Quote {
