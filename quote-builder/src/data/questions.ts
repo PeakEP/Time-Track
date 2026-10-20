@@ -325,6 +325,8 @@ export function normalizeQuote(q: Quote): Quote {
   }
   return {
     ...q,
+    // Remodel folded into Renovation — one type that covers layout/structural work too.
+    type: q.type === "remodel" ? "renovation" : q.type,
     answers,
     cabinetSets: q.cabinetSets || [],
     rates: q.rates || {},

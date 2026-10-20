@@ -318,6 +318,15 @@ test("Takeoff (notes & drawings) is step 2 for every project type", () => {
   }
 });
 
+test("remodel quotes fold into renovation on load", () => {
+  const q = E.newQuote("remodel", "t");
+  const n = E.normalizeQuote(q);
+  assert.equal(n.type, "renovation");
+  // The layout/structural room fields still exist so renovation covers that work.
+  const r = E.newRoom("kitchen");
+  assert.ok("wallsRemovedLF" in r && "newWallsLF" in r && "plumbingRelocated" in r);
+});
+
 test("Products show only what's in scope: a kitchen has no bath fixtures", () => {
   const q = E.newQuote("renovation", "t");
   q.answers.rooms = [E.newRoom("kitchen")];

@@ -4,8 +4,7 @@ import { PROJECT_TYPE_LABEL, type ProjectType } from "../types";
 import { money0, when } from "../utils/format";
 
 const TYPES: { type: ProjectType; blurb: string }[] = [
-  { type: "renovation", blurb: "Refresh rooms — flooring, paint, tile, kitchens & baths." },
-  { type: "remodel", blurb: "Layout changes — walls moved, plumbing relocated, structural." },
+  { type: "renovation", blurb: "Any reno — flooring, paint, tile, kitchens & baths, plus walls moved, structural & plumbing changes." },
   { type: "shop", blurb: "New detached shop or garage, slab to roof." },
   { type: "custom-home", blurb: "New custom home with allowances, CUS proposal format." },
 ];
