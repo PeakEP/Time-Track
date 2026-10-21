@@ -327,6 +327,11 @@ test("remodel quotes fold into renovation on load", () => {
   assert.ok("wallsRemovedLF" in r && "newWallsLF" in r && "plumbingRelocated" in r);
 });
 
+test("uid() produces ids the upload API accepts (8–64 chars) — cabinet-scan fix", () => {
+  const isId = (s) => /^[0-9a-z-]{8,64}$/i.test(s || ""); // same check as the quote-builder API
+  for (let i = 0; i < 200; i++) assert.ok(isId(E.uid()), `uid() must satisfy the upload id check (got "${E.uid()}")`);
+});
+
 test("Products show only what's in scope: a kitchen has no bath fixtures", () => {
   const q = E.newQuote("renovation", "t");
   q.answers.rooms = [E.newRoom("kitchen")];

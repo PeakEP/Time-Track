@@ -1,20 +1,21 @@
 import { server } from "../api";
 import { guessType } from "./files";
+import { uid } from "../data/questions";
 
 // Upload picked files and run the document reader on them, returning its result
 // (answers, rooms, cabinets, scope…). Used by the Cabinets step to scan a plan
 // drawing; the Notes & drawings step has its own richer flow.
 const CHUNK = 3.5 * 1024 * 1024;
-const uid = () => (typeof crypto?.randomUUID === "function" ? crypto.randomUUID() : Math.random().toString(36).slice(2));
 
 export async function scanFiles(files: File[], quoteType: string, onProgress?: (s: string) => void): Promise<any> {
   const jobId = uid();
   const meta: { id: string; name: string; type: string; size: number; chunks: number }[] = [];
   for (const [i, f] of files.entries()) {
     onProgress?.(`Uploading ${i + 1} of ${files.length}: ${f.name}`);
+    const fid = uid(); // must be 8–64 chars of [0-9a-z-] to satisfy the API's id check
     const chunks = Math.max(1, Math.ceil(f.size / CHUNK));
-    for (let c = 0; c < chunks; c++) await server.uploadChunk(jobId, `f${i}`, c, f.slice(c * CHUNK, (c + 1) * CHUNK));
-    meta.push({ id: `f${i}`, name: f.name, type: guessType(f.name, f.type), size: f.size, chunks });
+    for (let c = 0; c < chunks; c++) await server.uploadChunk(jobId, fid, c, f.slice(c * CHUNK, (c + 1) * CHUNK));
+    meta.push({ id: fid, name: f.name, type: guessType(f.name, f.type), size: f.size, chunks });
   }
   onProgress?.("Reading the drawing — this can take a minute…");
   await server.startRead({ jobId, quoteType, notes: "", files: meta, answers: {}, fields: [] });
