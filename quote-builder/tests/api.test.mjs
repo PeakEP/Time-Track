@@ -186,6 +186,16 @@ test("finalized quotes lock: reps can't edit content or delete, only move the ou
   assert.equal((await call("mike", "DELETE", `quotes/${id}`)).status, 200);
 });
 
+test("a rep hands a quote off for approval; the approver sees it as needs-approval", async () => {
+  const id = "44444444-2222-3333-4444-555555555555";
+  const r = await call("sam", "PUT", `quotes/${id}`, { quote: quote({ id, status: "needs-approval" }) });
+  assert.equal(r.body.quote.status, "needs-approval"); // rep-set needs-approval sticks (only "approved" is downgraded)
+  const row = (await call("mike", "GET", "quotes")).body.quotes.find((x) => x.id === id);
+  assert.equal(row?.status, "needs-approval"); // the approver's list (and login banner) shows it
+  assert.equal(row?.createdBy, "Sam Sales");
+  assert.equal((await call("mike", "POST", `quotes/${id}/approve`, { total: 1150 })).body.quote.status, "approved");
+});
+
 test("Square mapping uses Default Unit Cost, not the retail price", async () => {
   const { mapSquareObjects } = await import("../../netlify/shared/square-catalog.mjs");
   const objs = [

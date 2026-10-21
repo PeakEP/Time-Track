@@ -49,8 +49,17 @@ export default function QuoteList() {
       </div>
 
       {me?.admin && pending.length > 0 && (
-        <div className="banner info">
-          {pending.length} quote{pending.length > 1 ? "s" : ""} waiting for your approval.
+        <div className="banner info" style={{ display: "block" }}>
+          <b>{pending.length} quote{pending.length > 1 ? "s" : ""} waiting for your approval</b>
+          <div style={{ display: "grid", gap: 4, marginTop: 8 }}>
+            {pending.slice(0, 6).map((x) => (
+              <button key={x.id} className="btn sm" style={{ justifyContent: "flex-start", textAlign: "left" }}
+                onClick={() => openQuote(x.id).catch((e) => notify(e.message, true))}>
+                {x.number || "draft"}{x.version > 1 ? ` V${x.version}` : ""} · {x.client || "(no client)"} · {money0(x.total)} — from {x.createdBy}
+              </button>
+            ))}
+            {pending.length > 6 && <span className="small muted">…and {pending.length - 6} more in the list below.</span>}
+          </div>
         </div>
       )}
 

@@ -7,6 +7,8 @@ import { readXlsx } from "../utils/xlsx";
 import { scanFiles } from "../utils/reader";
 import { money } from "../utils/format";
 
+const kb = (n: number) => (n > 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1)} MB` : `${Math.ceil(n / 1024)} KB`);
+
 function newSet(name: string, roomId: string, supplier: CabinetSupplier): CabinetSet {
   return {
     id: uid(), name, roomId, supplier, box: "PLY",
@@ -42,6 +44,7 @@ export default function CabinetsStep() {
   const [paste, setPaste] = useState<Record<string, string>>({});
   const [find, setFind] = useState<Record<string, string>>({});
   const [scan, setScan] = useState("");
+  const [staged, setStaged] = useState<File[]>([]);
   if (!quote) return null;
   const rooms = quote.answers.rooms;
   const loaded = (["aline", "oppein", "divine"] as const).filter((k) => (cabinetData as any)[k]);
@@ -106,17 +109,40 @@ export default function CabinetsStep() {
           <div style={{ flex: 1, minWidth: 220 }}>
             <b>Import or scan cabinets</b>
             <p className="small muted" style={{ margin: "4px 0 0" }}>
-              Upload a cabinet plan (PDF or image) to scan the SKUs automatically, or a SKU list (.xlsx / .csv) to load it straight in. You can still paste or search the catalog on each order below.
+              Add one or more cabinet plans (PDF / image) and SKU lists (.xlsx / .csv), then scan them together. You can still paste or search the catalog on each order below.
             </p>
             {!live && <p className="small muted" style={{ margin: "6px 0 0" }}>Drawing-scanning needs the live site; SKU lists work anywhere.</p>}
           </div>
           <label className="btn" style={{ opacity: scan ? 0.6 : 1, whiteSpace: "nowrap" }}>
-            {scan || "Choose files…"}
+            Add files…
             <input type="file" multiple hidden disabled={!!scan}
               accept=".xlsx,.csv,.tsv,.txt,.pdf,.png,.jpg,.jpeg,.webp,image/*,application/pdf"
-              onChange={(e) => { const fs = Array.from(e.target.files || []); e.currentTarget.value = ""; if (fs.length) importFiles(fs); }} />
+              onChange={(e) => {
+                const fs = Array.from(e.target.files || []);
+                e.currentTarget.value = "";
+                if (fs.length) setStaged((p) => { const seen = new Set(p.map((f) => f.name + f.size)); return [...p, ...fs.filter((f) => !seen.has(f.name + f.size))]; });
+              }} />
           </label>
         </div>
+        {staged.length > 0 && (
+          <div style={{ marginTop: 10 }}>
+            <ul className="file-list">
+              {staged.map((f, i) => (
+                <li key={f.name + f.size + i}>
+                  <span className="name">{f.name}</span>
+                  <span className="small muted">{kb(f.size)}</span>
+                  <button className="btn sm ghost danger" disabled={!!scan} title="Remove" onClick={() => setStaged((p) => p.filter((_, j) => j !== i))}>✕</button>
+                </li>
+              ))}
+            </ul>
+            <div className="row" style={{ marginTop: 8 }}>
+              <button className="btn primary" disabled={!!scan} onClick={async () => { const fs = staged; await importFiles(fs); setStaged([]); }}>
+                {scan || `Import & scan ${staged.length} file${staged.length > 1 ? "s" : ""}`}
+              </button>
+              <button className="btn sm ghost" disabled={!!scan} onClick={() => setStaged([])}>Clear</button>
+            </div>
+          </div>
+        )}
       </div>
 
       {!loaded.length && (
