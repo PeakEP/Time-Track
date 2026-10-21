@@ -245,6 +245,15 @@ test("document reader: chunks upload, job runs once with its secret, uploads are
   assert.ok(![...stores.qb.data.keys()].some((k) => k.startsWith("uploads/")));
 });
 
+test("upload chunk rejects a too-short file id but accepts a uid (cabinet-scan fix)", async () => {
+  const jobId = "job-cab-00001";
+  const body = () => new TextEncoder().encode("x");
+  // "f0" is what the cabinet scan used to send — 2 chars fails the id check → Bad upload path.
+  assert.equal((await call("sam", "PUT", `uploads/${jobId}/f0/0`, null, body())).status, 400);
+  // A proper uid-length id is accepted.
+  assert.equal((await call("sam", "PUT", `uploads/${jobId}/a1b2c3d4e5/0`, null, body())).status, 200);
+});
+
 test("reader prompt pieces: schema limits fields to the interview keys; scope notes govern", async () => {
   const { resultSchema, contentBlocks, questionText, SYSTEM } = await import("../../netlify/shared/quote-reader.mjs");
   const s = resultSchema(["length", "width"]);
