@@ -192,6 +192,14 @@ export default function ReviewStep({ calc }: { calc: Calc }) {
               {["draft", "needs-approval", ...(me?.admin || quote.status === "approved" ? ["approved"] : []), "sent", "won", "lost"].map((s) => <option key={s} value={s}>{s.replace("-", " ")}</option>)}
             </select>
           </label>
+          {!me?.admin && !approved && quote.status !== "needs-approval" && !["sent", "won", "lost"].includes(quote.status) && (
+            <button className="btn accent" onClick={async () => {
+              update((q) => { q.status = "needs-approval"; });
+              try { await save(); notify("Handed off to the approver — they'll see it when they log in."); }
+              catch (e) { notify((e as Error).message, true); }
+            }}>Submit for approval →</button>
+          )}
+          {!me?.admin && quote.status === "needs-approval" && <p className="small muted">✓ Submitted — waiting on the approver.</p>}
         </div>
 
         {me?.admin && (
