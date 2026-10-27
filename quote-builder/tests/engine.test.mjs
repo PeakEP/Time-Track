@@ -240,6 +240,15 @@ test("solid hardwood is a selectable floor type", () => {
   assert.deepEqual(ft.codes, ["1703"]);
 });
 
+test("the same catalog row from two files shares one id — uploads merge by id, not duplicate", () => {
+  const head = "Cost Item Name,Description,Unit,Unit Cost,Cost Code,Cost Type\n";
+  const a = E.parseJmrcCatalog(head + `B24,"Base 24",EA,100,1901 Kitchen Cabinets,Materials`).items[0];
+  const b = E.parseJmrcCatalog(head + `B24,"Base 24",EA,120,1901 Kitchen Cabinets,Materials`).items[0];
+  assert.equal(a.id, b.id); // price isn't part of the id, so a re-upload updates the item
+  assert.equal(a.unitCost, 100);
+  assert.equal(b.unitCost, 120);
+});
+
 test("a product marked Not included is dropped from the takeoff", () => {
   const { items } = E.parseJmrcCatalog(CSV);
   const s = E.defaultSettings();
