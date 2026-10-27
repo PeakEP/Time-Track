@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useApp } from "../store";
 import { server } from "../api";
-import { MARGIN_LABEL, type MarginKey, type Settings, type ToolComponent } from "../types";
+import { MARGIN_LABEL, type CatalogItem, type MarginKey, type Settings, type ToolComponent } from "../types";
 import { itemLabel, marginsFromRetail, parseJmrcCatalog, parseJmrcWorkbook, resolveComponent } from "../engine/catalog";
 import { SUPPLIER_LABEL, validateCabinetFile, identifySupplier } from "../engine/cabinets";
 import { readXlsx } from "../utils/xlsx";
@@ -32,20 +32,42 @@ export default function SettingsView() {
     finally { setBusy(""); }
   }
 
-  async function importCsv(file: File) {
+  // Upload one or more catalog files at once (.xlsx / .csv). "merge" adds them to
+  // the current catalog (updating any item with the same id); "replace" rebuilds
+  // the catalog from just these files. Keeping separate supplier catalogs and
+  // adding them beats remaking one master each time.
+  async function importCatalogs(files: FileList, mode: "merge" | "replace") {
     setBusy("Reading the catalog…");
     try {
-      const xlsx = /\.xlsx$/i.test(file.name);
-      const sheets = xlsx ? await readXlsx(await file.arrayBuffer()) : null;
-      const { items: parsed, warnings } = sheets ? parseJmrcWorkbook(sheets) : parseJmrcCatalog(await file.text());
-      const unpriced = parsed.filter((i) => i.unitCost == null).length;
-      if (!confirm(`${parsed.length} items found (${unpriced} without a price — "as per drawings" or blank).${warnings.length ? `\n\n${warnings.length} warning(s):\n${warnings.slice(0, 5).join("\n")}` : ""}\n\nReplace the current JMRC catalog with this file?`)) return;
-      await server.putJmrc(parsed, file.name);
+      const incoming = new Map<string, CatalogItem>(); // union within this upload (later file wins)
+      const warnings: string[] = [];
+      const names: string[] = [];
+      let retail: ReturnType<typeof marginsFromRetail> | null = null;
+      let retailFrom = "";
+      for (const file of Array.from(files)) {
+        const sheets = /\.xlsx$/i.test(file.name) ? await readXlsx(await file.arrayBuffer()) : null;
+        const { items: parsed, warnings: w } = sheets ? parseJmrcWorkbook(sheets) : parseJmrcCatalog(await file.text());
+        for (const it of parsed) incoming.set(it.id, it);
+        for (const x of w) warnings.push(`${file.name}: ${x}`);
+        names.push(file.name);
+        if (sheets) { const r = marginsFromRetail(sheets); if (r?.detail.length) { retail = r; retailFrom = file.name; } }
+      }
+      if (!incoming.size) throw new Error("No catalog rows found in those files.");
+      const merged = new Map<string, CatalogItem>();
+      if (mode === "merge") for (const it of catalog.jmrc.items || []) merged.set(it.id, it);
+      for (const [id, it] of incoming) merged.set(id, it);
+      const result = [...merged.values()];
+      const label = names.length === 1 ? names[0] : `${names.length} files: ${names.join(", ")}`;
+      const unpriced = result.filter((i) => i.unitCost == null).length;
+      const summary = mode === "merge"
+        ? `Add them to the catalog (${(catalog.jmrc.items || []).length} → ${result.length} items)?`
+        : `Replace the whole catalog with these ${result.length} items?`;
+      if (!confirm(`${incoming.size} item(s) from ${names.length} file(s): ${names.join(", ")}.${warnings.length ? `\n\n${warnings.length} warning(s):\n${warnings.slice(0, 5).join("\n")}` : ""}\n\n${summary}`)) return;
+      await server.putJmrc(result, label);
       await loadCatalog();
-      notify(`Catalog loaded: ${parsed.length} items.`);
-      const retail = sheets ? marginsFromRetail(sheets) : null;
-      if (retail?.detail.length && confirm(`The workbook's retail reference gives selling margins for ${retail.detail.length} cost codes (e.g. ${retail.detail.slice(0, 4).map((d) => `${d.code} ${Math.round(d.margin * 100)}%`).join(", ")}).\n\nUse these as the margins for those product codes?`)) {
-        edit((x) => { x.pricing.codeMargins = retail.margins; x.pricing.codeMarginSource = `${file.name} retail reference (${new Date().toLocaleDateString("en-CA")})`; });
+      notify(`Catalog ${mode === "merge" ? "updated" : "loaded"}: ${result.length} items (${unpriced} without a price).`);
+      if (retail?.detail.length && confirm(`${retailFrom}'s retail reference gives selling margins for ${retail.detail.length} cost codes (e.g. ${retail.detail.slice(0, 4).map((d) => `${d.code} ${Math.round(d.margin * 100)}%`).join(", ")}).\n\nUse these as the margins for those product codes?`)) {
+        edit((x) => { x.pricing.codeMargins = retail!.margins; x.pricing.codeMarginSource = `${retailFrom} retail reference (${new Date().toLocaleDateString("en-CA")})`; });
         notify("Product margins filled in — review them under Pricing and save.");
       }
     } catch (e) {
@@ -98,14 +120,20 @@ export default function SettingsView() {
         <h3>Cost catalog</h3>
         <p className="small">
           {catalog.jmrc.items.length
-            ? <>{catalog.jmrc.items.length} items from <b>{catalog.jmrc.fileName || "upload"}</b>, loaded {when(catalog.jmrc.importedAt)} by {catalog.jmrc.importedBy}.</>
+            ? <>{catalog.jmrc.items.length} items · last import <b>{catalog.jmrc.fileName || "upload"}</b>, {when(catalog.jmrc.importedAt)} by {catalog.jmrc.importedBy}.</>
             : <span className="pill bad">not loaded</span>}
         </p>
-        <p className="small muted">Upload the master cost catalog workbook (.xlsx) or a CSV export (Cost Item Name, Description, Unit, Unit Cost, Cost Code). This is the single source for material and finish costs (the Robins Interiors store items are already in it). Stored on the server, not in the code.</p>
-        <label className="btn" style={{ width: "fit-content" }}>
-          Upload catalog (.xlsx or .csv)…
-          <input type="file" accept=".csv,.xlsx,text/csv" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) void importCsv(f); e.target.value = ""; }} />
-        </label>
+        <p className="small muted">Upload one or more cost catalogs (.xlsx workbooks or CSV exports: Cost Item Name, Description, Unit, Unit Cost, Cost Code). Keep separate supplier lists and <b>Add</b> them — each new file adds its items and updates any with the same id, so you don't rebuild one master each time. <b>Replace</b> rebuilds the catalog from just the files you pick. Stored on the server, not in the code.</p>
+        <div className="row">
+          <label className="btn" style={{ width: "fit-content" }}>
+            Add catalog file(s)…
+            <input type="file" accept=".csv,.xlsx,text/csv" multiple hidden onChange={(e) => { if (e.target.files?.length) void importCatalogs(e.target.files, "merge"); e.target.value = ""; }} />
+          </label>
+          <label className="btn ghost" style={{ width: "fit-content" }}>
+            Replace with file(s)…
+            <input type="file" accept=".csv,.xlsx,text/csv" multiple hidden onChange={(e) => { if (e.target.files?.length) void importCatalogs(e.target.files, "replace"); e.target.value = ""; }} />
+          </label>
+        </div>
       </div>
 
       <div className="card stack">

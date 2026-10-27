@@ -187,9 +187,9 @@ export function defaultSettings(): Settings {
     },
     company: {
       name: "J.M Robins Construction Ltd.",
-      address: "164 Park Street, Sussex, NB  E4E 1V3",
+      address: "160 Park Street, Sussex, NB  E4E 1V3",
       phone: "506-808-2711",
-      signer: "Mike Robins",
+      signer: "Michael Robins",
       signerTitle: "General Contractor",
     },
     terms: { paymentScheduleNewBuild: "" },
