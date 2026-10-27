@@ -54,6 +54,8 @@ export interface CabinetSet {
   lines: { id: string; sku: string; qty: number }[];
   allowance?: number; // lump-sum package allowance (used when there's no priced SKU list)
   unit?: string; // unit shown for the allowance line (default PKG)
+  installMode?: "supply" | "supplyInstall"; // supply-only, or supply + install (default supply)
+  installLabour?: { id: string; label: string; amount: number }[]; // install priced in chunks when supplyInstall
   notes: string;
 }
 
@@ -65,7 +67,7 @@ export type RoomKind =
 
 // Floor finish by type (maps to a catalog cost code — see FLOOR_TYPES). "none"
 // means the floor isn't being changed in that room.
-export type FloorType = "none" | "spc" | "laminate" | "hardwood" | "lvt" | "tile" | "other";
+export type FloorType = "none" | "spc" | "laminate" | "hardwood" | "solid-hardwood" | "lvt" | "tile" | "other";
 
 // A product pick set to this is "not included in this quote" — its line is
 // dropped, rather than falling back to the default product.
@@ -84,6 +86,7 @@ export interface Room {
   demoFloor: boolean;
   demoWalls: boolean; // gut to studs
   floor: FloorType;
+  floorItemId?: string; // flooring product chosen for THIS room (falls back to the per-type default)
   paintWalls: boolean;
   paintCeiling: boolean;
   drywall: "none" | "patch" | "walls" | "walls+ceiling";

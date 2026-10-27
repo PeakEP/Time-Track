@@ -19,7 +19,7 @@ const TOOL_FOR: Partial<Record<keyof Answers, string>> = {
 export default function ProductsStep() {
   const { quote, update, byId, items, settings, me, addCustomProduct } = useApp();
   const [openPick, setOpenPick] = useState<(typeof PRODUCT_PICKS)[number] | null>(null);
-  const [openFloor, setOpenFloor] = useState<string | null>(null);
+  const [openFloor, setOpenFloor] = useState<{ roomId?: string; type: string } | null>(null);
   const [creating, setCreating] = useState<{ name: string; costCode: string; assign: (id: string) => void } | null>(null);
   if (!quote) return null;
   const a = quote.answers;
@@ -28,36 +28,82 @@ export default function ProductsStep() {
   const picks = productsInScope(a, quote.type);
   const pick = (id: string) => (id && id !== EXCLUDED ? byId.get(id) : undefined);
 
-  // The floor types actually used in the job — one product each, filtered to type.
+  // Flooring is chosen per room on a reno (so two rooms of the same type can take
+  // different products), and per floor type on a new build (no rooms).
+  const isReno = quote.type === "renovation" || quote.type === "remodel";
+  const floorRooms = isReno ? a.rooms.filter((r) => r.floor && r.floor !== "none") : [];
   const floorsUsed = floorTypesInScope(a, quote.type);
-  const nothingInScope = picks.length === 0 && floorsUsed.length === 0;
+  const hasFlooring = isReno ? floorRooms.length > 0 : floorsUsed.length > 0;
+  const nothingInScope = picks.length === 0 && !hasFlooring;
+
+  // Assign a flooring product to a room (reno) or a floor type (new build). Empty id clears.
+  function assignFloor(of: { roomId?: string; type: string }, id: string) {
+    update((q) => {
+      if (of.roomId) {
+        const r = q.answers.rooms.find((x) => x.id === of.roomId);
+        if (r) r.floorItemId = id || undefined;
+      } else {
+        const m = { ...(q.answers.floorItemIds || {}) };
+        if (id) m[of.type] = id; else delete m[of.type];
+        q.answers.floorItemIds = m;
+      }
+    });
+  }
 
   return (
     <div className="stack">
-      {floorsUsed.length > 0 && (
+      {hasFlooring && (
         <div className="card">
           <h3>Flooring</h3>
-          <p className="muted small">One product per floor type in the job. Choose the floor type on each room (or on the Interior step for a new home); here you pick the exact product.</p>
-          <div className="grid two">
-            {floorsUsed.map((type) => {
-              const ft = floorType(type);
-              const it = pick(a.floorItemIds?.[type] || "");
-              const def = searchCatalog(items, "", { codes: ft.codes, limit: 1 })[0];
-              return (
-                <div className="field" key={type}>
-                  <span>{ft.tile ? ft.label : `${ft.label} flooring`}</span>
-                  <div className="product-pick">
-                    <div className="chosen">
-                      {it ? <>{itemLabel(it)} <span className="muted">· {it.unit}{it.unitCost != null ? ` · ${money(it.unitCost)}` : ""}</span></>
-                        : <span className="muted">Default: {def ? itemLabel(def) : "none in catalog"}</span>}
-                      {it && it.unitCost == null && <span className="pill warn" style={{ marginLeft: 6 }}>no price — as per drawings / quote</span>}
+          {isReno ? (
+            <>
+              <p className="muted small">The flooring product for each room. Rooms with the same type can each take a different product — e.g. a different tile colour in the dining room and the entry.</p>
+              <div className="grid two">
+                {floorRooms.map((r) => {
+                  const ft = floorType(r.floor);
+                  const it = pick(r.floorItemId || a.floorItemIds?.[r.floor] || "");
+                  const def = searchCatalog(items, "", { codes: ft.codes, limit: 1 })[0];
+                  return (
+                    <div className="field" key={r.id}>
+                      <span>{r.name} — {ft.label}</span>
+                      <div className="product-pick">
+                        <div className="chosen">
+                          {it ? <>{itemLabel(it)} <span className="muted">· {it.unit}{it.unitCost != null ? ` · ${money(it.unitCost)}` : ""}</span></>
+                            : <span className="muted">Default: {def ? itemLabel(def) : "none in catalog"}</span>}
+                          {it && it.unitCost == null && <span className="pill warn" style={{ marginLeft: 6 }}>no price — as per drawings / quote</span>}
+                        </div>
+                        <button type="button" className="btn sm" onClick={() => setOpenFloor({ roomId: r.id, type: r.floor })}>Choose</button>
+                      </div>
                     </div>
-                    <button type="button" className="btn sm" onClick={() => setOpenFloor(type)}>Choose</button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                  );
+                })}
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="muted small">One product per floor type. Choose the floor type on the Interior step; here you pick the exact product.</p>
+              <div className="grid two">
+                {floorsUsed.map((type) => {
+                  const ft = floorType(type);
+                  const it = pick(a.floorItemIds?.[type] || "");
+                  const def = searchCatalog(items, "", { codes: ft.codes, limit: 1 })[0];
+                  return (
+                    <div className="field" key={type}>
+                      <span>{ft.tile ? ft.label : `${ft.label} flooring`}</span>
+                      <div className="product-pick">
+                        <div className="chosen">
+                          {it ? <>{itemLabel(it)} <span className="muted">· {it.unit}{it.unitCost != null ? ` · ${money(it.unitCost)}` : ""}</span></>
+                            : <span className="muted">Default: {def ? itemLabel(def) : "none in catalog"}</span>}
+                          {it && it.unitCost == null && <span className="pill warn" style={{ marginLeft: 6 }}>no price — as per drawings / quote</span>}
+                        </div>
+                        <button type="button" className="btn sm" onClick={() => setOpenFloor({ type })}>Choose</button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
         </div>
       )}
 
@@ -102,23 +148,16 @@ export default function ProductsStep() {
 
       {openFloor && (
         <CatalogPicker
-          title={`Choose ${floorType(openFloor).tile ? floorType(openFloor).label : floorType(openFloor).label + " flooring"}`}
-          codes={floorType(openFloor).codes}
+          title={`Choose ${floorType(openFloor.type).tile ? floorType(openFloor.type).label : floorType(openFloor.type).label + " flooring"}`}
+          codes={floorType(openFloor.type).codes}
           allowClear
           onManual={me?.admin ? (query) => {
-            const type = openFloor;
+            const of = openFloor;
             setOpenFloor(null);
-            setCreating({ name: query, costCode: floorType(type).codes[0] || "", assign: (id) => update((q) => { const m = { ...(q.answers.floorItemIds || {}) }; m[type] = id; q.answers.floorItemIds = m; }) });
+            setCreating({ name: query, costCode: floorType(of.type).codes[0] || "", assign: (id) => assignFloor(of, id) });
           } : undefined}
           onClose={() => setOpenFloor(null)}
-          onPick={(it) => {
-            update((q) => {
-              const m = { ...(q.answers.floorItemIds || {}) };
-              if (it) m[openFloor] = it.id; else delete m[openFloor];
-              q.answers.floorItemIds = m;
-            });
-            setOpenFloor(null);
-          }}
+          onPick={(it) => { assignFloor(openFloor, it?.id || ""); setOpenFloor(null); }}
         />
       )}
       {openPick && (

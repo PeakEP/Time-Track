@@ -90,11 +90,11 @@ export class Takeoff {
   // A finished floor of the given type: the right material (priced within the
   // type's cost code, or the product picked on the Products step) plus its
   // install labour. Tile floors also get thinset + grout; the rest get underlay.
-  floor(type: FloorType, sf: number, basis: string, idKey: string, tag = "") {
+  floor(type: FloorType, sf: number, basis: string, idKey: string, tag = "", pick?: string) {
     sf = round2(sf);
     if (!(sf > 0) || type === "none") return;
     const ft = floorType(type);
-    const sel = this.ctx.answers.floorItemIds?.[type] || undefined;
+    const sel = pick || this.ctx.answers.floorItemIds?.[type] || undefined;
     const suffix = tag ? ` — ${tag}` : "";
     if (ft.tile) {
       this.material("tile", sf, basis, { selectedId: sel, codes: ft.codes, match: [], label: `Tile${suffix}`, idKey, allowance: true });
@@ -214,6 +214,25 @@ export class Takeoff {
           flags: [],
           allowance: true,
         });
+      }
+      // Supply + install: each install-labour chunk the rep entered on the set.
+      if (set.installMode === "supplyInstall") {
+        for (const ch of set.installLabour || []) {
+          if (!(ch.amount > 0)) continue;
+          this.lines.push({
+            id: `cab:${set.id}:inst:${ch.id}`,
+            section: "Cabinetry",
+            kind: "labour",
+            description: `${set.name} — install${ch.label ? `: ${ch.label}` : ""}`,
+            qty: 1,
+            unit: "LS",
+            unitCost: ch.amount,
+            source: "repRate",
+            marginKey: "labour",
+            basis: "cabinet install entered on this quote",
+            flags: [],
+          });
+        }
       }
     }
     return covered;
@@ -442,7 +461,7 @@ export function newBuildTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
       if (!sets.some((x) => /vanit/i.test(x.name))) t.material("vanity", baths, `${baths} bathrooms`, { selectedId: a.vanityItemId || undefined, allowance: true });
       t.material("faucet", baths, `${baths} bathrooms`, { selectedId: a.faucetItemId || undefined, allowance: true });
       t.material("tub", baths, `${baths} bathrooms`, { selectedId: a.tubItemId || undefined, allowance: true });
-      t.labour("lab.fixtures", baths, `${baths} bathrooms`);
+      // Fixture setting is part of the plumber's package (sub.plumbingFixture below).
     }
     // Fixtures: toilet + sink per bath, tub/shower per bath, kitchen sink, laundry, hose bibs (2)
     t.rate("sub.plumbingFixture", baths * 3 + 1 + 1 + 2, `${baths} baths × 3 + kitchen + laundry + 2 hose bibs`);
@@ -527,10 +546,16 @@ export function renovationTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
     // Floors — the room's floor type sets the product (by cost code) and install
     const cabinetFloor = pos(r.cabinetLF) * 2;
     if (r.floor !== "none") {
-      const sf = floorType(r.floor).tile
-        ? Math.max(0, g.floor - cabinetFloor - (r.tubShower !== "none" ? 15 : 0) - (r.vanity ? 4 : 0))
-        : Math.max(0, g.floor - cabinetFloor);
-      t.floor(r.floor, sf, `${tag}: ${fmt(g.L)}' × ${fmt(g.W)}'${cabinetFloor ? " − cabinets" : ""}`, key("floor"), tag);
+      const tile = floorType(r.floor).tile;
+      const dTub = tile && r.tubShower !== "none" ? 15 : 0;
+      const dVanity = tile && r.vanity ? 4 : 0;
+      const sf = Math.max(0, g.floor - cabinetFloor - dTub - dVanity);
+      // Spell out the deductions so the basis reads correctly (gross − deductions = net).
+      let basis = `${tag}: ${fmt(g.L)}' × ${fmt(g.W)}' = ${fmt(g.floor)} SF`;
+      if (cabinetFloor) basis += ` − ${fmt(cabinetFloor)} (cabinets)`;
+      if (dTub) basis += ` − ${dTub} (tub)`;
+      if (dVanity) basis += ` − ${dVanity} (vanity)`;
+      t.floor(r.floor, sf, basis, key("floor"), tag, r.floorItemId);
     }
 
     // Trim & doors
@@ -581,8 +606,8 @@ export function renovationTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
     }
     if (pos(r.cabinetLF) && (r.kind === "kitchen")) fixtures++; // kitchen sink
     if (fixtures) {
+      // Fixture setting is part of the plumber's package, so no separate labour line.
       t.rate("sub.plumbingFixture", fixtures, `${tag}: ${fixtures} fixture(s)`, { label: `Plumbing — ${tag}`, idKey: key("plumb") });
-      if (r.toilet || r.vanity) t.labour("lab.fixtures", 1, tag, { label: `Fixture setting — ${tag}`, idKey: key("fix") });
     }
     if (r.plumbingRelocated) t.rate("sub.plumbingRelocate", 1, tag, { label: `Plumbing relocation — ${tag}`, idKey: key("reloc") });
 

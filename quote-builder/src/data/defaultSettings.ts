@@ -75,7 +75,7 @@ export const DEFAULT_COMPONENTS: ToolComponent[] = [
   c("cornerBead", "Drywall", "Metal corner bead 8'", ["corner bead"], 8, "8' length", true, 0.1),
 
   // Interior finish
-  c("baseboard", "Interior Finish", "MDF primed baseboard 16'", ["baseboard", "16'", "5-1/2"], 16, "16' length", true, 0.1, { codes: ["2101"] }),
+  c("baseboard", "Interior Finish", "MDF primed baseboard 14' (5-3/8\")", ["baseboard"], 14, "14' lengths", true, 0.1, { codes: ["2101"] }),
   c("casing", "Interior Finish", "Door/window casing (architrave)", ["craftsman style primed mdf architrave"], 7, "LF per piece — confirm length", false, 0.1),
   c("interiorDoor", "Interior Finish", "Prehung interior door (default)", ["32\" x 80\"", "2-panel", "prehung", "lh"], 1, "1 door", true, 0, { codes: ["1501"] }),
   c("passageHandle", "Interior Finish", "Interior door handle", ["weiser casey", "privacy lever"], 1, "1 per door", true, 0),

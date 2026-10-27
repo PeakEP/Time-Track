@@ -165,8 +165,9 @@ test("renovation rooms: flooring net of cabinets, paint in 5-gal pails, vanity a
   const s = E.defaultSettings();
   const q = E.newQuote("renovation", "t");
   const k = E.newRoom("kitchen");
-  Object.assign(k, { length: 12, width: 10, cabinetLF: 10 });
+  Object.assign(k, { length: 12, width: 10, cabinetLF: 10, floor: "spc" });
   const b = E.newRoom("bathroom");
+  Object.assign(b, { floor: "tile" });
   q.answers.rooms = [k, b];
   q.answers.floorItemIds = { spc: items.find((i) => i.name === "SPC A").id };
   q.answers.paintItemId = items.find((i) => i.name === "Paint").id;
@@ -187,15 +188,56 @@ test("floor type prices from its own cost code by default", () => {
   const { items } = E.parseJmrcCatalog(CSV);
   const s = E.defaultSettings();
   const q = E.newQuote("renovation", "t");
-  const r = E.newRoom("bedroom"); // non-wet rooms default to SPC
-  Object.assign(r, { length: 10, width: 10, cabinetLF: 0 });
-  assert.equal(r.floor, "spc");
+  const r = E.newRoom("bedroom");
+  Object.assign(r, { length: 10, width: 10, cabinetLF: 0, floor: "spc" }); // pick SPC for this room
   q.answers.rooms = [r];
   const floor = E.buildLines(q, s, items).find((l) => l.id === `floor@${r.id}`);
   // Resolves within the SPC code (1701) with no product chosen, 100 SF + 10%
   assert.match(floor.costCode, /^1701/);
   assert.equal(floor.unitCost, 1.25);
   assert.equal(floor.qty, 110);
+});
+
+test("flooring is chosen per room — two rooms of the same type can use different products", () => {
+  const { items } = E.parseJmrcCatalog(`Cost Item Name,Description,Unit,Unit Cost,Cost Code,Cost Type
+SPC A,"SPC Aspen",SF,1.25,1701 SPC Flooring,Materials
+Oak Plank,"Engineered Oak Plank",SF,2.00,1701 SPC Flooring,Materials
+`);
+  const s = E.defaultSettings();
+  const a = items.find((i) => i.name === "SPC A").id;
+  const b = items.find((i) => i.name === "Oak Plank").id;
+  const q = E.newQuote("renovation", "t");
+  const r1 = E.newRoom("dining"); Object.assign(r1, { length: 10, width: 10, cabinetLF: 0, floor: "spc", floorItemId: a });
+  const r2 = E.newRoom("living"); Object.assign(r2, { length: 10, width: 10, cabinetLF: 0, floor: "spc", floorItemId: b });
+  q.answers.rooms = [r1, r2];
+  const lines = E.buildLines(q, s, items);
+  assert.equal(lines.find((l) => l.id === `floor@${r1.id}`).unitCost, 1.25);
+  assert.equal(lines.find((l) => l.id === `floor@${r2.id}`).unitCost, 2.0);
+});
+
+test("tile floor basis spells out the deductions; no separate fixture-setting labour", () => {
+  const { items } = E.parseJmrcCatalog(CSV);
+  const s = E.defaultSettings();
+  const q = E.newQuote("renovation", "t");
+  const b = E.newRoom("bathroom");
+  Object.assign(b, { length: 11.58, width: 5, floor: "tile", vanity: true, tubShower: "tub" });
+  q.answers.rooms = [b];
+  const lines = E.buildLines(q, s, items);
+  const floor = lines.find((l) => l.id === `floor@${b.id}`);
+  // 11.58 × 5 = 57.9, − 15 (tub) − 4 (vanity) = 38.9 — the basis must read correctly.
+  assert.match(floor.basis, /57\.9 SF/);
+  assert.match(floor.basis, /tub/);
+  assert.match(floor.basis, /vanity/);
+  assert.match(floor.basis, /38\.9/);
+  // Fixture setting is in the plumber's package — no separate labour line, plumbing present.
+  assert.ok(!lines.some((l) => /fixture setting/i.test(l.description)));
+  assert.ok(lines.some((l) => /Plumbing/i.test(l.description)));
+});
+
+test("solid hardwood is a selectable floor type", () => {
+  const ft = E.floorType("solid-hardwood");
+  assert.equal(ft.label, "Solid hardwood");
+  assert.deepEqual(ft.codes, ["1703"]);
 });
 
 test("a product marked Not included is dropped from the takeoff", () => {
@@ -310,6 +352,25 @@ test("a cabinet package allowance prices as one lump-sum line (no per-LF)", () =
   assert.ok(!r.questions.some((x) => x.kind === "cabinets"));
 });
 
+test("supply & install cabinets price each install chunk as labour; supply-only adds none", () => {
+  const { items } = E.parseJmrcCatalog(CSV);
+  const s = E.defaultSettings();
+  const q = E.newQuote("renovation", "t");
+  q.cabinetSets = [{
+    id: "ci1", name: "Kitchen", roomId: "", supplier: "oppein", box: "PLY", color: "", style: "",
+    assemble: false, shipping: 0, lines: [], allowance: 9000, unit: "PKG",
+    installMode: "supplyInstall", installLabour: [{ id: "a", label: "Uppers", amount: 500 }, { id: "b", label: "Island", amount: 300 }], notes: "",
+  }];
+  let r = E.computeQuote(q, s, items, { oppein: OPPEIN });
+  const i1 = r.lines.find((l) => l.id === "cab:ci1:inst:a");
+  const i2 = r.lines.find((l) => l.id === "cab:ci1:inst:b");
+  assert.equal(i1.unitCost, 500); assert.equal(i1.kind, "labour"); assert.equal(i1.marginKey, "labour");
+  assert.equal(i2.unitCost, 300);
+  q.cabinetSets[0].installMode = "supply";
+  r = E.computeQuote(q, s, items, { oppein: OPPEIN });
+  assert.ok(!r.lines.some((l) => l.id.startsWith("cab:ci1:inst:")));
+});
+
 test("Takeoff (notes & drawings) is step 2 for every project type", () => {
   for (const t of ["renovation", "remodel", "shop", "custom-home"]) {
     const steps = E.stepsFor(t);
@@ -334,7 +395,8 @@ test("uid() produces ids the upload API accepts (8–64 chars) — cabinet-scan 
 
 test("Products show only what's in scope: a kitchen has no bath fixtures", () => {
   const q = E.newQuote("renovation", "t");
-  q.answers.rooms = [E.newRoom("kitchen")];
+  const k = E.newRoom("kitchen"); k.floor = "spc";
+  q.answers.rooms = [k];
   const keys = E.productsInScope(q.answers, "renovation").map((p) => p.key);
   for (const k of ["countertopItemId", "backsplashItemId", "paintItemId", "lightFixtureItemId", "kitchenSinkItemId", "kitchenFaucetItemId", "cabinetHardwareItemId", "underCabinetLightItemId"]) assert.ok(keys.includes(k), `kitchen should include ${k}`);
   for (const k of ["toiletItemId", "vanityItemId", "faucetItemId", "tubItemId", "showerTileItemId"]) assert.ok(!keys.includes(k), `kitchen should NOT include ${k}`);
@@ -343,7 +405,8 @@ test("Products show only what's in scope: a kitchen has no bath fixtures", () =>
 
 test("Products show bath fixtures for a bathroom, with a tile floor", () => {
   const q = E.newQuote("renovation", "t");
-  q.answers.rooms = [E.newRoom("bathroom")];
+  const b = E.newRoom("bathroom"); b.floor = "tile";
+  q.answers.rooms = [b];
   const keys = E.productsInScope(q.answers, "renovation").map((p) => p.key);
   for (const k of ["toiletItemId", "vanityItemId", "faucetItemId", "tubItemId", "showerTileItemId", "paintItemId", "lightFixtureItemId"]) assert.ok(keys.includes(k), `bathroom should include ${k}`);
   for (const k of ["countertopItemId", "backsplashItemId", "kitchenSinkItemId", "kitchenFaucetItemId", "cabinetHardwareItemId", "underCabinetLightItemId"]) assert.ok(!keys.includes(k), `bathroom should NOT include ${k}`);

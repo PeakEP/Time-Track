@@ -160,6 +160,8 @@ export default function DocumentsStep() {
         });
       } else if (s.field === "room") {
         const v = s.value as { name: string; kind: RoomKind; length: number; width: number; height: number; scope: string };
+        // On a rescan, don't add a room that's already there (match name + kind).
+        if (q.answers.rooms.some((x) => x.name.toLowerCase() === String(v.name).toLowerCase() && x.kind === v.kind)) return;
         const room = newRoom(v.kind, v.name);
         if (v.length) room.length = v.length;
         if (v.width) room.width = v.width;
@@ -236,9 +238,10 @@ export default function DocumentsStep() {
         <div className="card-head">
           <h3>Takeoff</h3>
           <div className="spacer" />
-          <button className="btn primary" disabled={!!busy} onClick={runReader}>Read documents &amp; suggest answers</button>
+          <button className="btn primary" disabled={!!busy} onClick={runReader}>{quote.ai.ranAt ? "Rescan with the latest notes & files" : "Read documents & suggest answers"}</button>
         </div>
         {busy && <div className="banner info">{busy}</div>}
+        {quote.ai.ranAt && !busy && <p className="small muted" style={{ margin: "0 0 8px" }}>Add more notes or files above, then rescan — it re-reads everything and makes fresh suggestions below.</p>}
         <label className="field">
           <span>What's in scope &amp; notes for the reader — this steers the takeoff over the drawings</span>
           <textarea style={{ minHeight: 88 }}

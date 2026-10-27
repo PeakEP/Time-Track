@@ -38,6 +38,7 @@ export const FLOOR_TYPES: { value: FloorType; label: string; codes: string[]; ti
   { value: "spc", label: "SPC", codes: ["1701"] },
   { value: "laminate", label: "Laminate", codes: ["1702"] },
   { value: "hardwood", label: "Engineered hardwood", codes: ["1703"] },
+  { value: "solid-hardwood", label: "Solid hardwood", codes: ["1703"] },
   { value: "lvt", label: "LVP / LVT", codes: ["1704"] },
   { value: "tile", label: "Tile", codes: ["1801"], tile: true },
   { value: "other", label: "Other flooring", codes: ["1705"] },
@@ -142,7 +143,6 @@ export const STEPS: Step[] = [
     types: RENO,
     fields: [
       { key: "occupied", label: "Home is lived in during the work", type: "bool" },
-      { key: "cabinetQuote", label: "Cabinet quote (Cabinet Designer / supplier)", type: "money", help: "Leave 0 to price cabinets per package on the Cabinets step" },
       { key: "disposalBins", label: "Disposal bins (0 = estimate)", type: "number", unit: "ea" },
     ],
   },
@@ -181,7 +181,7 @@ export function newRoom(kind: RoomKind = "bedroom", name = ""): Room {
     id: uid(), name: name || ROOM_KINDS.find((k) => k.value === kind)?.label || "Room", kind,
     length: wet ? 8 : 12, width: wet ? 5 : 11, height: 8, doors: 1, windows: wet ? 0 : 1,
     demoFloor: true, demoWalls: false,
-    floor: wet || kind === "laundry" ? "tile" : "spc",
+    floor: "none", // the rep picks the flooring type per room (no default)
     paintWalls: true, paintCeiling: true, drywall: "patch", baseboard: true,
     newInteriorDoors: 0, lightFixtures: wet || kitchen ? 1 : 0,
     cabinetLF: kitchen ? 16 : 0, countertopSF: kitchen ? 30 : 0, backsplashSF: kitchen ? 25 : 0,
