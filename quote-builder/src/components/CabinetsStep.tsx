@@ -15,7 +15,7 @@ function newSet(name: string, roomId: string, supplier: CabinetSupplier): Cabine
     color: supplier === "oppein" ? "WSS" : supplier === "aline" ? "SW" : "",
     style: supplier === "aline" ? "shaker" : supplier === "divine" ? "S7" : "",
     assemble: supplier === "divine", shipping: supplier === "divine" ? 150 : 0,
-    lines: [], allowance: 0, unit: "PKG", notes: "",
+    lines: [], allowance: 0, unit: "PKG", installMode: "supply", installLabour: [], notes: "",
   };
 }
 
@@ -240,6 +240,40 @@ export default function CabinetsStep() {
                     </select>
                   </label>
                 </div>
+              </div>
+
+              <div className="room-section">
+                <h4>Install</h4>
+                <label className="field" style={{ maxWidth: 240 }}>
+                  <select value={set.installMode || "supply"} onChange={(e) => setOf(set.id, (s) => {
+                    s.installMode = e.target.value as "supply" | "supplyInstall";
+                    if (s.installMode === "supplyInstall" && !(s.installLabour || []).length) s.installLabour = [{ id: uid(), label: "", amount: 0 }];
+                  })}>
+                    <option value="supply">Supply only</option>
+                    <option value="supplyInstall">Supply &amp; install</option>
+                  </select>
+                </label>
+                {set.installMode === "supplyInstall" && (
+                  <div style={{ marginTop: 8 }}>
+                    <p className="small muted" style={{ marginTop: 0 }}>Price the install in chunks (e.g. "Uppers", "Island", "Delivery &amp; set"). Carries the labour margin.</p>
+                    {(set.installLabour || []).map((ch) => (
+                      <div className="row" key={ch.id} style={{ marginBottom: 6 }}>
+                        <input placeholder="What (e.g. Uppers, Island)" value={ch.label} style={{ flex: 1 }}
+                          onChange={(e) => setOf(set.id, (s) => { const c = (s.installLabour || []).find((x) => x.id === ch.id); if (c) c.label = e.target.value; })} />
+                        <div className="unit-input" style={{ maxWidth: 140 }}><em>$</em>
+                          <input type="number" min={0} value={ch.amount || ""} placeholder="0"
+                            onChange={(e) => setOf(set.id, (s) => { const c = (s.installLabour || []).find((x) => x.id === ch.id); if (c) c.amount = Number(e.target.value) || 0; })} />
+                        </div>
+                        <button className="btn sm ghost danger" title="Remove" onClick={() => setOf(set.id, (s) => { s.installLabour = (s.installLabour || []).filter((x) => x.id !== ch.id); })}>✕</button>
+                      </div>
+                    ))}
+                    <div className="row">
+                      <button className="btn sm" onClick={() => setOf(set.id, (s) => { s.installLabour = [...(s.installLabour || []), { id: uid(), label: "", amount: 0 }]; })}>+ Install item</button>
+                      <div className="spacer" />
+                      <span className="small muted">Install total <b>{money((set.installLabour || []).reduce((a, x) => a + (x.amount || 0), 0))}</b></span>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="room-section">
