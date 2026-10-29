@@ -37,6 +37,7 @@ interface State {
   notify(text: string, bad?: boolean): void;
   loadQuotes(): Promise<void>;
   loadCatalog(): Promise<void>;
+  removeCatalogSource(id: string): Promise<void>;
   addCustomProduct(item: Partial<CatalogItem>): Promise<CatalogItem>;
   deleteCustomProduct(id: string): Promise<void>;
   loadCabinets(): Promise<void>;
@@ -137,6 +138,11 @@ export const useApp = create<State>((set, get) => ({
     const catalog = await server.catalog();
     const items = [...mergeCatalogs(catalog.jmrc.items, catalog.square.items), ...(catalog.custom?.items || [])];
     set({ catalog, items, byId: new Map(items.map((i) => [i.id, i])) });
+  },
+
+  async removeCatalogSource(id) {
+    await server.removeCatalogSource(id);
+    await get().loadCatalog();
   },
 
   async addCustomProduct(item) {

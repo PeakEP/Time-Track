@@ -27,8 +27,9 @@ export interface QuoteSummary {
   id: string; number: string; version: number; type: Quote["type"]; title: string; status: Quote["status"];
   client: string; address: string; total: number | null; createdBy: string; updatedAt: string; updatedBy: string;
 }
+export interface CatalogSourceRef { id: string; name: string; at: string; by: string }
 export interface CatalogDoc {
-  jmrc: { items: CatalogItem[]; importedAt: string; importedBy: string; fileName: string };
+  jmrc: { items: CatalogItem[]; sources?: CatalogSourceRef[]; importedAt: string; importedBy: string; fileName: string };
   square: { items: CatalogItem[]; syncedAt: string; syncedBy: string; note: string };
   custom: { items: CatalogItem[]; updatedAt: string; updatedBy: string };
 }
@@ -58,7 +59,7 @@ export async function isLive(): Promise<boolean> {
 }
 
 const emptyCatalog = (): CatalogDoc => ({
-  jmrc: { items: [], importedAt: "", importedBy: "", fileName: "" },
+  jmrc: { items: [], sources: [], importedAt: "", importedBy: "", fileName: "" },
   square: { items: [], syncedAt: "", syncedBy: "", note: "" },
   custom: { items: [], updatedAt: "", updatedBy: "" },
 });
@@ -83,14 +84,26 @@ export const server = {
     if (!(await isLive())) return lsGet(LS.catalog, emptyCatalog());
     return api<CatalogDoc>("GET", "catalog");
   },
-  async putJmrc(items: CatalogItem[], fileName: string): Promise<void> {
+  async putJmrc(items: CatalogItem[], fileName: string, sources: CatalogSourceRef[] = []): Promise<void> {
     if (!(await isLive())) {
       const c = lsGet(LS.catalog, emptyCatalog());
-      c.jmrc = { items, importedAt: new Date().toISOString(), importedBy: "Local user", fileName };
+      c.jmrc = { items, sources, importedAt: new Date().toISOString(), importedBy: "Local user", fileName };
       lsSet(LS.catalog, c);
       return;
     }
-    await api("PUT", "catalog/jmrc", { items, fileName });
+    await api("PUT", "catalog/jmrc", { items, fileName, sources });
+  },
+  async removeCatalogSource(id: string): Promise<void> {
+    if (!(await isLive())) {
+      const c = lsGet(LS.catalog, emptyCatalog());
+      if (c.jmrc) {
+        c.jmrc.items = (c.jmrc.items || []).filter((it) => (it.src || "__untagged__") !== id);
+        c.jmrc.sources = (c.jmrc.sources || []).filter((s) => s.id !== id);
+      }
+      lsSet(LS.catalog, c);
+      return;
+    }
+    await api("DELETE", `catalog/jmrc/${encodeURIComponent(id)}`);
   },
   async addCustomProduct(item: Partial<CatalogItem>): Promise<CatalogItem> {
     if (!(await isLive())) {

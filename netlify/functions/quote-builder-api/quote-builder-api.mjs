@@ -67,8 +67,18 @@ function cleanItems(items, source) {
       costCode: str(it.costCode, 120),
       ...(it.sku ? { sku: str(it.sku, 80) } : {}),
       ...(it.retail != null && Number.isFinite(Number(it.retail)) ? { retail: Number(it.retail) } : {}),
+      ...(it.src ? { src: str(it.src, 80) } : {}),
     };
   }).filter((it) => it.id && (it.name || it.description));
+}
+
+// The uploaded catalog files (sources) behind the JMRC items, so an Admin can
+// remove one by its id (which also drops its items, tagged with it.src).
+function cleanSources(list) {
+  if (!Array.isArray(list)) return [];
+  return list.slice(0, 500)
+    .map((s) => ({ id: str(s.id, 80), name: str(s.name, 200), at: str(s.at, 40), by: str(s.by, 120) }))
+    .filter((s) => s.id);
 }
 
 async function getCatalog(stores) {
@@ -78,7 +88,7 @@ async function getCatalog(stores) {
     stores.qb.get("catalog/custom", { type: "json" }),
   ]);
   return {
-    jmrc: jmrc || { items: [], importedAt: "", importedBy: "", fileName: "" },
+    jmrc: jmrc ? { sources: [], ...jmrc } : { items: [], sources: [], importedAt: "", importedBy: "", fileName: "" },
     square: square || { items: [], syncedAt: "", syncedBy: "", note: "" },
     custom: custom || { items: [], updatedAt: "", updatedBy: "" },
   };
@@ -117,9 +127,21 @@ async function putJmrcCatalog(stores, who, body) {
   requireAdmin(who);
   const items = cleanItems(body.items, "jmrc");
   if (!items.length) throw new HttpError(400, "No catalog rows found");
-  const doc = { items, importedAt: new Date().toISOString(), importedBy: who.name, fileName: str(body.fileName, 200) };
+  const doc = { items, sources: cleanSources(body.sources), importedAt: new Date().toISOString(), importedBy: who.name, fileName: str(body.fileName, 200) };
   await stores.qb.setJSON("catalog/jmrc", doc);
-  return { count: items.length, importedAt: doc.importedAt };
+  return { count: items.length, sources: doc.sources, importedAt: doc.importedAt };
+}
+
+// Remove one uploaded catalog (source) and its items. id "__untagged__" clears
+// items that pre-date per-file tracking (no it.src).
+async function removeJmrcSource(stores, who, id) {
+  requireAdmin(who);
+  const cur = await stores.qb.get("catalog/jmrc", { type: "json" });
+  if (!cur) return { count: 0, sources: [] };
+  const items = (cur.items || []).filter((it) => (it.src || "__untagged__") !== id);
+  const sources = (cur.sources || []).filter((s) => s.id !== id);
+  await stores.qb.setJSON("catalog/jmrc", { ...cur, items, sources });
+  return { count: items.length, sources };
 }
 
 async function squareSync(stores, who, { fetchImpl } = {}) {
@@ -363,6 +385,7 @@ export function createHandler({ stores: injected, fetchImpl } = {}) {
       if (a === "catalog") {
         if (method === "GET" && !b) return json(await getCatalog(stores));
         if (method === "PUT" && b === "jmrc") return json(await putJmrcCatalog(stores, who, body));
+        if (method === "DELETE" && b === "jmrc" && c) return json(await removeJmrcSource(stores, who, c));
         if (method === "GET" && b === "cabinets") return json(await getCabinets(stores));
         if (method === "PUT" && b === "cabinets") return json(await putCabinets(stores, who, body));
         if (method === "POST" && b === "square-sync") return json(await squareSync(stores, who, { fetchImpl }));
