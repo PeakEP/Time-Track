@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useApp } from "../store";
-import { server } from "../api";
+import { server, type CatalogSourceRef } from "../api";
 import { MARGIN_LABEL, type CatalogItem, type MarginKey, type Settings, type ToolComponent } from "../types";
 import { itemLabel, marginsFromRetail, parseJmrcCatalog, parseJmrcWorkbook, resolveComponent } from "../engine/catalog";
 import { SUPPLIER_LABEL, validateCabinetFile, identifySupplier } from "../engine/cabinets";
@@ -39,7 +39,10 @@ export default function SettingsView() {
   async function importCatalogs(files: FileList, mode: "merge" | "replace") {
     setBusy("Reading the catalog…");
     try {
+      const nowIso = new Date().toISOString();
+      const by = app.me?.name || "";
       const incoming = new Map<string, CatalogItem>(); // union within this upload (later file wins)
+      const newSources: CatalogSourceRef[] = [];
       const warnings: string[] = [];
       const names: string[] = [];
       let retail: ReturnType<typeof marginsFromRetail> | null = null;
@@ -47,15 +50,22 @@ export default function SettingsView() {
       for (const file of Array.from(files)) {
         const sheets = /\.xlsx$/i.test(file.name) ? await readXlsx(await file.arrayBuffer()) : null;
         const { items: parsed, warnings: w } = sheets ? parseJmrcWorkbook(sheets) : parseJmrcCatalog(await file.text());
-        for (const it of parsed) incoming.set(it.id, it);
+        const src = crypto.randomUUID?.() || Math.random().toString(36).slice(2) + Date.now().toString(36);
+        newSources.push({ id: src, name: file.name, at: nowIso, by });
+        for (const it of parsed) incoming.set(it.id, { ...it, src }); // tag each item with its file, so it can be removed later
         for (const x of w) warnings.push(`${file.name}: ${x}`);
         names.push(file.name);
         if (sheets) { const r = marginsFromRetail(sheets); if (r?.detail.length) { retail = r; retailFrom = file.name; } }
       }
       if (!incoming.size) throw new Error("No catalog rows found in those files.");
       const merged = new Map<string, CatalogItem>();
-      if (mode === "merge") for (const it of catalog.jmrc.items || []) merged.set(it.id, it);
+      const sources: CatalogSourceRef[] = [];
+      if (mode === "merge") {
+        for (const it of catalog.jmrc.items || []) merged.set(it.id, it);
+        for (const s of catalog.jmrc.sources || []) sources.push(s);
+      }
       for (const [id, it] of incoming) merged.set(id, it);
+      sources.push(...newSources);
       const result = [...merged.values()];
       const label = names.length === 1 ? names[0] : `${names.length} files: ${names.join(", ")}`;
       const unpriced = result.filter((i) => i.unitCost == null).length;
@@ -63,7 +73,7 @@ export default function SettingsView() {
         ? `Add them to the catalog (${(catalog.jmrc.items || []).length} → ${result.length} items)?`
         : `Replace the whole catalog with these ${result.length} items?`;
       if (!confirm(`${incoming.size} item(s) from ${names.length} file(s): ${names.join(", ")}.${warnings.length ? `\n\n${warnings.length} warning(s):\n${warnings.slice(0, 5).join("\n")}` : ""}\n\n${summary}`)) return;
-      await server.putJmrc(result, label);
+      await server.putJmrc(result, label, sources);
       await loadCatalog();
       notify(`Catalog ${mode === "merge" ? "updated" : "loaded"}: ${result.length} items (${unpriced} without a price).`);
       if (retail?.detail.length && confirm(`${retailFrom}'s retail reference gives selling margins for ${retail.detail.length} cost codes (e.g. ${retail.detail.slice(0, 4).map((d) => `${d.code} ${Math.round(d.margin * 100)}%`).join(", ")}).\n\nUse these as the margins for those product codes?`)) {
@@ -102,6 +112,16 @@ export default function SettingsView() {
 
   const comps = s.components.filter((c) => !filter || `${c.label} ${c.section}`.toLowerCase().includes(filter.toLowerCase()));
 
+  // Uploaded catalogs (sources) that can be removed individually.
+  const jmrcItems = catalog.jmrc.items || [];
+  const jmrcSources = catalog.jmrc.sources || [];
+  const srcCount = (id: string) => jmrcItems.filter((it) => (it.src || "__untagged__") === id).length;
+  async function removeSource(id: string, name: string) {
+    if (!confirm(`Remove "${name}" (${srcCount(id)} item${srcCount(id) === 1 ? "" : "s"}) from the catalog?`)) return;
+    try { await app.removeCatalogSource(id); notify("Catalog removed."); }
+    catch (e) { notify((e as Error).message, true); }
+  }
+
   return (
     <div className="stack">
       <div className="quote-bar">
@@ -134,6 +154,27 @@ export default function SettingsView() {
             <input type="file" accept=".csv,.xlsx,text/csv" multiple hidden onChange={(e) => { if (e.target.files?.length) void importCatalogs(e.target.files, "replace"); e.target.value = ""; }} />
           </label>
         </div>
+        {(jmrcSources.length > 0 || srcCount("__untagged__") > 0) && (
+          <div className="stack" style={{ gap: 4, marginTop: 4 }}>
+            <div className="small muted">Loaded catalogs — remove any with ✕:</div>
+            {jmrcSources.map((src) => (
+              <div className="row" key={src.id} style={{ gap: 8, alignItems: "center" }}>
+                <span className="name">{src.name}</span>
+                <span className="small muted">{srcCount(src.id)} item(s){src.at ? ` · ${when(src.at)}` : ""}</span>
+                <div className="spacer" />
+                <button className="btn sm ghost danger" title="Remove this catalog" onClick={() => removeSource(src.id, src.name)}>✕</button>
+              </div>
+            ))}
+            {srcCount("__untagged__") > 0 && (
+              <div className="row" style={{ gap: 8, alignItems: "center" }}>
+                <span className="name">{catalog.jmrc.fileName || "Existing catalog"}</span>
+                <span className="small muted">{srcCount("__untagged__")} item(s) · earlier import</span>
+                <div className="spacer" />
+                <button className="btn sm ghost danger" title="Remove this catalog" onClick={() => removeSource("__untagged__", catalog.jmrc.fileName || "Existing catalog")}>✕</button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="card stack">

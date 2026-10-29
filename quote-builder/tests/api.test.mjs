@@ -124,6 +124,26 @@ test("Admins add custom products that survive a master re-import; reps can't", a
   assert.ok(!(await call("mike", "GET", "catalog")).body.custom.items.some((x) => x.id === id));
 });
 
+test("catalogs upload with sources and can be removed one at a time", async () => {
+  const items = [
+    { id: "jmrc:a", name: "Stud", unit: "ea", unitCost: 5, costCode: "0602 Studs", src: "s1" },
+    { id: "jmrc:b", name: "Nail", unit: "bx", unitCost: 20, costCode: "0602 Studs", src: "s1" },
+    { id: "jmrc:c", name: "SPC", unit: "sf", unitCost: 1.25, costCode: "1701 SPC Flooring", src: "s2" },
+  ];
+  const sources = [{ id: "s1", name: "lumber.csv", at: "2026-10-29", by: "Mike Robins" }, { id: "s2", name: "flooring.csv", at: "2026-10-29", by: "Mike Robins" }];
+  assert.equal((await call("mike", "PUT", "catalog/jmrc", { items, sources, fileName: "2 files" })).body.count, 3);
+  let cat = (await call("sam", "GET", "catalog")).body.jmrc;
+  assert.equal(cat.items.length, 3);
+  assert.equal(cat.sources.length, 2);
+  assert.equal(cat.items.find((x) => x.id === "jmrc:a").src, "s1"); // src survives the round-trip
+  assert.equal((await call("sam", "DELETE", "catalog/jmrc/s1")).status, 403); // reps can't remove
+  assert.equal((await call("mike", "DELETE", "catalog/jmrc/s1")).status, 200); // admin removes the lumber catalog
+  cat = (await call("mike", "GET", "catalog")).body.jmrc;
+  assert.equal(cat.items.length, 1);
+  assert.equal(cat.items[0].id, "jmrc:c");
+  assert.deepEqual(cat.sources.map((s) => s.id), ["s2"]);
+});
+
 test("quote numbers are sequential per prefix, even when requested together", async () => {
   const got = await Promise.all([1, 2, 3].map(() => call("sam", "POST", "numbers", { prefix: "REN2026" })));
   assert.deepEqual(got.map((g) => g.body.number).sort(), ["REN2026-01", "REN2026-02", "REN2026-03"]);

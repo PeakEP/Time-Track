@@ -33,6 +33,7 @@ export interface CatalogItem {
   costCode: string; // e.g. "0602 Studs" (JMRC) or Square category
   sku?: string;
   retail?: number | null; // Square retail price (never used as cost)
+  src?: string; // id of the uploaded catalog file this JMRC item came from (for per-catalog removal)
 }
 
 /* ----------------------------- cabinets ----------------------------- */
