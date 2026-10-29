@@ -215,6 +215,24 @@ Oak Plank,"Engineered Oak Plank",SF,2.00,1701 SPC Flooring,Materials
   assert.equal(lines.find((l) => l.id === `floor@${r2.id}`).unitCost, 2.0);
 });
 
+test("a room transition/reducer adds a 1706 line only when the box is checked", () => {
+  const { items } = E.parseJmrcCatalog(`Cost Item Name,Description,Unit,Unit Cost,Cost Code,Cost Type
+SPC A,"SPC Aspen",SF,1.25,1701 SPC Flooring,Materials
+Reducer,"SPC Reducer 94in",EA,22.00,1706 Flooring Trims & Transitions,Materials
+`);
+  const s = E.defaultSettings();
+  const q = E.newQuote("renovation", "t");
+  const r = E.newRoom("bedroom"); Object.assign(r, { length: 10, width: 10, floor: "spc", floorTransition: true });
+  q.answers.rooms = [r];
+  const line = E.buildLines(q, s, items).find((l) => l.id === `trans@${r.id}`);
+  assert.ok(line, "transition line exists when checked");
+  assert.equal(line.qty, 1);
+  assert.equal(line.unitCost, 22.0);
+  assert.match(line.costCode, /^1706/);
+  r.floorTransition = false;
+  assert.ok(!E.buildLines(q, s, items).some((l) => l.id === `trans@${r.id}`));
+});
+
 test("tile floor basis spells out the deductions; no separate fixture-setting labour", () => {
   const { items } = E.parseJmrcCatalog(CSV);
   const s = E.defaultSettings();

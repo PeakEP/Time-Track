@@ -556,6 +556,8 @@ export function renovationTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
       if (dTub) basis += ` − ${dTub} (tub)`;
       if (dVanity) basis += ` − ${dVanity} (vanity)`;
       t.floor(r.floor, sf, basis, key("floor"), tag, r.floorItemId);
+      // Reducer / transition strip at the doorway, if the rep flagged it.
+      if (r.floorTransition) t.material("floorTransition", 1, `${tag}: reducer / transition`, { idKey: key("trans"), allowance: true });
     }
 
     // Trim & doors

@@ -87,6 +87,7 @@ export interface Room {
   demoWalls: boolean; // gut to studs
   floor: FloorType;
   floorItemId?: string; // flooring product chosen for THIS room (falls back to the per-type default)
+  floorTransition?: boolean; // a reducer / transition strip is needed at this room's floor
   paintWalls: boolean;
   paintCeiling: boolean;
   drywall: "none" | "patch" | "walls" | "walls+ceiling";

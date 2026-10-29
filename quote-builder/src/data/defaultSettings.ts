@@ -86,6 +86,7 @@ export const DEFAULT_COMPONENTS: ToolComponent[] = [
   // Flooring & tile defaults (the Selections step overrides the product)
   c("flooring", "Flooring", "Flooring (default product)", ["spc"], 1, "1 SF", true, 0.1, { codes: ["1701"], unit: "SF" }),
   c("underlay", "Flooring", "Underlay (if the product needs one)", ["underlayment", "200"], 200, "200 SF per roll", true, 0.05),
+  c("floorTransition", "Flooring", "Floor transition / reducer", [], 1, "1 per room with a transition", true, 0, { codes: ["1706"] }),
   c("tile", "Tile", "Floor tile (default product)", ["porcelain tile"], 1, "1 SF", true, 0.12, { codes: ["1801"], unit: "SF" }),
   c("thinset", "Tile", "Large-tile mortar 50 lb", ["4-xlt", "50"], 45, "SF per bag (12x24) — rule of thumb", false, 0),
   c("grout", "Tile", "Grout", ["grout"], 100, "SF per unit — confirm product", false, 0, { codes: ["1803"] }),
