@@ -182,6 +182,7 @@ export function newRoom(kind: RoomKind = "bedroom", name = ""): Room {
     length: wet ? 8 : 12, width: wet ? 5 : 11, height: 8, doors: 1, windows: wet ? 0 : 1,
     demoFloor: true, demoWalls: false,
     floor: "none", // the rep picks the flooring type per room (no default)
+    floorTransition: false,
     paintWalls: true, paintCeiling: true, drywall: "patch", baseboard: true,
     newInteriorDoors: 0, lightFixtures: wet || kitchen ? 1 : 0,
     cabinetLF: kitchen ? 16 : 0, countertopSF: kitchen ? 30 : 0, backsplashSF: kitchen ? 25 : 0,

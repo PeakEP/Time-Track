@@ -73,6 +73,7 @@ export default function RoomsStep() {
                 </div>
                 <div className="checks" style={{ marginTop: 10 }}>
                   <Check label="Remove existing floor" value={r.demoFloor} onChange={(b) => set(i, { demoFloor: b })} />
+                  {r.floor !== "none" && <Check label="Transition / reducer needed" value={!!r.floorTransition} onChange={(b) => set(i, { floorTransition: b })} />}
                   <Check label="Gut to studs" value={r.demoWalls} onChange={(b) => set(i, { demoWalls: b })} />
                   <Check label="Paint walls" value={r.paintWalls} onChange={(b) => set(i, { paintWalls: b })} />
                   <Check label="Paint ceiling" value={r.paintCeiling} onChange={(b) => set(i, { paintCeiling: b })} />
