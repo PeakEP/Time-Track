@@ -91,6 +91,21 @@ export const DEFAULT_COMPONENTS: ToolComponent[] = [
   c("thinset", "Tile", "Large-tile mortar 50 lb", ["4-xlt", "50"], 45, "SF per bag (12x24) — rule of thumb", false, 0),
   c("grout", "Tile", "Grout", ["grout"], 100, "SF per unit — confirm product", false, 0, { codes: ["1803"] }),
   c("showerMembrane", "Tile", "Shower waterproofing membrane", ["kerdi waterproofing membrane", "108"], 108, "108 SF per roll (from description)", true, 0.1, { codes: ["1803"] }),
+  // Schluter KERDI shower system — quantities computed by the shower assembly (see takeoff.ts).
+  c("kerdiBoard", "Tile", "Schluter KERDI-BOARD panel (48\"×96\")", ["kerdi-board"], 32, "32 SF per panel", true, 0.10, { codes: ["1803"] }),
+  c("kerdiScrews", "Tile", "KERDI-BOARD screws + washers (40/pk)", ["kerdi-board screw"], 23, "≈ 1 pack per 23 SF of board", true, 0, { codes: ["1803"] }),
+  c("kerdiFix", "Tile", "Schluter KERDI-FIX (290 ml)", ["kerdi-fix"], 1, "per cartridge", true, 0, { codes: ["1803"] }),
+  c("kerdiTray", "Tile", "Schluter KERDI-SHOWER-ST sloped tray", ["kerdi-shower-st"], 1, "1 per shower", true, 0, { codes: ["1803"] }),
+  c("kerdiDrain", "Tile", "Schluter KERDI-DRAIN + grate", ["kerdi-drain"], 1, "1 per shower", true, 0, { codes: ["1803"] }),
+  c("kerdiBand", "Tile", "Schluter KERDI-BAND (5\" roll)", ["kerdi-band"], 98, "98' roll", true, 0.10, { codes: ["1803"] }),
+  c("kerdiSealPS", "Tile", "Schluter KERDI-SEAL-PS pipe seal", ["kerdi-seal-ps"], 1, "shower arm", true, 0, { codes: ["1803"] }),
+  c("kerdiSealMV", "Tile", "Schluter KERDI-SEAL-MV valve seal", ["kerdi-seal-mv"], 1, "mixing valve", true, 0, { codes: ["1803"] }),
+  c("kerdiCurb", "Tile", "Schluter KERDI-BOARD-SC curb", ["kerdi-board-sc"], 1, "1 per shower", true, 0, { codes: ["1803"] }),
+  c("kerdiNiche", "Tile", "Schluter KERDI-BOARD-SN niche", ["kerdi-board-sn"], 1, "per scope", true, 0, { codes: ["1803"] }),
+  c("allSet", "Tile", "Schluter ALL-SET (50 lb)", ["all-set"], 1, "bag count computed per application", true, 0, { codes: ["1803"] }),
+  c("groutShower", "Tile", "Grout — wet area (25 lb)", ["grout"], 1, "bags (mosaic floor drives it)", true, 0, { codes: ["1803"] }),
+  c("edgeProfile", "Tile", "Schluter edge profile (RONDEC/JOLLY 8'2\")", ["rondec"], 8.17, "8'2\" stick", true, 0.10, { codes: ["1803"] }),
+  c("showerSilicone", "Tile", "Colour-matched silicone (tube)", ["silicone"], 22, "≈ 1 tube per 22 LF", true, 0, { codes: ["1803"] }),
 
   // Kitchen & bath fixtures (Selections step overrides)
   c("countertop", "Kitchen", "Quartz countertop (default tier)", ["quartz"], 1, "1 SF", true, 0.05, { codes: ["2001"], unit: "SF" }),

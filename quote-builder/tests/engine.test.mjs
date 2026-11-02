@@ -233,6 +233,38 @@ Reducer,"SPC Reducer 94in",EA,22.00,1706 Flooring Trims & Transitions,Materials
   assert.ok(!E.buildLines(q, s, items).some((l) => l.id === `trans@${r.id}`));
 });
 
+test("a tiled shower emits the Schluter KERDI takeoff (reference 60×32 example)", () => {
+  const { items } = E.parseJmrcCatalog(CSV);
+  const s = E.defaultSettings();
+  const q = E.newQuote("renovation", "t");
+  const r = E.newRoom("bathroom");
+  Object.assign(r, { tubShower: "shower", showerWallTileSF: 69, showerFloorSF: 13.3, showerTileSize: "large", showerCurb: true, showerNiche: false });
+  q.answers.rooms = [r];
+  const lines = E.buildLines(q, s, items);
+  const qof = (k) => lines.find((l) => l.id === `${k}@${r.id}`)?.qty;
+  assert.equal(qof("kbrd"), 3);    // KERDI-BOARD panels (69 SF +10% ÷ 32)
+  assert.equal(qof("kscrew"), 3);  // screw/washer packs
+  assert.equal(qof("kband"), 1);   // KERDI-BAND roll
+  assert.equal(qof("ktray"), 1);
+  assert.equal(qof("kdrain"), 1);
+  assert.equal(qof("ksps"), 1);
+  assert.equal(qof("ksmv"), 1);
+  assert.equal(qof("kcurb"), 1);
+  assert.equal(qof("kallset"), 3); // ALL-SET bags
+  assert.equal(qof("kgrout"), 1);  // grout bags (mosaic floor drives it)
+  assert.equal(qof("kedge"), 3);   // edge profile sticks
+  assert.equal(qof("ksil"), 2);    // silicone tubes
+  assert.ok(lines.some((l) => l.id === `sfloor@${r.id}`)); // floor mosaic tile
+  assert.ok(!lines.some((l) => l.id === `kniche@${r.id}`)); // niche off
+  // the KERDI path replaces the generic membrane/thin-set and the tub/base fixture
+  assert.ok(!lines.some((l) => [`membrane@${r.id}`, `sthinset@${r.id}`, `tub@${r.id}`].includes(l.id)));
+  // a tub (not a shower) keeps the simple membrane build and a tub fixture
+  r.tubShower = "tub";
+  const tub = E.buildLines(q, s, items);
+  assert.ok(tub.some((l) => l.id === `membrane@${r.id}`) && tub.some((l) => l.id === `tub@${r.id}`));
+  assert.ok(!tub.some((l) => l.id === `kbrd@${r.id}`));
+});
+
 test("tile floor basis spells out the deductions; no separate fixture-setting labour", () => {
   const { items } = E.parseJmrcCatalog(CSV);
   const s = E.defaultSettings();

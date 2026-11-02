@@ -494,6 +494,54 @@ export function roomGeometry(r: Room) {
   return { L, W, H, floor, perim, walls, ceiling: floor };
 }
 
+// Schluter ALL-SET coverage (SF per 50 lb bag) and grout demand (lb per SF) by
+// wall-tile format — from the JMRC Schluter shower reference.
+const SHOWER_NOTCH: Record<string, number> = { mosaic: 90, small: 90, medium: 67, large: 45, lft: 35 };
+const SHOWER_GROUT_LB_SF: Record<string, number> = { mosaic: 0.26, small: 0.16, medium: 0.082, large: 0.025, lft: 0.025 };
+
+// Schluter KERDI shower material takeoff (KERDI-BOARD method). Quantities are a
+// calculated baseline — field measurements supersede; 10% waste on tile/board;
+// all counts rounded up. Keyed off the shower's wall-tile area, floor footprint,
+// wall-tile format, and the curb / niche flags.
+function schluterShower(t: Takeoff, r: Room, a: Answers, key: (k: string) => string, tag: string) {
+  const wallSF = pos(r.showerWallTileSF);
+  const floorSF = pos(r.showerFloorSF);
+  const size = r.showerTileSize || "medium";
+  const curb = r.showerCurb !== false;
+  const niche = !!r.showerNiche;
+  // Tile
+  t.material("tile", wallSF, `${tag}: shower walls`, { selectedId: a.showerTileItemId || a.floorItemIds?.tile || undefined, label: "Shower wall tile", idKey: key("stile"), allowance: true });
+  if (floorSF) t.material("tile", floorSF, `${tag}: shower floor mosaic`, { codes: ["1801"], match: [], label: "Shower floor mosaic", idKey: key("sfloor"), allowance: true });
+  // KERDI-BOARD waterproofing system
+  t.material("kerdiBoard", wallSF, `${tag}: ${fmt(wallSF)} SF of wall`, { idKey: key("kbrd") });
+  t.material("kerdiScrews", wallSF, `${tag}: fasteners 12" o.c.`, { idKey: key("kscrew") });
+  t.material("kerdiFix", 1 + (curb || niche ? 1 : 0), `${tag}: transitions${curb ? " + curb" : ""}`, { idKey: key("kfix") });
+  t.material("kerdiTray", 1, `${tag}: sloped tray`, { idKey: key("ktray") });
+  t.material("kerdiDrain", 1, `${tag}: bonding-flange drain`, { idKey: key("kdrain") });
+  const bandLF = Math.round(wallSF * 0.8);
+  t.material("kerdiBand", bandLF, `${tag}: corners + seams + tray transition + penetrations ≈ ${bandLF} LF`, { idKey: key("kband") });
+  t.material("kerdiSealPS", 1, `${tag}: shower arm`, { idKey: key("ksps") });
+  t.material("kerdiSealMV", 1, `${tag}: mixing valve`, { idKey: key("ksmv") });
+  if (curb) t.material("kerdiCurb", 1, `${tag}: curb`, { idKey: key("kcurb") });
+  if (niche) t.material("kerdiNiche", 1, `${tag}: niche`, { idKey: key("kniche") });
+  // ALL-SET: band/tray bond + wall tile set (by notch) + floor mosaic
+  const notch = SHOWER_NOTCH[size] || 67;
+  const allSetBags = Math.ceil((wallSF / notch + floorSF / 90 + (wallSF + floorSF) / 125) * 1.1);
+  t.material("allSet", allSetBags, `${tag}: band/tray + ${size} wall tile + mosaic floor`, { idKey: key("kallset") });
+  // Grout — wet-area rated; the mosaic floor drives the bag count
+  const wallGroutLb = wallSF * (SHOWER_GROUT_LB_SF[size] || 0.082);
+  const floorGroutLb = floorSF * 0.26;
+  const groutBags = Math.ceil(((wallGroutLb + floorGroutLb) * 1.1) / 25);
+  t.material("groutShower", groutBags, `${tag}: walls ${fmt(wallGroutLb)} lb + mosaic floor ${fmt(floorGroutLb)} lb`, { idKey: key("kgrout") });
+  // Edge profile + movement-joint silicone
+  const edgeLF = 14 + (niche ? 8 : 0) + (curb ? 5 : 0);
+  t.material("edgeProfile", edgeLF, `${tag}: exposed tile edges ≈ ${edgeLF} LF`, { idKey: key("kedge") });
+  const silLF = 24 + (niche ? 6 : 0);
+  t.material("showerSilicone", silLF, `${tag}: inside corners + plane changes ≈ ${silLF} LF`, { idKey: key("ksil") });
+  // Tile install labour (walls + mosaic floor)
+  t.labour("lab.showerTile", wallSF + floorSF, `${tag}: ${fmt(wallSF + floorSF)} SF`, { label: `Shower tile — ${tag}`, idKey: key("stilel") });
+}
+
 export function renovationTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
   const rooms = a.rooms || [];
   const covered = new Set(t.cabinetLines().map((x) => x.roomId));
@@ -599,12 +647,21 @@ export function renovationTakeoff(t: Takeoff, a: Answers, type: ProjectType) {
       if (!covered.has(r.id)) t.material("vanity", 1, tag, { selectedId: a.vanityItemId || undefined, idKey: key("vanity"), allowance: true });
       t.material("faucet", 1, tag, { selectedId: a.faucetItemId || undefined, idKey: key("faucet"), allowance: true });
     }
-    if (r.tubShower !== "none") { fixtures++; t.material("tub", 1, `${tag}: ${r.tubShower}`, { selectedId: a.tubItemId || undefined, idKey: key("tub"), allowance: true }); }
+    if (r.tubShower !== "none") {
+      fixtures++;
+      // A tiled shower's base is the Schluter sloped tray (emitted below); only a real tub needs a tub/base fixture.
+      if (r.tubShower === "tub") t.material("tub", 1, `${tag}: tub`, { selectedId: a.tubItemId || undefined, idKey: key("tub"), allowance: true });
+    }
     if (pos(r.showerWallTileSF)) {
-      t.material("tile", r.showerWallTileSF, `${tag}: shower walls`, { selectedId: a.showerTileItemId || a.floorItemIds?.tile || undefined, label: "Shower wall tile", idKey: key("stile"), allowance: true });
-      t.material("showerMembrane", r.showerWallTileSF, `${tag}`, { idKey: key("membrane") });
-      t.material("thinset", r.showerWallTileSF, `${tag}: shower walls`, { idKey: key("sthinset") });
-      t.labour("lab.showerTile", r.showerWallTileSF, `${tag}`, { label: `Shower tile — ${tag}`, idKey: key("stilel") });
+      if (r.tubShower === "shower") {
+        schluterShower(t, r, a, key, tag); // full Schluter KERDI shower material takeoff
+      } else {
+        // Tub surround / other tiled wet wall — membrane + thin-set, not the full KERDI shower build.
+        t.material("tile", r.showerWallTileSF, `${tag}: shower walls`, { selectedId: a.showerTileItemId || a.floorItemIds?.tile || undefined, label: "Shower wall tile", idKey: key("stile"), allowance: true });
+        t.material("showerMembrane", r.showerWallTileSF, `${tag}`, { idKey: key("membrane") });
+        t.material("thinset", r.showerWallTileSF, `${tag}: shower walls`, { idKey: key("sthinset") });
+        t.labour("lab.showerTile", r.showerWallTileSF, `${tag}`, { label: `Shower tile — ${tag}`, idKey: key("stilel") });
+      }
     }
     if (pos(r.cabinetLF) && (r.kind === "kitchen")) fixtures++; // kitchen sink
     if (fixtures) {

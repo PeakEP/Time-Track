@@ -187,6 +187,7 @@ export function newRoom(kind: RoomKind = "bedroom", name = ""): Room {
     newInteriorDoors: 0, lightFixtures: wet || kitchen ? 1 : 0,
     cabinetLF: kitchen ? 16 : 0, countertopSF: kitchen ? 30 : 0, backsplashSF: kitchen ? 25 : 0,
     toilet: wet, vanity: wet, tubShower: wet ? "tub" : "none", showerWallTileSF: wet ? 80 : 0,
+    showerFloorSF: wet ? 12 : 0, showerTileSize: "medium", showerNiche: false, showerCurb: true,
     wallsRemovedLF: 0, loadBearingRemoved: false, newWallsLF: 0, plumbingRelocated: false, notes: "",
   };
 }
