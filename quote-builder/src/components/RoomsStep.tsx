@@ -107,6 +107,24 @@ export default function RoomsStep() {
                       <Check label="Vanity & faucet" value={r.vanity} onChange={(b) => set(i, { vanity: b })} />
                     </div>
                   </div>
+                  {r.tubShower === "shower" && (
+                    <div className="grid four" style={{ marginTop: 10 }}>
+                      <Num label="Shower floor" unit="SF" value={r.showerFloorSF || 0} onChange={(n) => set(i, { showerFloorSF: n })} />
+                      <label className="field"><span>Wall tile size (Schluter)</span>
+                        <select value={r.showerTileSize || "medium"} onChange={(e) => set(i, { showerTileSize: e.target.value as Room["showerTileSize"] })}>
+                          <option value="mosaic">Mosaic / small (≤2")</option>
+                          <option value="small">Small (≤8")</option>
+                          <option value="medium">Medium (8–12")</option>
+                          <option value="large">Large (12–16")</option>
+                          <option value="lft">Large format / plank</option>
+                        </select>
+                      </label>
+                      <div className="checks" style={{ alignItems: "end" }}>
+                        <Check label="Curb" value={r.showerCurb !== false} onChange={(b) => set(i, { showerCurb: b })} />
+                        <Check label="Niche" value={!!r.showerNiche} onChange={(b) => set(i, { showerNiche: b })} />
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
 

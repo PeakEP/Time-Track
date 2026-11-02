@@ -104,6 +104,11 @@ export interface Room {
   vanity: boolean;
   tubShower: "none" | "tub" | "shower";
   showerWallTileSF: number;
+  // Schluter KERDI shower (used when tubShower === "shower")
+  showerFloorSF?: number; // shower floor / tray footprint (SF) — drives floor mosaic + grout
+  showerTileSize?: "mosaic" | "small" | "medium" | "large" | "lft"; // wall tile format: thinset notch + grout
+  showerNiche?: boolean;
+  showerCurb?: boolean; // curbed alcove (default true); false = curbless
   // Remodel
   wallsRemovedLF: number;
   loadBearingRemoved: boolean;
