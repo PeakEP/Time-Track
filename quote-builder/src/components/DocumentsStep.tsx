@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useApp } from "../store";
 import { server } from "../api";
 import { STEPS, fieldVisible, newRoom, uid, type Field } from "../data/questions";
-import type { AiSuggestion, Attachment, CabinetSupplier, Quote, RoomKind } from "../types";
+import type { AiSuggestion, Attachment, CabinetSupplier, Quote, Room, RoomKind } from "../types";
 import {
   deleteFile, download, ensurePermission, folderSupported, getFile, guessType, listFolder, loadFolderHandle,
   pickFolder, putFile, readableByReader, saveFolderHandle, type FolderFile,
@@ -159,7 +159,7 @@ export default function DocumentsStep() {
           lines: v.lines.map((l) => ({ id: uid(), sku: l.sku, qty: l.qty })), notes: v.supplier === "unknown" ? "Supplier not named in the documents — check." : "",
         });
       } else if (s.field === "room") {
-        const v = s.value as { name: string; kind: RoomKind; length: number; width: number; height: number; scope: string };
+        const v = s.value as { name: string; kind: RoomKind; length: number; width: number; height: number; scope: string; work?: Record<string, unknown> };
         // On a rescan, don't add a room that's already there (match name + kind).
         if (q.answers.rooms.some((x) => x.name.toLowerCase() === String(v.name).toLowerCase() && x.kind === v.kind)) return;
         const room = newRoom(v.kind, v.name);
@@ -167,6 +167,24 @@ export default function DocumentsStep() {
         if (v.width) room.width = v.width;
         if (v.height) room.height = v.height;
         room.notes = v.scope;
+        // Apply ONLY the scope the reader read for this room — a bare room stays bare.
+        const w = v.work || {};
+        if (typeof w.demoFloor === "boolean") room.demoFloor = w.demoFloor;
+        if (typeof w.demoWalls === "boolean") room.demoWalls = w.demoWalls;
+        if (typeof w.floor === "string") room.floor = w.floor as Room["floor"];
+        if (typeof w.paintWalls === "boolean") room.paintWalls = w.paintWalls;
+        if (typeof w.paintCeiling === "boolean") room.paintCeiling = w.paintCeiling;
+        if (typeof w.drywall === "string") room.drywall = w.drywall as Room["drywall"];
+        if (typeof w.baseboard === "boolean") room.baseboard = w.baseboard;
+        if (w.newInteriorDoors != null) room.newInteriorDoors = Number(w.newInteriorDoors) || 0;
+        if (w.lightFixtures != null) room.lightFixtures = Number(w.lightFixtures) || 0;
+        if (w.cabinetLF != null) room.cabinetLF = Number(w.cabinetLF) || 0;
+        if (w.countertopSF != null) room.countertopSF = Number(w.countertopSF) || 0;
+        if (w.backsplashSF != null) room.backsplashSF = Number(w.backsplashSF) || 0;
+        if (typeof w.toilet === "boolean") room.toilet = w.toilet;
+        if (typeof w.vanity === "boolean") room.vanity = w.vanity;
+        if (typeof w.tubShower === "string") room.tubShower = w.tubShower as Room["tubShower"];
+        if (w.showerWallTileSF != null) room.showerWallTileSF = Number(w.showerWallTileSF) || 0;
         q.answers.rooms.push(room);
       } else if (s.field === "inclusionsExtra" || s.field === "exclusionsExtra") {
         a[s.field] = [a[s.field], s.value].filter(Boolean).join("\n");

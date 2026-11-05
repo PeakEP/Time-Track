@@ -37,14 +37,37 @@ export function resultSchema(fieldKeys) {
         items: {
           type: "object",
           additionalProperties: false,
-          required: ["name", "kind", "length", "width", "height", "scope", "confidence", "source"],
+          required: ["name", "kind", "length", "width", "height", "scope", "work", "confidence", "source"],
           properties: {
             name: { type: "string" },
             kind: { type: "string", enum: ROOM_KINDS },
             length: { type: "number", description: "feet; 0 if not shown" },
             width: { type: "number", description: "feet; 0 if not shown" },
             height: { type: "number", description: "ceiling height in feet; 0 if not shown" },
-            scope: { type: "string", description: "What the documents say is being done in this room." },
+            scope: { type: "string", description: "What the documents say is being done in this room, in plain words." },
+            work: {
+              type: "object",
+              additionalProperties: false,
+              description: "The scope for THIS room, set ONLY from what the documents state. Use false / 0 / \"none\" for anything the documents don't call for. Never assume a kitchen gets cabinets/counters or a bath gets a vanity/tub/shower.",
+              properties: {
+                demoFloor: { type: "boolean", description: "removing the existing floor" },
+                demoWalls: { type: "boolean", description: "gutting to the studs" },
+                floor: { type: "string", enum: ["none", "spc", "laminate", "hardwood", "solid-hardwood", "lvt", "tile", "other"], description: "new floor finish; 'none' if the floor isn't being replaced" },
+                paintWalls: { type: "boolean" },
+                paintCeiling: { type: "boolean" },
+                drywall: { type: "string", enum: ["none", "patch", "walls", "walls+ceiling"] },
+                baseboard: { type: "boolean" },
+                newInteriorDoors: { type: "number" },
+                lightFixtures: { type: "number" },
+                cabinetLF: { type: "number", description: "linear feet of cabinets; 0 if none" },
+                countertopSF: { type: "number" },
+                backsplashSF: { type: "number" },
+                toilet: { type: "boolean" },
+                vanity: { type: "boolean" },
+                tubShower: { type: "string", enum: ["none", "tub", "shower"] },
+                showerWallTileSF: { type: "number" },
+              },
+            },
             confidence: conf,
             source: { type: "string" },
           },
@@ -84,6 +107,7 @@ Rules:
 - Convert dimensions to decimal feet (28'-6" → 28.5). Counts are whole numbers.
 - Confidence: high = stated plainly; medium = measured or counted from drawings; low = inferred from notes or photos.
 - For selects and yes/no questions, answer with one of the listed option values exactly.
+- For each room, fill its "work" with ONLY what the documents state is being done there — the floor finish (and only when the floor is being replaced), paint, drywall, baseboard/trim, doors, lighting, and any fixtures or cabinets the documents list. Leave everything else off (false / 0 / "none"). Never assume a kitchen gets cabinets, counters or a backsplash, or that a bathroom gets a vanity, toilet, tub or shower tile, unless the documents say so. A room that only gets flooring and paint must have everything else off.
 - If there is a cabinet design or cabinet list, copy every cabinet code and quantity into cabinets exactly as written (don't convert codes between suppliers). Name the supplier only if the document does.
 - Drawings are often preliminary and notes are often rough. Put anything that conflicts, or that the rep must confirm, in openQuestions.`;
 

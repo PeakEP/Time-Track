@@ -176,18 +176,20 @@ export const uid = () => (typeof globalThis.crypto?.randomUUID === "function" ? 
 // Sensible starting scope per room type — the rep untick what isn't in the job.
 export function newRoom(kind: RoomKind = "bedroom", name = ""): Room {
   const wet = kind === "bathroom" || kind === "ensuite";
-  const kitchen = kind === "kitchen";
   return {
     id: uid(), name: name || ROOM_KINDS.find((k) => k.value === kind)?.label || "Room", kind,
     length: wet ? 8 : 12, width: wet ? 5 : 11, height: 8, doors: 1, windows: wet ? 0 : 1,
-    demoFloor: true, demoWalls: false,
-    floor: "none", // the rep picks the flooring type per room (no default)
-    floorTransition: false,
-    paintWalls: true, paintCeiling: true, drywall: "patch", baseboard: true,
-    newInteriorDoors: 0, lightFixtures: wet || kitchen ? 1 : 0,
-    cabinetLF: kitchen ? 16 : 0, countertopSF: kitchen ? 30 : 0, backsplashSF: kitchen ? 25 : 0,
-    toilet: wet, vanity: wet, tubShower: wet ? "tub" : "none", showerWallTileSF: wet ? 80 : 0,
-    showerFloorSF: wet ? 12 : 0, showerTileSize: "medium", showerNiche: false, showerCurb: true,
+    // A new room has NOTHING in scope — the rep ticks what's being done, or the
+    // document reader fills it from the scope of work. So adding a room (even a
+    // kitchen or bath) adds no cost until something is turned on. No phantom
+    // cabinets, counters, fixtures or finishes.
+    demoFloor: false, demoWalls: false,
+    floor: "none", floorTransition: false,
+    paintWalls: false, paintCeiling: false, drywall: "none", baseboard: false,
+    newInteriorDoors: 0, lightFixtures: 0,
+    cabinetLF: 0, countertopSF: 0, backsplashSF: 0,
+    toilet: false, vanity: false, tubShower: "none", showerWallTileSF: 0,
+    showerFloorSF: 0, showerTileSize: "medium", showerNiche: false, showerCurb: true,
     wallsRemovedLF: 0, loadBearingRemoved: false, newWallsLF: 0, plumbingRelocated: false, notes: "",
   };
 }
