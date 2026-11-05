@@ -298,6 +298,11 @@ test("reader prompt pieces: schema limits fields to the interview keys; scope no
   assert.match(qt, /in scope/i);
   // And the system prompt makes the notes win over the drawings on scope.
   assert.match(SYSTEM, /notes set the scope|notes win/i);
+  // Each room carries structured "work" so the reader fills only the scope the SOW states.
+  const room = s.properties.rooms.items;
+  assert.ok(room.required.includes("work"));
+  for (const f of ["floor", "paintWalls", "cabinetLF", "countertopSF", "vanity", "toilet", "tubShower"]) assert.ok(room.properties.work.properties[f], `work.${f} missing`);
+  assert.match(SYSTEM, /only what the documents state is being done|Never assume a kitchen gets cabinets/i);
 });
 
 test("cabinet catalogs: Admin uploads the supplier files, reps read them", async () => {

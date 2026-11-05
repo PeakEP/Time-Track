@@ -165,9 +165,9 @@ test("renovation rooms: flooring net of cabinets, paint in 5-gal pails, vanity a
   const s = E.defaultSettings();
   const q = E.newQuote("renovation", "t");
   const k = E.newRoom("kitchen");
-  Object.assign(k, { length: 12, width: 10, cabinetLF: 10, floor: "spc" });
+  Object.assign(k, { length: 12, width: 10, cabinetLF: 10, floor: "spc", paintWalls: true });
   const b = E.newRoom("bathroom");
-  Object.assign(b, { floor: "tile" });
+  Object.assign(b, { floor: "tile", vanity: true });
   q.answers.rooms = [k, b];
   q.answers.floorItemIds = { spc: items.find((i) => i.name === "SPC A").id };
   q.answers.paintItemId = items.find((i) => i.name === "Paint").id;
@@ -182,6 +182,19 @@ test("renovation rooms: flooring net of cabinets, paint in 5-gal pails, vanity a
   const vanity = lines.find((l) => l.id === `vanity@${b.id}`);
   assert.equal(vanity.unitCost, null);
   assert.ok(vanity.flags.includes("priced as per drawings"));
+});
+
+test("a freshly added room has nothing in scope — no phantom fixtures, finishes or cabinets", () => {
+  const { items } = E.parseJmrcCatalog(CSV);
+  const s = E.defaultSettings();
+  const q = E.newQuote("renovation", "t");
+  const k = E.newRoom("kitchen"), b = E.newRoom("bathroom"); // nothing ticked
+  q.answers.rooms = [k, b];
+  const r = E.computeQuote(q, s, items, {});
+  const absent = (p) => assert.ok(!r.lines.some((l) => l.id.startsWith(p)), `${p} should not be emitted for a bare room`);
+  for (const p of ["cab:", `ct@${k.id}`, `bs@${k.id}`, `ksink@${k.id}`, `cabhw@${k.id}`, `floor@${k.id}`, `paint@${k.id}`,
+                   `vanity@${b.id}`, `toilet@${b.id}`, `faucet@${b.id}`, `tub@${b.id}`, `stile@${b.id}`, `membrane@${b.id}`]) absent(p);
+  assert.ok(!r.questions.some((x) => x.kind === "cabinets")); // no "which cabinets?" nag either
 });
 
 test("floor type prices from its own cost code by default", () => {
@@ -365,7 +378,8 @@ test("a cabinet order replaces the room's allowance and vanity; unknown SKUs bec
   const { items } = E.parseJmrcCatalog(CSV);
   const s = E.defaultSettings();
   const q = E.newQuote("renovation", "t");
-  const k = E.newRoom("kitchen"); const b = E.newRoom("bathroom");
+  const k = E.newRoom("kitchen"); k.cabinetLF = 16;
+  const b = E.newRoom("bathroom"); b.vanity = true;
   q.answers.rooms = [k, b];
   let r = E.computeQuote(q, s, items, { oppein: OPPEIN, divine: DIVINE });
   // No cabinets are priced per linear foot: an uncovered kitchen is a question, not a line.
@@ -454,7 +468,8 @@ test("uid() produces ids the upload API accepts (8–64 chars) — cabinet-scan 
 
 test("Products show only what's in scope: a kitchen has no bath fixtures", () => {
   const q = E.newQuote("renovation", "t");
-  const k = E.newRoom("kitchen"); k.floor = "spc";
+  const k = E.newRoom("kitchen");
+  Object.assign(k, { floor: "spc", countertopSF: 30, backsplashSF: 25, paintWalls: true, lightFixtures: 1, cabinetLF: 16 });
   q.answers.rooms = [k];
   const keys = E.productsInScope(q.answers, "renovation").map((p) => p.key);
   for (const k of ["countertopItemId", "backsplashItemId", "paintItemId", "lightFixtureItemId", "kitchenSinkItemId", "kitchenFaucetItemId", "cabinetHardwareItemId", "underCabinetLightItemId"]) assert.ok(keys.includes(k), `kitchen should include ${k}`);
@@ -464,7 +479,8 @@ test("Products show only what's in scope: a kitchen has no bath fixtures", () =>
 
 test("Products show bath fixtures for a bathroom, with a tile floor", () => {
   const q = E.newQuote("renovation", "t");
-  const b = E.newRoom("bathroom"); b.floor = "tile";
+  const b = E.newRoom("bathroom");
+  Object.assign(b, { floor: "tile", toilet: true, vanity: true, tubShower: "tub", showerWallTileSF: 80, paintWalls: true, lightFixtures: 1 });
   q.answers.rooms = [b];
   const keys = E.productsInScope(q.answers, "renovation").map((p) => p.key);
   for (const k of ["toiletItemId", "vanityItemId", "faucetItemId", "tubItemId", "showerTileItemId", "paintItemId", "lightFixtureItemId"]) assert.ok(keys.includes(k), `bathroom should include ${k}`);
@@ -476,7 +492,7 @@ test("a kitchen emits sink, faucet, cabinet hardware and under-cabinet lighting 
   const { items } = E.parseJmrcCatalog(CSV);
   const s = E.defaultSettings();
   const q = E.newQuote("renovation", "t");
-  const k = E.newRoom("kitchen"); // 16 LF of cabinets by default
+  const k = E.newRoom("kitchen"); k.cabinetLF = 16;
   q.answers.rooms = [k];
   const r = E.computeQuote(q, s, items, {});
   const ids = r.lines.map((l) => l.id);
