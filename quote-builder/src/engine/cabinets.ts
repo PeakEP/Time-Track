@@ -14,9 +14,10 @@ export interface CabinetData {
   aline?: any;
   oppein?: any;
   divine?: any;
+  "oppein-gola"?: any;
 }
 
-export const SUPPLIER_LABEL: Record<CabinetSupplier, string> = { aline: "Aline", oppein: "Oppein", divine: "Divine" };
+export const SUPPLIER_LABEL: Record<CabinetSupplier, string> = { aline: "Aline", oppein: "Oppein", divine: "Divine", "oppein-gola": "Oppein GOLA" };
 
 const norm = (s: unknown) => String(s ?? "").toUpperCase().replace(/[^A-Z0-9]/g, "");
 const r2 = (n: number) => Math.round(n * 100) / 100;
@@ -24,7 +25,10 @@ const r2 = (n: number) => Math.round(n * 100) / 100;
 export function identifySupplier(json: any): CabinetSupplier | null {
   const s = String(json?.supplier || "").toLowerCase();
   if (s.includes("aline")) return "aline";
-  if (s.includes("oppein")) return "oppein";
+  // Oppein ships two lines: the standard frameless line and the GOLA
+  // integrated-handle line. They price differently and live in separate slots,
+  // told apart by the file's "line" field so GOLA never overwrites standard.
+  if (s.includes("oppein")) return String(json?.line || "").toLowerCase().includes("gola") ? "oppein-gola" : "oppein";
   if (s.includes("divine")) return "divine";
   return null;
 }
@@ -34,6 +38,7 @@ export function validateCabinetFile(json: any): string | null {
   if (!sup) return "This isn't an Aline, Oppein or Divine catalog file (no \"supplier\" field).";
   if (typeof json.discount !== "number" || !(json.discount > 0 && json.discount < 1)) return `${SUPPLIER_LABEL[sup]}: the file has no dealer discount.`;
   if (!Array.isArray(json.products) || !json.products.length) return `${SUPPLIER_LABEL[sup]}: the file has no products.`;
+  if (sup === "oppein-gola" && !json.products.every((p: any) => p && p.gola && typeof p.gola === "object")) return `${SUPPLIER_LABEL[sup]}: every product needs a "gola" price by door tier (urban/prestige).`;
   return null;
 }
 
@@ -105,6 +110,20 @@ export function priceCabinet(set: Pick<CabinetSet, "supplier" | "box" | "color" 
     if (table[tier] == null) return null;
     list = r2(Number(table[tier]));
     finish = `${data.tier_names?.[tier] || tier} tier${set.color ? ` (${set.color})` : ""}, ${set.box} box`;
+  } else if (set.supplier === "oppein-gola") {
+    // GOLA integrated-handle line: one box ("GOLA box"), priced by door tier
+    // (urban / signature prestige). The gola[tier] value is the all-in list —
+    // the box is included, not added on top. Dealer = list × (1 − discount).
+    let tier = String(set.color || "urban").toLowerCase();
+    tier = tier.includes("prestige") ? "prestige" : "urban";
+    const table = prod.gola || {};
+    if (!(tier in table)) {
+      const avail = (data.tiers || ["urban", "prestige"]).filter((t: string) => t in table);
+      tier = avail[avail.length - 1] || Object.keys(table)[0];
+    }
+    if (table[tier] == null) return null;
+    list = r2(Number(table[tier]));
+    finish = `${data.tier_names?.[tier] || tier}, GOLA box`;
   } else {
     const style = (set.style || "A5").toUpperCase();
     if (kind === "shared") {
@@ -139,6 +158,8 @@ export function parseSkuList(text: string): { sku: string; qty: number }[] {
 export interface FinishOptions { colors: { code: string; name: string; group?: string }[]; styles: { code: string; name: string }[] }
 export function finishOptions(supplier: CabinetSupplier, data: any): FinishOptions {
   if (!data) return { colors: [] as { code: string; name: string; group?: string }[], styles: [] as { code: string; name: string }[] };
+  if (supplier === "oppein-gola")
+    return { colors: (data.tiers || ["urban", "prestige"]).map((t: string) => ({ code: t, name: data.tier_names?.[t] || t })), styles: [] };
   if (supplier === "oppein")
     return { colors: (data.colors || []).map((c: any) => ({ code: c.code, name: c.name, group: data.tier_names?.[c.tier] || c.tier })), styles: [] };
   if (supplier === "aline")

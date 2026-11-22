@@ -38,7 +38,7 @@ export interface CatalogItem {
 
 /* ----------------------------- cabinets ----------------------------- */
 
-export type CabinetSupplier = "aline" | "oppein" | "divine";
+export type CabinetSupplier = "aline" | "oppein" | "divine" | "oppein-gola";
 
 // One cabinet order on a quote (e.g. "Kitchen", "Ensuite vanity"), priced
 // from the supplier's list price less JMRC's dealer discount.

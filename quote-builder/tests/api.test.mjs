@@ -315,4 +315,12 @@ test("cabinet catalogs: Admin uploads the supplier files, reps read them", async
   const got = (await call("sam", "GET", "catalog/cabinets")).body;
   assert.equal(got.oppein.products[0].sku, "B24");
   assert.equal(got.aline, null);
+  // The Oppein GOLA line (line: "GOLA") stores in its own slot and does NOT
+  // overwrite the standard Oppein catalog uploaded above.
+  const gola = { supplier: "Oppein", line: "GOLA", discount: 0.58, products: [{ sku: "SB30", gola: { urban: 503, prestige: 547 } }] };
+  const okg = await call("mike", "PUT", "catalog/cabinets", { files: [gola] });
+  assert.deepEqual(okg.body.saved, [{ supplier: "oppein-gola", products: 1, discount: 0.58 }]);
+  const got2 = (await call("sam", "GET", "catalog/cabinets")).body;
+  assert.equal(got2["oppein-gola"].products[0].sku, "SB30");
+  assert.equal(got2.oppein.products[0].sku, "B24"); // standard line still intact
 });
