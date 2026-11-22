@@ -101,9 +101,9 @@ test("labour is priced in hours from the hourly rate; only subs and unpriced ite
   assert.equal(fr.qty, 150);
   assert.equal(fr.unitCost, 55);
   assert.equal(fr.marginKey, "labour");
-  // labour sell at the labour margin (≈35.29%, i.e. 1 − 55/85) = $85/hr
+  // labour sell at the 37% labour margin: 150 hr × $55 ÷ (1 − 0.37) = $13,095.24
   const pl = E.priceLines(q, [fr], s).lines[0];
-  assert.equal(pl.sell, fr.qty * 85);
+  assert.equal(pl.sell, 13095.24);
   // No labour rate questions (labour always prices); no margin questions (defaults set)
   assert.ok(!r.questions.some((x) => x.kind === "rate" && x.key.startsWith("lab.")));
   assert.ok(!r.questions.some((x) => x.kind === "margin"));
