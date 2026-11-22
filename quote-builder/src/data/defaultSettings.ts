@@ -186,12 +186,12 @@ export function defaultSettings(): Settings {
     labour: DEFAULT_LABOUR.map((x) => ({ ...x })),
     rates: DEFAULT_RATES.map((x) => ({ ...x })),
     pricing: {
-      // JMRC standard: labour $40/hr cost → $80/hr sell (50% margin); laborer
-      // $32.50 → $65. Materials cost + 20%; client-selected finishes ~2×;
+      // JMRC standard: all labour $55/hr cost → $85/hr sell (labour margin ≈ 35.29%,
+      // i.e. 1 − 55/85). Materials cost + 20%; client-selected finishes ~2×;
       // cabinets ~2×; sub-trades cost + 20%.
-      labourCostPerHour: 40,
-      laborerCostPerHour: 32.5,
-      margins: { material: 0.2, finish: 0.5, cabinets: 0.5, labour: 0.5, sub: 0.17, allowance: 0.2 },
+      labourCostPerHour: 55,
+      laborerCostPerHour: 55,
+      margins: { material: 0.2, finish: 0.5, cabinets: 0.5, labour: 0.3529411764705882, sub: 0.17, allowance: 0.2 },
       codeMargins: {},
       codeMarginSource: "",
       useStoreRetail: false,
