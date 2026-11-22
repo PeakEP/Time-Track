@@ -95,15 +95,15 @@ test("labour is priced in hours from the hourly rate; only subs and unpriced ite
   const q = shopQuote();
   q.answers.clientName = "A"; q.answers.siteAddress = "B";
   const r = E.computeQuote(q, s, items);
-  // Framing labour: 1200 SF ÷ 8 SF/hr = 150 hr @ $40/hr
+  // Framing labour: 1200 SF ÷ 8 SF/hr = 150 hr @ $55/hr
   const fr = r.lines.find((l) => l.toolKey === "lab.framing");
   assert.equal(fr.unit, "hr");
   assert.equal(fr.qty, 150);
-  assert.equal(fr.unitCost, 40);
+  assert.equal(fr.unitCost, 55);
   assert.equal(fr.marginKey, "labour");
-  // labour sell at 50% margin = cost / 0.5 = $80/hr
+  // labour sell at the labour margin (≈35.29%, i.e. 1 − 55/85) = $85/hr
   const pl = E.priceLines(q, [fr], s).lines[0];
-  assert.equal(pl.sell, fr.qty * 80);
+  assert.equal(pl.sell, fr.qty * 85);
   // No labour rate questions (labour always prices); no margin questions (defaults set)
   assert.ok(!r.questions.some((x) => x.kind === "rate" && x.key.startsWith("lab.")));
   assert.ok(!r.questions.some((x) => x.kind === "margin"));
