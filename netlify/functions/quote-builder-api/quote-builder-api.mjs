@@ -154,7 +154,16 @@ async function squareSync(stores, who, { fetchImpl } = {}) {
   return { count: doc.items.length, skipped, syncedAt: doc.syncedAt };
 }
 
-const SUPPLIERS = ["aline", "oppein", "divine"];
+const SUPPLIERS = ["aline", "oppein", "divine", "oppein-gola"];
+
+// Which catalog slot a file belongs to. Oppein ships two lines — the standard
+// frameless line and the GOLA integrated-handle line — told apart by the file's
+// "line" field so GOLA stores separately and never overwrites standard Oppein.
+function cabinetSlot(f) {
+  const s = String(f?.supplier || "").toLowerCase();
+  if (s.includes("oppein") && String(f?.line || "").toLowerCase().includes("gola")) return "oppein-gola";
+  return SUPPLIERS.find((x) => x !== "oppein-gola" && s.includes(x)) || null;
+}
 
 async function getCabinets(stores) {
   const docs = await Promise.all(SUPPLIERS.map((x) => stores.qb.get(`catalog/cabinets/${x}`, { type: "json" })));
@@ -167,8 +176,8 @@ async function putCabinets(stores, who, body) {
   if (!files.length) throw new HttpError(400, "No catalog files");
   const saved = [];
   for (const f of files) {
-    const sup = SUPPLIERS.find((x) => String(f?.supplier || "").toLowerCase().includes(x));
-    if (!sup) throw new HttpError(400, "Each file must be the Aline, Oppein or Divine catalog (it names its supplier).");
+    const sup = cabinetSlot(f);
+    if (!sup) throw new HttpError(400, "Each file must be the Aline, Oppein (standard or GOLA) or Divine catalog (it names its supplier).");
     if (!(typeof f.discount === "number" && f.discount > 0 && f.discount < 1)) throw new HttpError(400, `${sup}: dealer discount missing`);
     if (!Array.isArray(f.products) || !f.products.length) throw new HttpError(400, `${sup}: no products`);
     if (JSON.stringify(f).length > 2_000_000) throw new HttpError(413, `${sup}: file too large`);

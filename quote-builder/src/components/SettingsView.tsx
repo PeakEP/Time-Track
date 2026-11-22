@@ -198,9 +198,9 @@ export default function SettingsView() {
       </div>
 
       <div className="card stack">
-        <h3>Cabinet catalogs — Aline, Oppein, Divine</h3>
+        <h3>Cabinet catalogs — Aline, Oppein, Oppein GOLA, Divine</h3>
         <div className="row">
-          {(["aline", "oppein", "divine"] as const).map((k) => {
+          {(["aline", "oppein", "oppein-gola", "divine"] as const).map((k) => {
             const d = (cabinetData as any)[k];
             return <span key={k} className={`pill ${d ? "ok" : "warn"}`}>{SUPPLIER_LABEL[k]}: {d ? `${d.products.length} items · ${Math.round(d.discount * 100)}% dealer discount` : "not loaded"}</span>;
           })}

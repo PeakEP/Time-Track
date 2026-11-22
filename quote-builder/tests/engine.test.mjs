@@ -444,6 +444,34 @@ test("supply & install cabinets price each install chunk as labour; supply-only 
   assert.ok(!r.lines.some((l) => l.id.startsWith("cab:ci1:inst:")));
 });
 
+const OPPEIN_GOLA = {
+  supplier: "Oppein", line: "GOLA", discount: 0.58,
+  tiers: ["urban", "prestige"],
+  tier_names: { urban: "Urban", prestige: "Signature Prestige" },
+  products: [
+    { sku: "SB30", cat: "Sink Base", desc: "Sink Base", gola: { urban: 503, prestige: 547 }, box_price: 280, asm_fee: 15 },
+    { sku: "W3030", cat: "Wall Cabinet", desc: "Wall Cabinet 2 Door", gola: { urban: 498, prestige: 542 }, box_price: 275, asm_fee: 15 },
+  ],
+};
+
+test("Oppein GOLA is its own catalog slot, priced by door tier (list − 58%)", () => {
+  // A GOLA file (line: "GOLA") routes to its own slot, never over the standard line.
+  assert.equal(E.identifySupplier(OPPEIN_GOLA), "oppein-gola");
+  assert.equal(E.identifySupplier({ supplier: "Oppein", products: [] }), "oppein"); // standard line unaffected
+  assert.equal(E.validateCabinetFile(OPPEIN_GOLA), null);
+  // GOLA list IS the tier price (box included, not added); dealer = list × (1 − 0.58).
+  const urban = E.priceCabinet({ supplier: "oppein-gola", box: "PLY", color: "urban", style: "" }, OPPEIN_GOLA, "SB30");
+  assert.equal(urban.list, 503);
+  assert.equal(urban.dealer, 211.26); // 503 × 0.42
+  const prestige = E.priceCabinet({ supplier: "oppein-gola", box: "PLY", color: "prestige", style: "" }, OPPEIN_GOLA, "W3030");
+  assert.equal(prestige.list, 542);
+  assert.equal(prestige.dealer, 227.64); // 542 × 0.42
+  // Door-line picker offers the two tiers as the finish choice.
+  const opts = E.finishOptions("oppein-gola", OPPEIN_GOLA);
+  assert.deepEqual(opts.colors.map((c) => c.code), ["urban", "prestige"]);
+  assert.equal(opts.colors[1].name, "Signature Prestige");
+});
+
 test("Takeoff (notes & drawings) is step 2 for every project type", () => {
   for (const t of ["renovation", "remodel", "shop", "custom-home"]) {
     const steps = E.stepsFor(t);

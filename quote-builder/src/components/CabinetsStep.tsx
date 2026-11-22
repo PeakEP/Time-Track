@@ -12,7 +12,7 @@ const kb = (n: number) => (n > 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1)} MB
 function newSet(name: string, roomId: string, supplier: CabinetSupplier): CabinetSet {
   return {
     id: uid(), name, roomId, supplier, box: "PLY",
-    color: supplier === "oppein" ? "WSS" : supplier === "aline" ? "SW" : "",
+    color: supplier === "oppein" ? "WSS" : supplier === "aline" ? "SW" : supplier === "oppein-gola" ? "urban" : "",
     style: supplier === "aline" ? "shaker" : supplier === "divine" ? "S7" : "",
     assemble: supplier === "divine", shipping: supplier === "divine" ? 150 : 0,
     lines: [], allowance: 0, unit: "PKG", installMode: "supply", installLabour: [], notes: "",
@@ -166,7 +166,7 @@ export default function CabinetsStep() {
             <div className="room-head">
               <input value={set.name} onChange={(e) => setOf(set.id, (s) => { s.name = e.target.value; })} />
               <select value={set.supplier} onChange={(e) => setOf(set.id, (s) => { const n = newSet(s.name, s.roomId, e.target.value as CabinetSupplier); Object.assign(s, { ...n, id: s.id, lines: s.lines, name: s.name, allowance: s.allowance, unit: s.unit }); })}>
-                {(["aline", "oppein", "divine"] as const).map((k) => <option key={k} value={k}>{SUPPLIER_LABEL[k]}{(cabinetData as any)[k] ? "" : " (not loaded)"}</option>)}
+                {(["aline", "oppein", "oppein-gola", "divine"] as const).map((k) => <option key={k} value={k}>{SUPPLIER_LABEL[k]}{(cabinetData as any)[k] ? "" : " (not loaded)"}</option>)}
               </select>
               {quote.type !== "custom-home" && (
                 <select value={set.roomId} onChange={(e) => setOf(set.id, (s) => { s.roomId = e.target.value; })}>
@@ -200,7 +200,7 @@ export default function CabinetsStep() {
                     </select>
                   </label>
                 )}
-                <label className="field"><span>{set.supplier === "oppein" ? "Colour (sets the price tier)" : set.supplier === "divine" ? "Finishing colour" : "Colour"}</span>
+                <label className="field"><span>{set.supplier === "oppein" ? "Colour (sets the price tier)" : set.supplier === "oppein-gola" ? "Door line (sets the price)" : set.supplier === "divine" ? "Finishing colour" : "Colour"}</span>
                   <select value={set.color} onChange={(e) => setOf(set.id, (s) => { s.color = e.target.value; })}>
                     {set.supplier === "divine" && <option value="">—</option>}
                     {opts.colors.filter((c) => set.supplier !== "aline" || c.group === set.style).map((c) => (
@@ -208,17 +208,19 @@ export default function CabinetsStep() {
                     ))}
                   </select>
                 </label>
-                {set.supplier !== "divine" ? (
+                {set.supplier === "divine" ? (
+                  <>
+                    <label className="check" style={{ marginTop: 22 }}><input type="checkbox" checked={set.assemble} onChange={(e) => setOf(set.id, (s) => { s.assemble = e.target.checked; })} /> Divine assembles ({money(assembly)})</label>
+                    <label className="field"><span>Freight</span><div className="unit-input"><em>$</em><input type="number" value={set.shipping || ""} onChange={(e) => setOf(set.id, (s) => { s.shipping = Number(e.target.value) || 0; })} /></div></label>
+                  </>
+                ) : set.supplier === "oppein-gola" ? (
+                  <label className="field"><span>Box</span><div className="unit-input" style={{ alignItems: "center", paddingLeft: 10 }}>GOLA box (one option)</div></label>
+                ) : (
                   <label className="field"><span>Box</span>
                     <select value={set.box} onChange={(e) => setOf(set.id, (s) => { s.box = e.target.value as "PB" | "PLY"; })}>
                       <option value="PLY">Plywood</option><option value="PB">Particle board</option>
                     </select>
                   </label>
-                ) : (
-                  <>
-                    <label className="check" style={{ marginTop: 22 }}><input type="checkbox" checked={set.assemble} onChange={(e) => setOf(set.id, (s) => { s.assemble = e.target.checked; })} /> Divine assembles ({money(assembly)})</label>
-                    <label className="field"><span>Freight</span><div className="unit-input"><em>$</em><input type="number" value={set.shipping || ""} onChange={(e) => setOf(set.id, (s) => { s.shipping = Number(e.target.value) || 0; })} /></div></label>
-                  </>
                 )}
               </div>
 

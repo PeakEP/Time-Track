@@ -1,4 +1,5 @@
 import type { CatalogItem, Quote, Settings } from "./types";
+import { identifySupplier } from "./engine/cabinets";
 
 // Talks to /api/quote-builder (Netlify). Signed in by the suite cookie. When
 // there's no server (plain `vite dev`), everything is kept in this browser
@@ -137,7 +138,7 @@ export const server = {
   async putCabinets(files: any[]): Promise<void> {
     if (!(await isLive())) {
       const c = lsGet<Record<string, any>>(LS.cabinets, {});
-      for (const f of files) { const k = String(f.supplier).toLowerCase(); c[k] = { ...f, loadedAt: new Date().toISOString(), loadedBy: "Local user" }; }
+      for (const f of files) { const k = identifySupplier(f) || String(f.supplier).toLowerCase(); c[k] = { ...f, loadedAt: new Date().toISOString(), loadedBy: "Local user" }; }
       lsSet(LS.cabinets, c);
       return;
     }
