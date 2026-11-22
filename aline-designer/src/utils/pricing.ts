@@ -78,7 +78,14 @@ export function unitListPrice(
   boxMaterial: BoxMaterial,
 ): number | null {
   if (!product) return null;
-  if (product.flat) return product.flat[tier] ?? null;
+  // Prefer `flat` only when it actually has a price for THIS tier. This lets a
+  // single product carry both Standard-line pricing (pb/ply by tier) AND
+  // GOLA-line pricing (flat.gola_urban / flat.gola_prestige = door + GOLA
+  // box). Picking a GOLA tier hits flat; picking a Standard tier falls through
+  // to pb/ply as before. Previously flat always short-circuited pb/ply, which
+  // made mixing the two lines on one SKU impossible.
+  const flatPrice = product.flat?.[tier];
+  if (flatPrice != null) return flatPrice;
   if (boxMaterial === "PLY") return product.ply?.[tier] ?? null;
   return product.pb?.[tier] ?? null;
 }
