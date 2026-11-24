@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "source": "OPPEIN RTA Ordering System (Mike Robins upload) + OPPEIN RTA Kitchen Spec Book 08-2025",
-    "pricing_year": 2025,
+    "source": "OPPEIN 2026 pricing (standard + GOLA) merged into prior box list",
+    "pricing_year": 2026,
     "currency": "CAD",
     "price_type": "dealer list price (pre-discount)",
     "dealer_discount": 0.58,
@@ -9,19 +9,21 @@
       "PB": "Particle Board",
       "PLY": "Plywood"
     },
-    "notes": "Prices are OPPEIN dealer LIST. JMRC dealer cost = list * (1 - 0.58). flat-priced items ignore box type. null tier/box = not offered in that combo."
+    "notes": "Prices are OPPEIN dealer LIST. JMRC dealer cost = list * (1 - 0.58). Standard line: pb/ply by tier (essential..elite). GOLA line: flat.gola_urban / flat.gola_prestige = door price + GOLA box (single box option). Pick a GOLA tier to switch a project to the GOLA line."
   },
   "tiers": {
     "essential": "Essential",
     "plus": "Essential Plus",
     "trend": "Trend/Edge",
     "premium": "Premium",
-    "elite": "Elite"
+    "elite": "Elite",
+    "gola_urban": "GOLA Urban",
+    "gola_prestige": "GOLA Signature Prestige"
   },
   "finishes": [
     {
       "code": "MPW",
-      "name": "Flat Pure White",
+      "name": "Pure White",
       "tier": "essential",
       "tierName": "Essential",
       "series": "Essential"
@@ -48,7 +50,7 @@
       "series": "Essential Plus"
     },
     {
-      "code": "KKNW",
+      "code": "KNW",
       "name": "Skeleton Natural Wood",
       "tier": "trend",
       "tierName": "Trend/Edge",
@@ -84,7 +86,7 @@
     },
     {
       "code": "PGW",
-      "name": "Glossy White",
+      "name": "Gray White",
       "tier": "premium",
       "tierName": "Premium",
       "series": "Urban Select"
@@ -105,21 +107,21 @@
     },
     {
       "code": "PMG",
-      "name": "Matte Grey",
+      "name": "Matte Gray",
       "tier": "premium",
       "tierName": "Premium",
       "series": "Signature Prestige"
     },
     {
       "code": "PGA",
-      "name": "Glossy Ash",
+      "name": "Gloss Ash",
       "tier": "premium",
       "tierName": "Premium",
       "series": "Signature Prestige"
     },
     {
       "code": "PGG",
-      "name": "Glossy Gray",
+      "name": "Gloss Gray",
       "tier": "premium",
       "tierName": "Premium",
       "series": "Signature Prestige"
@@ -130,6 +132,20 @@
       "tier": "elite",
       "tierName": "Elite",
       "series": "Elite"
+    },
+    {
+      "code": "GOLA-U",
+      "name": "GOLA Urban",
+      "tier": "gola_urban",
+      "tierName": "GOLA Urban",
+      "series": "GOLA"
+    },
+    {
+      "code": "GOLA-P",
+      "name": "GOLA Signature Prestige",
+      "tier": "gola_prestige",
+      "tierName": "GOLA Signature Prestige",
+      "series": "GOLA"
     }
   ],
   "products": [
@@ -139,18 +155,18 @@
       "cat": "Base",
       "dims": "12\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 270,
-        "plus": 282,
-        "trend": 298,
-        "premium": 317,
-        "elite": 333
+        "essential": 309.0,
+        "plus": 323.0,
+        "trend": 341.0,
+        "premium": 363.0,
+        "elite": 382.0
       },
       "ply": {
-        "essential": 366,
-        "plus": 378,
-        "trend": 394,
-        "premium": 413,
-        "elite": 429
+        "essential": 420.0,
+        "plus": 434.0,
+        "trend": 452.0,
+        "premium": 474.0,
+        "elite": 493.0
       },
       "width_in": 12.0,
       "depth_in": 24.0,
@@ -162,18 +178,18 @@
       "cat": "Base",
       "dims": "15\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 295,
-        "plus": 310,
-        "trend": 330,
-        "premium": 353,
-        "elite": 374
+        "essential": 338.0,
+        "plus": 356.0,
+        "trend": 379.0,
+        "premium": 405.0,
+        "elite": 429.0
       },
       "ply": {
-        "essential": 399,
-        "plus": 414,
-        "trend": 434,
-        "premium": 457,
-        "elite": 478
+        "essential": 458.0,
+        "plus": 476.0,
+        "trend": 499.0,
+        "premium": 525.0,
+        "elite": 549.0
       },
       "width_in": 15.0,
       "depth_in": 24.0,
@@ -185,18 +201,18 @@
       "cat": "Base",
       "dims": "18\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 320,
-        "plus": 337,
-        "trend": 361,
-        "premium": 390,
-        "elite": 414
+        "essential": 367.0,
+        "plus": 386.0,
+        "trend": 414.0,
+        "premium": 447.0,
+        "elite": 475.0
       },
       "ply": {
-        "essential": 433,
-        "plus": 450,
-        "trend": 474,
-        "premium": 503,
-        "elite": 527
+        "essential": 497.0,
+        "plus": 516.0,
+        "trend": 544.0,
+        "premium": 577.0,
+        "elite": 605.0
       },
       "width_in": 18.0,
       "depth_in": 24.0,
@@ -208,22 +224,26 @@
       "cat": "Base",
       "dims": "18\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 644,
-        "plus": 661,
-        "trend": 685,
-        "premium": 714,
-        "elite": 738
+        "essential": 740.0,
+        "plus": 759.0,
+        "trend": 787.0,
+        "premium": 820.0,
+        "elite": 848.0
       },
       "ply": {
-        "essential": 780,
-        "plus": 797,
-        "trend": 821,
-        "premium": 850,
-        "elite": 874
+        "essential": 896.0,
+        "plus": 915.0,
+        "trend": 943.0,
+        "premium": 976.0,
+        "elite": 1004.0
       },
       "width_in": 18.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 1010.0,
+        "gola_prestige": 1037.0
+      }
     },
     {
       "sku": "B21",
@@ -231,18 +251,18 @@
       "cat": "Base",
       "dims": "21\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 344,
-        "plus": 365,
-        "trend": 393,
-        "premium": 426,
-        "elite": 455
+        "essential": 395.0,
+        "plus": 419.0,
+        "trend": 451.0,
+        "premium": 489.0,
+        "elite": 522.0
       },
       "ply": {
-        "essential": 465,
-        "plus": 486,
-        "trend": 514,
-        "premium": 547,
-        "elite": 576
+        "essential": 534.0,
+        "plus": 558.0,
+        "trend": 590.0,
+        "premium": 628.0,
+        "elite": 661.0
       },
       "width_in": 21.0,
       "depth_in": 24.0,
@@ -254,18 +274,18 @@
       "cat": "Base",
       "dims": "24\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 383,
-        "plus": 406,
-        "trend": 438,
-        "premium": 477,
-        "elite": 510
+        "essential": 440.0,
+        "plus": 466.0,
+        "trend": 503.0,
+        "premium": 548.0,
+        "elite": 586.0
       },
       "ply": {
-        "essential": 507,
-        "plus": 530,
-        "trend": 562,
-        "premium": 601,
-        "elite": 634
+        "essential": 582.0,
+        "plus": 608.0,
+        "trend": 645.0,
+        "premium": 690.0,
+        "elite": 728.0
       },
       "width_in": 24.0,
       "depth_in": 24.0,
@@ -277,18 +297,18 @@
       "cat": "Base",
       "dims": "27\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 408,
-        "plus": 433,
-        "trend": 469,
-        "premium": 513,
-        "elite": 550
+        "essential": 468.0,
+        "plus": 497.0,
+        "trend": 538.0,
+        "premium": 589.0,
+        "elite": 631.0
       },
       "ply": {
-        "essential": 540,
-        "plus": 675,
-        "trend": 645,
-        "premium": 682,
-        "elite": 682
+        "essential": 747.0,
+        "plus": 776.0,
+        "trend": 817.0,
+        "premium": 868.0,
+        "elite": 910.0
       },
       "width_in": 27.0,
       "depth_in": 24.0,
@@ -300,18 +320,18 @@
       "cat": "Base",
       "dims": "30\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 433,
-        "plus": 462,
-        "trend": 502,
-        "premium": 549,
-        "elite": 591
+        "essential": 497.0,
+        "plus": 531.0,
+        "trend": 576.0,
+        "premium": 631.0,
+        "elite": 679.0
       },
       "ply": {
-        "essential": 574,
-        "plus": 603,
-        "trend": 643,
-        "premium": 690,
-        "elite": 732
+        "essential": 659.0,
+        "plus": 693.0,
+        "trend": 738.0,
+        "premium": 793.0,
+        "elite": 841.0
       },
       "width_in": 30.0,
       "depth_in": 24.0,
@@ -323,18 +343,18 @@
       "cat": "Base",
       "dims": "33\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 459,
-        "plus": 490,
-        "trend": 534,
-        "premium": 587,
-        "elite": 632
+        "essential": 526.0,
+        "plus": 562.0,
+        "trend": 613.0,
+        "premium": 674.0,
+        "elite": 725.0
       },
       "ply": {
-        "essential": 607,
-        "plus": 638,
-        "trend": 682,
-        "premium": 735,
-        "elite": 780
+        "essential": 697.0,
+        "plus": 733.0,
+        "trend": 784.0,
+        "premium": 845.0,
+        "elite": 896.0
       },
       "width_in": 33.0,
       "depth_in": 24.0,
@@ -346,18 +366,18 @@
       "cat": "Base",
       "dims": "36\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 486,
-        "plus": 520,
-        "trend": 569,
-        "premium": 626,
-        "elite": 676
+        "essential": 557.0,
+        "plus": 597.0,
+        "trend": 652.0,
+        "premium": 718.0,
+        "elite": 776.0
       },
       "ply": {
-        "essential": 641,
-        "plus": 675,
-        "trend": 724,
-        "premium": 781,
-        "elite": 831
+        "essential": 736.0,
+        "plus": 776.0,
+        "trend": 831.0,
+        "premium": 897.0,
+        "elite": 955.0
       },
       "width_in": 36.0,
       "depth_in": 24.0,
@@ -369,18 +389,18 @@
       "cat": "Base",
       "dims": "42\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 536,
-        "plus": 575,
-        "trend": 631,
-        "premium": 699,
-        "elite": 755
+        "essential": 616.0,
+        "plus": 661.0,
+        "trend": 725.0,
+        "premium": 803.0,
+        "elite": 868.0
       },
       "ply": {
-        "essential": 710,
-        "plus": 749,
-        "trend": 805,
-        "premium": 873,
-        "elite": 929
+        "essential": 816.0,
+        "plus": 861.0,
+        "trend": 925.0,
+        "premium": 1003.0,
+        "elite": 1068.0
       },
       "width_in": 42.0,
       "depth_in": 24.0,
@@ -392,22 +412,26 @@
       "cat": "Sink Base",
       "dims": "30\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 290,
-        "plus": 319,
-        "trend": 359,
-        "premium": 406,
-        "elite": 448
+        "essential": 332.0,
+        "plus": 366.0,
+        "trend": 411.0,
+        "premium": 466.0,
+        "elite": 514.0
       },
       "ply": {
-        "essential": 376,
-        "plus": 405,
-        "trend": 445,
-        "premium": 492,
-        "elite": 534
+        "essential": 431.0,
+        "plus": 465.0,
+        "trend": 510.0,
+        "premium": 565.0,
+        "elite": 613.0
       },
       "width_in": 30.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 783.0,
+        "gola_prestige": 827.0
+      }
     },
     {
       "sku": "SB33",
@@ -415,22 +439,26 @@
       "cat": "Sink Base",
       "dims": "33\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 308,
-        "plus": 339,
-        "trend": 383,
-        "premium": 436,
-        "elite": 481
+        "essential": 353.0,
+        "plus": 389.0,
+        "trend": 440.0,
+        "premium": 501.0,
+        "elite": 552.0
       },
       "ply": {
-        "essential": 394,
-        "plus": 425,
-        "trend": 469,
-        "premium": 522,
-        "elite": 567
+        "essential": 452.0,
+        "plus": 488.0,
+        "trend": 539.0,
+        "premium": 600.0,
+        "elite": 651.0
       },
       "width_in": 33.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 832.0,
+        "gola_prestige": 881.0
+      }
     },
     {
       "sku": "SB36",
@@ -438,22 +466,26 @@
       "cat": "Sink Base",
       "dims": "36\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 328,
-        "plus": 362,
-        "trend": 411,
-        "premium": 468,
-        "elite": 518
+        "essential": 376.0,
+        "plus": 416.0,
+        "trend": 471.0,
+        "premium": 537.0,
+        "elite": 595.0
       },
       "ply": {
-        "essential": 416,
-        "plus": 450,
-        "trend": 499,
-        "premium": 556,
-        "elite": 606
+        "essential": 477.0,
+        "plus": 517.0,
+        "trend": 572.0,
+        "premium": 638.0,
+        "elite": 696.0
       },
       "width_in": 36.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 893.0,
+        "gola_prestige": 946.0
+      }
     },
     {
       "sku": "SB42",
@@ -461,22 +493,26 @@
       "cat": "Sink Base",
       "dims": "42\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 363,
-        "plus": 402,
-        "trend": 458,
-        "premium": 526,
-        "elite": 582
+        "essential": 417.0,
+        "plus": 462.0,
+        "trend": 526.0,
+        "premium": 604.0,
+        "elite": 669.0
       },
       "ply": {
-        "essential": 462,
-        "plus": 501,
-        "trend": 557,
-        "premium": 625,
-        "elite": 681
+        "essential": 530.0,
+        "plus": 575.0,
+        "trend": 639.0,
+        "premium": 717.0,
+        "elite": 782.0
       },
       "width_in": 42.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 992.0,
+        "gola_prestige": 1054.0
+      }
     },
     {
       "sku": "BBC42",
@@ -484,22 +520,26 @@
       "cat": "Corner",
       "dims": "42\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 318,
-        "plus": 335,
-        "trend": 361,
-        "premium": 395,
-        "elite": 422
+        "essential": 365.0,
+        "plus": 385.0,
+        "trend": 414.0,
+        "premium": 454.0,
+        "elite": 485.0
       },
       "ply": {
-        "essential": 495,
-        "plus": 512,
-        "trend": 538,
-        "premium": 572,
-        "elite": 599
+        "essential": 568.0,
+        "plus": 588.0,
+        "trend": 617.0,
+        "premium": 657.0,
+        "elite": 688.0
       },
       "width_in": 42.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 853.0,
+        "gola_prestige": 882.0
+      }
     },
     {
       "sku": "BBC45",
@@ -507,22 +547,26 @@
       "cat": "Corner",
       "dims": "45\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 336,
-        "plus": 358,
-        "trend": 388,
-        "premium": 420,
-        "elite": 450
+        "essential": 386.0,
+        "plus": 411.0,
+        "trend": 446.0,
+        "premium": 483.0,
+        "elite": 517.0
       },
       "ply": {
-        "essential": 575,
-        "plus": 597,
-        "trend": 627,
-        "premium": 659,
-        "elite": 689
+        "essential": 660.0,
+        "plus": 685.0,
+        "trend": 720.0,
+        "premium": 757.0,
+        "elite": 791.0
       },
       "width_in": 45.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 901.0,
+        "gola_prestige": 933.0
+      }
     },
     {
       "sku": "BER33",
@@ -530,22 +574,26 @@
       "cat": "Corner",
       "dims": "33\"W x 33\"D x 34.5\"H",
       "pb": {
-        "essential": 482,
-        "plus": 485,
-        "trend": 510,
-        "premium": 539,
-        "elite": 605
+        "essential": 554.0,
+        "plus": 557.0,
+        "trend": 586.0,
+        "premium": 619.0,
+        "elite": 695.0
       },
       "ply": {
-        "essential": 762,
-        "plus": 765,
-        "trend": 790,
-        "premium": 819,
-        "elite": 885
+        "essential": 876.0,
+        "plus": 879.0,
+        "trend": 908.0,
+        "premium": 941.0,
+        "elite": 1017.0
       },
       "width_in": 33.0,
       "depth_in": 33.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 1244.0,
+        "gola_prestige": 1271.0
+      }
     },
     {
       "sku": "BER36",
@@ -553,22 +601,26 @@
       "cat": "Corner",
       "dims": "36\"W x 36\"D x 34.5\"H",
       "pb": {
-        "essential": 536,
-        "plus": 541,
-        "trend": 573,
-        "premium": 613,
-        "elite": 700
+        "essential": 616.0,
+        "plus": 621.0,
+        "trend": 659.0,
+        "premium": 704.0,
+        "elite": 804.0
       },
       "ply": {
-        "essential": 839,
-        "plus": 844,
-        "trend": 876,
-        "premium": 916,
-        "elite": 1003
+        "essential": 964.0,
+        "plus": 969.0,
+        "trend": 1007.0,
+        "premium": 1052.0,
+        "elite": 1152.0
       },
       "width_in": 36.0,
       "depth_in": 36.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 1401.0,
+        "gola_prestige": 1437.0
+      }
     },
     {
       "sku": "BLS33",
@@ -576,22 +628,26 @@
       "cat": "Corner",
       "dims": "33\"W x 33\"D x 34.5\"H",
       "pb": {
-        "essential": 818,
-        "plus": 821,
-        "trend": 846,
-        "premium": 875,
-        "elite": 941
+        "essential": 940.0,
+        "plus": 943.0,
+        "trend": 972.0,
+        "premium": 1005.0,
+        "elite": 1081.0
       },
       "ply": {
-        "essential": 1098,
-        "plus": 1101,
-        "trend": 1126,
-        "premium": 1155,
-        "elite": 1221
+        "essential": 1262.0,
+        "plus": 1265.0,
+        "trend": 1294.0,
+        "premium": 1327.0,
+        "elite": 1403.0
       },
       "width_in": 33.0,
       "depth_in": 33.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 2090.0,
+        "gola_prestige": 2117.0
+      }
     },
     {
       "sku": "BLS36",
@@ -599,22 +655,26 @@
       "cat": "Corner",
       "dims": "36\"W x 36\"D x 34.5\"H",
       "pb": {
-        "essential": 872,
-        "plus": 877,
-        "trend": 909,
-        "premium": 949,
-        "elite": 1036
+        "essential": 1002.0,
+        "plus": 1007.0,
+        "trend": 1045.0,
+        "premium": 1090.0,
+        "elite": 1190.0
       },
       "ply": {
-        "essential": 1175,
-        "plus": 1180,
-        "trend": 1212,
-        "premium": 1252,
-        "elite": 1339
+        "essential": 1351.0,
+        "plus": 1356.0,
+        "trend": 1394.0,
+        "premium": 1439.0,
+        "elite": 1539.0
       },
       "width_in": 36.0,
       "depth_in": 36.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 2251.0,
+        "gola_prestige": 2287.0
+      }
     },
     {
       "sku": "3DB12",
@@ -622,18 +682,18 @@
       "cat": "3 Drawer",
       "dims": "12\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 470,
-        "plus": 482,
-        "trend": 498,
-        "premium": 517,
-        "elite": 533
+        "essential": 539.0,
+        "plus": 553.0,
+        "trend": 571.0,
+        "premium": 593.0,
+        "elite": 612.0
       },
       "ply": {
-        "essential": 598,
-        "plus": 610,
-        "trend": 626,
-        "premium": 645,
-        "elite": 661
+        "essential": 687.0,
+        "plus": 701.0,
+        "trend": 719.0,
+        "premium": 741.0,
+        "elite": 760.0
       },
       "width_in": 12.0,
       "depth_in": 24.0,
@@ -645,18 +705,18 @@
       "cat": "3 Drawer",
       "dims": "15\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 499,
-        "plus": 514,
-        "trend": 534,
-        "premium": 557,
-        "elite": 578
+        "essential": 573.0,
+        "plus": 591.0,
+        "trend": 614.0,
+        "premium": 640.0,
+        "elite": 664.0
       },
       "ply": {
-        "essential": 639,
-        "plus": 654,
-        "trend": 674,
-        "premium": 697,
-        "elite": 718
+        "essential": 734.0,
+        "plus": 752.0,
+        "trend": 775.0,
+        "premium": 801.0,
+        "elite": 825.0
       },
       "width_in": 15.0,
       "depth_in": 24.0,
@@ -668,18 +728,18 @@
       "cat": "3 Drawer",
       "dims": "18\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 528,
-        "plus": 545,
-        "trend": 569,
-        "premium": 598,
-        "elite": 622
+        "essential": 607.0,
+        "plus": 626.0,
+        "trend": 654.0,
+        "premium": 687.0,
+        "elite": 715.0
       },
       "ply": {
-        "essential": 679,
-        "plus": 696,
-        "trend": 720,
-        "premium": 749,
-        "elite": 773
+        "essential": 780.0,
+        "plus": 799.0,
+        "trend": 827.0,
+        "premium": 860.0,
+        "elite": 888.0
       },
       "width_in": 18.0,
       "depth_in": 24.0,
@@ -691,18 +751,18 @@
       "cat": "3 Drawer",
       "dims": "21\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 556,
-        "plus": 577,
-        "trend": 605,
-        "premium": 638,
-        "elite": 667
+        "essential": 639.0,
+        "plus": 663.0,
+        "trend": 695.0,
+        "premium": 733.0,
+        "elite": 766.0
       },
       "ply": {
-        "essential": 719,
-        "plus": 740,
-        "trend": 768,
-        "premium": 801,
-        "elite": 830
+        "essential": 826.0,
+        "plus": 850.0,
+        "trend": 882.0,
+        "premium": 920.0,
+        "elite": 953.0
       },
       "width_in": 21.0,
       "depth_in": 24.0,
@@ -714,18 +774,18 @@
       "cat": "3 Drawer",
       "dims": "24\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 584,
-        "plus": 607,
-        "trend": 639,
-        "premium": 678,
-        "elite": 711
+        "essential": 671.0,
+        "plus": 697.0,
+        "trend": 734.0,
+        "premium": 779.0,
+        "elite": 817.0
       },
       "ply": {
-        "essential": 760,
-        "plus": 783,
-        "trend": 815,
-        "premium": 854,
-        "elite": 887
+        "essential": 873.0,
+        "plus": 899.0,
+        "trend": 936.0,
+        "premium": 981.0,
+        "elite": 1019.0
       },
       "width_in": 24.0,
       "depth_in": 24.0,
@@ -737,18 +797,18 @@
       "cat": "3 Drawer",
       "dims": "27\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 612,
-        "plus": 637,
-        "trend": 673,
-        "premium": 717,
-        "elite": 754
+        "essential": 703.0,
+        "plus": 732.0,
+        "trend": 773.0,
+        "premium": 824.0,
+        "elite": 866.0
       },
       "ply": {
-        "essential": 800,
-        "plus": 825,
-        "trend": 861,
-        "premium": 905,
-        "elite": 942
+        "essential": 919.0,
+        "plus": 948.0,
+        "trend": 989.0,
+        "premium": 1040.0,
+        "elite": 1082.0
       },
       "width_in": 27.0,
       "depth_in": 24.0,
@@ -760,18 +820,18 @@
       "cat": "3 Drawer",
       "dims": "30\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 642,
-        "plus": 671,
-        "trend": 711,
-        "premium": 758,
-        "elite": 800
+        "essential": 737.0,
+        "plus": 771.0,
+        "trend": 816.0,
+        "premium": 871.0,
+        "elite": 919.0
       },
       "ply": {
-        "essential": 841,
-        "plus": 870,
-        "trend": 910,
-        "premium": 957,
-        "elite": 999
+        "essential": 966.0,
+        "plus": 1000.0,
+        "trend": 1045.0,
+        "premium": 1100.0,
+        "elite": 1148.0
       },
       "width_in": 30.0,
       "depth_in": 24.0,
@@ -783,18 +843,18 @@
       "cat": "3 Drawer",
       "dims": "33\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 670,
-        "plus": 701,
-        "trend": 745,
-        "premium": 798,
-        "elite": 843
+        "essential": 769.0,
+        "plus": 805.0,
+        "trend": 856.0,
+        "premium": 917.0,
+        "elite": 968.0
       },
       "ply": {
-        "essential": 881,
-        "plus": 912,
-        "trend": 956,
-        "premium": 1009,
-        "elite": 1054
+        "essential": 1012.0,
+        "plus": 1048.0,
+        "trend": 1099.0,
+        "premium": 1160.0,
+        "elite": 1211.0
       },
       "width_in": 33.0,
       "depth_in": 24.0,
@@ -806,18 +866,18 @@
       "cat": "3 Drawer",
       "dims": "36\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 701,
-        "plus": 735,
-        "trend": 784,
-        "premium": 841,
-        "elite": 891
+        "essential": 805.0,
+        "plus": 845.0,
+        "trend": 900.0,
+        "premium": 966.0,
+        "elite": 1024.0
       },
       "ply": {
-        "essential": 945,
-        "plus": 979,
-        "trend": 1028,
-        "premium": 1085,
-        "elite": 1135
+        "essential": 1085.0,
+        "plus": 1125.0,
+        "trend": 1180.0,
+        "premium": 1246.0,
+        "elite": 1304.0
       },
       "width_in": 36.0,
       "depth_in": 24.0,
@@ -830,15 +890,19 @@
       "dims": "30\"W x 24\"D x 34.5\"H",
       "pb": null,
       "ply": {
-        "essential": 678,
-        "plus": 707,
-        "trend": 747,
-        "premium": 794,
-        "elite": 836
+        "essential": 779.0,
+        "plus": 813.0,
+        "trend": 858.0,
+        "premium": 913.0,
+        "elite": 961.0
       },
       "width_in": 30.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 1283.0,
+        "gola_prestige": 1327.0
+      }
     },
     {
       "sku": "2DB36",
@@ -847,15 +911,19 @@
       "dims": "36\"W x 24\"D x 34.5\"H",
       "pb": null,
       "ply": {
-        "essential": 745,
-        "plus": 779,
-        "trend": 828,
-        "premium": 885,
-        "elite": 935
+        "essential": 855.0,
+        "plus": 895.0,
+        "trend": 950.0,
+        "premium": 1016.0,
+        "elite": 1074.0
       },
       "width_in": 36.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 1413.0,
+        "gola_prestige": 1466.0
+      }
     },
     {
       "sku": "BSR06",
@@ -863,22 +931,26 @@
       "cat": "Specialty",
       "dims": "6\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 425,
-        "plus": 431,
-        "trend": 439,
-        "premium": 448,
-        "elite": 456
+        "essential": 488.0,
+        "plus": 495.0,
+        "trend": 504.0,
+        "premium": 514.0,
+        "elite": 524.0
       },
       "ply": {
-        "essential": 560,
-        "plus": 566,
-        "trend": 574,
-        "premium": 583,
-        "elite": 591
+        "essential": 643.0,
+        "plus": 650.0,
+        "trend": 659.0,
+        "premium": 669.0,
+        "elite": 679.0
       },
       "width_in": 6.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 1220.0,
+        "gola_prestige": 1228.0
+      }
     },
     {
       "sku": "BSR09",
@@ -886,22 +958,26 @@
       "cat": "Specialty",
       "dims": "9\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 454,
-        "plus": 468,
-        "trend": 480,
-        "premium": 494,
-        "elite": 517
+        "essential": 521.0,
+        "plus": 537.0,
+        "trend": 551.0,
+        "premium": 567.0,
+        "elite": 594.0
       },
       "ply": {
-        "essential": 590,
-        "plus": 604,
-        "trend": 616,
-        "premium": 630,
-        "elite": 653
+        "essential": 677.0,
+        "plus": 693.0,
+        "trend": 707.0,
+        "premium": 723.0,
+        "elite": 750.0
       },
       "width_in": 9.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 1316.0,
+        "gola_prestige": 1329.0
+      }
     },
     {
       "sku": "BSR12",
@@ -909,22 +985,26 @@
       "cat": "Specialty",
       "dims": "12\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 502,
-        "plus": 519,
-        "trend": 535,
-        "premium": 554,
-        "elite": 583
+        "essential": 576.0,
+        "plus": 596.0,
+        "trend": 614.0,
+        "premium": 636.0,
+        "elite": 670.0
       },
       "ply": {
-        "essential": 647,
-        "plus": 664,
-        "trend": 680,
-        "premium": 699,
-        "elite": 728
+        "essential": 743.0,
+        "plus": 763.0,
+        "trend": 781.0,
+        "premium": 803.0,
+        "elite": 837.0
       },
       "width_in": 12.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 1445.0,
+        "gola_prestige": 1462.0
+      }
     },
     {
       "sku": "B06FH",
@@ -932,22 +1012,26 @@
       "cat": "Full Height",
       "dims": "6\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 141,
-        "plus": 147,
-        "trend": 155,
-        "premium": 164,
-        "elite": 172
+        "essential": 161.0,
+        "plus": 168.0,
+        "trend": 177.0,
+        "premium": 187.0,
+        "elite": 197.0
       },
       "ply": {
-        "essential": 193,
-        "plus": 199,
-        "trend": 207,
-        "premium": 216,
-        "elite": 224
+        "essential": 221.0,
+        "plus": 228.0,
+        "trend": 237.0,
+        "premium": 247.0,
+        "elite": 257.0
       },
       "width_in": 6.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 346.0,
+        "gola_prestige": 354.0
+      }
     },
     {
       "sku": "B09FH",
@@ -955,22 +1039,26 @@
       "cat": "Full Height",
       "dims": "9\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 162,
-        "plus": 171,
-        "trend": 183,
-        "premium": 197,
-        "elite": 220
+        "essential": 185.0,
+        "plus": 195.0,
+        "trend": 209.0,
+        "premium": 225.0,
+        "elite": 252.0
       },
       "ply": {
-        "essential": 213,
-        "plus": 222,
-        "trend": 234,
-        "premium": 248,
-        "elite": 271
+        "essential": 244.0,
+        "plus": 254.0,
+        "trend": 268.0,
+        "premium": 284.0,
+        "elite": 311.0
       },
       "width_in": 9.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 392.0,
+        "gola_prestige": 405.0
+      }
     },
     {
       "sku": "B12FH",
@@ -978,16 +1066,26 @@
       "cat": "Full Height",
       "dims": "12\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 183,
-        "plus": 195,
-        "trend": 211,
-        "premium": 230,
-        "elite": 259
+        "essential": 209.0,
+        "plus": 223.0,
+        "trend": 241.0,
+        "premium": 263.0,
+        "elite": 297.0
       },
-      "ply": null,
+      "ply": {
+        "essential": 289.0,
+        "plus": 303.0,
+        "trend": 321.0,
+        "premium": 343.0,
+        "elite": 377.0
+      },
       "width_in": 12.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 435.0,
+        "gola_prestige": 452.0
+      }
     },
     {
       "sku": "B15FH",
@@ -995,16 +1093,26 @@
       "cat": "Full Height",
       "dims": "15\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 204,
-        "plus": 219,
-        "trend": 239,
-        "premium": 262,
-        "elite": 285
+        "essential": 233.0,
+        "plus": 251.0,
+        "trend": 274.0,
+        "premium": 300.0,
+        "elite": 327.0
       },
-      "ply": null,
+      "ply": {
+        "essential": 321.0,
+        "plus": 339.0,
+        "trend": 362.0,
+        "premium": 388.0,
+        "elite": 415.0
+      },
       "width_in": 15.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 487.0,
+        "gola_prestige": 509.0
+      }
     },
     {
       "sku": "B18FH",
@@ -1012,16 +1120,26 @@
       "cat": "Full Height",
       "dims": "18\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 225,
-        "plus": 242,
-        "trend": 266,
-        "premium": 295,
-        "elite": 322
+        "essential": 258.0,
+        "plus": 277.0,
+        "trend": 305.0,
+        "premium": 338.0,
+        "elite": 369.0
       },
-      "ply": null,
+      "ply": {
+        "essential": 353.0,
+        "plus": 372.0,
+        "trend": 400.0,
+        "premium": 433.0,
+        "elite": 464.0
+      },
       "width_in": 18.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 548.0,
+        "gola_prestige": 574.0
+      }
     },
     {
       "sku": "B21FH",
@@ -1029,16 +1147,26 @@
       "cat": "Full Height",
       "dims": "21\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 245,
-        "plus": 266,
-        "trend": 294,
-        "premium": 327,
-        "elite": 359
+        "essential": 281.0,
+        "plus": 305.0,
+        "trend": 337.0,
+        "premium": 375.0,
+        "elite": 412.0
       },
-      "ply": null,
+      "ply": {
+        "essential": 382.0,
+        "plus": 406.0,
+        "trend": 438.0,
+        "premium": 476.0,
+        "elite": 513.0
+      },
       "width_in": 21.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 596.0,
+        "gola_prestige": 627.0
+      }
     },
     {
       "sku": "B24FH",
@@ -1046,16 +1174,26 @@
       "cat": "Full Height",
       "dims": "24\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 280,
-        "plus": 303,
-        "trend": 335,
-        "premium": 374,
-        "elite": 410
+        "essential": 321.0,
+        "plus": 347.0,
+        "trend": 384.0,
+        "premium": 429.0,
+        "elite": 470.0
       },
-      "ply": null,
+      "ply": {
+        "essential": 424.0,
+        "plus": 450.0,
+        "trend": 487.0,
+        "premium": 532.0,
+        "elite": 573.0
+      },
       "width_in": 24.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 683.0,
+        "gola_prestige": 718.0
+      }
     },
     {
       "sku": "B27FH",
@@ -1063,16 +1201,26 @@
       "cat": "Full Height",
       "dims": "27\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 301,
-        "plus": 326,
-        "trend": 362,
-        "premium": 406,
-        "elite": 447
+        "essential": 345.0,
+        "plus": 374.0,
+        "trend": 415.0,
+        "premium": 466.0,
+        "elite": 513.0
       },
-      "ply": null,
+      "ply": {
+        "essential": 454.0,
+        "plus": 483.0,
+        "trend": 524.0,
+        "premium": 575.0,
+        "elite": 622.0
+      },
       "width_in": 27.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 733.0,
+        "gola_prestige": 773.0
+      }
     },
     {
       "sku": "B30FH",
@@ -1080,16 +1228,26 @@
       "cat": "Full Height",
       "dims": "30\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 322,
-        "plus": 351,
-        "trend": 391,
-        "premium": 438,
-        "elite": 482
+        "essential": 369.0,
+        "plus": 403.0,
+        "trend": 448.0,
+        "premium": 503.0,
+        "elite": 553.0
       },
-      "ply": null,
+      "ply": {
+        "essential": 485.0,
+        "plus": 519.0,
+        "trend": 564.0,
+        "premium": 619.0,
+        "elite": 669.0
+      },
       "width_in": 30.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 783.0,
+        "gola_prestige": 827.0
+      }
     },
     {
       "sku": "B33FH",
@@ -1097,16 +1255,26 @@
       "cat": "Full Height",
       "dims": "33\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 343,
-        "plus": 374,
-        "trend": 418,
-        "premium": 471,
-        "elite": 521
+        "essential": 393.0,
+        "plus": 429.0,
+        "trend": 480.0,
+        "premium": 541.0,
+        "elite": 598.0
       },
-      "ply": null,
+      "ply": {
+        "essential": 517.0,
+        "plus": 553.0,
+        "trend": 604.0,
+        "premium": 665.0,
+        "elite": 722.0
+      },
       "width_in": 33.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 832.0,
+        "gola_prestige": 881.0
+      }
     },
     {
       "sku": "B36FH",
@@ -1114,16 +1282,26 @@
       "cat": "Full Height",
       "dims": "36\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 367,
-        "plus": 401,
-        "trend": 450,
-        "premium": 507,
-        "elite": 560
+        "essential": 421.0,
+        "plus": 461.0,
+        "trend": 516.0,
+        "premium": 582.0,
+        "elite": 643.0
       },
-      "ply": null,
+      "ply": {
+        "essential": 547.0,
+        "plus": 587.0,
+        "trend": 642.0,
+        "premium": 708.0,
+        "elite": 769.0
+      },
       "width_in": 36.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 893.0,
+        "gola_prestige": 946.0
+      }
     },
     {
       "sku": "BMC24",
@@ -1131,22 +1309,26 @@
       "cat": "Specialty",
       "dims": "24\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 337,
-        "plus": 348,
-        "trend": 363,
-        "premium": 381,
-        "elite": 400
+        "essential": 387.0,
+        "plus": 400.0,
+        "trend": 416.0,
+        "premium": 437.0,
+        "elite": 459.0
       },
       "ply": {
-        "essential": 456,
-        "plus": 467,
-        "trend": 482,
-        "premium": 500,
-        "elite": 519
+        "essential": 524.0,
+        "plus": 537.0,
+        "trend": 553.0,
+        "premium": 574.0,
+        "elite": 596.0
       },
       "width_in": 24.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 803.0,
+        "gola_prestige": 819.0
+      }
     },
     {
       "sku": "BMC30",
@@ -1154,22 +1336,26 @@
       "cat": "Specialty",
       "dims": "30\"W x 24\"D x 34.5\"H",
       "pb": {
-        "essential": 376,
-        "plus": 390,
-        "trend": 409,
-        "premium": 431,
-        "elite": 452
+        "essential": 432.0,
+        "plus": 448.0,
+        "trend": 470.0,
+        "premium": 495.0,
+        "elite": 519.0
       },
       "ply": {
-        "essential": 508,
-        "plus": 522,
-        "trend": 541,
-        "premium": 563,
-        "elite": 584
+        "essential": 583.0,
+        "plus": 599.0,
+        "trend": 621.0,
+        "premium": 646.0,
+        "elite": 670.0
       },
       "width_in": 30.0,
       "depth_in": 24.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "flat": {
+        "gola_urban": 896.0,
+        "gola_prestige": 916.0
+      }
     },
     {
       "sku": "W0930",
@@ -1177,22 +1363,26 @@
       "cat": "Wall 30",
       "dims": "9\"W x 12\"D x 30\"H",
       "pb": {
-        "essential": 114,
-        "plus": 123,
-        "trend": 135,
-        "premium": 149,
-        "elite": 162
+        "essential": 130.0,
+        "plus": 140.0,
+        "trend": 154.0,
+        "premium": 170.0,
+        "elite": 185.0
       },
       "ply": {
-        "essential": 163,
-        "plus": 172,
-        "trend": 184,
-        "premium": 198,
-        "elite": 211
+        "essential": 187.0,
+        "plus": 197.0,
+        "trend": 211.0,
+        "premium": 227.0,
+        "elite": 242.0
       },
       "width_in": 9.0,
       "depth_in": 12.0,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "flat": {
+        "gola_urban": 316.0,
+        "gola_prestige": 329.0
+      }
     },
     {
       "sku": "W1230",
@@ -1200,22 +1390,26 @@
       "cat": "Wall 30",
       "dims": "12\"W x 12\"D x 30\"H",
       "pb": {
-        "essential": 134,
-        "plus": 146,
-        "trend": 162,
-        "premium": 181,
-        "elite": 197
+        "essential": 153.0,
+        "plus": 167.0,
+        "trend": 185.0,
+        "premium": 207.0,
+        "elite": 226.0
       },
       "ply": {
-        "essential": 190,
-        "plus": 202,
-        "trend": 218,
-        "premium": 237,
-        "elite": 253
+        "essential": 217.0,
+        "plus": 231.0,
+        "trend": 249.0,
+        "premium": 271.0,
+        "elite": 290.0
       },
       "width_in": 12.0,
       "depth_in": 12.0,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "flat": {
+        "gola_urban": 375.0,
+        "gola_prestige": 392.0
+      }
     },
     {
       "sku": "W1530",
@@ -1223,22 +1417,26 @@
       "cat": "Wall 30",
       "dims": "15\"W x 12\"D x 30\"H",
       "pb": {
-        "essential": 154,
-        "plus": 169,
-        "trend": 189,
-        "premium": 212,
-        "elite": 233
+        "essential": 176.0,
+        "plus": 194.0,
+        "trend": 217.0,
+        "premium": 243.0,
+        "elite": 267.0
       },
       "ply": {
-        "essential": 218,
-        "plus": 233,
-        "trend": 253,
-        "premium": 276,
-        "elite": 297
+        "essential": 249.0,
+        "plus": 267.0,
+        "trend": 290.0,
+        "premium": 316.0,
+        "elite": 340.0
       },
       "width_in": 15.0,
       "depth_in": 12.0,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "flat": {
+        "gola_urban": 437.0,
+        "gola_prestige": 459.0
+      }
     },
     {
       "sku": "W1830",
@@ -1246,22 +1444,26 @@
       "cat": "Wall 30",
       "dims": "18\"W x 12\"D x 30\"H",
       "pb": {
-        "essential": 173,
-        "plus": 190,
-        "trend": 214,
-        "premium": 243,
-        "elite": 267
+        "essential": 198.0,
+        "plus": 217.0,
+        "trend": 245.0,
+        "premium": 278.0,
+        "elite": 306.0
       },
       "ply": {
-        "essential": 246,
-        "plus": 263,
-        "trend": 287,
-        "premium": 316,
-        "elite": 340
+        "essential": 282.0,
+        "plus": 301.0,
+        "trend": 329.0,
+        "premium": 362.0,
+        "elite": 390.0
       },
       "width_in": 18.0,
       "depth_in": 12.0,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "flat": {
+        "gola_urban": 496.0,
+        "gola_prestige": 522.0
+      }
     },
     {
       "sku": "W2130",
@@ -1269,22 +1471,26 @@
       "cat": "Wall 30",
       "dims": "21\"W x 12\"D x 30\"H",
       "pb": {
-        "essential": 192,
-        "plus": 213,
-        "trend": 241,
-        "premium": 274,
-        "elite": 303
+        "essential": 220.0,
+        "plus": 244.0,
+        "trend": 276.0,
+        "premium": 314.0,
+        "elite": 347.0
       },
       "ply": {
-        "essential": 273,
-        "plus": 294,
-        "trend": 322,
-        "premium": 355,
-        "elite": 384
+        "essential": 313.0,
+        "plus": 337.0,
+        "trend": 369.0,
+        "premium": 407.0,
+        "elite": 440.0
       },
       "width_in": 21.0,
       "depth_in": 12.0,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "flat": {
+        "gola_urban": 558.0,
+        "gola_prestige": 589.0
+      }
     },
     {
       "sku": "W2430",
@@ -1292,22 +1498,26 @@
       "cat": "Wall 30",
       "dims": "24\"W x 12\"D x 30\"H",
       "pb": {
-        "essential": 225,
-        "plus": 248,
-        "trend": 280,
-        "premium": 319,
-        "elite": 352
+        "essential": 258.0,
+        "plus": 284.0,
+        "trend": 321.0,
+        "premium": 366.0,
+        "elite": 404.0
       },
       "ply": {
-        "essential": 309,
-        "plus": 332,
-        "trend": 364,
-        "premium": 403,
-        "elite": 436
+        "essential": 355.0,
+        "plus": 381.0,
+        "trend": 418.0,
+        "premium": 463.0,
+        "elite": 501.0
       },
       "width_in": 24.0,
       "depth_in": 12.0,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "flat": {
+        "gola_urban": 651.0,
+        "gola_prestige": 686.0
+      }
     },
     {
       "sku": "W2730",
@@ -1315,22 +1525,26 @@
       "cat": "Wall 30",
       "dims": "27\"W x 12\"D x 30\"H",
       "pb": {
-        "essential": 245,
-        "plus": 270,
-        "trend": 306,
-        "premium": 350,
-        "elite": 387
+        "essential": 281.0,
+        "plus": 310.0,
+        "trend": 351.0,
+        "premium": 402.0,
+        "elite": 444.0
       },
       "ply": {
-        "essential": 339,
-        "plus": 364,
-        "trend": 400,
-        "premium": 444,
-        "elite": 481
+        "essential": 389.0,
+        "plus": 418.0,
+        "trend": 459.0,
+        "premium": 510.0,
+        "elite": 552.0
       },
       "width_in": 27.0,
       "depth_in": 12.0,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "flat": {
+        "gola_urban": 711.0,
+        "gola_prestige": 751.0
+      }
     },
     {
       "sku": "W3030",
@@ -1338,22 +1552,26 @@
       "cat": "Wall 30",
       "dims": "30\"W x 12\"D x 30\"H",
       "pb": {
-        "essential": 265,
-        "plus": 294,
-        "trend": 334,
-        "premium": 381,
-        "elite": 423
+        "essential": 304.0,
+        "plus": 338.0,
+        "trend": 383.0,
+        "premium": 438.0,
+        "elite": 486.0
       },
       "ply": {
-        "essential": 366,
-        "plus": 395,
-        "trend": 435,
-        "premium": 482,
-        "elite": 524
+        "essential": 420.0,
+        "plus": 454.0,
+        "trend": 499.0,
+        "premium": 554.0,
+        "elite": 602.0
       },
       "width_in": 30.0,
       "depth_in": 12.0,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "flat": {
+        "gola_urban": 773.0,
+        "gola_prestige": 817.0
+      }
     },
     {
       "sku": "W3330",
@@ -1361,22 +1579,26 @@
       "cat": "Wall 30",
       "dims": "33\"W x 12\"D x 30\"H",
       "pb": {
-        "essential": 284,
-        "plus": 315,
-        "trend": 359,
-        "premium": 412,
-        "elite": 457
+        "essential": 325.0,
+        "plus": 361.0,
+        "trend": 412.0,
+        "premium": 473.0,
+        "elite": 524.0
       },
       "ply": {
-        "essential": 394,
-        "plus": 425,
-        "trend": 469,
-        "premium": 522,
-        "elite": 567
+        "essential": 452.0,
+        "plus": 488.0,
+        "trend": 539.0,
+        "premium": 600.0,
+        "elite": 651.0
       },
       "width_in": 33.0,
       "depth_in": 12.0,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "flat": {
+        "gola_urban": 882.0,
+        "gola_prestige": 931.0
+      }
     },
     {
       "sku": "W3630",
@@ -1384,22 +1606,26 @@
       "cat": "Wall 30",
       "dims": "36\"W x 12\"D x 30\"H",
       "pb": {
-        "essential": 303,
-        "plus": 337,
-        "trend": 386,
-        "premium": 443,
-        "elite": 493
+        "essential": 347.0,
+        "plus": 387.0,
+        "trend": 442.0,
+        "premium": 508.0,
+        "elite": 566.0
       },
       "ply": {
-        "essential": 421,
-        "plus": 455,
-        "trend": 504,
-        "premium": 561,
-        "elite": 611
+        "essential": 483.0,
+        "plus": 523.0,
+        "trend": 578.0,
+        "premium": 644.0,
+        "elite": 702.0
       },
       "width_in": 36.0,
       "depth_in": 12.0,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "flat": {
+        "gola_urban": 947.0,
+        "gola_prestige": 1000.0
+      }
     },
     {
       "sku": "W0936",
@@ -1407,22 +1633,26 @@
       "cat": "Wall 36",
       "dims": "9\"W x 12\"D x 36\"H",
       "pb": {
-        "essential": 136,
-        "plus": 147,
-        "trend": 161,
-        "premium": 178,
-        "elite": 193
+        "essential": 156.0,
+        "plus": 168.0,
+        "trend": 185.0,
+        "premium": 204.0,
+        "elite": 221.0
       },
       "ply": {
-        "essential": 188,
-        "plus": 199,
-        "trend": 213,
-        "premium": 230,
-        "elite": 245
+        "essential": 216.0,
+        "plus": 228.0,
+        "trend": 245.0,
+        "premium": 264.0,
+        "elite": 281.0
       },
       "width_in": 9.0,
       "depth_in": 12.0,
-      "height_in": 36.0
+      "height_in": 36.0,
+      "flat": {
+        "gola_urban": 372.0,
+        "gola_prestige": 388.0
+      }
     },
     {
       "sku": "W1236",
@@ -1430,22 +1660,26 @@
       "cat": "Wall 36",
       "dims": "12\"W x 12\"D x 36\"H",
       "pb": {
-        "essential": 157,
-        "plus": 171,
-        "trend": 190,
-        "premium": 213,
-        "elite": 233
+        "essential": 180.0,
+        "plus": 196.0,
+        "trend": 218.0,
+        "premium": 244.0,
+        "elite": 267.0
       },
       "ply": {
-        "essential": 218,
-        "plus": 232,
-        "trend": 251,
-        "premium": 274,
-        "elite": 294
+        "essential": 250.0,
+        "plus": 266.0,
+        "trend": 288.0,
+        "premium": 314.0,
+        "elite": 337.0
       },
       "width_in": 12.0,
       "depth_in": 12.0,
-      "height_in": 36.0
+      "height_in": 36.0,
+      "flat": {
+        "gola_urban": 436.0,
+        "gola_prestige": 457.0
+      }
     },
     {
       "sku": "W1536",
@@ -1453,22 +1687,26 @@
       "cat": "Wall 36",
       "dims": "15\"W x 12\"D x 36\"H",
       "pb": {
-        "essential": 180,
-        "plus": 197,
-        "trend": 221,
-        "premium": 250,
-        "elite": 274
+        "essential": 206.0,
+        "plus": 225.0,
+        "trend": 253.0,
+        "premium": 286.0,
+        "elite": 314.0
       },
       "ply": {
-        "essential": 248,
-        "plus": 265,
-        "trend": 289,
-        "premium": 318,
-        "elite": 342
+        "essential": 285.0,
+        "plus": 304.0,
+        "trend": 332.0,
+        "premium": 365.0,
+        "elite": 393.0
       },
       "width_in": 15.0,
       "depth_in": 12.0,
-      "height_in": 36.0
+      "height_in": 36.0,
+      "flat": {
+        "gola_urban": 506.0,
+        "gola_prestige": 532.0
+      }
     },
     {
       "sku": "W1836",
@@ -1476,22 +1714,26 @@
       "cat": "Wall 36",
       "dims": "18\"W x 12\"D x 36\"H",
       "pb": {
-        "essential": 201,
-        "plus": 221,
-        "trend": 250,
-        "premium": 285,
-        "elite": 308
+        "essential": 230.0,
+        "plus": 253.0,
+        "trend": 287.0,
+        "premium": 327.0,
+        "elite": 361.0
       },
       "ply": {
-        "essential": 278,
-        "plus": 298,
-        "trend": 327,
-        "premium": 362,
-        "elite": 392
+        "essential": 319.0,
+        "plus": 342.0,
+        "trend": 376.0,
+        "premium": 416.0,
+        "elite": 450.0
       },
       "width_in": 18.0,
       "depth_in": 12.0,
-      "height_in": 36.0
+      "height_in": 36.0,
+      "flat": {
+        "gola_urban": 571.0,
+        "gola_prestige": 603.0
+      }
     },
     {
       "sku": "W2136",
@@ -1499,22 +1741,26 @@
       "cat": "Wall 36",
       "dims": "21\"W x 12\"D x 36\"H",
       "pb": {
-        "essential": 222,
-        "plus": 247,
-        "trend": 281,
-        "premium": 320,
-        "elite": 355
+        "essential": 254.0,
+        "plus": 283.0,
+        "trend": 322.0,
+        "premium": 367.0,
+        "elite": 407.0
       },
       "ply": {
-        "essential": 307,
-        "plus": 332,
-        "trend": 366,
-        "premium": 405,
-        "elite": 440
+        "essential": 352.0,
+        "plus": 381.0,
+        "trend": 420.0,
+        "premium": 465.0,
+        "elite": 505.0
       },
       "width_in": 21.0,
       "depth_in": 12.0,
-      "height_in": 36.0
+      "height_in": 36.0,
+      "flat": {
+        "gola_urban": 637.0,
+        "gola_prestige": 674.0
+      }
     },
     {
       "sku": "W2436",
@@ -1522,22 +1768,26 @@
       "cat": "Wall 36",
       "dims": "24\"W x 12\"D x 36\"H",
       "pb": {
-        "essential": 264,
-        "plus": 291,
-        "trend": 329,
-        "premium": 376,
-        "elite": 415
+        "essential": 303.0,
+        "plus": 334.0,
+        "trend": 378.0,
+        "premium": 432.0,
+        "elite": 476.0
       },
       "ply": {
-        "essential": 351,
-        "plus": 378,
-        "trend": 416,
-        "premium": 463,
-        "elite": 502
+        "essential": 403.0,
+        "plus": 434.0,
+        "trend": 478.0,
+        "premium": 532.0,
+        "elite": 576.0
       },
       "width_in": 24.0,
       "depth_in": 12.0,
-      "height_in": 36.0
+      "height_in": 36.0,
+      "flat": {
+        "gola_urban": 751.0,
+        "gola_prestige": 794.0
+      }
     },
     {
       "sku": "W2736",
@@ -1545,22 +1795,26 @@
       "cat": "Wall 36",
       "dims": "27\"W x 12\"D x 36\"H",
       "pb": {
-        "essential": 286,
-        "plus": 317,
-        "trend": 361,
-        "premium": 412,
-        "elite": 457
+        "essential": 328.0,
+        "plus": 364.0,
+        "trend": 414.0,
+        "premium": 473.0,
+        "elite": 525.0
       },
       "ply": {
-        "essential": 383,
-        "plus": 414,
-        "trend": 458,
-        "premium": 509,
-        "elite": 554
+        "essential": 439.0,
+        "plus": 475.0,
+        "trend": 525.0,
+        "premium": 584.0,
+        "elite": 636.0
       },
       "width_in": 27.0,
       "depth_in": 12.0,
-      "height_in": 36.0
+      "height_in": 36.0,
+      "flat": {
+        "gola_urban": 817.0,
+        "gola_prestige": 865.0
+      }
     },
     {
       "sku": "W3036",
@@ -1568,22 +1822,26 @@
       "cat": "Wall 36",
       "dims": "30\"W x 12\"D x 36\"H",
       "pb": {
-        "essential": 307,
-        "plus": 341,
-        "trend": 390,
-        "premium": 447,
-        "elite": 497
+        "essential": 352.0,
+        "plus": 392.0,
+        "trend": 447.0,
+        "premium": 513.0,
+        "elite": 571.0
       },
       "ply": {
-        "essential": 412,
-        "plus": 446,
-        "trend": 495,
-        "premium": 552,
-        "elite": 602
+        "essential": 472.0,
+        "plus": 512.0,
+        "trend": 567.0,
+        "premium": 633.0,
+        "elite": 691.0
       },
       "width_in": 30.0,
       "depth_in": 12.0,
-      "height_in": 36.0
+      "height_in": 36.0,
+      "flat": {
+        "gola_urban": 883.0,
+        "gola_prestige": 936.0
+      }
     },
     {
       "sku": "W3336",
@@ -1591,22 +1849,26 @@
       "cat": "Wall 36",
       "dims": "33\"W x 12\"D x 36\"H",
       "pb": {
-        "essential": 329,
-        "plus": 365,
-        "trend": 418,
-        "premium": 483,
-        "elite": 537
+        "essential": 377.0,
+        "plus": 418.0,
+        "trend": 480.0,
+        "premium": 554.0,
+        "elite": 616.0
       },
       "ply": {
-        "essential": 443,
-        "plus": 479,
-        "trend": 532,
-        "premium": 597,
-        "elite": 651
+        "essential": 509.0,
+        "plus": 550.0,
+        "trend": 612.0,
+        "premium": 686.0,
+        "elite": 748.0
       },
       "width_in": 33.0,
       "depth_in": 12.0,
-      "height_in": 36.0
+      "height_in": 36.0,
+      "flat": {
+        "gola_urban": 1001.0,
+        "gola_prestige": 1060.0
+      }
     },
     {
       "sku": "W3636",
@@ -1614,22 +1876,26 @@
       "cat": "Wall 36",
       "dims": "36\"W x 12\"D x 36\"H",
       "pb": {
-        "essential": 350,
-        "plus": 390,
-        "trend": 449,
-        "premium": 518,
-        "elite": 577
+        "essential": 401.0,
+        "plus": 447.0,
+        "trend": 515.0,
+        "premium": 595.0,
+        "elite": 662.0
       },
       "ply": {
-        "essential": 472,
-        "plus": 512,
-        "trend": 571,
-        "premium": 640,
-        "elite": 699
+        "essential": 542.0,
+        "plus": 588.0,
+        "trend": 656.0,
+        "premium": 736.0,
+        "elite": 803.0
       },
       "width_in": 36.0,
       "depth_in": 12.0,
-      "height_in": 36.0
+      "height_in": 36.0,
+      "flat": {
+        "gola_urban": 1072.0,
+        "gola_prestige": 1136.0
+      }
     },
     {
       "sku": "W0942",
@@ -1637,22 +1903,26 @@
       "cat": "Wall 42",
       "dims": "9\"W x 12\"D x 42\"H",
       "pb": {
-        "essential": 157,
-        "plus": 170,
-        "trend": 186,
-        "premium": 206,
-        "elite": 223
+        "essential": 179.0,
+        "plus": 194.0,
+        "trend": 213.0,
+        "premium": 236.0,
+        "elite": 255.0
       },
       "ply": {
-        "essential": 224,
-        "plus": 237,
-        "trend": 253,
-        "premium": 273,
-        "elite": 290
+        "essential": 256.0,
+        "plus": 271.0,
+        "trend": 290.0,
+        "premium": 313.0,
+        "elite": 332.0
       },
       "width_in": 9.0,
       "depth_in": 12.0,
-      "height_in": 42.0
+      "height_in": 42.0,
+      "flat": {
+        "gola_urban": 426.0,
+        "gola_prestige": 444.0
+      }
     },
     {
       "sku": "W1242",
@@ -1660,22 +1930,26 @@
       "cat": "Wall 42",
       "dims": "12\"W x 12\"D x 42\"H",
       "pb": {
-        "essential": 183,
-        "plus": 199,
-        "trend": 221,
-        "premium": 248,
-        "elite": 271
+        "essential": 209.0,
+        "plus": 228.0,
+        "trend": 253.0,
+        "premium": 284.0,
+        "elite": 310.0
       },
       "ply": {
-        "essential": 261,
-        "plus": 277,
-        "trend": 299,
-        "premium": 326,
-        "elite": 349
+        "essential": 299.0,
+        "plus": 318.0,
+        "trend": 343.0,
+        "premium": 374.0,
+        "elite": 400.0
       },
       "width_in": 12.0,
       "depth_in": 12.0,
-      "height_in": 42.0
+      "height_in": 42.0,
+      "flat": {
+        "gola_urban": 501.0,
+        "gola_prestige": 526.0
+      }
     },
     {
       "sku": "W1542",
@@ -1683,22 +1957,26 @@
       "cat": "Wall 42",
       "dims": "15\"W x 12\"D x 42\"H",
       "pb": {
-        "essential": 208,
-        "plus": 229,
-        "trend": 257,
-        "premium": 290,
-        "elite": 319
+        "essential": 239.0,
+        "plus": 263.0,
+        "trend": 295.0,
+        "premium": 333.0,
+        "elite": 366.0
       },
       "ply": {
-        "essential": 297,
-        "plus": 318,
-        "trend": 346,
-        "premium": 379,
-        "elite": 408
+        "essential": 341.0,
+        "plus": 365.0,
+        "trend": 397.0,
+        "premium": 435.0,
+        "elite": 468.0
       },
       "width_in": 15.0,
       "depth_in": 12.0,
-      "height_in": 42.0
+      "height_in": 42.0,
+      "flat": {
+        "gola_urban": 580.0,
+        "gola_prestige": 611.0
+      }
     },
     {
       "sku": "W1842",
@@ -1706,22 +1984,26 @@
       "cat": "Wall 42",
       "dims": "18\"W x 12\"D x 42\"H",
       "pb": {
-        "essential": 235,
-        "plus": 260,
-        "trend": 294,
-        "premium": 333,
-        "elite": 368
+        "essential": 269.0,
+        "plus": 298.0,
+        "trend": 337.0,
+        "premium": 382.0,
+        "elite": 422.0
       },
       "ply": {
-        "essential": 334,
-        "plus": 359,
-        "trend": 393,
-        "premium": 432,
-        "elite": 467
+        "essential": 383.0,
+        "plus": 412.0,
+        "trend": 451.0,
+        "premium": 496.0,
+        "elite": 536.0
       },
       "width_in": 18.0,
       "depth_in": 12.0,
-      "height_in": 42.0
+      "height_in": 42.0,
+      "flat": {
+        "gola_urban": 659.0,
+        "gola_prestige": 696.0
+      }
     },
     {
       "sku": "W2142",
@@ -1729,22 +2011,26 @@
       "cat": "Wall 42",
       "dims": "21\"W x 12\"D x 42\"H",
       "pb": {
-        "essential": 261,
-        "plus": 289,
-        "trend": 328,
-        "premium": 376,
-        "elite": 416
+        "essential": 299.0,
+        "plus": 331.0,
+        "trend": 376.0,
+        "premium": 431.0,
+        "elite": 477.0
       },
       "ply": {
-        "essential": 370,
-        "plus": 398,
-        "trend": 437,
-        "premium": 485,
-        "elite": 525
+        "essential": 425.0,
+        "plus": 457.0,
+        "trend": 502.0,
+        "premium": 557.0,
+        "elite": 603.0
       },
       "width_in": 21.0,
       "depth_in": 12.0,
-      "height_in": 42.0
+      "height_in": 42.0,
+      "flat": {
+        "gola_urban": 739.0,
+        "gola_prestige": 782.0
+      }
     },
     {
       "sku": "W2442",
@@ -1752,22 +2038,26 @@
       "cat": "Wall 42",
       "dims": "24\"W x 12\"D x 42\"H",
       "pb": {
-        "essential": 307,
-        "plus": 339,
-        "trend": 384,
-        "premium": 438,
-        "elite": 484
+        "essential": 353.0,
+        "plus": 389.0,
+        "trend": 441.0,
+        "premium": 503.0,
+        "elite": 556.0
       },
       "ply": {
-        "essential": 420,
-        "plus": 452,
-        "trend": 497,
-        "premium": 551,
-        "elite": 597
+        "essential": 482.0,
+        "plus": 518.0,
+        "trend": 570.0,
+        "premium": 632.0,
+        "elite": 685.0
       },
       "width_in": 24.0,
       "depth_in": 12.0,
-      "height_in": 42.0
+      "height_in": 42.0,
+      "flat": {
+        "gola_urban": 864.0,
+        "gola_prestige": 914.0
+      }
     },
     {
       "sku": "W2742",
@@ -1775,22 +2065,26 @@
       "cat": "Wall 42",
       "dims": "27\"W x 12\"D x 42\"H",
       "pb": {
-        "essential": 333,
-        "plus": 369,
-        "trend": 420,
-        "premium": 480,
-        "elite": 532
+        "essential": 382.0,
+        "plus": 424.0,
+        "trend": 482.0,
+        "premium": 551.0,
+        "elite": 611.0
       },
       "ply": {
-        "essential": 457,
-        "plus": 493,
-        "trend": 544,
-        "premium": 604,
-        "elite": 656
+        "essential": 524.0,
+        "plus": 566.0,
+        "trend": 624.0,
+        "premium": 693.0,
+        "elite": 753.0
       },
       "width_in": 27.0,
       "depth_in": 12.0,
-      "height_in": 42.0
+      "height_in": 42.0,
+      "flat": {
+        "gola_urban": 941.0,
+        "gola_prestige": 997.0
+      }
     },
     {
       "sku": "W3042",
@@ -1798,22 +2092,26 @@
       "cat": "Wall 42",
       "dims": "30\"W x 12\"D x 42\"H",
       "pb": {
-        "essential": 359,
-        "plus": 398,
-        "trend": 454,
-        "premium": 522,
-        "elite": 580
+        "essential": 412.0,
+        "plus": 457.0,
+        "trend": 521.0,
+        "premium": 599.0,
+        "elite": 666.0
       },
       "ply": {
-        "essential": 493,
-        "plus": 532,
-        "trend": 588,
-        "premium": 656,
-        "elite": 714
+        "essential": 566.0,
+        "plus": 611.0,
+        "trend": 675.0,
+        "premium": 753.0,
+        "elite": 820.0
       },
       "width_in": 30.0,
       "depth_in": 12.0,
-      "height_in": 42.0
+      "height_in": 42.0,
+      "flat": {
+        "gola_urban": 1018.0,
+        "gola_prestige": 1080.0
+      }
     },
     {
       "sku": "W3342",
@@ -1821,22 +2119,26 @@
       "cat": "Wall 42",
       "dims": "33\"W x 12\"D x 42\"H",
       "pb": {
-        "essential": 386,
-        "plus": 429,
-        "trend": 491,
-        "premium": 565,
-        "elite": 629
+        "essential": 443.0,
+        "plus": 492.0,
+        "trend": 563.0,
+        "premium": 648.0,
+        "elite": 722.0
       },
       "ply": {
-        "essential": 530,
-        "plus": 573,
-        "trend": 635,
-        "premium": 709,
-        "elite": 773
+        "essential": 609.0,
+        "plus": 658.0,
+        "trend": 729.0,
+        "premium": 814.0,
+        "elite": 888.0
       },
       "width_in": 33.0,
       "depth_in": 12.0,
-      "height_in": 42.0
+      "height_in": 42.0,
+      "flat": {
+        "gola_urban": 1149.0,
+        "gola_prestige": 1217.0
+      }
     },
     {
       "sku": "W3642",
@@ -1844,22 +2146,26 @@
       "cat": "Wall 42",
       "dims": "36\"W x 12\"D x 42\"H",
       "pb": {
-        "essential": 412,
-        "plus": 459,
-        "trend": 527,
-        "premium": 608,
-        "elite": 677
+        "essential": 473.0,
+        "plus": 527.0,
+        "trend": 605.0,
+        "premium": 699.0,
+        "elite": 778.0
       },
       "ply": {
-        "essential": 567,
-        "plus": 614,
-        "trend": 682,
-        "premium": 763,
-        "elite": 832
+        "essential": 651.0,
+        "plus": 705.0,
+        "trend": 783.0,
+        "premium": 877.0,
+        "elite": 956.0
       },
       "width_in": 36.0,
       "depth_in": 12.0,
-      "height_in": 42.0
+      "height_in": 42.0,
+      "flat": {
+        "gola_urban": 1232.0,
+        "gola_prestige": 1307.0
+      }
     },
     {
       "sku": "W1212",
@@ -1867,22 +2173,26 @@
       "cat": "Wall Short",
       "dims": "12\"W x 12\"D x 12\"H",
       "pb": {
-        "essential": 70,
-        "plus": 75,
-        "trend": 81,
-        "premium": 89,
-        "elite": 96
+        "essential": 79.0,
+        "plus": 85.0,
+        "trend": 92.0,
+        "premium": 101.0,
+        "elite": 109.0
       },
       "ply": {
-        "essential": 93,
-        "plus": 98,
-        "trend": 104,
-        "premium": 112,
-        "elite": 119
+        "essential": 106.0,
+        "plus": 112.0,
+        "trend": 119.0,
+        "premium": 128.0,
+        "elite": 136.0
       },
       "width_in": 12.0,
       "depth_in": 12.0,
-      "height_in": 12.0
+      "height_in": 12.0,
+      "flat": {
+        "gola_urban": 209.0,
+        "gola_prestige": 216.0
+      }
     },
     {
       "sku": "W1512",
@@ -1890,22 +2200,26 @@
       "cat": "Wall Short",
       "dims": "15\"W x 12\"D x 12\"H",
       "pb": {
-        "essential": 81,
-        "plus": 87,
-        "trend": 95,
-        "premium": 104,
-        "elite": 112
+        "essential": 92.0,
+        "plus": 99.0,
+        "trend": 108.0,
+        "premium": 118.0,
+        "elite": 128.0
       },
       "ply": {
-        "essential": 107,
-        "plus": 113,
-        "trend": 121,
-        "premium": 130,
-        "elite": 138
+        "essential": 122.0,
+        "plus": 129.0,
+        "trend": 138.0,
+        "premium": 148.0,
+        "elite": 158.0
       },
       "width_in": 15.0,
       "depth_in": 12.0,
-      "height_in": 12.0
+      "height_in": 12.0,
+      "flat": {
+        "gola_urban": 246.0,
+        "gola_prestige": 254.0
+      }
     },
     {
       "sku": "W1812",
@@ -1913,22 +2227,26 @@
       "cat": "Wall Short",
       "dims": "18\"W x 12\"D x 12\"H",
       "pb": {
-        "essential": 90,
-        "plus": 97,
-        "trend": 106,
-        "premium": 118,
-        "elite": 128
+        "essential": 102.0,
+        "plus": 110.0,
+        "trend": 121.0,
+        "premium": 135.0,
+        "elite": 146.0
       },
       "ply": {
-        "essential": 121,
-        "plus": 128,
-        "trend": 137,
-        "premium": 149,
-        "elite": 159
+        "essential": 138.0,
+        "plus": 146.0,
+        "trend": 157.0,
+        "premium": 171.0,
+        "elite": 182.0
       },
       "width_in": 18.0,
       "depth_in": 12.0,
-      "height_in": 12.0
+      "height_in": 12.0,
+      "flat": {
+        "gola_urban": 278.0,
+        "gola_prestige": 288.0
+      }
     },
     {
       "sku": "W2112",
@@ -1936,22 +2254,26 @@
       "cat": "Wall Short",
       "dims": "21\"W x 12\"D x 12\"H",
       "pb": {
-        "essential": 100,
-        "plus": 109,
-        "trend": 120,
-        "premium": 132,
-        "elite": 144
+        "essential": 114.0,
+        "plus": 124.0,
+        "trend": 136.0,
+        "premium": 151.0,
+        "elite": 164.0
       },
       "ply": {
-        "essential": 134,
-        "plus": 143,
-        "trend": 154,
-        "premium": 166,
-        "elite": 178
+        "essential": 153.0,
+        "plus": 163.0,
+        "trend": 175.0,
+        "premium": 190.0,
+        "elite": 203.0
       },
       "width_in": 21.0,
       "depth_in": 12.0,
-      "height_in": 12.0
+      "height_in": 12.0,
+      "flat": {
+        "gola_urban": 314.0,
+        "gola_prestige": 326.0
+      }
     },
     {
       "sku": "W2412",
@@ -1959,22 +2281,26 @@
       "cat": "Wall Short",
       "dims": "24\"W x 12\"D x 12\"H",
       "pb": {
-        "essential": 122,
-        "plus": 131,
-        "trend": 144,
-        "premium": 159,
-        "elite": 173
+        "essential": 139.0,
+        "plus": 150.0,
+        "trend": 164.0,
+        "premium": 182.0,
+        "elite": 198.0
       },
       "ply": {
-        "essential": 156,
-        "plus": 165,
-        "trend": 178,
-        "premium": 193,
-        "elite": 207
+        "essential": 178.0,
+        "plus": 189.0,
+        "trend": 203.0,
+        "premium": 221.0,
+        "elite": 237.0
       },
       "width_in": 24.0,
       "depth_in": 12.0,
-      "height_in": 12.0
+      "height_in": 12.0,
+      "flat": {
+        "gola_urban": 377.0,
+        "gola_prestige": 391.0
+      }
     },
     {
       "sku": "W2712",
@@ -1982,22 +2308,26 @@
       "cat": "Wall Short",
       "dims": "27\"W x 12\"D x 12\"H",
       "pb": {
-        "essential": 132,
-        "plus": 143,
-        "trend": 157,
-        "premium": 174,
-        "elite": 189
+        "essential": 151.0,
+        "plus": 163.0,
+        "trend": 180.0,
+        "premium": 199.0,
+        "elite": 216.0
       },
       "ply": {
-        "essential": 169,
-        "plus": 180,
-        "trend": 194,
-        "premium": 211,
-        "elite": 226
+        "essential": 194.0,
+        "plus": 206.0,
+        "trend": 223.0,
+        "premium": 242.0,
+        "elite": 259.0
       },
       "width_in": 27.0,
       "depth_in": 12.0,
-      "height_in": 12.0
+      "height_in": 12.0,
+      "flat": {
+        "gola_urban": 412.0,
+        "gola_prestige": 428.0
+      }
     },
     {
       "sku": "W3012",
@@ -2005,22 +2335,26 @@
       "cat": "Wall Short",
       "dims": "30\"W x 12\"D x 12\"H",
       "pb": {
-        "essential": 141,
-        "plus": 153,
-        "trend": 169,
-        "premium": 188,
-        "elite": 204
+        "essential": 161.0,
+        "plus": 175.0,
+        "trend": 193.0,
+        "premium": 215.0,
+        "elite": 234.0
       },
       "ply": {
-        "essential": 182,
-        "plus": 194,
-        "trend": 210,
-        "premium": 229,
-        "elite": 245
+        "essential": 208.0,
+        "plus": 222.0,
+        "trend": 240.0,
+        "premium": 262.0,
+        "elite": 281.0
       },
       "width_in": 30.0,
       "depth_in": 12.0,
-      "height_in": 12.0
+      "height_in": 12.0,
+      "flat": {
+        "gola_urban": 445.0,
+        "gola_prestige": 462.0
+      }
     },
     {
       "sku": "W3312",
@@ -2028,22 +2362,26 @@
       "cat": "Wall Short",
       "dims": "33\"W x 12\"D x 12\"H",
       "pb": {
-        "essential": 151,
-        "plus": 164,
-        "trend": 182,
-        "premium": 203,
-        "elite": 221
+        "essential": 173.0,
+        "plus": 188.0,
+        "trend": 208.0,
+        "premium": 232.0,
+        "elite": 253.0
       },
       "ply": {
-        "essential": 196,
-        "plus": 209,
-        "trend": 227,
-        "premium": 248,
-        "elite": 266
+        "essential": 225.0,
+        "plus": 240.0,
+        "trend": 260.0,
+        "premium": 284.0,
+        "elite": 305.0
       },
       "width_in": 33.0,
       "depth_in": 12.0,
-      "height_in": 12.0
+      "height_in": 12.0,
+      "flat": {
+        "gola_urban": 532.0,
+        "gola_prestige": 551.0
+      }
     },
     {
       "sku": "W3612",
@@ -2051,22 +2389,26 @@
       "cat": "Wall Short",
       "dims": "36\"W x 12\"D x 12\"H",
       "pb": {
-        "essential": 160,
-        "plus": 174,
-        "trend": 193,
-        "premium": 216,
-        "elite": 236
+        "essential": 183.0,
+        "plus": 199.0,
+        "trend": 221.0,
+        "premium": 247.0,
+        "elite": 270.0
       },
       "ply": {
-        "essential": 211,
-        "plus": 225,
-        "trend": 244,
-        "premium": 267,
-        "elite": 287
+        "essential": 242.0,
+        "plus": 258.0,
+        "trend": 280.0,
+        "premium": 306.0,
+        "elite": 329.0
       },
       "width_in": 36.0,
       "depth_in": 12.0,
-      "height_in": 12.0
+      "height_in": 12.0,
+      "flat": {
+        "gola_urban": 568.0,
+        "gola_prestige": 589.0
+      }
     },
     {
       "sku": "W2415",
@@ -2074,22 +2416,26 @@
       "cat": "Wall Short",
       "dims": "24\"W x 12\"D x 15\"H",
       "pb": {
-        "essential": 146,
-        "plus": 157,
-        "trend": 173,
-        "premium": 186,
-        "elite": 203
+        "essential": 167.0,
+        "plus": 180.0,
+        "trend": 198.0,
+        "premium": 213.0,
+        "elite": 233.0
       },
       "ply": {
-        "essential": 174,
-        "plus": 185,
-        "trend": 201,
-        "premium": 214,
-        "elite": 231
+        "essential": 199.0,
+        "plus": 212.0,
+        "trend": 230.0,
+        "premium": 245.0,
+        "elite": 265.0
       },
       "width_in": 24.0,
       "depth_in": 12.0,
-      "height_in": 15.0
+      "height_in": 15.0,
+      "flat": {
+        "gola_urban": 432.0,
+        "gola_prestige": 448.0
+      }
     },
     {
       "sku": "W3015",
@@ -2097,22 +2443,26 @@
       "cat": "Wall Short",
       "dims": "30\"W x 12\"D x 15\"H",
       "pb": {
-        "essential": 157,
-        "plus": 172,
-        "trend": 192,
-        "premium": 215,
-        "elite": 236
+        "essential": 179.0,
+        "plus": 197.0,
+        "trend": 220.0,
+        "premium": 246.0,
+        "elite": 270.0
       },
       "ply": {
-        "essential": 202,
-        "plus": 217,
-        "trend": 237,
-        "premium": 260,
-        "elite": 281
+        "essential": 231.0,
+        "plus": 249.0,
+        "trend": 272.0,
+        "premium": 298.0,
+        "elite": 322.0
       },
       "width_in": 30.0,
       "depth_in": 12.0,
-      "height_in": 15.0
+      "height_in": 15.0,
+      "flat": {
+        "gola_urban": 487.0,
+        "gola_prestige": 509.0
+      }
     },
     {
       "sku": "W3315",
@@ -2120,22 +2470,26 @@
       "cat": "Wall Short",
       "dims": "33\"W x 12\"D x 15\"H",
       "pb": {
-        "essential": 167,
-        "plus": 183,
-        "trend": 205,
-        "premium": 231,
-        "elite": 254
+        "essential": 191.0,
+        "plus": 209.0,
+        "trend": 234.0,
+        "premium": 265.0,
+        "elite": 291.0
       },
       "ply": {
-        "essential": 216,
-        "plus": 232,
-        "trend": 254,
-        "premium": 280,
-        "elite": 303
+        "essential": 247.0,
+        "plus": 265.0,
+        "trend": 290.0,
+        "premium": 321.0,
+        "elite": 347.0
       },
       "width_in": 33.0,
       "depth_in": 12.0,
-      "height_in": 15.0
+      "height_in": 15.0,
+      "flat": {
+        "gola_urban": 537.0,
+        "gola_prestige": 561.0
+      }
     },
     {
       "sku": "W3615",
@@ -2143,22 +2497,26 @@
       "cat": "Wall Short",
       "dims": "36\"W x 12\"D x 15\"H",
       "pb": {
-        "essential": 178,
-        "plus": 195,
-        "trend": 219,
-        "premium": 248,
-        "elite": 272
+        "essential": 204.0,
+        "plus": 223.0,
+        "trend": 251.0,
+        "premium": 284.0,
+        "elite": 312.0
       },
       "ply": {
-        "essential": 233,
-        "plus": 250,
-        "trend": 274,
-        "premium": 303,
-        "elite": 327
+        "essential": 267.0,
+        "plus": 286.0,
+        "trend": 314.0,
+        "premium": 347.0,
+        "elite": 375.0
       },
       "width_in": 36.0,
       "depth_in": 12.0,
-      "height_in": 15.0
+      "height_in": 15.0,
+      "flat": {
+        "gola_urban": 596.0,
+        "gola_prestige": 622.0
+      }
     },
     {
       "sku": "W2418",
@@ -2166,22 +2524,26 @@
       "cat": "Wall Short",
       "dims": "24\"W x 12\"D x 18\"H",
       "pb": {
-        "essential": 159,
-        "plus": 172,
-        "trend": 191,
-        "premium": 207,
-        "elite": 229
+        "essential": 182.0,
+        "plus": 197.0,
+        "trend": 219.0,
+        "premium": 237.0,
+        "elite": 263.0
       },
       "ply": {
-        "essential": 191,
-        "plus": 204,
-        "trend": 223,
-        "premium": 239,
-        "elite": 261
+        "essential": 218.0,
+        "plus": 233.0,
+        "trend": 255.0,
+        "premium": 273.0,
+        "elite": 299.0
       },
       "width_in": 24.0,
       "depth_in": 12.0,
-      "height_in": 18.0
+      "height_in": 18.0,
+      "flat": {
+        "gola_urban": 464.0,
+        "gola_prestige": 483.0
+      }
     },
     {
       "sku": "W3018",
@@ -2189,22 +2551,26 @@
       "cat": "Wall Short",
       "dims": "30\"W x 12\"D x 18\"H",
       "pb": {
-        "essential": 171,
-        "plus": 188,
-        "trend": 212,
-        "premium": 241,
-        "elite": 265
+        "essential": 196.0,
+        "plus": 215.0,
+        "trend": 243.0,
+        "premium": 276.0,
+        "elite": 304.0
       },
       "ply": {
-        "essential": 221,
-        "plus": 238,
-        "trend": 262,
-        "premium": 291,
-        "elite": 315
+        "essential": 254.0,
+        "plus": 273.0,
+        "trend": 301.0,
+        "premium": 334.0,
+        "elite": 362.0
       },
       "width_in": 30.0,
       "depth_in": 12.0,
-      "height_in": 18.0
+      "height_in": 18.0,
+      "flat": {
+        "gola_urban": 526.0,
+        "gola_prestige": 552.0
+      }
     },
     {
       "sku": "W3318",
@@ -2212,22 +2578,26 @@
       "cat": "Wall Short",
       "dims": "33\"W x 12\"D x 18\"H",
       "pb": {
-        "essential": 182,
-        "plus": 201,
-        "trend": 227,
-        "premium": 259,
-        "elite": 286
+        "essential": 208.0,
+        "plus": 230.0,
+        "trend": 260.0,
+        "premium": 297.0,
+        "elite": 328.0
       },
       "ply": {
-        "essential": 236,
-        "plus": 255,
-        "trend": 281,
-        "premium": 313,
-        "elite": 340
+        "essential": 270.0,
+        "plus": 292.0,
+        "trend": 322.0,
+        "premium": 359.0,
+        "elite": 390.0
       },
       "width_in": 33.0,
       "depth_in": 12.0,
-      "height_in": 18.0
+      "height_in": 18.0,
+      "flat": {
+        "gola_urban": 579.0,
+        "gola_prestige": 608.0
+      }
     },
     {
       "sku": "W3618",
@@ -2235,22 +2605,26 @@
       "cat": "Wall Short",
       "dims": "36\"W x 12\"D x 18\"H",
       "pb": {
-        "essential": 194,
-        "plus": 214,
-        "trend": 243,
-        "premium": 278,
-        "elite": 308
+        "essential": 222.0,
+        "plus": 245.0,
+        "trend": 279.0,
+        "premium": 319.0,
+        "elite": 353.0
       },
       "ply": {
-        "essential": 254,
-        "plus": 274,
-        "trend": 303,
-        "premium": 338,
-        "elite": 368
+        "essential": 291.0,
+        "plus": 314.0,
+        "trend": 348.0,
+        "premium": 388.0,
+        "elite": 422.0
       },
       "width_in": 36.0,
       "depth_in": 12.0,
-      "height_in": 18.0
+      "height_in": 18.0,
+      "flat": {
+        "gola_urban": 641.0,
+        "gola_prestige": 673.0
+      }
     },
     {
       "sku": "W2421",
@@ -2258,22 +2632,26 @@
       "cat": "Wall Short",
       "dims": "24\"W x 12\"D x 21\"H",
       "pb": {
-        "essential": 173,
-        "plus": 189,
-        "trend": 211,
-        "premium": 230,
-        "elite": 254
+        "essential": 198.0,
+        "plus": 217.0,
+        "trend": 242.0,
+        "premium": 264.0,
+        "elite": 291.0
       },
       "ply": {
-        "essential": 207,
-        "plus": 223,
-        "trend": 245,
-        "premium": 264,
-        "elite": 288
+        "essential": 237.0,
+        "plus": 256.0,
+        "trend": 281.0,
+        "premium": 303.0,
+        "elite": 330.0
       },
       "width_in": 24.0,
       "depth_in": 12.0,
-      "height_in": 21.0
+      "height_in": 21.0,
+      "flat": {
+        "gola_urban": 502.0,
+        "gola_prestige": 525.0
+      }
     },
     {
       "sku": "W3021",
@@ -2281,22 +2659,26 @@
       "cat": "Wall Short",
       "dims": "30\"W x 12\"D x 21\"H",
       "pb": {
-        "essential": 185,
-        "plus": 206,
-        "trend": 234,
-        "premium": 267,
-        "elite": 296
+        "essential": 212.0,
+        "plus": 236.0,
+        "trend": 268.0,
+        "premium": 306.0,
+        "elite": 339.0
       },
       "ply": {
-        "essential": 239,
-        "plus": 260,
-        "trend": 288,
-        "premium": 321,
-        "elite": 350
+        "essential": 274.0,
+        "plus": 298.0,
+        "trend": 330.0,
+        "premium": 368.0,
+        "elite": 401.0
       },
       "width_in": 30.0,
       "depth_in": 12.0,
-      "height_in": 21.0
+      "height_in": 21.0,
+      "flat": {
+        "gola_urban": 566.0,
+        "gola_prestige": 597.0
+      }
     },
     {
       "sku": "W3321",
@@ -2304,22 +2686,26 @@
       "cat": "Wall Short",
       "dims": "33\"W x 12\"D x 21\"H",
       "pb": {
-        "essential": 199,
-        "plus": 221,
-        "trend": 252,
-        "premium": 289,
-        "elite": 320
+        "essential": 228.0,
+        "plus": 253.0,
+        "trend": 289.0,
+        "premium": 331.0,
+        "elite": 367.0
       },
       "ply": {
-        "essential": 256,
-        "plus": 278,
-        "trend": 309,
-        "premium": 346,
-        "elite": 377
+        "essential": 294.0,
+        "plus": 319.0,
+        "trend": 355.0,
+        "premium": 397.0,
+        "elite": 433.0
       },
       "width_in": 33.0,
       "depth_in": 12.0,
-      "height_in": 21.0
+      "height_in": 21.0,
+      "flat": {
+        "gola_urban": 624.0,
+        "gola_prestige": 658.0
+      }
     },
     {
       "sku": "W3621",
@@ -2327,22 +2713,26 @@
       "cat": "Wall Short",
       "dims": "36\"W x 12\"D x 21\"H",
       "pb": {
-        "essential": 227,
-        "plus": 251,
-        "trend": 285,
-        "premium": 324,
-        "elite": 360
+        "essential": 260.0,
+        "plus": 288.0,
+        "trend": 327.0,
+        "premium": 372.0,
+        "elite": 413.0
       },
       "ply": {
-        "essential": 277,
-        "plus": 301,
-        "trend": 335,
-        "premium": 374,
-        "elite": 410
+        "essential": 317.0,
+        "plus": 345.0,
+        "trend": 384.0,
+        "premium": 429.0,
+        "elite": 470.0
       },
       "width_in": 36.0,
       "depth_in": 12.0,
-      "height_in": 21.0
+      "height_in": 21.0,
+      "flat": {
+        "gola_urban": 723.0,
+        "gola_prestige": 760.0
+      }
     },
     {
       "sku": "W2424",
@@ -2350,22 +2740,26 @@
       "cat": "Wall Short",
       "dims": "24\"W x 12\"D x 24\"H",
       "pb": {
-        "essential": 201,
-        "plus": 219,
-        "trend": 245,
-        "premium": 266,
-        "elite": 293
+        "essential": 230.0,
+        "plus": 251.0,
+        "trend": 280.0,
+        "premium": 305.0,
+        "elite": 336.0
       },
       "ply": {
-        "essential": 250,
-        "plus": 268,
-        "trend": 294,
-        "premium": 315,
-        "elite": 342
+        "essential": 287.0,
+        "plus": 308.0,
+        "trend": 337.0,
+        "premium": 362.0,
+        "elite": 393.0
       },
       "width_in": 24.0,
       "depth_in": 12.0,
-      "height_in": 24.0
+      "height_in": 24.0,
+      "flat": {
+        "gola_urban": 574.0,
+        "gola_prestige": 600.0
+      }
     },
     {
       "sku": "W3024",
@@ -2373,22 +2767,26 @@
       "cat": "Wall Short",
       "dims": "30\"W x 12\"D x 24\"H",
       "pb": {
-        "essential": 218,
-        "plus": 241,
-        "trend": 273,
-        "premium": 312,
-        "elite": 345
+        "essential": 250.0,
+        "plus": 276.0,
+        "trend": 313.0,
+        "premium": 358.0,
+        "elite": 396.0
       },
       "ply": {
-        "essential": 292,
-        "plus": 315,
-        "trend": 347,
-        "premium": 386,
-        "elite": 419
+        "essential": 335.0,
+        "plus": 361.0,
+        "trend": 398.0,
+        "premium": 443.0,
+        "elite": 481.0
       },
       "width_in": 30.0,
       "depth_in": 12.0,
-      "height_in": 24.0
+      "height_in": 24.0,
+      "flat": {
+        "gola_urban": 651.0,
+        "gola_prestige": 686.0
+      }
     },
     {
       "sku": "W3324",
@@ -2396,22 +2794,26 @@
       "cat": "Wall Short",
       "dims": "33\"W x 12\"D x 24\"H",
       "pb": {
-        "essential": 233,
-        "plus": 258,
-        "trend": 294,
-        "premium": 336,
-        "elite": 373
+        "essential": 267.0,
+        "plus": 295.0,
+        "trend": 337.0,
+        "premium": 385.0,
+        "elite": 428.0
       },
       "ply": {
-        "essential": 313,
-        "plus": 338,
-        "trend": 374,
-        "premium": 416,
-        "elite": 453
+        "essential": 359.0,
+        "plus": 387.0,
+        "trend": 429.0,
+        "premium": 477.0,
+        "elite": 520.0
       },
       "width_in": 33.0,
       "depth_in": 12.0,
-      "height_in": 24.0
+      "height_in": 24.0,
+      "flat": {
+        "gola_urban": 712.0,
+        "gola_prestige": 751.0
+      }
     },
     {
       "sku": "W3624",
@@ -2419,22 +2821,26 @@
       "cat": "Wall Short",
       "dims": "36\"W x 12\"D x 24\"H",
       "pb": {
-        "essential": 249,
-        "plus": 276,
-        "trend": 314,
-        "premium": 361,
-        "elite": 400
+        "essential": 286.0,
+        "plus": 317.0,
+        "trend": 361.0,
+        "premium": 415.0,
+        "elite": 459.0
       },
       "ply": {
-        "essential": 338,
-        "plus": 365,
-        "trend": 403,
-        "premium": 450,
-        "elite": 489
+        "essential": 388.0,
+        "plus": 419.0,
+        "trend": 463.0,
+        "premium": 517.0,
+        "elite": 561.0
       },
       "width_in": 36.0,
       "depth_in": 12.0,
-      "height_in": 24.0
+      "height_in": 24.0,
+      "flat": {
+        "gola_urban": 785.0,
+        "gola_prestige": 828.0
+      }
     },
     {
       "sku": "W301224",
@@ -2442,22 +2848,26 @@
       "cat": "Wall Fridge",
       "dims": "30\"W x 24\"D x 12\"H",
       "pb": {
-        "essential": 199,
-        "plus": 211,
-        "trend": 227,
-        "premium": 246,
-        "elite": 262
+        "essential": 228.0,
+        "plus": 242.0,
+        "trend": 260.0,
+        "premium": 282.0,
+        "elite": 301.0
       },
       "ply": {
-        "essential": 275,
-        "plus": 287,
-        "trend": 303,
-        "premium": 322,
-        "elite": 338
+        "essential": 315.0,
+        "plus": 329.0,
+        "trend": 347.0,
+        "premium": 369.0,
+        "elite": 388.0
       },
       "width_in": 30.0,
       "depth_in": 24.0,
-      "height_in": 12.0
+      "height_in": 12.0,
+      "flat": {
+        "gola_urban": 639.0,
+        "gola_prestige": 656.0
+      }
     },
     {
       "sku": "W331224",
@@ -2465,22 +2875,26 @@
       "cat": "Wall Fridge",
       "dims": "33\"W x 24\"D x 12\"H",
       "pb": {
-        "essential": 213,
-        "plus": 226,
-        "trend": 244,
-        "premium": 265,
-        "elite": 283
+        "essential": 244.0,
+        "plus": 259.0,
+        "trend": 279.0,
+        "premium": 303.0,
+        "elite": 324.0
       },
       "ply": {
-        "essential": 295,
-        "plus": 308,
-        "trend": 326,
-        "premium": 347,
-        "elite": 365
+        "essential": 339.0,
+        "plus": 354.0,
+        "trend": 374.0,
+        "premium": 398.0,
+        "elite": 419.0
       },
       "width_in": 33.0,
       "depth_in": 24.0,
-      "height_in": 12.0
+      "height_in": 12.0,
+      "flat": {
+        "gola_urban": 688.0,
+        "gola_prestige": 707.0
+      }
     },
     {
       "sku": "W361224",
@@ -2488,22 +2902,26 @@
       "cat": "Wall Fridge",
       "dims": "36\"W x 24\"D x 12\"H",
       "pb": {
-        "essential": 226,
-        "plus": 240,
-        "trend": 259,
-        "premium": 282,
-        "elite": 302
+        "essential": 259.0,
+        "plus": 275.0,
+        "trend": 297.0,
+        "premium": 323.0,
+        "elite": 346.0
       },
       "ply": {
-        "essential": 315,
-        "plus": 329,
-        "trend": 348,
-        "premium": 371,
-        "elite": 391
+        "essential": 361.0,
+        "plus": 377.0,
+        "trend": 399.0,
+        "premium": 425.0,
+        "elite": 448.0
       },
       "width_in": 36.0,
       "depth_in": 24.0,
-      "height_in": 12.0
+      "height_in": 12.0,
+      "flat": {
+        "gola_urban": 732.0,
+        "gola_prestige": 753.0
+      }
     },
     {
       "sku": "W301524",
@@ -2511,22 +2929,26 @@
       "cat": "Wall Fridge",
       "dims": "30\"W x 24\"D x 15\"H",
       "pb": {
-        "essential": 219,
-        "plus": 234,
-        "trend": 254,
-        "premium": 277,
-        "elite": 298
+        "essential": 251.0,
+        "plus": 269.0,
+        "trend": 292.0,
+        "premium": 318.0,
+        "elite": 342.0
       },
       "ply": {
-        "essential": 301,
-        "plus": 316,
-        "trend": 336,
-        "premium": 359,
-        "elite": 380
+        "essential": 345.0,
+        "plus": 363.0,
+        "trend": 386.0,
+        "premium": 412.0,
+        "elite": 436.0
       },
       "width_in": 30.0,
       "depth_in": 24.0,
-      "height_in": 15.0
+      "height_in": 15.0,
+      "flat": {
+        "gola_urban": 691.0,
+        "gola_prestige": 713.0
+      }
     },
     {
       "sku": "W331524",
@@ -2534,22 +2956,26 @@
       "cat": "Wall Fridge",
       "dims": "33\"W x 24\"D x 15\"H",
       "pb": {
-        "essential": 233,
-        "plus": 249,
-        "trend": 271,
-        "premium": 297,
-        "elite": 320
+        "essential": 267.0,
+        "plus": 285.0,
+        "trend": 310.0,
+        "premium": 341.0,
+        "elite": 367.0
       },
       "ply": {
-        "essential": 322,
-        "plus": 338,
-        "trend": 360,
-        "premium": 386,
-        "elite": 409
+        "essential": 369.0,
+        "plus": 387.0,
+        "trend": 412.0,
+        "premium": 443.0,
+        "elite": 469.0
       },
       "width_in": 33.0,
       "depth_in": 24.0,
-      "height_in": 15.0
+      "height_in": 15.0,
+      "flat": {
+        "gola_urban": 739.0,
+        "gola_prestige": 763.0
+      }
     },
     {
       "sku": "W361524",
@@ -2557,22 +2983,26 @@
       "cat": "Wall Fridge",
       "dims": "36\"W x 24\"D x 15\"H",
       "pb": {
-        "essential": 249,
-        "plus": 266,
-        "trend": 290,
-        "premium": 319,
-        "elite": 343
+        "essential": 286.0,
+        "plus": 305.0,
+        "trend": 333.0,
+        "premium": 366.0,
+        "elite": 394.0
       },
       "ply": {
-        "essential": 344,
-        "plus": 361,
-        "trend": 385,
-        "premium": 414,
-        "elite": 438
+        "essential": 395.0,
+        "plus": 414.0,
+        "trend": 442.0,
+        "premium": 475.0,
+        "elite": 503.0
       },
       "width_in": 36.0,
       "depth_in": 24.0,
-      "height_in": 15.0
+      "height_in": 15.0,
+      "flat": {
+        "gola_urban": 794.0,
+        "gola_prestige": 820.0
+      }
     },
     {
       "sku": "W301824",
@@ -2580,22 +3010,26 @@
       "cat": "Wall Fridge",
       "dims": "30\"W x 24\"D x 18\"H",
       "pb": {
-        "essential": 248,
-        "plus": 265,
-        "trend": 289,
-        "premium": 318,
-        "elite": 343
+        "essential": 285.0,
+        "plus": 304.0,
+        "trend": 332.0,
+        "premium": 365.0,
+        "elite": 394.0
       },
       "ply": {
-        "essential": 329,
-        "plus": 346,
-        "trend": 370,
-        "premium": 399,
-        "elite": 424
+        "essential": 378.0,
+        "plus": 397.0,
+        "trend": 425.0,
+        "premium": 458.0,
+        "elite": 487.0
       },
       "width_in": 30.0,
       "depth_in": 24.0,
-      "height_in": 18.0
+      "height_in": 18.0,
+      "flat": {
+        "gola_urban": 766.0,
+        "gola_prestige": 792.0
+      }
     },
     {
       "sku": "W331824",
@@ -2603,22 +3037,26 @@
       "cat": "Wall Fridge",
       "dims": "33\"W x 24\"D x 18\"H",
       "pb": {
-        "essential": 253,
-        "plus": 272,
-        "trend": 298,
-        "premium": 330,
-        "elite": 357
+        "essential": 290.0,
+        "plus": 312.0,
+        "trend": 342.0,
+        "premium": 379.0,
+        "elite": 410.0
       },
       "ply": {
-        "essential": 349,
-        "plus": 368,
-        "trend": 394,
-        "premium": 426,
-        "elite": 453
+        "essential": 400.0,
+        "plus": 422.0,
+        "trend": 452.0,
+        "premium": 489.0,
+        "elite": 520.0
       },
       "width_in": 33.0,
       "depth_in": 24.0,
-      "height_in": 18.0
+      "height_in": 18.0,
+      "flat": {
+        "gola_urban": 793.0,
+        "gola_prestige": 822.0
+      }
     },
     {
       "sku": "W361824",
@@ -2626,22 +3064,26 @@
       "cat": "Wall Fridge",
       "dims": "36\"W x 24\"D x 18\"H",
       "pb": {
-        "essential": 269,
-        "plus": 289,
-        "trend": 318,
-        "premium": 353,
-        "elite": 383
+        "essential": 308.0,
+        "plus": 331.0,
+        "trend": 365.0,
+        "premium": 405.0,
+        "elite": 439.0
       },
       "ply": {
-        "essential": 371,
-        "plus": 391,
-        "trend": 420,
-        "premium": 455,
-        "elite": 485
+        "essential": 426.0,
+        "plus": 449.0,
+        "trend": 483.0,
+        "premium": 523.0,
+        "elite": 557.0
       },
       "width_in": 36.0,
       "depth_in": 24.0,
-      "height_in": 18.0
+      "height_in": 18.0,
+      "flat": {
+        "gola_urban": 847.0,
+        "gola_prestige": 879.0
+      }
     },
     {
       "sku": "W302124",
@@ -2649,22 +3091,26 @@
       "cat": "Wall Fridge",
       "dims": "30\"W x 24\"D x 21\"H",
       "pb": {
-        "essential": 266,
-        "plus": 287,
-        "trend": 315,
-        "premium": 348,
-        "elite": 378
+        "essential": 305.0,
+        "plus": 329.0,
+        "trend": 361.0,
+        "premium": 399.0,
+        "elite": 433.0
       },
       "ply": {
-        "essential": 354,
-        "plus": 375,
-        "trend": 403,
-        "premium": 436,
-        "elite": 466
+        "essential": 407.0,
+        "plus": 431.0,
+        "trend": 463.0,
+        "premium": 501.0,
+        "elite": 535.0
       },
       "width_in": 30.0,
       "depth_in": 24.0,
-      "height_in": 21.0
+      "height_in": 21.0,
+      "flat": {
+        "gola_urban": 816.0,
+        "gola_prestige": 847.0
+      }
     },
     {
       "sku": "W332124",
@@ -2672,22 +3118,26 @@
       "cat": "Wall Fridge",
       "dims": "33\"W x 24\"D x 21\"H",
       "pb": {
-        "essential": 284,
-        "plus": 306,
-        "trend": 337,
-        "premium": 374,
-        "elite": 407
+        "essential": 326.0,
+        "plus": 351.0,
+        "trend": 387.0,
+        "premium": 429.0,
+        "elite": 467.0
       },
       "ply": {
-        "essential": 378,
-        "plus": 400,
-        "trend": 431,
-        "premium": 468,
-        "elite": 501
+        "essential": 434.0,
+        "plus": 459.0,
+        "trend": 495.0,
+        "premium": 537.0,
+        "elite": 575.0
       },
       "width_in": 33.0,
       "depth_in": 24.0,
-      "height_in": 21.0
+      "height_in": 21.0,
+      "flat": {
+        "gola_urban": 874.0,
+        "gola_prestige": 908.0
+      }
     },
     {
       "sku": "W362124",
@@ -2695,22 +3145,26 @@
       "cat": "Wall Fridge",
       "dims": "36\"W x 24\"D x 21\"H",
       "pb": {
-        "essential": 302,
-        "plus": 326,
-        "trend": 360,
-        "premium": 399,
-        "elite": 435
+        "essential": 346.0,
+        "plus": 374.0,
+        "trend": 413.0,
+        "premium": 458.0,
+        "elite": 499.0
       },
       "ply": {
-        "essential": 403,
-        "plus": 427,
-        "trend": 461,
-        "premium": 500,
-        "elite": 536
+        "essential": 462.0,
+        "plus": 490.0,
+        "trend": 529.0,
+        "premium": 574.0,
+        "elite": 615.0
       },
       "width_in": 36.0,
       "depth_in": 24.0,
-      "height_in": 21.0
+      "height_in": 21.0,
+      "flat": {
+        "gola_urban": 931.0,
+        "gola_prestige": 968.0
+      }
     },
     {
       "sku": "W302424",
@@ -2718,22 +3172,26 @@
       "cat": "Wall Fridge",
       "dims": "30\"W x 24\"D x 24\"H",
       "pb": {
-        "essential": 326,
-        "plus": 349,
-        "trend": 381,
-        "premium": 420,
-        "elite": 456
+        "essential": 374.0,
+        "plus": 400.0,
+        "trend": 437.0,
+        "premium": 482.0,
+        "elite": 523.0
       },
       "ply": {
-        "essential": 439,
-        "plus": 462,
-        "trend": 494,
-        "premium": 533,
-        "elite": 569
+        "essential": 504.0,
+        "plus": 530.0,
+        "trend": 567.0,
+        "premium": 612.0,
+        "elite": 653.0
       },
       "width_in": 30.0,
       "depth_in": 24.0,
-      "height_in": 24.0
+      "height_in": 24.0,
+      "flat": {
+        "gola_urban": 969.0,
+        "gola_prestige": 1004.0
+      }
     },
     {
       "sku": "W332424",
@@ -2741,22 +3199,26 @@
       "cat": "Wall Fridge",
       "dims": "33\"W x 24\"D x 24\"H",
       "pb": {
-        "essential": 348,
-        "plus": 373,
-        "trend": 409,
-        "premium": 451,
-        "elite": 491
+        "essential": 400.0,
+        "plus": 428.0,
+        "trend": 470.0,
+        "premium": 518.0,
+        "elite": 564.0
       },
       "ply": {
-        "essential": 469,
-        "plus": 494,
-        "trend": 530,
-        "premium": 572,
-        "elite": 612
+        "essential": 539.0,
+        "plus": 567.0,
+        "trend": 609.0,
+        "premium": 657.0,
+        "elite": 703.0
       },
       "width_in": 33.0,
       "depth_in": 24.0,
-      "height_in": 24.0
+      "height_in": 24.0,
+      "flat": {
+        "gola_urban": 1038.0,
+        "gola_prestige": 1077.0
+      }
     },
     {
       "sku": "W362424",
@@ -2764,22 +3226,26 @@
       "cat": "Wall Fridge",
       "dims": "36\"W x 24\"D x 24\"H",
       "pb": {
-        "essential": 357,
-        "plus": 384,
-        "trend": 422,
-        "premium": 469,
-        "elite": 508
+        "essential": 410.0,
+        "plus": 441.0,
+        "trend": 485.0,
+        "premium": 539.0,
+        "elite": 583.0
       },
       "ply": {
-        "essential": 508,
-        "plus": 535,
-        "trend": 573,
-        "premium": 620,
-        "elite": 659
+        "essential": 583.0,
+        "plus": 614.0,
+        "trend": 658.0,
+        "premium": 712.0,
+        "elite": 756.0
       },
       "width_in": 36.0,
       "depth_in": 24.0,
-      "height_in": 24.0
+      "height_in": 24.0,
+      "flat": {
+        "gola_urban": 1075.0,
+        "gola_prestige": 1118.0
+      }
     },
     {
       "sku": "WBC2730",
@@ -2787,22 +3253,26 @@
       "cat": "Wall Corner",
       "dims": "27\"W x 12\"D x 30\"H",
       "pb": {
-        "essential": 238,
-        "plus": 255,
-        "trend": 276,
-        "premium": 300,
-        "elite": 322
+        "essential": 273.0,
+        "plus": 292.0,
+        "trend": 317.0,
+        "premium": 344.0,
+        "elite": 369.0
       },
       "ply": {
-        "essential": 343,
-        "plus": 360,
-        "trend": 381,
-        "premium": 405,
-        "elite": 427
+        "essential": 394.0,
+        "plus": 413.0,
+        "trend": 438.0,
+        "premium": 465.0,
+        "elite": 490.0
       },
       "width_in": 27.0,
       "depth_in": 12.0,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "flat": {
+        "gola_urban": 682.0,
+        "gola_prestige": 705.0
+      }
     },
     {
       "sku": "WBC2736",
@@ -2810,22 +3280,26 @@
       "cat": "Wall Corner",
       "dims": "27\"W x 12\"D x 36\"H",
       "pb": {
-        "essential": 274,
-        "plus": 293,
-        "trend": 319,
-        "premium": 348,
-        "elite": 374
+        "essential": 314.0,
+        "plus": 336.0,
+        "trend": 366.0,
+        "premium": 399.0,
+        "elite": 429.0
       },
       "ply": {
-        "essential": 386,
-        "plus": 405,
-        "trend": 431,
-        "premium": 460,
-        "elite": 486
+        "essential": 443.0,
+        "plus": 465.0,
+        "trend": 495.0,
+        "premium": 528.0,
+        "elite": 558.0
       },
       "width_in": 27.0,
       "depth_in": 12.0,
-      "height_in": 36.0
+      "height_in": 36.0,
+      "flat": {
+        "gola_urban": 774.0,
+        "gola_prestige": 802.0
+      }
     },
     {
       "sku": "WBC2742",
@@ -2833,22 +3307,26 @@
       "cat": "Wall Corner",
       "dims": "27\"W x 12\"D x 42\"H",
       "pb": {
-        "essential": 302,
-        "plus": 323,
-        "trend": 353,
-        "premium": 389,
-        "elite": 419
+        "essential": 346.0,
+        "plus": 370.0,
+        "trend": 405.0,
+        "premium": 446.0,
+        "elite": 481.0
       },
       "ply": {
-        "essential": 454,
-        "plus": 475,
-        "trend": 505,
-        "premium": 541,
-        "elite": 571
+        "essential": 521.0,
+        "plus": 545.0,
+        "trend": 580.0,
+        "premium": 621.0,
+        "elite": 656.0
       },
       "width_in": 27.0,
       "depth_in": 12.0,
-      "height_in": 42.0
+      "height_in": 42.0,
+      "flat": {
+        "gola_urban": 848.0,
+        "gola_prestige": 881.0
+      }
     },
     {
       "sku": "WER2412",
@@ -2856,22 +3334,26 @@
       "cat": "Wall Corner",
       "dims": "24\"W x 24\"D x 12\"H",
       "pb": {
-        "essential": 176,
-        "plus": 185,
-        "trend": 198,
-        "premium": 212,
-        "elite": 227
+        "essential": 201.0,
+        "plus": 212.0,
+        "trend": 226.0,
+        "premium": 243.0,
+        "elite": 260.0
       },
       "ply": {
-        "essential": 266,
-        "plus": 275,
-        "trend": 288,
-        "premium": 302,
-        "elite": 317
+        "essential": 305.0,
+        "plus": 316.0,
+        "trend": 330.0,
+        "premium": 347.0,
+        "elite": 364.0
       },
       "width_in": 24.0,
       "depth_in": 24.0,
-      "height_in": 12.0
+      "height_in": 12.0,
+      "flat": {
+        "gola_urban": 524.0,
+        "gola_prestige": 538.0
+      }
     },
     {
       "sku": "WER2430",
@@ -2879,22 +3361,26 @@
       "cat": "Wall Corner",
       "dims": "24\"W x 24\"D x 30\"H",
       "pb": {
-        "essential": 292,
-        "plus": 314,
-        "trend": 346,
-        "premium": 383,
-        "elite": 419
+        "essential": 335.0,
+        "plus": 360.0,
+        "trend": 397.0,
+        "premium": 439.0,
+        "elite": 481.0
       },
       "ply": {
-        "essential": 529,
-        "plus": 551,
-        "trend": 583,
-        "premium": 620,
-        "elite": 656
+        "essential": 608.0,
+        "plus": 633.0,
+        "trend": 670.0,
+        "premium": 712.0,
+        "elite": 754.0
       },
       "width_in": 24.0,
       "depth_in": 24.0,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "flat": {
+        "gola_urban": 827.0,
+        "gola_prestige": 862.0
+      }
     },
     {
       "sku": "WER2436",
@@ -2902,22 +3388,26 @@
       "cat": "Wall Corner",
       "dims": "24\"W x 24\"D x 36\"H",
       "pb": {
-        "essential": 345,
-        "plus": 370,
-        "trend": 408,
-        "premium": 454,
-        "elite": 496
+        "essential": 396.0,
+        "plus": 425.0,
+        "trend": 468.0,
+        "premium": 521.0,
+        "elite": 569.0
       },
       "ply": {
-        "essential": 606,
-        "plus": 631,
-        "trend": 669,
-        "premium": 715,
-        "elite": 757
+        "essential": 696.0,
+        "plus": 725.0,
+        "trend": 768.0,
+        "premium": 821.0,
+        "elite": 869.0
       },
       "width_in": 24.0,
       "depth_in": 24.0,
-      "height_in": 36.0
+      "height_in": 36.0,
+      "flat": {
+        "gola_urban": 963.0,
+        "gola_prestige": 1005.0
+      }
     },
     {
       "sku": "WER2442",
@@ -2925,22 +3415,26 @@
       "cat": "Wall Corner",
       "dims": "24\"W x 24\"D x 42\"H",
       "pb": {
-        "essential": 398,
-        "plus": 428,
-        "trend": 472,
-        "premium": 525,
-        "elite": 575
+        "essential": 457.0,
+        "plus": 491.0,
+        "trend": 542.0,
+        "premium": 603.0,
+        "elite": 660.0
       },
       "ply": {
-        "essential": 711,
-        "plus": 741,
-        "trend": 785,
-        "premium": 838,
-        "elite": 888
+        "essential": 817.0,
+        "plus": 851.0,
+        "trend": 902.0,
+        "premium": 963.0,
+        "elite": 1020.0
       },
       "width_in": 24.0,
       "depth_in": 24.0,
-      "height_in": 42.0
+      "height_in": 42.0,
+      "flat": {
+        "gola_urban": 1100.0,
+        "gola_prestige": 1149.0
+      }
     },
     {
       "sku": "WDC2412",
@@ -2948,22 +3442,26 @@
       "cat": "Wall Diagonal",
       "dims": "24\"W x 15.5\"D x 12\"H",
       "pb": {
-        "essential": 123,
-        "plus": 129,
-        "trend": 137,
-        "premium": 147,
-        "elite": 158
+        "essential": 140.0,
+        "plus": 147.0,
+        "trend": 156.0,
+        "premium": 168.0,
+        "elite": 180.0
       },
       "ply": {
-        "essential": 234,
-        "plus": 240,
-        "trend": 248,
-        "premium": 258,
-        "elite": 269
+        "essential": 268.0,
+        "plus": 275.0,
+        "trend": 284.0,
+        "premium": 296.0,
+        "elite": 308.0
       },
       "width_in": 24.0,
       "depth_in": 15.5,
-      "height_in": 12.0
+      "height_in": 12.0,
+      "flat": {
+        "gola_urban": 383.0,
+        "gola_prestige": 392.0
+      }
     },
     {
       "sku": "WDC2430",
@@ -2971,22 +3469,26 @@
       "cat": "Wall Diagonal",
       "dims": "24\"W x 15.5\"D x 30\"H",
       "pb": {
-        "essential": 257,
-        "plus": 272,
-        "trend": 293,
-        "premium": 318,
-        "elite": 340
+        "essential": 295.0,
+        "plus": 312.0,
+        "trend": 336.0,
+        "premium": 365.0,
+        "elite": 390.0
       },
       "ply": {
-        "essential": 477,
-        "plus": 492,
-        "trend": 513,
-        "premium": 538,
-        "elite": 560
+        "essential": 548.0,
+        "plus": 565.0,
+        "trend": 589.0,
+        "premium": 618.0,
+        "elite": 643.0
       },
       "width_in": 24.0,
       "depth_in": 15.5,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "flat": {
+        "gola_urban": 729.0,
+        "gola_prestige": 752.0
+      }
     },
     {
       "sku": "WDC2436",
@@ -2994,22 +3496,26 @@
       "cat": "Wall Diagonal",
       "dims": "24\"W x 15.5\"D x 36\"H",
       "pb": {
-        "essential": 297,
-        "plus": 315,
-        "trend": 340,
-        "premium": 370,
-        "elite": 396
+        "essential": 341.0,
+        "plus": 362.0,
+        "trend": 391.0,
+        "premium": 425.0,
+        "elite": 455.0
       },
       "ply": {
-        "essential": 531,
-        "plus": 549,
-        "trend": 574,
-        "premium": 604,
-        "elite": 630
+        "essential": 610.0,
+        "plus": 631.0,
+        "trend": 660.0,
+        "premium": 694.0,
+        "elite": 724.0
       },
       "width_in": 24.0,
       "depth_in": 15.5,
-      "height_in": 36.0
+      "height_in": 36.0,
+      "flat": {
+        "gola_urban": 832.0,
+        "gola_prestige": 860.0
+      }
     },
     {
       "sku": "WDC2442",
@@ -3017,22 +3523,26 @@
       "cat": "Wall Diagonal",
       "dims": "24\"W x 15.5\"D x 42\"H",
       "pb": {
-        "essential": 346,
-        "plus": 367,
-        "trend": 397,
-        "premium": 432,
-        "elite": 462
+        "essential": 397.0,
+        "plus": 421.0,
+        "trend": 456.0,
+        "premium": 496.0,
+        "elite": 530.0
       },
       "ply": {
-        "essential": 634,
-        "plus": 655,
-        "trend": 685,
-        "premium": 720,
-        "elite": 750
+        "essential": 728.0,
+        "plus": 752.0,
+        "trend": 787.0,
+        "premium": 827.0,
+        "elite": 861.0
       },
       "width_in": 24.0,
       "depth_in": 15.5,
-      "height_in": 42.0
+      "height_in": 42.0,
+      "flat": {
+        "gola_urban": 968.0,
+        "gola_prestige": 1000.0
+      }
     },
     {
       "sku": "WBF3030",
@@ -3041,15 +3551,19 @@
       "dims": "30\"W x 12\"D x 30\"H",
       "pb": null,
       "ply": {
-        "essential": 963,
-        "plus": 981,
-        "trend": 1021,
-        "premium": 1095,
-        "elite": 1143
+        "essential": 1107.0,
+        "plus": 1128.0,
+        "trend": 1173.0,
+        "premium": 1259.0,
+        "elite": 1314.0
       },
       "width_in": 30.0,
       "depth_in": 12.0,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "flat": {
+        "gola_urban": 2520.0,
+        "gola_prestige": 2570.0
+      }
     },
     {
       "sku": "WBF3630",
@@ -3058,15 +3572,19 @@
       "dims": "36\"W x 12\"D x 30\"H",
       "pb": null,
       "ply": {
-        "essential": 1025,
-        "plus": 1046,
-        "trend": 1095,
-        "premium": 1185,
-        "elite": 1242
+        "essential": 1177.0,
+        "plus": 1202.0,
+        "trend": 1257.0,
+        "premium": 1361.0,
+        "elite": 1427.0
       },
       "width_in": 36.0,
       "depth_in": 12.0,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "flat": {
+        "gola_urban": 2737.0,
+        "gola_prestige": 2798.0
+      }
     },
     {
       "sku": "WSL3015",
@@ -3075,15 +3593,19 @@
       "dims": "30\"W x 12\"D x 15\"H",
       "pb": null,
       "ply": {
-        "essential": 350,
-        "plus": 360,
-        "trend": 380,
-        "premium": 417,
-        "elite": 441
+        "essential": 401.0,
+        "plus": 413.0,
+        "trend": 436.0,
+        "premium": 478.0,
+        "elite": 506.0
       },
       "width_in": 30.0,
       "depth_in": 12.0,
-      "height_in": 15.0
+      "height_in": 15.0,
+      "flat": {
+        "gola_urban": 973.0,
+        "gola_prestige": 998.0
+      }
     },
     {
       "sku": "WSL3615",
@@ -3092,15 +3614,19 @@
       "dims": "36\"W x 12\"D x 15\"H",
       "pb": null,
       "ply": {
-        "essential": 389,
-        "plus": 399,
-        "trend": 423,
-        "premium": 468,
-        "elite": 452
+        "essential": 447.0,
+        "plus": 458.0,
+        "trend": 486.0,
+        "premium": 537.0,
+        "elite": 519.0
       },
       "width_in": 36.0,
       "depth_in": 12.0,
-      "height_in": 15.0
+      "height_in": 15.0,
+      "flat": {
+        "gola_urban": 1124.0,
+        "gola_prestige": 1154.0
+      }
     },
     {
       "sku": "WSL3018",
@@ -3109,15 +3635,19 @@
       "dims": "30\"W x 12\"D x 18\"H",
       "pb": null,
       "ply": {
-        "essential": 373,
-        "plus": 383,
-        "trend": 407,
-        "premium": 452,
-        "elite": 480
+        "essential": 428.0,
+        "plus": 439.0,
+        "trend": 467.0,
+        "premium": 518.0,
+        "elite": 551.0
       },
       "width_in": 30.0,
       "depth_in": 12.0,
-      "height_in": 18.0
+      "height_in": 18.0,
+      "flat": {
+        "gola_urban": 1032.0,
+        "gola_prestige": 1062.0
+      }
     },
     {
       "sku": "WSL3618",
@@ -3126,15 +3656,19 @@
       "dims": "36\"W x 12\"D x 18\"H",
       "pb": null,
       "ply": {
-        "essential": 413,
-        "plus": 425,
-        "trend": 454,
-        "premium": 509,
-        "elite": 543
+        "essential": 474.0,
+        "plus": 488.0,
+        "trend": 522.0,
+        "premium": 585.0,
+        "elite": 624.0
       },
       "width_in": 36.0,
       "depth_in": 12.0,
-      "height_in": 18.0
+      "height_in": 18.0,
+      "flat": {
+        "gola_urban": 1190.0,
+        "gola_prestige": 1226.0
+      }
     },
     {
       "sku": "PC1884",
@@ -3142,18 +3676,18 @@
       "cat": "Pantry",
       "dims": "18\"W x 24\"D x 84\"H",
       "pb": {
-        "essential": 592,
-        "plus": 619,
-        "trend": 684,
-        "premium": 760,
-        "elite": 879
+        "essential": 680.0,
+        "plus": 711.0,
+        "trend": 785.0,
+        "premium": 873.0,
+        "elite": 1010.0
       },
       "ply": {
-        "essential": 855,
-        "plus": 882,
-        "trend": 947,
-        "premium": 1023,
-        "elite": 1142
+        "essential": 983.0,
+        "plus": 1014.0,
+        "trend": 1088.0,
+        "premium": 1176.0,
+        "elite": 1313.0
       },
       "width_in": 18.0,
       "depth_in": 24.0,
@@ -3165,18 +3699,18 @@
       "cat": "Pantry",
       "dims": "18\"W x 24\"D x 90\"H",
       "pb": {
-        "essential": 626,
-        "plus": 655,
-        "trend": 724,
-        "premium": 806,
-        "elite": 933
+        "essential": 719.0,
+        "plus": 753.0,
+        "trend": 832.0,
+        "premium": 926.0,
+        "elite": 1072.0
       },
       "ply": {
-        "essential": 898,
-        "plus": 927,
-        "trend": 996,
-        "premium": 1078,
-        "elite": 1205
+        "essential": 1031.0,
+        "plus": 1065.0,
+        "trend": 1144.0,
+        "premium": 1238.0,
+        "elite": 1384.0
       },
       "width_in": 18.0,
       "depth_in": 24.0,
@@ -3188,18 +3722,18 @@
       "cat": "Pantry",
       "dims": "18\"W x 24\"D x 96\"H",
       "pb": {
-        "essential": 656,
-        "plus": 688,
-        "trend": 762,
-        "premium": 850,
-        "elite": 985
+        "essential": 754.0,
+        "plus": 791.0,
+        "trend": 875.0,
+        "premium": 977.0,
+        "elite": 1132.0
       },
       "ply": {
-        "essential": 940,
-        "plus": 972,
-        "trend": 1046,
-        "premium": 1134,
-        "elite": 1269
+        "essential": 1080.0,
+        "plus": 1117.0,
+        "trend": 1201.0,
+        "premium": 1303.0,
+        "elite": 1458.0
       },
       "width_in": 18.0,
       "depth_in": 24.0,
@@ -3211,18 +3745,18 @@
       "cat": "Pantry",
       "dims": "24\"W x 24\"D x 84\"H",
       "pb": {
-        "essential": 750,
-        "plus": 786,
-        "trend": 871,
-        "premium": 974,
-        "elite": 1132
+        "essential": 862.0,
+        "plus": 903.0,
+        "trend": 1001.0,
+        "premium": 1119.0,
+        "elite": 1301.0
       },
       "ply": {
-        "essential": 1033,
-        "plus": 1069,
-        "trend": 1154,
-        "premium": 1257,
-        "elite": 1415
+        "essential": 1187.0,
+        "plus": 1228.0,
+        "trend": 1326.0,
+        "premium": 1444.0,
+        "elite": 1626.0
       },
       "width_in": 24.0,
       "depth_in": 24.0,
@@ -3234,18 +3768,18 @@
       "cat": "Pantry",
       "dims": "24\"W x 24\"D x 90\"H",
       "pb": {
-        "essential": 787,
-        "plus": 825,
-        "trend": 917,
-        "premium": 1027,
-        "elite": 1197
+        "essential": 904.0,
+        "plus": 948.0,
+        "trend": 1053.0,
+        "premium": 1180.0,
+        "elite": 1375.0
       },
       "ply": {
-        "essential": 1084,
-        "plus": 1122,
-        "trend": 1214,
-        "premium": 1324,
-        "elite": 1494
+        "essential": 1246.0,
+        "plus": 1290.0,
+        "trend": 1395.0,
+        "premium": 1522.0,
+        "elite": 1717.0
       },
       "width_in": 24.0,
       "depth_in": 24.0,
@@ -3257,18 +3791,18 @@
       "cat": "Pantry",
       "dims": "24\"W x 24\"D x 96\"H",
       "pb": {
-        "essential": 822,
-        "plus": 863,
-        "trend": 961,
-        "premium": 1079,
-        "elite": 1261
+        "essential": 944.0,
+        "plus": 991.0,
+        "trend": 1104.0,
+        "premium": 1240.0,
+        "elite": 1449.0
       },
       "ply": {
-        "essential": 1132,
-        "plus": 1173,
-        "trend": 1271,
-        "premium": 1389,
-        "elite": 1571
+        "essential": 1301.0,
+        "plus": 1348.0,
+        "trend": 1461.0,
+        "premium": 1597.0,
+        "elite": 1806.0
       },
       "width_in": 24.0,
       "depth_in": 24.0,
@@ -3280,18 +3814,18 @@
       "cat": "Pantry",
       "dims": "30\"W x 24\"D x 84\"H",
       "pb": {
-        "essential": 867,
-        "plus": 912,
-        "trend": 1019,
-        "premium": 1147,
-        "elite": 1345
+        "essential": 996.0,
+        "plus": 1048.0,
+        "trend": 1171.0,
+        "premium": 1318.0,
+        "elite": 1545.0
       },
       "ply": {
-        "essential": 1192,
-        "plus": 1237,
-        "trend": 1344,
-        "premium": 1472,
-        "elite": 1670
+        "essential": 1370.0,
+        "plus": 1422.0,
+        "trend": 1545.0,
+        "premium": 1692.0,
+        "elite": 1919.0
       },
       "width_in": 30.0,
       "depth_in": 24.0,
@@ -3303,18 +3837,18 @@
       "cat": "Pantry",
       "dims": "30\"W x 24\"D x 90\"H",
       "pb": {
-        "essential": 907,
-        "plus": 955,
-        "trend": 1070,
-        "premium": 1208,
-        "elite": 1420
+        "essential": 1042.0,
+        "plus": 1098.0,
+        "trend": 1230.0,
+        "premium": 1389.0,
+        "elite": 1632.0
       },
       "ply": {
-        "essential": 1246,
-        "plus": 1294,
-        "trend": 1409,
-        "premium": 1547,
-        "elite": 1759
+        "essential": 1431.0,
+        "plus": 1487.0,
+        "trend": 1619.0,
+        "premium": 1778.0,
+        "elite": 2021.0
       },
       "width_in": 30.0,
       "depth_in": 24.0,
@@ -3326,18 +3860,18 @@
       "cat": "Pantry",
       "dims": "30\"W x 24\"D x 96\"H",
       "pb": {
-        "essential": 947,
-        "plus": 998,
-        "trend": 1122,
-        "premium": 1270,
-        "elite": 1497
+        "essential": 1088.0,
+        "plus": 1147.0,
+        "trend": 1289.0,
+        "premium": 1459.0,
+        "elite": 1721.0
       },
       "ply": {
-        "essential": 1298,
-        "plus": 1349,
-        "trend": 1473,
-        "premium": 1621,
-        "elite": 1848
+        "essential": 1492.0,
+        "plus": 1551.0,
+        "trend": 1693.0,
+        "premium": 1863.0,
+        "elite": 2125.0
       },
       "width_in": 30.0,
       "depth_in": 24.0,
@@ -3350,15 +3884,19 @@
       "dims": "30\"W x 24\"D x 84\"H",
       "pb": null,
       "ply": {
-        "essential": 1306,
-        "plus": 1323,
-        "trend": 1362,
-        "premium": 1434,
-        "elite": 1481
+        "essential": 1501.0,
+        "plus": 1520.0,
+        "trend": 1565.0,
+        "premium": 1648.0,
+        "elite": 1702.0
       },
       "width_in": 30.0,
       "depth_in": 24.0,
-      "height_in": 84.0
+      "height_in": 84.0,
+      "flat": {
+        "gola_urban": 2609.0,
+        "gola_prestige": 2658.0
+      }
     },
     {
       "sku": "DOC3090",
@@ -3367,15 +3905,19 @@
       "dims": "30\"W x 24\"D x 90\"H",
       "pb": null,
       "ply": {
-        "essential": 1364,
-        "plus": 1384,
-        "trend": 1432,
-        "premium": 1520,
-        "elite": 1576
+        "essential": 1568.0,
+        "plus": 1591.0,
+        "trend": 1646.0,
+        "premium": 1748.0,
+        "elite": 1812.0
       },
       "width_in": 30.0,
       "depth_in": 24.0,
-      "height_in": 90.0
+      "height_in": 90.0,
+      "flat": {
+        "gola_urban": 2749.0,
+        "gola_prestige": 2808.0
+      }
     },
     {
       "sku": "DOC3096",
@@ -3384,15 +3926,19 @@
       "dims": "30\"W x 24\"D x 96\"H",
       "pb": null,
       "ply": {
-        "essential": 1423,
-        "plus": 1447,
-        "trend": 1503,
-        "premium": 1605,
-        "elite": 1670
+        "essential": 1636.0,
+        "plus": 1663.0,
+        "trend": 1727.0,
+        "premium": 1845.0,
+        "elite": 1920.0
       },
       "width_in": 30.0,
       "depth_in": 24.0,
-      "height_in": 96.0
+      "height_in": 96.0,
+      "flat": {
+        "gola_urban": 2885.0,
+        "gola_prestige": 2954.0
+      }
     },
     {
       "sku": "WOC3015",
@@ -3404,11 +3950,27 @@
         "plus": 142,
         "trend": 142,
         "premium": 238,
-        "elite": 238
+        "elite": 238,
+        "gola_urban": 273.0,
+        "gola_prestige": 327.0
       },
       "width_in": 30.0,
       "depth_in": 12.0,
-      "height_in": 15.0
+      "height_in": 15.0,
+      "pb": {
+        "essential": 163.0,
+        "plus": 163.0,
+        "trend": 163.0,
+        "premium": 273.0,
+        "elite": 273.0
+      },
+      "ply": {
+        "essential": 163.0,
+        "plus": 163.0,
+        "trend": 163.0,
+        "premium": 273.0,
+        "elite": 273.0
+      }
     },
     {
       "sku": "WOC3018",
@@ -3420,11 +3982,27 @@
         "plus": 156,
         "trend": 156,
         "premium": 263,
-        "elite": 263
+        "elite": 263,
+        "gola_urban": 302.0,
+        "gola_prestige": 362.0
       },
       "width_in": 30.0,
       "depth_in": 12.0,
-      "height_in": 18.0
+      "height_in": 18.0,
+      "pb": {
+        "essential": 179.0,
+        "plus": 179.0,
+        "trend": 179.0,
+        "premium": 302.0,
+        "elite": 302.0
+      },
+      "ply": {
+        "essential": 179.0,
+        "plus": 179.0,
+        "trend": 179.0,
+        "premium": 302.0,
+        "elite": 302.0
+      }
     },
     {
       "sku": "WOC3615",
@@ -3436,11 +4014,27 @@
         "plus": 163,
         "trend": 163,
         "premium": 274,
-        "elite": 274
+        "elite": 274,
+        "gola_urban": 315.0,
+        "gola_prestige": 378.0
       },
       "width_in": 36.0,
       "depth_in": 12.0,
-      "height_in": 15.0
+      "height_in": 15.0,
+      "pb": {
+        "essential": 187.0,
+        "plus": 187.0,
+        "trend": 187.0,
+        "premium": 315.0,
+        "elite": 315.0
+      },
+      "ply": {
+        "essential": 187.0,
+        "plus": 187.0,
+        "trend": 187.0,
+        "premium": 315.0,
+        "elite": 315.0
+      }
     },
     {
       "sku": "WOC3618",
@@ -3452,11 +4046,27 @@
         "plus": 180,
         "trend": 180,
         "premium": 302,
-        "elite": 302
+        "elite": 302,
+        "gola_urban": 347.0,
+        "gola_prestige": 416.0
       },
       "width_in": 36.0,
       "depth_in": 12.0,
-      "height_in": 18.0
+      "height_in": 18.0,
+      "pb": {
+        "essential": 207.0,
+        "plus": 207.0,
+        "trend": 207.0,
+        "premium": 347.0,
+        "elite": 347.0
+      },
+      "ply": {
+        "essential": 207.0,
+        "plus": 207.0,
+        "trend": 207.0,
+        "premium": 347.0,
+        "elite": 347.0
+      }
     },
     {
       "sku": "WRC0630",
@@ -3468,11 +4078,27 @@
         "plus": 104,
         "trend": 104,
         "premium": 283,
-        "elite": 283
+        "elite": 283,
+        "gola_urban": 325.0,
+        "gola_prestige": 390.0
       },
       "width_in": 6.0,
       "depth_in": 12.0,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "pb": {
+        "essential": 119.0,
+        "plus": 119.0,
+        "trend": 119.0,
+        "premium": 325.0,
+        "elite": 325.0
+      },
+      "ply": {
+        "essential": 119.0,
+        "plus": 119.0,
+        "trend": 119.0,
+        "premium": 325.0,
+        "elite": 325.0
+      }
     },
     {
       "sku": "WRC0636",
@@ -3484,11 +4110,27 @@
         "plus": 120,
         "trend": 120,
         "premium": 328,
-        "elite": 328
+        "elite": 328,
+        "gola_urban": 377.0,
+        "gola_prestige": 452.0
       },
       "width_in": 6.0,
       "depth_in": 12.0,
-      "height_in": 36.0
+      "height_in": 36.0,
+      "pb": {
+        "essential": 138.0,
+        "plus": 138.0,
+        "trend": 138.0,
+        "premium": 377.0,
+        "elite": 377.0
+      },
+      "ply": {
+        "essential": 138.0,
+        "plus": 138.0,
+        "trend": 138.0,
+        "premium": 377.0,
+        "elite": 377.0
+      }
     },
     {
       "sku": "WRC0642",
@@ -3500,11 +4142,27 @@
         "plus": 142,
         "trend": 142,
         "premium": 367,
-        "elite": 367
+        "elite": 367,
+        "gola_urban": 422.0,
+        "gola_prestige": 506.0
       },
       "width_in": 6.0,
       "depth_in": 12.0,
-      "height_in": 42.0
+      "height_in": 42.0,
+      "pb": {
+        "essential": 163.0,
+        "plus": 163.0,
+        "trend": 163.0,
+        "premium": 422.0,
+        "elite": 422.0
+      },
+      "ply": {
+        "essential": 163.0,
+        "plus": 163.0,
+        "trend": 163.0,
+        "premium": 422.0,
+        "elite": 422.0
+      }
     },
     {
       "sku": "WMC2418",
@@ -3516,11 +4174,27 @@
         "plus": 189,
         "trend": 189,
         "premium": 292,
-        "elite": 292
+        "elite": 292,
+        "gola_urban": 335.0,
+        "gola_prestige": 402.0
       },
       "width_in": 24.0,
       "depth_in": 12.0,
-      "height_in": 18.0
+      "height_in": 18.0,
+      "pb": {
+        "essential": 217.0,
+        "plus": 217.0,
+        "trend": 217.0,
+        "premium": 335.0,
+        "elite": 335.0
+      },
+      "ply": {
+        "essential": 217.0,
+        "plus": 217.0,
+        "trend": 217.0,
+        "premium": 335.0,
+        "elite": 335.0
+      }
     },
     {
       "sku": "WMC3018",
@@ -3532,11 +4206,27 @@
         "plus": 230,
         "trend": 230,
         "premium": 308,
-        "elite": 308
+        "elite": 308,
+        "gola_urban": 354.0,
+        "gola_prestige": 424.0
       },
       "width_in": 30.0,
       "depth_in": 12.0,
-      "height_in": 18.0
+      "height_in": 18.0,
+      "pb": {
+        "essential": 264.0,
+        "plus": 264.0,
+        "trend": 264.0,
+        "premium": 354.0,
+        "elite": 354.0
+      },
+      "ply": {
+        "essential": 264.0,
+        "plus": 264.0,
+        "trend": 264.0,
+        "premium": 354.0,
+        "elite": 354.0
+      }
     },
     {
       "sku": "BEP24",
@@ -3548,11 +4238,27 @@
         "plus": 77,
         "trend": 77,
         "premium": 148,
-        "elite": 148
+        "elite": 148,
+        "gola_urban": 170.0,
+        "gola_prestige": 204.0
       },
       "width_in": 24.75,
       "depth_in": null,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "pb": {
+        "essential": 88.0,
+        "plus": 88.0,
+        "trend": 88.0,
+        "premium": 170.0,
+        "elite": 170.0
+      },
+      "ply": {
+        "essential": 88.0,
+        "plus": 88.0,
+        "trend": 88.0,
+        "premium": 170.0,
+        "elite": 170.0
+      }
     },
     {
       "sku": "BEP26",
@@ -3564,11 +4270,27 @@
         "plus": 80,
         "trend": 80,
         "premium": 152,
-        "elite": 152
+        "elite": 152,
+        "gola_urban": 174.0,
+        "gola_prestige": 208.0
       },
       "width_in": 25.25,
       "depth_in": null,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "pb": {
+        "essential": 92.0,
+        "plus": 92.0,
+        "trend": 92.0,
+        "premium": 174.0,
+        "elite": 174.0
+      },
+      "ply": {
+        "essential": 92.0,
+        "plus": 92.0,
+        "trend": 92.0,
+        "premium": 174.0,
+        "elite": 174.0
+      }
     },
     {
       "sku": "BEP36",
@@ -3580,11 +4302,27 @@
         "plus": 118,
         "trend": 118,
         "premium": 225,
-        "elite": 225
+        "elite": 225,
+        "gola_urban": 258.0,
+        "gola_prestige": 309.0
       },
       "width_in": 37.25,
       "depth_in": null,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "pb": {
+        "essential": 135.0,
+        "plus": 135.0,
+        "trend": 135.0,
+        "premium": 258.0,
+        "elite": 258.0
+      },
+      "ply": {
+        "essential": 135.0,
+        "plus": 135.0,
+        "trend": 135.0,
+        "premium": 258.0,
+        "elite": 258.0
+      }
     },
     {
       "sku": "BEP48",
@@ -3596,11 +4334,27 @@
         "plus": 154,
         "trend": 154,
         "premium": 298,
-        "elite": 298
+        "elite": 298,
+        "gola_urban": 342.0,
+        "gola_prestige": 410.0
       },
       "width_in": 49.25,
       "depth_in": null,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "pb": {
+        "essential": 177.0,
+        "plus": 177.0,
+        "trend": 177.0,
+        "premium": 342.0,
+        "elite": 342.0
+      },
+      "ply": {
+        "essential": 177.0,
+        "plus": 177.0,
+        "trend": 177.0,
+        "premium": 342.0,
+        "elite": 342.0
+      }
     },
     {
       "sku": "WEP1230",
@@ -3612,11 +4366,27 @@
         "plus": 35,
         "trend": 35,
         "premium": 68,
-        "elite": 68
+        "elite": 68,
+        "gola_urban": 78.0,
+        "gola_prestige": 93.0
       },
       "width_in": 12.75,
       "depth_in": null,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "pb": {
+        "essential": 40.0,
+        "plus": 40.0,
+        "trend": 40.0,
+        "premium": 78.0,
+        "elite": 78.0
+      },
+      "ply": {
+        "essential": 40.0,
+        "plus": 40.0,
+        "trend": 40.0,
+        "premium": 78.0,
+        "elite": 78.0
+      }
     },
     {
       "sku": "WEP1236",
@@ -3628,11 +4398,27 @@
         "plus": 42,
         "trend": 42,
         "premium": 82,
-        "elite": 82
+        "elite": 82,
+        "gola_urban": 94.0,
+        "gola_prestige": 112.0
       },
       "width_in": 12.75,
       "depth_in": null,
-      "height_in": 36.0
+      "height_in": 36.0,
+      "pb": {
+        "essential": 48.0,
+        "plus": 48.0,
+        "trend": 48.0,
+        "premium": 94.0,
+        "elite": 94.0
+      },
+      "ply": {
+        "essential": 48.0,
+        "plus": 48.0,
+        "trend": 48.0,
+        "premium": 94.0,
+        "elite": 94.0
+      }
     },
     {
       "sku": "WEP1242",
@@ -3644,11 +4430,27 @@
         "plus": 48,
         "trend": 48,
         "premium": 95,
-        "elite": 95
+        "elite": 95,
+        "gola_urban": 109.0,
+        "gola_prestige": 130.0
       },
       "width_in": 12.75,
       "depth_in": null,
-      "height_in": 42.0
+      "height_in": 42.0,
+      "pb": {
+        "essential": 55.0,
+        "plus": 55.0,
+        "trend": 55.0,
+        "premium": 109.0,
+        "elite": 109.0
+      },
+      "ply": {
+        "essential": 55.0,
+        "plus": 55.0,
+        "trend": 55.0,
+        "premium": 109.0,
+        "elite": 109.0
+      }
     },
     {
       "sku": "REF2496",
@@ -3660,11 +4462,27 @@
         "plus": 214,
         "trend": 214,
         "premium": 348,
-        "elite": 348
+        "elite": 348,
+        "gola_urban": 400.0,
+        "gola_prestige": 480.0
       },
       "width_in": 24.75,
       "depth_in": null,
-      "height_in": 96.0
+      "height_in": 96.0,
+      "pb": {
+        "essential": 246.0,
+        "plus": 246.0,
+        "trend": 246.0,
+        "premium": 400.0,
+        "elite": 400.0
+      },
+      "ply": {
+        "essential": 246.0,
+        "plus": 246.0,
+        "trend": 246.0,
+        "premium": 400.0,
+        "elite": 400.0
+      }
     },
     {
       "sku": "REF3696",
@@ -3676,11 +4494,27 @@
         "plus": 297,
         "trend": 297,
         "premium": 494,
-        "elite": 494
+        "elite": 494,
+        "gola_urban": 568.0,
+        "gola_prestige": 681.0
       },
       "width_in": 36.0,
       "depth_in": null,
-      "height_in": 96.0
+      "height_in": 96.0,
+      "pb": {
+        "essential": 341.0,
+        "plus": 341.0,
+        "trend": 341.0,
+        "premium": 568.0,
+        "elite": 568.0
+      },
+      "ply": {
+        "essential": 341.0,
+        "plus": 341.0,
+        "trend": 341.0,
+        "premium": 568.0,
+        "elite": 568.0
+      }
     },
     {
       "sku": "PNL3696",
@@ -3696,7 +4530,15 @@
       },
       "width_in": 36.0,
       "depth_in": null,
-      "height_in": 96.0
+      "height_in": 96.0,
+      "pb": {
+        "premium": 301.0,
+        "elite": 301.0
+      },
+      "ply": {
+        "premium": 301.0,
+        "elite": 301.0
+      }
     },
     {
       "sku": "DWEP3",
@@ -3708,11 +4550,27 @@
         "plus": 76,
         "trend": 76,
         "premium": 158,
-        "elite": 158
+        "elite": 158,
+        "gola_urban": 181.0,
+        "gola_prestige": 217.0
       },
       "width_in": 24.75,
       "depth_in": null,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "pb": {
+        "essential": 87.0,
+        "plus": 87.0,
+        "trend": 87.0,
+        "premium": 181.0,
+        "elite": 181.0
+      },
+      "ply": {
+        "essential": 87.0,
+        "plus": 87.0,
+        "trend": 87.0,
+        "premium": 181.0,
+        "elite": 181.0
+      }
     },
     {
       "sku": "TK8",
@@ -3724,11 +4582,27 @@
         "plus": 65,
         "trend": 65,
         "premium": 94,
-        "elite": 84
+        "elite": 84,
+        "gola_urban": 108.0,
+        "gola_prestige": 129.0
       },
       "width_in": 96.0,
       "depth_in": null,
-      "height_in": 4.5
+      "height_in": 4.5,
+      "pb": {
+        "essential": 74.0,
+        "plus": 74.0,
+        "trend": 74.0,
+        "premium": 108.0,
+        "elite": 108.0
+      },
+      "ply": {
+        "essential": 74.0,
+        "plus": 74.0,
+        "trend": 74.0,
+        "premium": 108.0,
+        "elite": 108.0
+      }
     },
     {
       "sku": "WF330",
@@ -3740,11 +4614,27 @@
         "plus": 25,
         "trend": 25,
         "premium": 36,
-        "elite": 36
+        "elite": 36,
+        "gola_urban": 41.0,
+        "gola_prestige": 49.0
       },
       "width_in": 3.0,
       "depth_in": null,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "pb": {
+        "essential": 28.0,
+        "plus": 28.0,
+        "trend": 28.0,
+        "premium": 41.0,
+        "elite": 41.0
+      },
+      "ply": {
+        "essential": 28.0,
+        "plus": 28.0,
+        "trend": 28.0,
+        "premium": 41.0,
+        "elite": 41.0
+      }
     },
     {
       "sku": "WF336",
@@ -3756,11 +4646,27 @@
         "plus": 27,
         "trend": 27,
         "premium": 42,
-        "elite": 42
+        "elite": 42,
+        "gola_urban": 48.0,
+        "gola_prestige": 57.0
       },
       "width_in": 3.0,
       "depth_in": null,
-      "height_in": 36.0
+      "height_in": 36.0,
+      "pb": {
+        "essential": 31.0,
+        "plus": 31.0,
+        "trend": 31.0,
+        "premium": 48.0,
+        "elite": 48.0
+      },
+      "ply": {
+        "essential": 31.0,
+        "plus": 31.0,
+        "trend": 31.0,
+        "premium": 48.0,
+        "elite": 48.0
+      }
     },
     {
       "sku": "WF342",
@@ -3772,11 +4678,27 @@
         "plus": 30,
         "trend": 30,
         "premium": 46,
-        "elite": 46
+        "elite": 46,
+        "gola_urban": 52.0,
+        "gola_prestige": 62.0
       },
       "width_in": 3.0,
       "depth_in": null,
-      "height_in": 42.0
+      "height_in": 42.0,
+      "pb": {
+        "essential": 34.0,
+        "plus": 34.0,
+        "trend": 34.0,
+        "premium": 52.0,
+        "elite": 52.0
+      },
+      "ply": {
+        "essential": 34.0,
+        "plus": 34.0,
+        "trend": 34.0,
+        "premium": 52.0,
+        "elite": 52.0
+      }
     },
     {
       "sku": "TF396",
@@ -3788,11 +4710,27 @@
         "plus": 56,
         "trend": 56,
         "premium": 84,
-        "elite": 84
+        "elite": 84,
+        "gola_urban": 96.0,
+        "gola_prestige": 115.0
       },
       "width_in": 3.0,
       "depth_in": null,
-      "height_in": 96.0
+      "height_in": 96.0,
+      "pb": {
+        "essential": 64.0,
+        "plus": 64.0,
+        "trend": 64.0,
+        "premium": 96.0,
+        "elite": 96.0
+      },
+      "ply": {
+        "essential": 64.0,
+        "plus": 64.0,
+        "trend": 64.0,
+        "premium": 96.0,
+        "elite": 96.0
+      }
     },
     {
       "sku": "WF630",
@@ -3804,11 +4742,27 @@
         "plus": 39,
         "trend": 39,
         "premium": 64,
-        "elite": 64
+        "elite": 64,
+        "gola_urban": 73.0,
+        "gola_prestige": 87.0
       },
       "width_in": 6.0,
       "depth_in": null,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "pb": {
+        "essential": 44.0,
+        "plus": 44.0,
+        "trend": 44.0,
+        "premium": 73.0,
+        "elite": 73.0
+      },
+      "ply": {
+        "essential": 44.0,
+        "plus": 44.0,
+        "trend": 44.0,
+        "premium": 73.0,
+        "elite": 73.0
+      }
     },
     {
       "sku": "WF636",
@@ -3820,11 +4774,27 @@
         "plus": 45,
         "trend": 45,
         "premium": 74,
-        "elite": 74
+        "elite": 74,
+        "gola_urban": 85.0,
+        "gola_prestige": 102.0
       },
       "width_in": 6.0,
       "depth_in": null,
-      "height_in": 36.0
+      "height_in": 36.0,
+      "pb": {
+        "essential": 51.0,
+        "plus": 51.0,
+        "trend": 51.0,
+        "premium": 85.0,
+        "elite": 85.0
+      },
+      "ply": {
+        "essential": 51.0,
+        "plus": 51.0,
+        "trend": 51.0,
+        "premium": 85.0,
+        "elite": 85.0
+      }
     },
     {
       "sku": "WF642",
@@ -3836,11 +4806,27 @@
         "plus": 50,
         "trend": 50,
         "premium": 84,
-        "elite": 84
+        "elite": 84,
+        "gola_urban": 96.0,
+        "gola_prestige": 115.0
       },
       "width_in": 6.0,
       "depth_in": null,
-      "height_in": 42.0
+      "height_in": 42.0,
+      "pb": {
+        "essential": 57.0,
+        "plus": 57.0,
+        "trend": 57.0,
+        "premium": 96.0,
+        "elite": 96.0
+      },
+      "ply": {
+        "essential": 57.0,
+        "plus": 57.0,
+        "trend": 57.0,
+        "premium": 96.0,
+        "elite": 96.0
+      }
     },
     {
       "sku": "TF696",
@@ -3852,11 +4838,27 @@
         "plus": 103,
         "trend": 103,
         "premium": 158,
-        "elite": 158
+        "elite": 158,
+        "gola_urban": 181.0,
+        "gola_prestige": 217.0
       },
       "width_in": 6.0,
       "depth_in": null,
-      "height_in": 96.0
+      "height_in": 96.0,
+      "pb": {
+        "essential": 118.0,
+        "plus": 118.0,
+        "trend": 118.0,
+        "premium": 181.0,
+        "elite": 181.0
+      },
+      "ply": {
+        "essential": 118.0,
+        "plus": 118.0,
+        "trend": 118.0,
+        "premium": 181.0,
+        "elite": 181.0
+      }
     },
     {
       "sku": "W2430S",
@@ -3868,11 +4870,27 @@
         "plus": 85,
         "trend": 117,
         "premium": 178,
-        "elite": 223
+        "elite": 223,
+        "gola_urban": 204.0,
+        "gola_prestige": 244.0
       },
       "width_in": 24.0,
       "depth_in": null,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "pb": {
+        "essential": 82.0,
+        "plus": 97.0,
+        "trend": 134.0,
+        "premium": 204.0,
+        "elite": 256.0
+      },
+      "ply": {
+        "essential": 82.0,
+        "plus": 97.0,
+        "trend": 134.0,
+        "premium": 204.0,
+        "elite": 256.0
+      }
     },
     {
       "sku": "MWEP1230",
@@ -3888,7 +4906,19 @@
       },
       "width_in": 12.0,
       "depth_in": null,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "pb": {
+        "plus": 52.0,
+        "trend": 72.0,
+        "premium": 116.0,
+        "elite": 147.0
+      },
+      "ply": {
+        "plus": 52.0,
+        "trend": 72.0,
+        "premium": 116.0,
+        "elite": 147.0
+      }
     },
     {
       "sku": "MWEP1236",
@@ -3904,7 +4934,19 @@
       },
       "width_in": 12.0,
       "depth_in": null,
-      "height_in": 36.0
+      "height_in": 36.0,
+      "pb": {
+        "plus": 63.0,
+        "trend": 86.0,
+        "premium": 139.0,
+        "elite": 174.0
+      },
+      "ply": {
+        "plus": 63.0,
+        "trend": 86.0,
+        "premium": 139.0,
+        "elite": 174.0
+      }
     },
     {
       "sku": "MWEP1242",
@@ -3920,7 +4962,19 @@
       },
       "width_in": 12.0,
       "depth_in": null,
-      "height_in": 42.0
+      "height_in": 42.0,
+      "pb": {
+        "plus": 72.0,
+        "trend": 100.0,
+        "premium": 162.0,
+        "elite": 203.0
+      },
+      "ply": {
+        "plus": 72.0,
+        "trend": 100.0,
+        "premium": 162.0,
+        "elite": 203.0
+      }
     },
     {
       "sku": "MBEP2430",
@@ -3936,7 +4990,15 @@
       },
       "width_in": 24.0,
       "depth_in": null,
-      "height_in": 30.0
+      "height_in": 30.0,
+      "pb": {
+        "premium": 223.0,
+        "elite": 279.0
+      },
+      "ply": {
+        "premium": 223.0,
+        "elite": 279.0
+      }
     },
     {
       "sku": "MTEP2484",
@@ -3952,7 +5014,15 @@
       },
       "width_in": 24.0,
       "depth_in": null,
-      "height_in": 84.0
+      "height_in": 84.0,
+      "pb": {
+        "premium": 588.0,
+        "elite": 726.0
+      },
+      "ply": {
+        "premium": 588.0,
+        "elite": 726.0
+      }
     },
     {
       "sku": "MTEP2490",
@@ -3968,7 +5038,15 @@
       },
       "width_in": 24.0,
       "depth_in": null,
-      "height_in": 90.0
+      "height_in": 90.0,
+      "pb": {
+        "premium": 633.0,
+        "elite": 787.0
+      },
+      "ply": {
+        "premium": 633.0,
+        "elite": 787.0
+      }
     },
     {
       "sku": "MTEP2496",
@@ -3984,7 +5062,19 @@
       },
       "width_in": 24.0,
       "depth_in": null,
-      "height_in": 96.0
+      "height_in": 96.0,
+      "pb": {
+        "plus": 320.0,
+        "trend": 443.0,
+        "premium": 678.0,
+        "elite": 845.0
+      },
+      "ply": {
+        "plus": 320.0,
+        "trend": 443.0,
+        "premium": 678.0,
+        "elite": 845.0
+      }
     },
     {
       "sku": "CVCM",
@@ -4000,7 +5090,15 @@
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "premium": 230.0,
+        "elite": 230.0
+      },
+      "ply": {
+        "premium": 230.0,
+        "elite": 230.0
+      }
     },
     {
       "sku": "CM4",
@@ -4016,7 +5114,15 @@
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "premium": 249.0,
+        "elite": 249.0
+      },
+      "ply": {
+        "premium": 249.0,
+        "elite": 249.0
+      }
     },
     {
       "sku": "RISER",
@@ -4032,7 +5138,15 @@
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "premium": 140.0,
+        "elite": 140.0
+      },
+      "ply": {
+        "premium": 140.0,
+        "elite": 140.0
+      }
     },
     {
       "sku": "LM8",
@@ -4048,7 +5162,15 @@
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "premium": 180.0,
+        "elite": 180.0
+      },
+      "ply": {
+        "premium": 180.0,
+        "elite": 180.0
+      }
     },
     {
       "sku": "OCM8",
@@ -4064,7 +5186,15 @@
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "premium": 98.0,
+        "elite": 98.0
+      },
+      "ply": {
+        "premium": 98.0,
+        "elite": 98.0
+      }
     },
     {
       "sku": "SM8",
@@ -4080,7 +5210,15 @@
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "premium": 48.0,
+        "elite": 48.0
+      },
+      "ply": {
+        "premium": 48.0,
+        "elite": 48.0
+      }
     },
     {
       "sku": "BM8",
@@ -4096,7 +5234,15 @@
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "premium": 259.0,
+        "elite": 259.0
+      },
+      "ply": {
+        "premium": 259.0,
+        "elite": 259.0
+      }
     },
     {
       "sku": "COBEL-S",
@@ -4112,7 +5258,15 @@
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "premium": 117.0,
+        "elite": 117.0
+      },
+      "ply": {
+        "premium": 117.0,
+        "elite": 117.0
+      }
     },
     {
       "sku": "VAL36",
@@ -4144,7 +5298,15 @@
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "premium": 94.0,
+        "elite": 94.0
+      },
+      "ply": {
+        "premium": 94.0,
+        "elite": 94.0
+      }
     },
     {
       "sku": "ROT18",
@@ -4156,11 +5318,27 @@
         "plus": 239,
         "trend": 239,
         "premium": 239,
-        "elite": 239
+        "elite": 239,
+        "gola_urban": 274.0,
+        "gola_prestige": 274.0
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "essential": 548.0,
+        "plus": 548.0,
+        "trend": 548.0,
+        "premium": 548.0,
+        "elite": 548.0
+      },
+      "ply": {
+        "essential": 274.0,
+        "plus": 274.0,
+        "trend": 274.0,
+        "premium": 274.0,
+        "elite": 274.0
+      }
     },
     {
       "sku": "ROT24",
@@ -4172,11 +5350,27 @@
         "plus": 273,
         "trend": 273,
         "premium": 273,
-        "elite": 273
+        "elite": 273,
+        "gola_urban": 313.0,
+        "gola_prestige": 313.0
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "essential": 626.0,
+        "plus": 626.0,
+        "trend": 626.0,
+        "premium": 626.0,
+        "elite": 626.0
+      },
+      "ply": {
+        "essential": 313.0,
+        "plus": 313.0,
+        "trend": 313.0,
+        "premium": 313.0,
+        "elite": 313.0
+      }
     },
     {
       "sku": "ROT30",
@@ -4188,11 +5382,27 @@
         "plus": 307,
         "trend": 307,
         "premium": 307,
-        "elite": 307
+        "elite": 307,
+        "gola_urban": 353.0,
+        "gola_prestige": 353.0
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "essential": 706.0,
+        "plus": 706.0,
+        "trend": 706.0,
+        "premium": 706.0,
+        "elite": 706.0
+      },
+      "ply": {
+        "essential": 353.0,
+        "plus": 353.0,
+        "trend": 353.0,
+        "premium": 353.0,
+        "elite": 353.0
+      }
     },
     {
       "sku": "BLS33-TRAY",
@@ -4300,11 +5510,27 @@
         "plus": 110,
         "trend": 110,
         "premium": 110,
-        "elite": 110
+        "elite": 110,
+        "gola_urban": 378.0,
+        "gola_prestige": 378.0
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "essential": 252.0,
+        "plus": 252.0,
+        "trend": 252.0,
+        "premium": 252.0,
+        "elite": 252.0
+      },
+      "ply": {
+        "essential": 126.0,
+        "plus": 126.0,
+        "trend": 126.0,
+        "premium": 126.0,
+        "elite": 126.0
+      }
     },
     {
       "sku": "B-TK10",
@@ -4316,11 +5542,27 @@
         "plus": 110,
         "trend": 110,
         "premium": 110,
-        "elite": 110
+        "elite": 110,
+        "gola_urban": 378.0,
+        "gola_prestige": 378.0
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "essential": 252.0,
+        "plus": 252.0,
+        "trend": 252.0,
+        "premium": 252.0,
+        "elite": 252.0
+      },
+      "ply": {
+        "essential": 126.0,
+        "plus": 126.0,
+        "trend": 126.0,
+        "premium": 126.0,
+        "elite": 126.0
+      }
     },
     {
       "sku": "DRAWER-HIGH",
@@ -4624,7 +5866,21 @@
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "essential": 279.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 279.0,
+        "elite": 279.0
+      },
+      "ply": {
+        "essential": 279.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 279.0,
+        "elite": 279.0
+      }
     },
     {
       "sku": "GL-WDC2436",
@@ -4640,7 +5896,21 @@
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "essential": 334.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 334.0,
+        "elite": 334.0
+      },
+      "ply": {
+        "essential": 334.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 334.0,
+        "elite": 334.0
+      }
     },
     {
       "sku": "GL-WDC2442",
@@ -4656,7 +5926,21 @@
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "essential": 393.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 393.0,
+        "elite": 393.0
+      },
+      "ply": {
+        "essential": 393.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 393.0,
+        "elite": 393.0
+      }
     },
     {
       "sku": "GD-W1230",
@@ -4816,7 +6100,15 @@
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "premium": 257.0,
+        "elite": 257.0
+      },
+      "ply": {
+        "premium": 257.0,
+        "elite": 257.0
+      }
     },
     {
       "sku": "GD-WDC2436",
@@ -4832,7 +6124,15 @@
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "premium": 304.0,
+        "elite": 304.0
+      },
+      "ply": {
+        "premium": 304.0,
+        "elite": 304.0
+      }
     },
     {
       "sku": "GD-WDC2442",
@@ -4848,7 +6148,15 @@
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "premium": 354.0,
+        "elite": 354.0
+      },
+      "ply": {
+        "premium": 354.0,
+        "elite": 354.0
+      }
     },
     {
       "sku": "FT-WDC2430",
@@ -4864,7 +6172,15 @@
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "premium": 372.0,
+        "elite": 372.0
+      },
+      "ply": {
+        "premium": 372.0,
+        "elite": 372.0
+      }
     },
     {
       "sku": "FT-WDC2436",
@@ -4880,7 +6196,15 @@
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "premium": 419.0,
+        "elite": 419.0
+      },
+      "ply": {
+        "premium": 419.0,
+        "elite": 419.0
+      }
     },
     {
       "sku": "FT-WDC2442",
@@ -4896,7 +6220,15 @@
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "premium": 469.0,
+        "elite": 469.0
+      },
+      "ply": {
+        "premium": 469.0,
+        "elite": 469.0
+      }
     },
     {
       "sku": "FS24",
@@ -4912,7 +6244,14 @@
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "essential": 248.0,
+        "plus": 248.0,
+        "trend": 248.0,
+        "premium": 296.0,
+        "elite": 296.0
+      }
     },
     {
       "sku": "FS30",
@@ -4928,7 +6267,14 @@
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "essential": 289.0,
+        "plus": 289.0,
+        "trend": 289.0,
+        "premium": 353.0,
+        "elite": 353.0
+      }
     },
     {
       "sku": "FS36",
@@ -4944,7 +6290,14 @@
       },
       "width_in": null,
       "depth_in": null,
-      "height_in": null
+      "height_in": null,
+      "pb": {
+        "essential": 339.0,
+        "plus": 339.0,
+        "trend": 339.0,
+        "premium": 415.0,
+        "elite": 415.0
+      }
     },
     {
       "sku": "VSB24",
@@ -4960,7 +6313,14 @@
       },
       "width_in": 24.0,
       "depth_in": 21.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "pb": {
+        "essential": 261.0,
+        "plus": 287.0,
+        "trend": 324.0,
+        "premium": 369.0,
+        "elite": 407.0
+      }
     },
     {
       "sku": "VSB30",
@@ -4976,7 +6336,14 @@
       },
       "width_in": 30.0,
       "depth_in": 21.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "pb": {
+        "essential": 289.0,
+        "plus": 323.0,
+        "trend": 368.0,
+        "premium": 423.0,
+        "elite": 471.0
+      }
     },
     {
       "sku": "VSB36",
@@ -4992,7 +6359,14 @@
       },
       "width_in": 36.0,
       "depth_in": 21.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "pb": {
+        "essential": 317.0,
+        "plus": 357.0,
+        "trend": 412.0,
+        "premium": 478.0,
+        "elite": 536.0
+      }
     },
     {
       "sku": "VDB12",
@@ -5008,7 +6382,14 @@
       },
       "width_in": 12.0,
       "depth_in": 21.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "pb": {
+        "essential": 470.0,
+        "plus": 484.0,
+        "trend": 502.0,
+        "premium": 524.0,
+        "elite": 543.0
+      }
     },
     {
       "sku": "VDB15",
@@ -5024,7 +6405,14 @@
       },
       "width_in": 15.0,
       "depth_in": 21.0,
-      "height_in": 34.5
+      "height_in": 34.5,
+      "pb": {
+        "essential": 499.0,
+        "plus": 517.0,
+        "trend": 540.0,
+        "premium": 566.0,
+        "elite": 590.0
+      }
     },
     {
       "sku": "VTK2",
@@ -5089,6 +6477,1325 @@
       "width_in": 21.75,
       "depth_in": 0.75,
       "height_in": 34.5
+    },
+    {
+      "sku": "2DB12",
+      "cat": "3 Drawer Base Cabinet",
+      "desc": "2 Drawer Base Cabinet",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 925.0,
+        "gola_prestige": 942.0
+      }
+    },
+    {
+      "sku": "2DB15",
+      "cat": "3 Drawer Base Cabinet",
+      "desc": "2 Drawer Base Cabinet",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 981.0,
+        "gola_prestige": 1003.0
+      }
+    },
+    {
+      "sku": "2DB18",
+      "cat": "3 Drawer Base Cabinet",
+      "desc": "2 Drawer Base Cabinet",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 1044.0,
+        "gola_prestige": 1070.0
+      }
+    },
+    {
+      "sku": "2DB21",
+      "cat": "3 Drawer Base Cabinet",
+      "desc": "2 Drawer Base Cabinet",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 1100.0,
+        "gola_prestige": 1131.0
+      }
+    },
+    {
+      "sku": "2DB24",
+      "cat": "3 Drawer Base Cabinet",
+      "desc": "2 Drawer Base Cabinet",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 1163.0,
+        "gola_prestige": 1198.0
+      }
+    },
+    {
+      "sku": "2DB27",
+      "cat": "3 Drawer Base Cabinet",
+      "desc": "2 Drawer Base Cabinet",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 1223.0,
+        "gola_prestige": 1263.0
+      }
+    },
+    {
+      "sku": "2DB33",
+      "cat": "3 Drawer Base Cabinet",
+      "desc": "2 Drawer Base Cabinet",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 1342.0,
+        "gola_prestige": 1391.0
+      }
+    },
+    {
+      "sku": "B42FH",
+      "cat": "Base Full Height Cabinet",
+      "desc": "Base Full Height",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 992.0,
+        "gola_prestige": 1054.0
+      }
+    },
+    {
+      "sku": "BLIM STAY LIFT",
+      "cat": "Exclusive for Shaker",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 316.0,
+        "plus": 316.0,
+        "trend": 316.0,
+        "premium": 316.0,
+        "elite": 316.0
+      },
+      "ply": {
+        "essential": 158.0,
+        "plus": 158.0,
+        "trend": 158.0,
+        "premium": 158.0,
+        "elite": 158.0
+      },
+      "flat": {
+        "gola_urban": 474.0,
+        "gola_prestige": 474.0
+      }
+    },
+    {
+      "sku": "BLUM FOLD LIFT",
+      "cat": "Exclusive for Shaker",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 908.0,
+        "plus": 908.0,
+        "trend": 908.0,
+        "premium": 908.0,
+        "elite": 908.0
+      },
+      "ply": {
+        "essential": 454.0,
+        "plus": 454.0,
+        "trend": 454.0,
+        "premium": 454.0,
+        "elite": 454.0
+      },
+      "flat": {
+        "gola_urban": 1362.0,
+        "gola_prestige": 1362.0
+      }
+    },
+    {
+      "sku": "GD-WMD1230",
+      "cat": "Clear Glass door",
+      "desc": "Glass door",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "premium": 197.0,
+        "elite": 197.0
+      },
+      "ply": {
+        "premium": 197.0,
+        "elite": 197.0
+      }
+    },
+    {
+      "sku": "GD-WMD1236",
+      "cat": "Clear Glass door",
+      "desc": "Glass door",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "premium": 234.0,
+        "elite": 234.0
+      },
+      "ply": {
+        "premium": 234.0,
+        "elite": 234.0
+      }
+    },
+    {
+      "sku": "GD-WMD1242",
+      "cat": "Clear Glass door",
+      "desc": "Glass door",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "premium": 273.0,
+        "elite": 273.0
+      },
+      "ply": {
+        "premium": 273.0,
+        "elite": 273.0
+      }
+    },
+    {
+      "sku": "GD-WMD1530",
+      "cat": "Clear Glass door",
+      "desc": "Glass door",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "premium": 243.0,
+        "elite": 243.0
+      },
+      "ply": {
+        "premium": 243.0,
+        "elite": 243.0
+      }
+    },
+    {
+      "sku": "GD-WMD1536",
+      "cat": "Clear Glass door",
+      "desc": "Glass door",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "premium": 292.0,
+        "elite": 292.0
+      },
+      "ply": {
+        "premium": 292.0,
+        "elite": 292.0
+      }
+    },
+    {
+      "sku": "GD-WMD1542",
+      "cat": "Clear Glass door",
+      "desc": "Glass door",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "premium": 340.0,
+        "elite": 340.0
+      },
+      "ply": {
+        "premium": 340.0,
+        "elite": 340.0
+      }
+    },
+    {
+      "sku": "GD-WMD1830",
+      "cat": "Clear Glass door",
+      "desc": "Glass door",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "premium": 296.0,
+        "elite": 296.0
+      },
+      "ply": {
+        "premium": 296.0,
+        "elite": 296.0
+      }
+    },
+    {
+      "sku": "GD-WMD1836",
+      "cat": "Clear Glass door",
+      "desc": "Glass door",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "premium": 351.0,
+        "elite": 351.0
+      },
+      "ply": {
+        "premium": 351.0,
+        "elite": 351.0
+      }
+    },
+    {
+      "sku": "GD-WMD1842",
+      "cat": "Clear Glass door",
+      "desc": "Glass door",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "premium": 409.0,
+        "elite": 409.0
+      },
+      "ply": {
+        "premium": 409.0,
+        "elite": 409.0
+      }
+    },
+    {
+      "sku": "GL-WMD1230",
+      "cat": "Aluminum Glass door",
+      "desc": "Glass door",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 249.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 249.0,
+        "elite": 249.0
+      },
+      "ply": {
+        "essential": 249.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 249.0,
+        "elite": 249.0
+      },
+      "flat": {
+        "gola_urban": 249.0,
+        "gola_prestige": 249.0
+      }
+    },
+    {
+      "sku": "GL-WMD1236",
+      "cat": "Aluminum Glass door",
+      "desc": "Glass door",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 276.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 276.0,
+        "elite": 276.0
+      },
+      "ply": {
+        "essential": 276.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 276.0,
+        "elite": 276.0
+      },
+      "flat": {
+        "gola_urban": 276.0,
+        "gola_prestige": 276.0
+      }
+    },
+    {
+      "sku": "GL-WMD1242",
+      "cat": "Aluminum Glass door",
+      "desc": "Glass door",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 302.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 302.0,
+        "elite": 302.0
+      },
+      "ply": {
+        "essential": 302.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 302.0,
+        "elite": 302.0
+      },
+      "flat": {
+        "gola_urban": 302.0,
+        "gola_prestige": 302.0
+      }
+    },
+    {
+      "sku": "GL-WMD1530",
+      "cat": "Aluminum Glass door",
+      "desc": "Glass door",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 282.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 282.0,
+        "elite": 282.0
+      },
+      "ply": {
+        "essential": 282.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 282.0,
+        "elite": 282.0
+      },
+      "flat": {
+        "gola_urban": 282.0,
+        "gola_prestige": 282.0
+      }
+    },
+    {
+      "sku": "GL-WMD1536",
+      "cat": "Aluminum Glass door",
+      "desc": "Glass door",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 316.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 316.0,
+        "elite": 316.0
+      },
+      "ply": {
+        "essential": 316.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 316.0,
+        "elite": 316.0
+      },
+      "flat": {
+        "gola_urban": 316.0,
+        "gola_prestige": 316.0
+      }
+    },
+    {
+      "sku": "GL-WMD1542",
+      "cat": "Aluminum Glass door",
+      "desc": "Glass door",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 349.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 349.0,
+        "elite": 349.0
+      },
+      "ply": {
+        "essential": 349.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 349.0,
+        "elite": 349.0
+      },
+      "flat": {
+        "gola_urban": 349.0,
+        "gola_prestige": 349.0
+      }
+    },
+    {
+      "sku": "GL-WMD1830",
+      "cat": "Aluminum Glass door",
+      "desc": "Glass door",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 316.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 316.0,
+        "elite": 316.0
+      },
+      "ply": {
+        "essential": 316.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 316.0,
+        "elite": 316.0
+      },
+      "flat": {
+        "gola_urban": 316.0,
+        "gola_prestige": 316.0
+      }
+    },
+    {
+      "sku": "GL-WMD1836",
+      "cat": "Aluminum Glass door",
+      "desc": "Glass door",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 355.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 355.0,
+        "elite": 355.0
+      },
+      "ply": {
+        "essential": 355.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 355.0,
+        "elite": 355.0
+      },
+      "flat": {
+        "gola_urban": 355.0,
+        "gola_prestige": 355.0
+      }
+    },
+    {
+      "sku": "GL-WMD1842",
+      "cat": "Aluminum Glass door",
+      "desc": "Glass door",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 409.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 409.0,
+        "elite": 409.0
+      },
+      "ply": {
+        "essential": 409.0,
+        "plus": 0.0,
+        "trend": 0.0,
+        "premium": 409.0,
+        "elite": 409.0
+      },
+      "flat": {
+        "gola_urban": 409.0,
+        "gola_prestige": 409.0
+      }
+    },
+    {
+      "sku": "HPC1884",
+      "cat": "Pantry",
+      "desc": "Pantry Cabinet",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 882.0,
+        "gola_prestige": 926.0
+      }
+    },
+    {
+      "sku": "HPC1890",
+      "cat": "Pantry",
+      "desc": "Pantry Cabinet",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 957.0,
+        "gola_prestige": 1006.0
+      }
+    },
+    {
+      "sku": "HPC1896",
+      "cat": "Pantry",
+      "desc": "Pantry Cabinet",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 1030.0,
+        "gola_prestige": 1084.0
+      }
+    },
+    {
+      "sku": "HPC2484",
+      "cat": "Pantry",
+      "desc": "Pantry Cabinet",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 1068.0,
+        "gola_prestige": 1126.0
+      }
+    },
+    {
+      "sku": "HPC2490",
+      "cat": "Pantry",
+      "desc": "Pantry Cabinet",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 1204.0,
+        "gola_prestige": 1270.0
+      }
+    },
+    {
+      "sku": "HPC2496",
+      "cat": "Pantry",
+      "desc": "Pantry Cabinet",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 1187.0,
+        "gola_prestige": 1260.0
+      }
+    },
+    {
+      "sku": "HPC3084",
+      "cat": "Pantry",
+      "desc": "Pantry Cabinet",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 1305.0,
+        "gola_prestige": 1378.0
+      }
+    },
+    {
+      "sku": "HPC3090",
+      "cat": "Pantry",
+      "desc": "Pantry Cabinet",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 1298.0,
+        "gola_prestige": 1380.0
+      }
+    },
+    {
+      "sku": "HPC3096",
+      "cat": "Pantry",
+      "desc": "Pantry Cabinet",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 1448.0,
+        "gola_prestige": 1539.0
+      }
+    },
+    {
+      "sku": "HW-BBC45-SWING LEFT",
+      "cat": "Exclusive for Shaker",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 1156.0,
+        "plus": 1156.0,
+        "trend": 1156.0,
+        "premium": 1156.0,
+        "elite": 1156.0
+      },
+      "ply": {
+        "essential": 578.0,
+        "plus": 578.0,
+        "trend": 578.0,
+        "premium": 578.0,
+        "elite": 578.0
+      },
+      "flat": {
+        "gola_urban": 1734.0,
+        "gola_prestige": 1734.0
+      }
+    },
+    {
+      "sku": "HW-BBC45-SWING RIGHT",
+      "cat": "Exclusive for Shaker",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 1156.0,
+        "plus": 1156.0,
+        "trend": 1156.0,
+        "premium": 1156.0,
+        "elite": 1156.0
+      },
+      "ply": {
+        "essential": 578.0,
+        "plus": 578.0,
+        "trend": 578.0,
+        "premium": 578.0,
+        "elite": 578.0
+      },
+      "flat": {
+        "gola_urban": 1734.0,
+        "gola_prestige": 1734.0
+      }
+    },
+    {
+      "sku": "HW-BLACK GOLA",
+      "cat": "Vanity",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 158.0,
+        "gola_prestige": 158.0
+      }
+    },
+    {
+      "sku": "HW-BLS33 TRAY",
+      "cat": "Exclusive for Shaker",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 772.0,
+        "plus": 772.0,
+        "trend": 772.0,
+        "premium": 772.0,
+        "elite": 772.0
+      },
+      "ply": {
+        "essential": 386.0,
+        "plus": 386.0,
+        "trend": 386.0,
+        "premium": 386.0,
+        "elite": 386.0
+      },
+      "flat": {
+        "gola_urban": 1158.0,
+        "gola_prestige": 1158.0
+      }
+    },
+    {
+      "sku": "HW-BLS36 TRAY",
+      "cat": "Exclusive for Shaker",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 772.0,
+        "plus": 772.0,
+        "trend": 772.0,
+        "premium": 772.0,
+        "elite": 772.0
+      },
+      "ply": {
+        "essential": 386.0,
+        "plus": 386.0,
+        "trend": 386.0,
+        "premium": 386.0,
+        "elite": 386.0
+      },
+      "flat": {
+        "gola_urban": 1158.0,
+        "gola_prestige": 1158.0
+      }
+    },
+    {
+      "sku": "HW-BRONZE GOLA",
+      "cat": "Vanity",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 158.0,
+        "gola_prestige": 158.0
+      }
+    },
+    {
+      "sku": "HW-BSR06-SPICE RACK",
+      "cat": "Exclusive for Shaker",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 698.0,
+        "plus": 698.0,
+        "trend": 698.0,
+        "premium": 698.0,
+        "elite": 698.0
+      },
+      "ply": {
+        "essential": 349.0,
+        "plus": 349.0,
+        "trend": 349.0,
+        "premium": 349.0,
+        "elite": 349.0
+      },
+      "flat": {
+        "gola_urban": 1047.0,
+        "gola_prestige": 1047.0
+      }
+    },
+    {
+      "sku": "HW-BSR09-SPICE RACK",
+      "cat": "Exclusive for Shaker",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 738.0,
+        "plus": 738.0,
+        "trend": 738.0,
+        "premium": 738.0,
+        "elite": 738.0
+      },
+      "ply": {
+        "essential": 369.0,
+        "plus": 369.0,
+        "trend": 369.0,
+        "premium": 369.0,
+        "elite": 369.0
+      },
+      "flat": {
+        "gola_urban": 1107.0,
+        "gola_prestige": 1107.0
+      }
+    },
+    {
+      "sku": "HW-BSR12-SPICE RACK",
+      "cat": "Exclusive for Shaker",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 806.0,
+        "plus": 806.0,
+        "trend": 806.0,
+        "premium": 806.0,
+        "elite": 806.0
+      },
+      "ply": {
+        "essential": 403.0,
+        "plus": 403.0,
+        "trend": 403.0,
+        "premium": 403.0,
+        "elite": 403.0
+      },
+      "flat": {
+        "gola_urban": 1209.0,
+        "gola_prestige": 1209.0
+      }
+    },
+    {
+      "sku": "HW-BTC18-TRASH CAN",
+      "cat": "Exclusive for Shaker",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 1058.0,
+        "plus": 1058.0,
+        "trend": 1058.0,
+        "premium": 1058.0,
+        "elite": 1058.0
+      },
+      "ply": {
+        "essential": 529.0,
+        "plus": 529.0,
+        "trend": 529.0,
+        "premium": 529.0,
+        "elite": 529.0
+      },
+      "flat": {
+        "gola_urban": 1587.0,
+        "gola_prestige": 1587.0
+      }
+    },
+    {
+      "sku": "HW-DRAWER-HIGH",
+      "cat": "Exclusive for Shaker",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 340.0,
+        "plus": 340.0,
+        "trend": 340.0,
+        "premium": 340.0,
+        "elite": 340.0
+      },
+      "ply": {
+        "essential": 170.0,
+        "plus": 170.0,
+        "trend": 170.0,
+        "premium": 170.0,
+        "elite": 170.0
+      },
+      "flat": {
+        "gola_urban": 510.0,
+        "gola_prestige": 510.0
+      }
+    },
+    {
+      "sku": "HW-DRAWER-LOW",
+      "cat": "Exclusive for Shaker",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 286.0,
+        "plus": 286.0,
+        "trend": 286.0,
+        "premium": 286.0,
+        "elite": 286.0
+      },
+      "ply": {
+        "essential": 143.0,
+        "plus": 143.0,
+        "trend": 143.0,
+        "premium": 143.0,
+        "elite": 143.0
+      }
+    },
+    {
+      "sku": "HW-HINGE105",
+      "cat": "Exclusive for Shaker",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 22.0,
+        "plus": 22.0,
+        "trend": 22.0,
+        "premium": 22.0,
+        "elite": 22.0
+      },
+      "ply": {
+        "essential": 11.0,
+        "plus": 11.0,
+        "trend": 11.0,
+        "premium": 11.0,
+        "elite": 11.0
+      },
+      "flat": {
+        "gola_urban": 33.0,
+        "gola_prestige": 33.0
+      }
+    },
+    {
+      "sku": "HW-HINGE135",
+      "cat": "Exclusive for Shaker",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 50.0,
+        "plus": 50.0,
+        "trend": 50.0,
+        "premium": 50.0,
+        "elite": 50.0
+      },
+      "ply": {
+        "essential": 25.0,
+        "plus": 25.0,
+        "trend": 25.0,
+        "premium": 25.0,
+        "elite": 25.0
+      },
+      "flat": {
+        "gola_urban": 75.0,
+        "gola_prestige": 75.0
+      }
+    },
+    {
+      "sku": "HW-HINGE155",
+      "cat": "Exclusive for Shaker",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 40.0,
+        "plus": 40.0,
+        "trend": 40.0,
+        "premium": 40.0,
+        "elite": 40.0
+      },
+      "ply": {
+        "essential": 20.0,
+        "plus": 20.0,
+        "trend": 20.0,
+        "premium": 20.0,
+        "elite": 20.0
+      },
+      "flat": {
+        "gola_urban": 60.0,
+        "gola_prestige": 60.0
+      }
+    },
+    {
+      "sku": "HW-HINGE45",
+      "cat": "Exclusive for Shaker",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 40.0,
+        "plus": 40.0,
+        "trend": 40.0,
+        "premium": 40.0,
+        "elite": 40.0
+      },
+      "ply": {
+        "essential": 20.0,
+        "plus": 20.0,
+        "trend": 20.0,
+        "premium": 20.0,
+        "elite": 20.0
+      },
+      "flat": {
+        "gola_urban": 60.0,
+        "gola_prestige": 60.0
+      }
+    },
+    {
+      "sku": "HW-PLASTIC LEG",
+      "cat": "Exclusive for Shaker",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 26.0,
+        "plus": 26.0,
+        "trend": 26.0,
+        "premium": 26.0,
+        "elite": 26.0
+      },
+      "ply": {
+        "essential": 13.0,
+        "plus": 13.0,
+        "trend": 13.0,
+        "premium": 13.0,
+        "elite": 13.0
+      },
+      "flat": {
+        "gola_urban": 36.0,
+        "gola_prestige": 36.0
+      }
+    },
+    {
+      "sku": "HW-PUSH OPEN",
+      "cat": "Exclusive for Shaker",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "essential": 20.0,
+        "plus": 20.0,
+        "trend": 20.0,
+        "premium": 20.0,
+        "elite": 20.0
+      },
+      "ply": {
+        "essential": 10.0,
+        "plus": 10.0,
+        "trend": 10.0,
+        "premium": 10.0,
+        "elite": 10.0
+      },
+      "flat": {
+        "gola_urban": 296.0,
+        "gola_prestige": 296.0
+      }
+    },
+    {
+      "sku": "HW-SLIVER GOLA",
+      "cat": "Vanity",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 148.0,
+        "gola_prestige": 148.0
+      }
+    },
+    {
+      "sku": "REF24105",
+      "cat": "Wall Microwave Cabinet",
+      "desc": "REF Panel",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "premium": 449.0,
+        "elite": 449.0
+      },
+      "ply": {
+        "premium": 449.0,
+        "elite": 449.0
+      },
+      "flat": {
+        "gola_urban": 639.0,
+        "gola_prestige": 766.0
+      }
+    },
+    {
+      "sku": "ROT21",
+      "cat": "Vanity",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 298.0,
+        "gola_prestige": 298.0
+      }
+    },
+    {
+      "sku": "ROT27",
+      "cat": "Vanity",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 339.0,
+        "gola_prestige": 339.0
+      }
+    },
+    {
+      "sku": "ROT33",
+      "cat": "Vanity",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 398.0,
+        "gola_prestige": 398.0
+      }
+    },
+    {
+      "sku": "ROT36",
+      "cat": "Vanity",
+      "desc": "Hardware",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 414.0,
+        "gola_prestige": 414.0
+      }
+    },
+    {
+      "sku": "V2DB12",
+      "cat": "Vanity",
+      "desc": "Vanity Drawer Base",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 843.0,
+        "gola_prestige": 860.0
+      }
+    },
+    {
+      "sku": "V2DB15",
+      "cat": "Vanity",
+      "desc": "Vanity Drawer Base",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 889.0,
+        "gola_prestige": 911.0
+      }
+    },
+    {
+      "sku": "VAL33",
+      "cat": "Exclusive for Shaker",
+      "desc": "Exclusive for Shaker",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "pb": {
+        "premium": 78.0,
+        "elite": 78.0
+      },
+      "ply": {
+        "premium": 78.0,
+        "elite": 78.0
+      }
+    },
+    {
+      "sku": "VB24FH",
+      "cat": "Vanity",
+      "desc": "Vanity Base",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 635.0,
+        "gola_prestige": 670.0
+      }
+    },
+    {
+      "sku": "VB30FH",
+      "cat": "Vanity",
+      "desc": "Vanity Base",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 721.0,
+        "gola_prestige": 765.0
+      }
+    },
+    {
+      "sku": "VB36FH",
+      "cat": "Vanity",
+      "desc": "Vanity Base",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 825.0,
+        "gola_prestige": 878.0
+      }
+    },
+    {
+      "sku": "WF328",
+      "cat": "Filler",
+      "desc": "Filler",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 40.0,
+        "gola_prestige": 48.0
+      }
+    },
+    {
+      "sku": "WF628",
+      "cat": "Filler",
+      "desc": "Filler",
+      "dims": "",
+      "width_in": null,
+      "depth_in": null,
+      "height_in": null,
+      "flat": {
+        "gola_urban": 73.0,
+        "gola_prestige": 87.0
+      }
     }
   ]
 }

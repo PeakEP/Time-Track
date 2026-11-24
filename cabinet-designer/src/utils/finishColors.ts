@@ -24,6 +24,10 @@ const FINISH_HEX: Record<string, string> = {
   PGG: "#7a7d80", // Glossy Gray
   // Elite
   SSW: "#f4f5f5", // Slim Shaker White
+  // GOLA line — placeholder neutrals until the real palette lands. Picked to
+  // read as the integrated-handle look (soft matte off-white / warm charcoal).
+  "GOLA-U": "#ece8dc",
+  "GOLA-P": "#2b2f33",
 };
 
 export function finishColor(code: string): string {
