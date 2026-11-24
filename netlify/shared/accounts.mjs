@@ -3,7 +3,7 @@
 // has an Admin flag and a setting per app:
 //   vendorOrders: "none" | "sales_rep" | "purchaser"
 //   selections:   "none" | "designer"
-//   cabinet, aline: true | false
+//   cabinet, aline, triangle: true | false
 //   quoteBuilder: true | false (BETA — off by default; an Admin turns it on per person to test it)
 // Records made before per-app access existed get sensible defaults:
 // Purchasers become Admins, and everyone keeps their Vendor Orders role and
@@ -14,14 +14,14 @@ const httpError = (status, message) => Object.assign(new Error(message), { statu
 const cleanName = (v) => String(v == null ? "" : v).trim().replace(/\s+/g, " ").slice(0, 80);
 const sameName = (a, b) => a.toLowerCase() === b.toLowerCase();
 
-export const APPS = ["vendorOrders", "selections", "cabinet", "aline", "quoteBuilder"];
+export const APPS = ["vendorOrders", "selections", "cabinet", "aline", "triangle", "quoteBuilder"];
 export const VO_ROLES = ["none", "sales_rep", "purchaser"];
 export const SEL_ROLES = ["none", "designer"];
 export const COOKIE = "jmrc_session";
 
 export const FULL_ACCESS = {
   admin: true,
-  apps: { vendorOrders: "purchaser", selections: "designer", cabinet: true, aline: true, quoteBuilder: true },
+  apps: { vendorOrders: "purchaser", selections: "designer", cabinet: true, aline: true, triangle: true, quoteBuilder: true },
 };
 
 export function accessOf(u) {
@@ -37,6 +37,7 @@ export function accessOf(u) {
       selections: SEL_ROLES.includes(a.selections) ? a.selections : "designer",
       cabinet: a.cabinet ?? true,
       aline: a.aline ?? true,
+      triangle: a.triangle ?? true,
       quoteBuilder: a.quoteBuilder ?? false,
     },
   };
@@ -174,11 +175,12 @@ function readAccess(body, current) {
   }
   if ("cabinet" in a) next.apps.cabinet = !!a.cabinet;
   if ("aline" in a) next.apps.aline = !!a.aline;
+  if ("triangle" in a) next.apps.triangle = !!a.triangle;
   if ("quoteBuilder" in a) next.apps.quoteBuilder = !!a.quoteBuilder;
   return next;
 }
 
-const DEFAULT_NEW = { admin: false, apps: { vendorOrders: "sales_rep", selections: "designer", cabinet: true, aline: true, quoteBuilder: false } };
+const DEFAULT_NEW = { admin: false, apps: { vendorOrders: "sales_rep", selections: "designer", cabinet: true, aline: true, triangle: true, quoteBuilder: false } };
 
 export function createStaff(book, body, clientNames = []) {
   const name = cleanName(body.name);

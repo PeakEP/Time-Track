@@ -1,0 +1,2280 @@
+{
+ "_meta": {
+  "line": "Triangle Kitchen",
+  "company": "Robins Interiors & Design",
+  "designer_default": "Susan Parlee",
+  "note": "Intake / selection form. No pricing — a hand-off for the designer to build the cabinet layout. Colours shown as named swatches; confirm exact species, door style and finish from a physical Triangle sample before ordering. Hardware, countertops and flooring are supplied separately. Bathroom vanities are usually Oppein, not Triangle."
+ },
+ "steps": [
+  {
+   "id": "project",
+   "nav": "Project",
+   "name": "Project details",
+   "kind": "info",
+   "subtitle": "Who the kitchen is for and the basics the designer needs to start the layout."
+  },
+  {
+   "id": "construction",
+   "nav": "Construction",
+   "name": "Door construction",
+   "kind": "choose",
+   "subtitle": "Start here — this decides which door styles, species and finishes you'll choose from next.",
+   "help": "Triangle is a frameless (full-access) cabinet line. The construction type drives everything downstream.",
+   "options": [
+    {
+     "id": "fivepiece",
+     "name": "5-Piece Solid Wood",
+     "note": "Framed solid-wood door — choose a species and a stain or paint. The most traditional look.",
+     "swatch": "#d8b689"
+    },
+    {
+     "id": "mdf",
+     "name": "1-Piece MDF (Paint)",
+     "note": "Smooth one-piece MDF door, painted only. Crisp, no wood grain, very stable.",
+     "swatch": "#ece9e0"
+    },
+    {
+     "id": "slab",
+     "name": "Slab (Flat)",
+     "note": "Flat slab door in solid wood or MDF. Clean, contemporary.",
+     "swatch": "#e3cfa9"
+    },
+    {
+     "id": "tfl",
+     "name": "TFL — Urban",
+     "note": "Textured laminate on a panel — durable, low-maintenance; colour is chosen directly.",
+     "swatch": "#8c8372"
+    },
+    {
+     "id": "thermo",
+     "name": "Thermofoil",
+     "note": "Vacuum-formed polymer over MDF — seamless, wipeable; choose a profile and colour.",
+     "swatch": "#cdc6b9"
+    }
+   ]
+  },
+  {
+   "id": "style-fivepiece",
+   "nav": "Door style",
+   "name": "Door style — 5-Piece Solid Wood",
+   "kind": "choose",
+   "fit": "contain",
+   "showIf": {
+    "step": "construction",
+    "in": [
+     "fivepiece"
+    ]
+   },
+   "subtitle": "Pick the door profile. The letters under the brochure name are the species it's offered in.",
+   "options": [
+    {
+     "id": "style-shaker",
+     "name": "Shaker",
+     "image": "triangle/doors/fp-shaker.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-kedgwick",
+     "name": "Kedgwick",
+     "image": "triangle/doors/fp-kedgwick.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-hanwell",
+     "name": "Hanwell",
+     "image": "triangle/doors/fp-hanwell.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P"
+     ]
+    },
+    {
+     "id": "style-shaker-light",
+     "name": "Shaker Light",
+     "image": "triangle/doors/fp-shaker-light.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-shaker-round",
+     "name": "Shaker Round",
+     "image": "triangle/doors/fp-shaker-round.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-shaker-soft",
+     "name": "Shaker Soft",
+     "image": "triangle/doors/fp-shaker-soft.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-shaker-chamfer",
+     "name": "Shaker Chamfer",
+     "image": "triangle/doors/fp-shaker-chamfer.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-shaker-step",
+     "name": "Shaker Step",
+     "image": "triangle/doors/fp-shaker-step.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-shaker-step-bevel",
+     "name": "Shaker Step Bevel",
+     "image": "triangle/doors/fp-shaker-step-bevel.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-shaker-dome",
+     "name": "Shaker Dome",
+     "image": "triangle/doors/fp-shaker-dome.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P"
+     ]
+    },
+    {
+     "id": "style-bar-harbour",
+     "name": "Bar Harbour",
+     "image": "triangle/doors/fp-bar-harbour.jpg",
+     "species": [
+      "M"
+     ]
+    },
+    {
+     "id": "style-charlottetown",
+     "name": "Charlottetown",
+     "image": "triangle/doors/fp-charlottetown.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-simply-shaker",
+     "name": "Simply Shaker",
+     "image": "triangle/doors/fp-simply-shaker.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-simply-beveled",
+     "name": "Simply Beveled",
+     "image": "triangle/doors/fp-simply-beveled.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-simply-pillow",
+     "name": "Simply Pillow",
+     "image": "triangle/doors/fp-simply-pillow.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-simply-step",
+     "name": "Simply Step",
+     "image": "triangle/doors/fp-simply-step.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-plymouth",
+     "name": "Plymouth",
+     "image": "triangle/doors/fp-plymouth.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-regency",
+     "name": "Regency",
+     "image": "triangle/doors/fp-regency.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P"
+     ]
+    },
+    {
+     "id": "style-timeless",
+     "name": "Timeless",
+     "image": "triangle/doors/fp-timeless.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-portage",
+     "name": "Portage",
+     "image": "triangle/doors/fp-portage.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-torino",
+     "name": "Torino",
+     "image": "triangle/doors/fp-torino.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-bellmont",
+     "name": "Bellmont",
+     "image": "triangle/doors/fp-bellmont.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-exeter-recessed",
+     "name": "Exeter Recessed",
+     "image": "triangle/doors/fp-exeter-recessed.jpg",
+     "species": [
+      "C",
+      "M",
+      "O"
+     ]
+    },
+    {
+     "id": "style-classic",
+     "name": "Classic",
+     "image": "triangle/doors/fp-classic.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P"
+     ]
+    },
+    {
+     "id": "style-classic-soft",
+     "name": "Classic Soft",
+     "image": "triangle/doors/fp-classic-soft.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-royal",
+     "name": "Royal",
+     "image": "triangle/doors/fp-royal.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P"
+     ]
+    },
+    {
+     "id": "style-dartmouth",
+     "name": "Dartmouth",
+     "image": "triangle/doors/fp-dartmouth.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-natik",
+     "name": "Natik",
+     "image": "triangle/doors/fp-natik.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-chatham-recessed",
+     "name": "Chatham Recessed",
+     "image": "triangle/doors/fp-chatham-recessed.jpg",
+     "species": [
+      "C",
+      "M",
+      "O"
+     ]
+    },
+    {
+     "id": "style-duxbury-recessed",
+     "name": "Duxbury Recessed",
+     "image": "triangle/doors/fp-duxbury-recessed.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P"
+     ]
+    },
+    {
+     "id": "style-duxbury-raised",
+     "name": "Duxbury Raised",
+     "image": "triangle/doors/fp-duxbury-raised.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P"
+     ]
+    },
+    {
+     "id": "style-middletown-recessed",
+     "name": "Middletown Recessed",
+     "image": "triangle/doors/fp-middletown-recessed.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-middletown-raised",
+     "name": "Middletown Raised",
+     "image": "triangle/doors/fp-middletown-raised.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-cambridge-recessed",
+     "name": "Cambridge Recessed",
+     "image": "triangle/doors/fp-cambridge-recessed.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-cambridge-raised",
+     "name": "Cambridge Raised",
+     "image": "triangle/doors/fp-cambridge-raised.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "style-newport-recessed",
+     "name": "Newport Recessed",
+     "image": "triangle/doors/fp-newport-recessed.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W"
+     ]
+    },
+    {
+     "id": "style-newport-raised",
+     "name": "Newport Raised",
+     "image": "triangle/doors/fp-newport-raised.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W"
+     ]
+    },
+    {
+     "id": "style-dome",
+     "name": "Dome",
+     "image": "triangle/doors/fp-dome.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P"
+     ]
+    },
+    {
+     "id": "style-roman",
+     "name": "Roman",
+     "image": "triangle/doors/fp-roman.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P"
+     ]
+    },
+    {
+     "id": "style-concord",
+     "name": "Concord",
+     "image": "triangle/doors/fp-concord.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P"
+     ]
+    },
+    {
+     "id": "style-queen-anne",
+     "name": "Queen Anne",
+     "image": "triangle/doors/fp-queen-anne.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P"
+     ]
+    },
+    {
+     "id": "style-princess",
+     "name": "Princess",
+     "image": "triangle/doors/fp-princess.jpg",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "style-mdf",
+   "nav": "Door style",
+   "name": "Door style — 1-Piece MDF",
+   "kind": "choose",
+   "fit": "contain",
+   "showIf": {
+    "step": "construction",
+    "in": [
+     "mdf"
+    ]
+   },
+   "subtitle": "One-piece MDF doors. Painted finish only.",
+   "options": [
+    {
+     "id": "style-shaker-mdf",
+     "name": "Shaker",
+     "image": "triangle/doors/mdf-shaker-mdf.jpg"
+    },
+    {
+     "id": "style-shaker-beveled-mdf",
+     "name": "Shaker Beveled",
+     "image": "triangle/doors/mdf-shaker-beveled-mdf.jpg"
+    },
+    {
+     "id": "style-shaker-light-mdf",
+     "name": "Shaker Light",
+     "image": "triangle/doors/mdf-shaker-light-mdf.jpg"
+    },
+    {
+     "id": "style-shaker-round-mdf",
+     "name": "Shaker Round",
+     "image": "triangle/doors/mdf-shaker-round-mdf.jpg"
+    },
+    {
+     "id": "style-shaker-soft-mdf",
+     "name": "Shaker Soft",
+     "image": "triangle/doors/mdf-shaker-soft-mdf.jpg"
+    },
+    {
+     "id": "style-shaker-step-mdf",
+     "name": "Shaker Step",
+     "image": "triangle/doors/mdf-shaker-step-mdf.jpg"
+    },
+    {
+     "id": "style-shaker-step-bevel-mdf",
+     "name": "Shaker Step Bevel",
+     "image": "triangle/doors/mdf-shaker-step-bevel-mdf.jpg"
+    },
+    {
+     "id": "style-simply-beveled-mdf",
+     "name": "Simply Beveled",
+     "image": "triangle/doors/mdf-simply-beveled-mdf.jpg"
+    },
+    {
+     "id": "style-simply-pillow-mdf",
+     "name": "Simply Pillow",
+     "image": "triangle/doors/mdf-simply-pillow-mdf.jpg"
+    },
+    {
+     "id": "style-simply-shaker-mdf",
+     "name": "Simply Shaker",
+     "image": "triangle/doors/mdf-simply-shaker-mdf.jpg"
+    },
+    {
+     "id": "style-simply-slim-shaker-mdf",
+     "name": "Simply Slim Shaker",
+     "image": "triangle/doors/mdf-simply-slim-shaker-mdf.jpg"
+    },
+    {
+     "id": "style-simply-step-mdf",
+     "name": "Simply Step",
+     "image": "triangle/doors/mdf-simply-step-mdf.jpg"
+    },
+    {
+     "id": "style-plymouth-mdf",
+     "name": "Plymouth",
+     "image": "triangle/doors/mdf-plymouth-mdf.jpg"
+    },
+    {
+     "id": "style-bellmont-mdf",
+     "name": "Bellmont",
+     "image": "triangle/doors/mdf-bellmont-mdf.jpg"
+    },
+    {
+     "id": "style-pleasant-hill-mdf",
+     "name": "Pleasant Hill",
+     "image": "triangle/doors/mdf-pleasant-hill-mdf.jpg"
+    },
+    {
+     "id": "style-portage-mdf",
+     "name": "Portage",
+     "image": "triangle/doors/mdf-portage-mdf.jpg"
+    },
+    {
+     "id": "style-torino-mdf",
+     "name": "Torino",
+     "image": "triangle/doors/mdf-torino-mdf.jpg"
+    },
+    {
+     "id": "style-fancy-beveled-mdf",
+     "name": "Fancy Beveled",
+     "image": "triangle/doors/mdf-fancy-beveled-mdf.jpg"
+    },
+    {
+     "id": "style-queen-anne-amherst-mdf",
+     "name": "Queen Anne Amherst",
+     "image": "triangle/doors/mdf-queen-anne-amherst-mdf.jpg"
+    },
+    {
+     "id": "style-queen-anne-round-mdf",
+     "name": "Queen Anne Round",
+     "image": "triangle/doors/mdf-queen-anne-round-mdf.jpg"
+    },
+    {
+     "id": "style-roman-amherst-mdf",
+     "name": "Roman Amherst",
+     "image": "triangle/doors/mdf-roman-amherst-mdf.jpg"
+    },
+    {
+     "id": "style-roman-round-mdf",
+     "name": "Roman Round",
+     "image": "triangle/doors/mdf-roman-round-mdf.jpg"
+    },
+    {
+     "id": "style-royal-amherst-mdf",
+     "name": "Royal Amherst",
+     "image": "triangle/doors/mdf-royal-amherst-mdf.jpg"
+    },
+    {
+     "id": "style-royal-round-mdf",
+     "name": "Royal Round",
+     "image": "triangle/doors/mdf-royal-round-mdf.jpg"
+    }
+   ]
+  },
+  {
+   "id": "style-slab",
+   "nav": "Door style",
+   "name": "Door style — Slab",
+   "kind": "choose",
+   "fit": "contain",
+   "showIf": {
+    "step": "construction",
+    "in": [
+     "slab"
+    ]
+   },
+   "subtitle": "Metro and Nova Solid Wood take a species + stain/paint; the MDF slabs are painted only.",
+   "options": [
+    {
+     "id": "style-metro",
+     "name": "Metro",
+     "image": "triangle/doors/slab-metro.jpg",
+     "kind": "solid"
+    },
+    {
+     "id": "style-nova-solid-wood",
+     "name": "Nova Solid Wood",
+     "image": "triangle/doors/slab-nova-solid-wood.jpg",
+     "kind": "solid"
+    },
+    {
+     "id": "style-nova-mdf",
+     "name": "Nova MDF",
+     "image": "triangle/doors/slab-nova-mdf.jpg",
+     "kind": "mdf"
+    },
+    {
+     "id": "style-linate-mdf",
+     "name": "Linate MDF",
+     "image": "triangle/doors/slab-linate-mdf.jpg",
+     "kind": "mdf"
+    },
+    {
+     "id": "style-nantucket-mdf",
+     "name": "Nantucket MDF",
+     "image": "triangle/doors/slab-nantucket-mdf.jpg",
+     "kind": "mdf"
+    },
+    {
+     "id": "style-heritage-mdf",
+     "name": "Heritage MDF",
+     "image": "triangle/doors/slab-heritage-mdf.jpg",
+     "kind": "mdf"
+    }
+   ]
+  },
+  {
+   "id": "style-thermo",
+   "nav": "Door style",
+   "name": "Door style — Thermofoil",
+   "kind": "choose",
+   "fit": "contain",
+   "showIf": {
+    "step": "construction",
+    "in": [
+     "thermo"
+    ]
+   },
+   "subtitle": "Thermofoil door profile. You'll pick a thermo colour next.",
+   "options": [
+    {
+     "id": "style-euro",
+     "name": "Euro",
+     "image": "triangle/doors/thermo-euro.jpg"
+    },
+    {
+     "id": "style-belfast",
+     "name": "Belfast",
+     "image": "triangle/doors/thermo-belfast.jpg"
+    },
+    {
+     "id": "style-dublin",
+     "name": "Dublin",
+     "image": "triangle/doors/thermo-dublin.jpg"
+    },
+    {
+     "id": "style-nanaimo",
+     "name": "Nanaimo",
+     "image": "triangle/doors/thermo-nanaimo.jpg"
+    },
+    {
+     "id": "style-shaker-5-piece",
+     "name": "Shaker 5 piece",
+     "image": "triangle/doors/thermo-shaker-5-piece.jpg"
+    },
+    {
+     "id": "style-shaker-beveled-5-piece",
+     "name": "Shaker Beveled 5 piece",
+     "image": "triangle/doors/thermo-shaker-beveled-5-piece.jpg"
+    },
+    {
+     "id": "style-paris",
+     "name": "Paris",
+     "image": "triangle/doors/thermo-paris.jpg"
+    },
+    {
+     "id": "style-porto",
+     "name": "Porto",
+     "image": "triangle/doors/thermo-porto.jpg"
+    },
+    {
+     "id": "style-elysa",
+     "name": "Elysa",
+     "image": "triangle/doors/thermo-elysa.jpg"
+    },
+    {
+     "id": "style-british",
+     "name": "British",
+     "image": "triangle/doors/thermo-british.jpg"
+    },
+    {
+     "id": "style-british-arch",
+     "name": "British Arch",
+     "image": "triangle/doors/thermo-british-arch.jpg"
+    },
+    {
+     "id": "style-british-cathedral",
+     "name": "British Cathedral",
+     "image": "triangle/doors/thermo-british-cathedral.jpg"
+    },
+    {
+     "id": "style-scandinavian",
+     "name": "Scandinavian",
+     "image": "triangle/doors/thermo-scandinavian.jpg"
+    },
+    {
+     "id": "style-scandinavian-arch",
+     "name": "Scandinavian Arch",
+     "image": "triangle/doors/thermo-scandinavian-arch.jpg"
+    },
+    {
+     "id": "style-scandinavian-cathedral",
+     "name": "Scandinavian Cathedral",
+     "image": "triangle/doors/thermo-scandinavian-cathedral.jpg"
+    },
+    {
+     "id": "style-manhattan",
+     "name": "Manhattan",
+     "image": "triangle/doors/thermo-manhattan.jpg"
+    },
+    {
+     "id": "style-manhattan-arch",
+     "name": "Manhattan Arch",
+     "image": "triangle/doors/thermo-manhattan-arch.jpg"
+    },
+    {
+     "id": "style-manhattan-cathedral",
+     "name": "Manhattan Cathedral",
+     "image": "triangle/doors/thermo-manhattan-cathedral.jpg"
+    }
+   ]
+  },
+  {
+   "id": "species",
+   "nav": "Species",
+   "name": "Wood species",
+   "kind": "choose",
+   "showIf": {
+    "step": "construction",
+    "in": [
+     "fivepiece",
+     "slab"
+    ]
+   },
+   "subtitle": "The wood the door is built from. (Slab: solid-wood Metro/Nova only.)",
+   "help": "Each species carries its own stain palette, shown on the next step.",
+   "options": [
+    {
+     "id": "sp-cherry",
+     "name": "Cherry",
+     "swatch": "#b5653f",
+     "note": "Pink/pale-brown hues, deepens richly with age.",
+     "code": "C"
+    },
+    {
+     "id": "sp-maple",
+     "name": "Maple",
+     "swatch": "#e3c59a",
+     "note": "Smooth, uniform hardwood; takes darker stains evenly.",
+     "code": "M"
+    },
+    {
+     "id": "sp-oak",
+     "name": "Oak",
+     "swatch": "#d6b280",
+     "note": "Open, prominent grain with a sweeping arch pattern.",
+     "code": "O"
+    },
+    {
+     "id": "sp-pine",
+     "name": "Pine",
+     "swatch": "#e8d3a7",
+     "note": "Knotty softwood; warm, rustic farmhouse character.",
+     "code": "P"
+    },
+    {
+     "id": "sp-walnut",
+     "name": "Walnut",
+     "swatch": "#6b4a33",
+     "note": "Rich, dark, 'expensive' look with wavy grain.",
+     "code": "W"
+    },
+    {
+     "id": "sp-white-oak-rift",
+     "name": "White Oak Rift",
+     "swatch": "#cdb690",
+     "note": "Straight, linear rift-cut grain; clean & contemporary.",
+     "code": "WO"
+    }
+   ]
+  },
+  {
+   "id": "finish-type",
+   "nav": "Finish",
+   "name": "Finish type",
+   "kind": "choose",
+   "showIf": {
+    "step": "construction",
+    "in": [
+     "fivepiece",
+     "mdf",
+     "slab"
+    ]
+   },
+   "subtitle": "How the door is coloured. Stains show the wood grain; paints give a smooth solid colour.",
+   "options": [
+    {
+     "id": "stained",
+     "name": "Stained",
+     "note": "Enhances the natural grain. Solid-wood doors only.",
+     "swatch": "#95572c",
+     "showIf": {
+      "step": "construction",
+      "in": [
+       "fivepiece",
+       "slab"
+      ]
+     }
+    },
+    {
+     "id": "painted",
+     "name": "Painted",
+     "note": "Smooth, consistent solid colour. Any species or MDF.",
+     "swatch": "#eceae0"
+    },
+    {
+     "id": "glazed",
+     "name": "Glazed",
+     "note": "Hand-applied glaze over paint for depth and a softened, aged look.",
+     "swatch": "#6f6f6a",
+     "showIf": {
+      "step": "construction",
+      "in": [
+       "fivepiece",
+       "mdf",
+       "slab"
+      ]
+     }
+    },
+    {
+     "id": "accented-glaze",
+     "name": "Accented Glaze",
+     "note": "Glaze plus hand-accenting in the grooves — heirloom look.",
+     "swatch": "#4a382a",
+     "showIf": {
+      "step": "construction",
+      "in": [
+       "fivepiece",
+       "mdf",
+       "slab"
+      ]
+     }
+    },
+    {
+     "id": "rub-through",
+     "name": "Rub-Through",
+     "note": "Distressed, time-worn painted look. Most labour-intensive.",
+     "swatch": "#8a7a66",
+     "showIf": {
+      "step": "construction",
+      "in": [
+       "fivepiece",
+       "slab"
+      ]
+     }
+    },
+    {
+     "id": "custom-match",
+     "name": "Custom Colour Match",
+     "note": "Match a paint chip or stained sample. A physical sample is required for approval.",
+     "swatch": "#c9b79a"
+    }
+   ]
+  },
+  {
+   "id": "stain-colour",
+   "nav": "Stain",
+   "name": "Stain colour",
+   "kind": "choose",
+   "speciesFilter": true,
+   "showIf": {
+    "step": "finish-type",
+    "in": [
+     "stained"
+    ]
+   },
+   "subtitle": "Stain palette for the species you chose. Final colour must be confirmed from a physical door sample.",
+   "options": [
+    {
+     "id": "stain-natural",
+     "name": "Natural",
+     "swatch": "#d8b689",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "stain-light-stain",
+     "name": "Light Stain",
+     "swatch": "#cfa670",
+     "species": [
+      "C",
+      "M",
+      "W"
+     ]
+    },
+    {
+     "id": "stain-wheat",
+     "name": "Wheat",
+     "swatch": "#dcc08a",
+     "species": [
+      "M"
+     ]
+    },
+    {
+     "id": "stain-cinnamon",
+     "name": "Cinnamon",
+     "swatch": "#a7673d",
+     "species": [
+      "C",
+      "M"
+     ]
+    },
+    {
+     "id": "stain-venetian-gold",
+     "name": "Venetian Gold",
+     "swatch": "#b07b3e",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P"
+     ]
+    },
+    {
+     "id": "stain-paprika",
+     "name": "Paprika",
+     "swatch": "#9c4a2a",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P"
+     ]
+    },
+    {
+     "id": "stain-antique",
+     "name": "Antique",
+     "swatch": "#8a6a46",
+     "species": [
+      "C",
+      "O"
+     ]
+    },
+    {
+     "id": "stain-praline",
+     "name": "Praline",
+     "swatch": "#7f5433",
+     "species": [
+      "M",
+      "O"
+     ]
+    },
+    {
+     "id": "stain-caramel",
+     "name": "Caramel",
+     "swatch": "#95572c",
+     "species": [
+      "M",
+      "O"
+     ]
+    },
+    {
+     "id": "stain-scandinavian",
+     "name": "Scandinavian",
+     "swatch": "#c79b63",
+     "species": [
+      "O",
+      "WO"
+     ]
+    },
+    {
+     "id": "stain-biscotti",
+     "name": "Biscotti",
+     "swatch": "#c3a277",
+     "species": [
+      "M",
+      "O"
+     ]
+    },
+    {
+     "id": "stain-driftwood",
+     "name": "Driftwood",
+     "swatch": "#9a8f80",
+     "species": [
+      "M",
+      "O",
+      "W",
+      "WO"
+     ]
+    },
+    {
+     "id": "stain-harbour-mist",
+     "name": "Harbour Mist",
+     "swatch": "#8d8378",
+     "species": [
+      "M",
+      "O"
+     ]
+    },
+    {
+     "id": "stain-river-rock",
+     "name": "River Rock",
+     "swatch": "#6f6b66",
+     "species": [
+      "M",
+      "O",
+      "W"
+     ]
+    },
+    {
+     "id": "stain-heritage-brown",
+     "name": "Heritage Brown",
+     "swatch": "#5a3f2b",
+     "species": [
+      "M",
+      "O"
+     ]
+    },
+    {
+     "id": "stain-sterling",
+     "name": "Sterling",
+     "swatch": "#7c7670",
+     "species": [
+      "M",
+      "O"
+     ]
+    },
+    {
+     "id": "stain-beluga",
+     "name": "Beluga",
+     "swatch": "#3b3330",
+     "species": [
+      "M",
+      "O",
+      "W"
+     ]
+    },
+    {
+     "id": "stain-spiced-cider",
+     "name": "Spiced Cider",
+     "swatch": "#8a4f2c",
+     "species": [
+      "C",
+      "M",
+      "O"
+     ]
+    },
+    {
+     "id": "stain-cappuccino",
+     "name": "Cappuccino",
+     "swatch": "#5e4636",
+     "species": [
+      "C",
+      "M",
+      "O",
+      "P"
+     ]
+    },
+    {
+     "id": "stain-chestnut-brown",
+     "name": "Chestnut Brown",
+     "swatch": "#5b3a24",
+     "species": [
+      "M",
+      "O"
+     ]
+    },
+    {
+     "id": "stain-coffee-bean",
+     "name": "Coffee Bean",
+     "swatch": "#3a2a20",
+     "species": [
+      "M",
+      "O"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "paint-colour",
+   "nav": "Paint",
+   "name": "Paint colour",
+   "kind": "choose",
+   "showIf": {
+    "step": "finish-type",
+    "in": [
+     "painted",
+     "glazed",
+     "accented-glaze",
+     "rub-through"
+    ]
+   },
+   "subtitle": "Designer paint palette. Any colour can also be custom-matched.",
+   "options": [
+    {
+     "id": "paint-winter-white",
+     "name": "Winter White",
+     "swatch": "#f2efe6"
+    },
+    {
+     "id": "paint-cloud-white",
+     "name": "Cloud White",
+     "swatch": "#eceae0"
+    },
+    {
+     "id": "paint-soft-cream",
+     "name": "Soft Cream",
+     "swatch": "#ece3cf"
+    },
+    {
+     "id": "paint-silver-satin",
+     "name": "Silver Satin",
+     "swatch": "#e7e3da"
+    },
+    {
+     "id": "paint-biscuit",
+     "name": "Biscuit",
+     "swatch": "#e6dcc6"
+    },
+    {
+     "id": "paint-silver-strand",
+     "name": "Silver Strand",
+     "swatch": "#c9c6bd"
+    },
+    {
+     "id": "paint-collingwood",
+     "name": "Collingwood",
+     "swatch": "#d6cfc4"
+    },
+    {
+     "id": "paint-cottage-green",
+     "name": "Cottage Green",
+     "swatch": "#8f9b86"
+    },
+    {
+     "id": "paint-evergreen-fog",
+     "name": "Evergreen Fog",
+     "swatch": "#95948a"
+    },
+    {
+     "id": "paint-laurel-green",
+     "name": "Laurel Green",
+     "swatch": "#a7ad93"
+    },
+    {
+     "id": "paint-green-smoke",
+     "name": "Green Smoke",
+     "swatch": "#93a08f"
+    },
+    {
+     "id": "paint-summerville",
+     "name": "Summerville",
+     "swatch": "#cfc3ac"
+    },
+    {
+     "id": "paint-denim",
+     "name": "Denim",
+     "swatch": "#4e6079"
+    },
+    {
+     "id": "paint-neptune",
+     "name": "Neptune",
+     "swatch": "#7d93a1"
+    },
+    {
+     "id": "paint-weathered-barn",
+     "name": "Weathered Barn",
+     "swatch": "#6f6a5f"
+    },
+    {
+     "id": "paint-fossil",
+     "name": "Fossil",
+     "swatch": "#c9c3b6"
+    },
+    {
+     "id": "paint-dolphin-grey",
+     "name": "Dolphin Grey",
+     "swatch": "#8f8f8c"
+    },
+    {
+     "id": "paint-metropolis-grey",
+     "name": "Metropolis Grey",
+     "swatch": "#7a7c7e"
+    },
+    {
+     "id": "paint-urban-grey",
+     "name": "Urban Grey",
+     "swatch": "#6d6e6b"
+    },
+    {
+     "id": "paint-juniper-haze",
+     "name": "Juniper Haze",
+     "swatch": "#8a9a96"
+    },
+    {
+     "id": "paint-hale-navy",
+     "name": "Hale Navy",
+     "swatch": "#434a54"
+    },
+    {
+     "id": "paint-inkwell-blue",
+     "name": "Inkwell Blue",
+     "swatch": "#3f4a57"
+    },
+    {
+     "id": "paint-charcoal",
+     "name": "Charcoal",
+     "swatch": "#40403f"
+    },
+    {
+     "id": "paint-black",
+     "name": "Black",
+     "swatch": "#222222"
+    }
+   ]
+  },
+  {
+   "id": "glaze-colour",
+   "nav": "Glaze",
+   "name": "Glaze colour",
+   "kind": "choose",
+   "showIf": {
+    "step": "finish-type",
+    "in": [
+     "glazed",
+     "accented-glaze",
+     "rub-through"
+    ]
+   },
+   "subtitle": "Glaze strength, light to dark.",
+   "options": [
+    {
+     "id": "glaze-espresso",
+     "name": "Espresso",
+     "swatch": "#4a382a"
+    },
+    {
+     "id": "glaze-classic-brown",
+     "name": "Classic Brown",
+     "swatch": "#5b4330"
+    },
+    {
+     "id": "glaze-dark-chocolate",
+     "name": "Dark Chocolate",
+     "swatch": "#3c2c20"
+    },
+    {
+     "id": "glaze-soap-stone",
+     "name": "Soap Stone",
+     "swatch": "#6f6f6a"
+    },
+    {
+     "id": "glaze-black",
+     "name": "Black",
+     "swatch": "#1b1b1b"
+    }
+   ]
+  },
+  {
+   "id": "tfl-colour",
+   "nav": "TFL colour",
+   "name": "TFL — Urban colour",
+   "kind": "choose",
+   "showIf": {
+    "step": "construction",
+    "in": [
+     "tfl"
+    ]
+   },
+   "subtitle": "The TFL colour is the door — grouped by finish family.",
+   "options": [
+    {
+     "id": "tfl-white",
+     "name": "White",
+     "swatch": "#f6f6f3",
+     "group": "Solid"
+    },
+    {
+     "id": "tfl-matt-white",
+     "name": "Matt White",
+     "swatch": "#f1f1ee",
+     "group": "Solid"
+    },
+    {
+     "id": "tfl-folkstone",
+     "name": "Folkstone",
+     "swatch": "#d8d9d4",
+     "group": "Solid"
+    },
+    {
+     "id": "tfl-summer-drops",
+     "name": "Summer Drops",
+     "swatch": "#cfcabb",
+     "group": "Solid"
+    },
+    {
+     "id": "tfl-morning-dew",
+     "name": "Morning Dew",
+     "swatch": "#d8d2c6",
+     "group": "Solid"
+    },
+    {
+     "id": "tfl-ashen",
+     "name": "Ashen",
+     "swatch": "#8c8372",
+     "group": "Solid"
+    },
+    {
+     "id": "tfl-mysterious-blue",
+     "name": "Mysterious Blue",
+     "swatch": "#2f3a42",
+     "group": "Solid"
+    },
+    {
+     "id": "tfl-orion-grey",
+     "name": "Orion Grey",
+     "swatch": "#3b3b3b",
+     "group": "Solid"
+    },
+    {
+     "id": "tfl-snow-white",
+     "name": "Snow White",
+     "swatch": "#f4f4f1",
+     "group": "Supermatt"
+    },
+    {
+     "id": "tfl-ice-grey",
+     "name": "Ice Grey",
+     "swatch": "#c9ccce",
+     "group": "Supermatt"
+    },
+    {
+     "id": "tfl-timeless-grey",
+     "name": "Timeless Grey",
+     "swatch": "#8a8f92",
+     "group": "Supermatt"
+    },
+    {
+     "id": "tfl-dolphin-grey",
+     "name": "Dolphin Grey",
+     "swatch": "#3e4346",
+     "group": "Supermatt"
+    },
+    {
+     "id": "tfl-sahara-cream",
+     "name": "Sahara Cream",
+     "swatch": "#d8cebb",
+     "group": "Supermatt"
+    },
+    {
+     "id": "tfl-pearl-black",
+     "name": "Pearl Black",
+     "swatch": "#121212",
+     "group": "Supermatt"
+    },
+    {
+     "id": "tfl-woodgrain",
+     "name": "Woodgrain",
+     "swatch": "#caa36a",
+     "group": "Wood & Fabric"
+    },
+    {
+     "id": "tfl-linen",
+     "name": "Linen",
+     "swatch": "#c9c7bd",
+     "group": "Wood & Fabric"
+    },
+    {
+     "id": "tfl-weekend-getaway",
+     "name": "Weekend Getaway",
+     "swatch": "#cfc9bd",
+     "group": "Wood & Fabric"
+    },
+    {
+     "id": "tfl-cast-at-first-light",
+     "name": "Cast at First Light",
+     "swatch": "#cbb084",
+     "group": "Wood & Fabric"
+    },
+    {
+     "id": "tfl-apr-s-ski",
+     "name": "Après-Ski",
+     "swatch": "#7a5a3f",
+     "group": "Wood & Fabric"
+    },
+    {
+     "id": "tfl-tea-for-two",
+     "name": "Tea for Two",
+     "swatch": "#8a5a30",
+     "group": "Wood & Fabric"
+    },
+    {
+     "id": "tfl-winter-fun",
+     "name": "Winter Fun",
+     "swatch": "#e6e2d7",
+     "group": "Wood & Fabric"
+    },
+    {
+     "id": "tfl-sunset-cruise",
+     "name": "Sunset Cruise",
+     "swatch": "#6b5848",
+     "group": "Wood & Fabric"
+    },
+    {
+     "id": "tfl-sugar-on-ice",
+     "name": "Sugar on Ice",
+     "swatch": "#5a4030",
+     "group": "Wood & Fabric"
+    },
+    {
+     "id": "tfl-sunday-brunch",
+     "name": "Sunday Brunch",
+     "swatch": "#4b3a2c",
+     "group": "Wood & Fabric"
+    },
+    {
+     "id": "tfl-after-hours",
+     "name": "After Hours",
+     "swatch": "#3a332c",
+     "group": "Wood & Fabric"
+    },
+    {
+     "id": "tfl-high-gloss-white",
+     "name": "High Gloss White",
+     "swatch": "#f2f2f0",
+     "group": "High Gloss"
+    },
+    {
+     "id": "tfl-artic-grey",
+     "name": "Artic Grey",
+     "swatch": "#9a9a98",
+     "group": "High Gloss"
+    },
+    {
+     "id": "tfl-fog",
+     "name": "Fog",
+     "swatch": "#8f8f8d",
+     "group": "High Gloss"
+    },
+    {
+     "id": "tfl-fum",
+     "name": "Fumé",
+     "swatch": "#3f4245",
+     "group": "High Gloss"
+    },
+    {
+     "id": "tfl-magnolia",
+     "name": "Magnolia",
+     "swatch": "#e9e2d2",
+     "group": "High Gloss"
+    },
+    {
+     "id": "tfl-new-black",
+     "name": "New Black",
+     "swatch": "#111111",
+     "group": "High Gloss"
+    }
+   ]
+  },
+  {
+   "id": "thermo-colour",
+   "nav": "Thermo colour",
+   "name": "Thermofoil colour",
+   "kind": "choose",
+   "showIf": {
+    "step": "construction",
+    "in": [
+     "thermo"
+    ]
+   },
+   "subtitle": "Thermofoil colour palette.",
+   "options": [
+    {
+     "id": "thermo-white-deco-velvet",
+     "name": "White Deco Velvet",
+     "swatch": "#f4f2ec"
+    },
+    {
+     "id": "thermo-cotton-mist",
+     "name": "Cotton Mist",
+     "swatch": "#efeee7"
+    },
+    {
+     "id": "thermo-summer-drops",
+     "name": "Summer Drops",
+     "swatch": "#d7d8d3"
+    },
+    {
+     "id": "thermo-morning-dew",
+     "name": "Morning Dew",
+     "swatch": "#cdc6b9"
+    },
+    {
+     "id": "thermo-dusk",
+     "name": "Dusk",
+     "swatch": "#4f5559"
+    },
+    {
+     "id": "thermo-black-velvet",
+     "name": "Black Velvet",
+     "swatch": "#1c1c1c"
+    },
+    {
+     "id": "thermo-fossil",
+     "name": "Fossil",
+     "swatch": "#6f6a60"
+    },
+    {
+     "id": "thermo-celadon-green",
+     "name": "Celadon Green",
+     "swatch": "#9aa894"
+    },
+    {
+     "id": "thermo-winter-fun",
+     "name": "Winter Fun",
+     "swatch": "#e7e3d6"
+    },
+    {
+     "id": "thermo-sunset-cruise",
+     "name": "Sunset Cruise",
+     "swatch": "#6b5848"
+    },
+    {
+     "id": "thermo-apr-s-ski",
+     "name": "Après-Ski",
+     "swatch": "#7a5a3f"
+    },
+    {
+     "id": "thermo-sunday-brunch",
+     "name": "Sunday Brunch",
+     "swatch": "#4b3a2c"
+    }
+   ]
+  },
+  {
+   "id": "box",
+   "nav": "Box material",
+   "name": "Box / carcass material",
+   "kind": "choose",
+   "subtitle": "What the cabinet boxes are built from. 5/8\" furniture board is standard.",
+   "options": [
+    {
+     "id": "box-furniture",
+     "name": "5/8\" Furniture Board (Standard)",
+     "swatch": "#d9d2c4",
+     "note": "Triangle's standard carcass. Durable, cost-effective."
+    },
+    {
+     "id": "box-particle",
+     "name": "Particle Board",
+     "swatch": "#cabfa6",
+     "note": "Economical core option."
+    },
+    {
+     "id": "box-plywood",
+     "name": "Plywood",
+     "swatch": "#d8c29a",
+     "note": "Upgrade — lighter, screws/joints hold well, moisture-tolerant."
+    },
+    {
+     "id": "box-tfl",
+     "name": "TFL Interior",
+     "swatch": "#e9e6df",
+     "note": "Textured-laminate interior; many interior colours (M01–M67)."
+    }
+   ]
+  },
+  {
+   "id": "drawer",
+   "nav": "Drawers",
+   "name": "Drawer system",
+   "kind": "choose",
+   "subtitle": "Triangle GG28 drawer options. Soft-close is included on all three.",
+   "help": "Tell the designer which to quote — the glide and box differ.",
+   "options": [
+    {
+     "id": "drawer-metabox",
+     "name": "Metabox",
+     "swatch": "#b9bcc0",
+     "note": "Single-extension steel box, soft-close included. Base level — no upcharge."
+    },
+    {
+     "id": "drawer-melamine",
+     "name": "Melamine",
+     "swatch": "#e6e2d8",
+     "note": "5/8\" board box, soft-close. Single or full extension; White, Woodgrain or Orion Grey interior."
+    },
+    {
+     "id": "drawer-dovetail",
+     "name": "Dovetail",
+     "swatch": "#c89a5f",
+     "note": "Hardwood, full-extension, soft-close. Optional Tip-On Blumotion (Movento, 88 lb)."
+    }
+   ]
+  },
+  {
+   "id": "edge",
+   "nav": "Edge",
+   "name": "Edge profile",
+   "kind": "choose",
+   "optional": true,
+   "subtitle": "Optional outer-edge detail on the door. Leave blank for the standard square edge. Availability varies by door — the designer confirms.",
+   "options": [
+    {
+     "id": "edge-1",
+     "name": "Profile 1",
+     "swatch": "#d8c7a8"
+    },
+    {
+     "id": "edge-2",
+     "name": "Profile 2",
+     "swatch": "#d8c7a8"
+    },
+    {
+     "id": "edge-3",
+     "name": "Profile 3",
+     "swatch": "#d8c7a8"
+    },
+    {
+     "id": "edge-4",
+     "name": "Profile 4",
+     "swatch": "#d8c7a8"
+    },
+    {
+     "id": "edge-5",
+     "name": "Profile 5",
+     "swatch": "#d8c7a8"
+    },
+    {
+     "id": "edge-6",
+     "name": "Profile 6",
+     "swatch": "#d8c7a8"
+    },
+    {
+     "id": "edge-7",
+     "name": "Profile 7",
+     "swatch": "#d8c7a8"
+    },
+    {
+     "id": "edge-8",
+     "name": "Profile 8",
+     "swatch": "#d8c7a8"
+    },
+    {
+     "id": "edge-10",
+     "name": "Profile 10",
+     "swatch": "#d8c7a8"
+    },
+    {
+     "id": "edge-11",
+     "name": "Profile 11",
+     "swatch": "#d8c7a8"
+    }
+   ]
+  },
+  {
+   "id": "joint",
+   "nav": "Joint",
+   "name": "Construction joint",
+   "kind": "choose",
+   "optional": true,
+   "subtitle": "A construction joint conceals the hairline cracks that solid wood naturally forms at the rail/stile joints. Recommended on painted solid wood.",
+   "options": [
+    {
+     "id": "joint-none",
+     "name": "None (standard)",
+     "swatch": "#e4ddcd"
+    },
+    {
+     "id": "joint-u",
+     "name": "Type U",
+     "swatch": "#d9cdb4"
+    },
+    {
+     "id": "joint-v",
+     "name": "Type V",
+     "swatch": "#cdbf9f"
+    }
+   ]
+  },
+  {
+   "id": "glass",
+   "nav": "Glass",
+   "name": "Glass doors",
+   "kind": "choose",
+   "multi": true,
+   "optional": true,
+   "fit": "cover",
+   "subtitle": "Optional — pick any glass styles you'd like on feature doors. Skip if none.",
+   "options": [
+    {
+     "id": "glass-clear",
+     "name": "Clear",
+     "image": "triangle/details/glass-clear.jpg"
+    },
+    {
+     "id": "glass-mirror",
+     "name": "Mirror",
+     "image": "triangle/details/glass-mirror.jpg"
+    },
+    {
+     "id": "glass-smoked",
+     "name": "Smoked",
+     "image": "triangle/details/glass-smoked.jpg"
+    },
+    {
+     "id": "glass-delta",
+     "name": "Delta",
+     "image": "triangle/details/glass-delta.jpg"
+    },
+    {
+     "id": "glass-frosted",
+     "name": "Frosted",
+     "image": "triangle/details/glass-frosted.jpg"
+    },
+    {
+     "id": "glass-reeded",
+     "name": "Reeded",
+     "image": "triangle/details/glass-reeded.jpg"
+    },
+    {
+     "id": "glass-gothic",
+     "name": "Gothic",
+     "image": "triangle/details/glass-gothic.jpg"
+    }
+   ]
+  },
+  {
+   "id": "mullion",
+   "nav": "Mullion",
+   "name": "Mullion style",
+   "kind": "choose",
+   "optional": true,
+   "fit": "contain",
+   "showIf": {
+    "step": "glass",
+    "in": [
+     "glass-clear",
+     "glass-mirror",
+     "glass-smoked",
+     "glass-delta",
+     "glass-frosted",
+     "glass-reeded",
+     "glass-gothic"
+    ]
+   },
+   "subtitle": "The muntin/mullion layout for your glass doors.",
+   "options": [
+    {
+     "id": "mullion-frame-only",
+     "name": "Frame Only",
+     "image": "triangle/details/mullion-frame-only.png"
+    },
+    {
+     "id": "mullion-4-lites",
+     "name": "4 Lites",
+     "image": "triangle/details/mullion-4-lites.png"
+    },
+    {
+     "id": "mullion-6-lites",
+     "name": "6 Lites",
+     "image": "triangle/details/mullion-6-lites.png"
+    },
+    {
+     "id": "mullion-8-lites",
+     "name": "8 Lites",
+     "image": "triangle/details/mullion-8-lites.png"
+    },
+    {
+     "id": "mullion-deluxe-mullion",
+     "name": "Deluxe Mullion",
+     "image": "triangle/details/mullion-deluxe-mullion.png"
+    },
+    {
+     "id": "mullion-2-lites-horizontal",
+     "name": "2 Lites Horizontal",
+     "image": "triangle/details/mullion-2-lites-horizontal.png"
+    },
+    {
+     "id": "mullion-3-lites-horizontal",
+     "name": "3 Lites Horizontal",
+     "image": "triangle/details/mullion-3-lites-horizontal.png"
+    },
+    {
+     "id": "mullion-2-lites-vertical",
+     "name": "2 Lites Vertical",
+     "image": "triangle/details/mullion-2-lites-vertical.png"
+    },
+    {
+     "id": "mullion-3-lites-vertical",
+     "name": "3 Lites Vertical",
+     "image": "triangle/details/mullion-3-lites-vertical.png"
+    },
+    {
+     "id": "mullion-x-mullion",
+     "name": "X-Mullion",
+     "image": "triangle/details/mullion-x-mullion.png"
+    },
+    {
+     "id": "mullion-deluxe-x-mullion",
+     "name": "Deluxe X-Mullion",
+     "image": "triangle/details/mullion-deluxe-x-mullion.png"
+    },
+    {
+     "id": "mullion-fancy-mullion",
+     "name": "Fancy Mullion",
+     "image": "triangle/details/mullion-fancy-mullion.png"
+    }
+   ]
+  },
+  {
+   "id": "detailing",
+   "nav": "Detailing",
+   "name": "Detailing & trim",
+   "kind": "choose",
+   "multi": true,
+   "optional": true,
+   "subtitle": "Tick anything the customer wants. The designer works out exact parts.",
+   "options": [
+    {
+     "id": "det-matching-finished-ends",
+     "name": "Matching finished ends",
+     "swatch": "#d8cdb6",
+     "note": "Exposed cabinet ends finished to match the doors."
+    },
+    {
+     "id": "det-crown-moulding",
+     "name": "Crown moulding",
+     "swatch": "#d8cdb6",
+     "note": "Crown/cornice at the top of wall cabinets."
+    },
+    {
+     "id": "det-light-rail-valance",
+     "name": "Light rail / valance",
+     "swatch": "#d8cdb6",
+     "note": "Trim under wall cabinets to hide under-cabinet lighting."
+    },
+    {
+     "id": "det-decorative-toe-kick",
+     "name": "Decorative toe kick",
+     "swatch": "#d8cdb6",
+     "note": "Furniture-style or decorative toe kick instead of standard."
+    },
+    {
+     "id": "det-corbels-brackets",
+     "name": "Corbels / brackets",
+     "swatch": "#d8cdb6",
+     "note": "Decorative supports (e.g. under a hood or counter overhang)."
+    },
+    {
+     "id": "det-furniture-legs-feet",
+     "name": "Furniture legs / feet",
+     "swatch": "#d8cdb6",
+     "note": "Turned or square legs for a furniture look."
+    },
+    {
+     "id": "det-open-shelving",
+     "name": "Open shelving",
+     "swatch": "#d8cdb6",
+     "note": "Open shelves in place of some wall cabinets."
+    },
+    {
+     "id": "det-plate-rack",
+     "name": "Plate rack",
+     "swatch": "#d8cdb6",
+     "note": "Built-in plate display."
+    },
+    {
+     "id": "det-wine-rack",
+     "name": "Wine rack",
+     "swatch": "#d8cdb6",
+     "note": "Built-in wine storage."
+    },
+    {
+     "id": "det-interior-finished-to-match",
+     "name": "Interior finished to match",
+     "swatch": "#d8cdb6",
+     "note": "Cabinet interiors finished to match the door, not standard white."
+    }
+   ]
+  },
+  {
+   "id": "ventilation",
+   "nav": "Ventilation",
+   "name": "Ventilation above the range",
+   "kind": "choose",
+   "subtitle": "Pick ONE. Note: an over-the-range microwave is NOT a Triangle wood range hood.",
+   "help": "A wood range hood is a decorative Triangle hood; an OTR microwave has a cabinet built above the microwave instead.",
+   "options": [
+    {
+     "id": "vent-otr",
+     "name": "OTR Microwave",
+     "swatch": "#cfd2d4",
+     "note": "Over-the-range microwave with a cabinet built above it. NOT a wood range hood."
+    },
+    {
+     "id": "vent-hood",
+     "name": "Wood Range Hood (Triangle)",
+     "swatch": "#e7e1d2",
+     "note": "Decorative Triangle wood hood — choose a series next."
+    },
+    {
+     "id": "vent-other",
+     "name": "Other Vent (by others)",
+     "swatch": "#c6c6c4",
+     "note": "Chimney/insert/downdraft hood supplied by others."
+    },
+    {
+     "id": "vent-none",
+     "name": "None / By others",
+     "swatch": "#e4e2dc",
+     "note": "No ventilation in the Triangle scope."
+    }
+   ]
+  },
+  {
+   "id": "hood-series",
+   "nav": "Hood series",
+   "name": "Wood range hood series",
+   "kind": "choose",
+   "fit": "contain",
+   "showIf": {
+    "step": "ventilation",
+    "in": [
+     "vent-hood"
+    ]
+   },
+   "subtitle": "Representative shape per series. Base options (standard / hardwood / panel base, beading) and size are confirmed with the designer.",
+   "options": [
+    {
+     "id": "hood-bedford",
+     "name": "Bedford",
+     "image": "triangle/hoods/hood-bedford.png",
+     "note": "BD-Series"
+    },
+    {
+     "id": "hood-bristal",
+     "name": "Bristal",
+     "image": "triangle/hoods/hood-bristal.png",
+     "note": "BX-Series"
+    },
+    {
+     "id": "hood-cambridge",
+     "name": "Cambridge",
+     "image": "triangle/hoods/hood-cambridge.png",
+     "note": "C-Series"
+    },
+    {
+     "id": "hood-eastland",
+     "name": "Eastland",
+     "image": "triangle/hoods/hood-eastland.png",
+     "note": "E3-Series"
+    },
+    {
+     "id": "hood-elegance",
+     "name": "Elegance",
+     "image": "triangle/hoods/hood-elegance.png",
+     "note": "E2-Series"
+    },
+    {
+     "id": "hood-elevation",
+     "name": "Elevation",
+     "image": "triangle/hoods/hood-elevation.png",
+     "note": "E-Series"
+    },
+    {
+     "id": "hood-fanfare",
+     "name": "Fanfare",
+     "image": "triangle/hoods/hood-fanfare.png",
+     "note": "FX2-Series"
+    },
+    {
+     "id": "hood-georgetown",
+     "name": "Georgetown",
+     "image": "triangle/hoods/hood-georgetown.png",
+     "note": "G-Series"
+    },
+    {
+     "id": "hood-plymouth",
+     "name": "Plymouth",
+     "image": "triangle/hoods/hood-plymouth.png",
+     "note": "P-Series"
+    },
+    {
+     "id": "hood-springfield",
+     "name": "Springfield",
+     "image": "triangle/hoods/hood-springfield.png",
+     "note": "S-Series"
+    },
+    {
+     "id": "hood-thompson",
+     "name": "Thompson",
+     "image": "triangle/hoods/hood-thompson.png",
+     "note": "T-Series"
+    },
+    {
+     "id": "hood-zenith",
+     "name": "Zenith",
+     "image": "triangle/hoods/hood-zenith.png",
+     "note": "Z200-Series"
+    }
+   ]
+  },
+  {
+   "id": "hood-liner",
+   "nav": "Hood liner",
+   "name": "Hood ventilator liner",
+   "kind": "choose",
+   "optional": true,
+   "showIf": {
+    "step": "ventilation",
+    "in": [
+     "vent-hood"
+    ]
+   },
+   "subtitle": "Insert ventilator for the wood hood (dimmable LED, variable-speed, dishwasher-safe filters).",
+   "options": [
+    {
+     "id": "liner-baffle",
+     "name": "Baffle Liner Ventilator",
+     "swatch": "#c9c9c9"
+    },
+    {
+     "id": "liner-mesh",
+     "name": "Mesh Liner Ventilator",
+     "swatch": "#bdb09a"
+    },
+    {
+     "id": "liner-none",
+     "name": "No liner / by others",
+     "swatch": "#e4e2dc"
+    }
+   ]
+  },
+  {
+   "id": "accessories",
+   "nav": "Accessories",
+   "name": "Interior accessories",
+   "kind": "choose",
+   "multi": true,
+   "optional": true,
+   "subtitle": "Pull-outs and organizers to quote. Door hinges are soft-close as standard.",
+   "help": "Cabinet hardware (handles/pulls), countertops and flooring are supplied separately — not Triangle.",
+   "options": [
+    {
+     "id": "acc-pull-out-waste-recycle",
+     "name": "Pull-out waste / recycle",
+     "swatch": "#d7d2c4"
+    },
+    {
+     "id": "acc-cutlery-divider",
+     "name": "Cutlery divider",
+     "swatch": "#d7d2c4"
+    },
+    {
+     "id": "acc-spice-pull-out",
+     "name": "Spice pull-out",
+     "swatch": "#d7d2c4"
+    },
+    {
+     "id": "acc-tray-dividers",
+     "name": "Tray dividers",
+     "swatch": "#d7d2c4"
+    },
+    {
+     "id": "acc-lazy-susan-corner-solution",
+     "name": "Lazy Susan / corner solution",
+     "swatch": "#d7d2c4"
+    },
+    {
+     "id": "acc-roll-out-trays",
+     "name": "Roll-out trays",
+     "swatch": "#d7d2c4"
+    },
+    {
+     "id": "acc-under-cabinet-lighting-prep",
+     "name": "Under-cabinet lighting prep",
+     "swatch": "#d7d2c4"
+    },
+    {
+     "id": "acc-appliance-garage",
+     "name": "Appliance garage",
+     "swatch": "#d7d2c4"
+    },
+    {
+     "id": "acc-pantry-pull-out",
+     "name": "Pantry pull-out",
+     "swatch": "#d7d2c4"
+    },
+    {
+     "id": "acc-knife-block",
+     "name": "Knife block",
+     "swatch": "#d7d2c4"
+    },
+    {
+     "id": "acc-cutting-board",
+     "name": "Cutting board",
+     "swatch": "#d7d2c4"
+    },
+    {
+     "id": "acc-drawer-peg-system",
+     "name": "Drawer peg system",
+     "swatch": "#d7d2c4"
+    }
+   ]
+  },
+  {
+   "id": "notes",
+   "nav": "Notes",
+   "name": "Notes & special requests",
+   "kind": "info",
+   "subtitle": "Anything else the designer should know — layout quirks, must-haves, inspiration, deadlines."
+  },
+  {
+   "id": "review",
+   "nav": "Review & hand off",
+   "name": "Review & hand off to the designer",
+   "kind": "review",
+   "subtitle": "Check the summary, flag anything to confirm, then export the PDF for the designer."
+  }
+ ]
+}

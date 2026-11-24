@@ -54,7 +54,7 @@ test("owner signs in on a fresh site without setup", async () => {
   const r = await call(null, "POST", "login", { name: " robins ", pin: "051711" });
   assert.equal(r.status, 200);
   assert.equal(r.body.me.admin, true);
-  assert.deepEqual(r.body.me.apps, { vendorOrders: "purchaser", selections: "designer", cabinet: true, aline: true, quoteBuilder: true });
+  assert.deepEqual(r.body.me.apps, { vendorOrders: "purchaser", selections: "designer", cabinet: true, aline: true, triangle: true, quoteBuilder: true });
   T.owner = r.cookie;
   assert.equal((await call("owner", "GET", "check?app=admin")).status, 200);
 });
@@ -81,4 +81,5 @@ test("accessOf gives the owner every app, even on a record saved before it shipp
   const stale = { owner: true, apps: { vendorOrders: "purchaser", selections: "designer", cabinet: true, aline: true } };
   assert.equal(accessOf(stale).admin, true);
   assert.equal(accessOf(stale).apps.quoteBuilder, true);
+  assert.equal(accessOf(stale).apps.triangle, true);
 });

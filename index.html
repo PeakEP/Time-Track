@@ -463,6 +463,16 @@
           <p>Walk a client through custom-home interior finishes from Robins Interiors, then export a branded PDF.</p>
           <span class="tool-open">Open tool</span>
         </a>
+
+        <a class="tool reveal d4" href="/triangle-intake/" data-app="triangle">
+          <div class="tool-top">
+            <span class="tool-tag">Kitchen · Cabinetry</span>
+            <span class="tool-arrow" aria-hidden="true">→</span>
+          </div>
+          <h2>Triangle Intake</h2>
+          <p>A guided, picture-led Triangle Kitchen cabinet selection form — capture the customer's choices and hand off to the designer.</p>
+          <span class="tool-open">Open tool</span>
+        </a>
       </section>
 
       <div class="tools-label reveal d4">Purchasing &amp; Operations</div>
@@ -604,6 +614,7 @@
           try {
             localStorage.removeItem("rid_vo_session");
             localStorage.removeItem("jmrc.selections.session.v1");
+            localStorage.removeItem("jmrc.triangle.session.v1");
             localStorage.removeItem("jmrc.qb.draft.v1");
           } catch {}
           location.replace("/");

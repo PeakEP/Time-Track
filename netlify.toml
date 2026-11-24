@@ -49,6 +49,13 @@
   status = 200
   force = true
 
+# Triangle Intake API → Netlify Function
+[[redirects]]
+  from = "/api/triangle/*"
+  to = "/.netlify/functions/triangle-api/:splat"
+  status = 200
+  force = true
+
 # Suite API (home-page sign-in, Admin page, page gate) → Netlify Function
 [[redirects]]
   from = "/api/suite/*"
@@ -78,6 +85,12 @@
 [[redirects]]
   from = "/selections/*"
   to = "/selections/index.html"
+  status = 200
+
+# Triangle Intake SPA fallback
+[[redirects]]
+  from = "/triangle-intake/*"
+  to = "/triangle-intake/index.html"
   status = 200
 
 # Vendor Orders SPA fallback

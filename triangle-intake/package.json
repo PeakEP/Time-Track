@@ -1,0 +1,28 @@
+{
+  "name": "jmrc-triangle-intake",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Robins Interiors & Design — Triangle Kitchen cabinet intake / selection form. A guided, picture-led wizard employees walk through to capture a customer's Triangle cabinetry choices (door construction, style, species, finish, box, drawers, detailing, ventilation, accessories) and hand off to the designer. No pricing. React + Vite + TypeScript + Zustand, JMRC house style, branded PDF export, suite sign-in + shared cloud projects.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "tsc -b --noEmit"
+  },
+  "dependencies": {
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
+    "lucide-react": "^0.460.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zustand": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10"
+  }
+}
